@@ -960,12 +960,6 @@ function limpiarTextoPokemon(textoSucio) {
     let textoLimpio = textoSucio.replace(/<[^>]*>/g, '');
     textoLimpio = textoLimpio.replace(/https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp)/gi, '');
     return textoLimpio.trim();
-}
-
-// Ejemplo de uso al importar:
-const textoDelPortapapeles = obtenerDatosPortapapeles(); 
-const textoSeguro = limpiarTextoPokemon(textoDelPortapapeles);
-// Ahora ya puedes meter 'textoSeguro' en tu sección de "Guarda Equipos" o "Red de Entrenadores"
 
 }
 
