@@ -957,13 +957,8 @@ function escaparHTML(str) {
 }
 
 function limpiarTextoPokemon(textoSucio) {
-    // 1. Elimina etiquetas HTML completas (como <img> o <div>)
     let textoLimpio = textoSucio.replace(/<[^>]*>/g, '');
-    
-    // 2. Elimina URLs de imágenes o GIFs por si vienen como texto suelto
     textoLimpio = textoLimpio.replace(/https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp)/gi, '');
-    
-    // 3. Quita espacios en blanco innecesarios que dejen las imágenes borradas
     return textoLimpio.trim();
 }
 
