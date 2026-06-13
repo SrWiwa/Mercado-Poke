@@ -423,6 +423,128 @@
         .arena-stats-mini { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
         .arena-stat-chip { background: #161d30; border: 1px solid #24324f; border-radius: 6px; padding: 4px 10px; font-size: 11px; color: var(--texto-secundario); }
         .arena-stat-chip span { color: var(--neon-arena); font-weight: bold; font-family: 'Orbitron', sans-serif; }
+
+        /* ═══════════════════════════════════
+           BARRA DE VIDAS UNIFICADA
+        ═══════════════════════════════════ */
+        .vidas-barra-contenedor {
+            background: #060914;
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .vidas-barra-titulo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--neon-ilegal);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .vidas-barra-track {
+            background: #0d1117;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            height: 36px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .vidas-barra-fill {
+            height: 100%;
+            border-radius: 7px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s;
+            position: relative;
+        }
+        .vidas-barra-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 50%;
+            background: rgba(255,255,255,0.08);
+            border-radius: 7px 7px 0 0;
+        }
+        .vidas-barra-fill.llena    { background: linear-gradient(90deg, #15803d, #22c55e); }
+        .vidas-barra-fill.media    { background: linear-gradient(90deg, #b45309, #f59e0b); }
+        .vidas-barra-fill.baja     { background: linear-gradient(90deg, #991b1b, #ef4444); }
+        .vidas-barra-fill.critica  { background: linear-gradient(90deg, #7f1d1d, #dc2626);
+            animation: parpadeo-critico 0.8s ease-in-out infinite alternate; }
+        .vidas-barra-fill.muerta   { background: #334155; }
+        @keyframes parpadeo-critico {
+            from { opacity: 1; }
+            to   { opacity: 0.55; }
+        }
+        .vidas-barra-numero {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .vidas-barra-numero.muerta { color: #64748b; }
+        .vidas-iconos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+        .vida-icono {
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .vida-icono.perdida {
+            filter: grayscale(100%);
+            opacity: 0.25;
+        }
+
+        /* Modal de muerte de Pokémon */
+        .muerte-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(4, 6, 14, 0.92); backdrop-filter: blur(8px);
+            z-index: 3000; justify-content: center; align-items: center; padding: 20px;
+        }
+        .muerte-modal {
+            background: #0f1422; border: 2px solid #ef4444;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.3); width: 100%; max-width: 480px;
+            border-radius: 12px; padding: 24px;
+            animation: desplegarEfecto 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .muerte-modal h3 {
+            font-family: 'Orbitron', sans-serif; font-size: 15px; color: #ef4444;
+            margin: 0 0 18px 0; text-align: center; text-transform: uppercase;
+        }
+        .muerte-input {
+            width: 100%; background: #060914; color: #fff; border: 1px solid #334155;
+            border-radius: 6px; padding: 10px 12px; font-size: 13px; margin-bottom: 10px;
+            font-family: 'Changa', sans-serif;
+        }
+        .muerte-input:focus { outline: none; border-color: #ef4444; }
+        .muerte-select {
+            width: 100%; background: #060914; color: #fff; border: 1px solid #334155;
+            border-radius: 6px; padding: 10px 12px; font-size: 13px; margin-bottom: 10px;
+            font-family: 'Changa', sans-serif; cursor: pointer;
+        }
+        .muerte-select:focus { outline: none; border-color: #ef4444; }
+        .muerte-botones { display: flex; gap: 10px; margin-top: 6px; }
+        .btn-muerte-confirmar {
+            flex: 1; padding: 10px; background: #4c1d1d; border: 1px solid #ef4444;
+            color: #fff; border-radius: 6px; font-weight: bold; text-transform: uppercase;
+            font-size: 12px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-muerte-confirmar:hover { background: #ef4444; }
+        .btn-muerte-cancelar {
+            padding: 10px 20px; background: #1e293b; border: 1px solid #475569;
+            color: var(--texto-secundario); border-radius: 6px; font-weight: bold;
+            text-transform: uppercase; font-size: 12px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-muerte-cancelar:hover { background: #334155; color: #fff; }
     </style>
 </head>
 <body>
@@ -467,8 +589,7 @@
             <div class="perfil-tabs">
                 <button class="subtab-btn active" id="subtab-equipo" onclick="cambiarSubPestanaPerfil('equipo')">EQUIPO POKÉMON</button>
                 <button class="subtab-btn" id="subtab-progreso" onclick="cambiarSubPestanaPerfil('progreso')">MEDALLAS Y TORNEOS</button>
-                <button class="subtab-btn" id="subtab-vidas" onclick="cambiarSubPestanaPerfil('vidas')" style="border-color: var(--neon-ilegal); color: var(--neon-ilegal);">❤️ CONTADOR DE VIDAS</button>
-                <button class="subtab-btn" id="subtab-cementerio" onclick="cambiarSubPestanaPerfil('cementerio')" style="border-color: #64748b; color: #cbd5e1;">💀 CEMENTERIO DE PIXELES</button>
+                <button class="subtab-btn" id="subtab-vidas" onclick="cambiarSubPestanaPerfil('vidas')" style="border-color: var(--neon-ilegal); color: var(--neon-ilegal);">❤️ VIDAS Y CEMENTERIO</button>
                 <button class="subtab-btn" id="subtab-aventura" onclick="abrirOverlayDiarioNativo()" style="border-color: var(--neon-packs); color: var(--neon-packs);">📖 ABRIR DIARIO INMUTABLE</button>
             </div>
 
@@ -514,40 +635,53 @@
                 </div>
             </div>
 
+            <!-- ═══════════════════════════════════════════════════════════
+                 PESTAÑA UNIFICADA: VIDAS + CEMENTERIO
+                 El botón "PERDER VIDA" abre el modal de muerte de Pokémon.
+                 Al confirmar, descuenta vida Y registra en el cementerio.
+            ═══════════════════════════════════════════════════════════ -->
             <div id="perf-view-vidas" class="perfil-content-view">
-                <div style="background:#060914; padding:20px; border-radius:12px; border:1px solid #1e293b; text-align:center;">
-                    <h4 style="margin:0 0 10px 0; font-family:'Orbitron'; font-size:14px; color:var(--neon-ilegal);">GESTIÓN DE VIDAS DEL LOCKE</h4>
-                    <div style="display:flex; justify-content:center; align-items:center; gap:25px; margin:20px 0;">
-                        <div>
-                            <label style="display:block; font-size:11px; color:var(--texto-secundario); text-transform:uppercase; margin-bottom:5px;">Vidas Totales / Iniciales</label>
-                            <input type="number" id="perf-vidas-iniciales" min="1" value="20" style="width:80px; background:#161d30; color:#fff; border:1px solid #334155; padding:6px; border-radius:4px; text-align:center; font-family:'Orbitron'; font-size:14px;">
+
+                <!-- Barra de vidas -->
+                <div class="vidas-barra-contenedor">
+                    <div class="vidas-barra-titulo">❤️ CONTADOR DE VIDAS DEL LOCKE</div>
+
+                    <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-bottom:16px; flex-wrap:wrap;">
+                        <div style="text-align:center;">
+                            <label style="font-size:11px; color:var(--texto-secundario); text-transform:uppercase; display:block; margin-bottom:5px;">Vidas Iniciales</label>
+                            <input type="number" id="perf-vidas-iniciales" min="1" value="20"
+                                style="width:70px; background:#161d30; color:#fff; border:1px solid #334155; padding:6px; border-radius:4px; text-align:center; font-family:'Orbitron'; font-size:14px;"
+                                oninput="actualizarBarraVidas()">
                         </div>
-                        <div style="display:flex; flex-direction:column; align-items:center;">
-                            <label style="display:block; font-size:11px; color:var(--texto-secundario); text-transform:uppercase; margin-bottom:5px;">Vidas Actuales</label>
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <button onclick="restarVidaContador()" style="padding:8px 16px; background:#4c1d1d; color:#fff; border:1px solid #ef4444; cursor:pointer; border-radius:6px; font-weight:bold; font-size:16px;">💥 PERDER VIDA</button>
-                                <span id="perf-txt-vidas" style="font-family:'Orbitron'; font-size:32px; font-weight:900; color:#ef4444; min-width:50px; display:inline-block;">20</span>
-                            </div>
-                        </div>
+                        <button onclick="abrirModalMuertePokemon()" style="padding:12px 24px; background:#4c1d1d; color:#fff; border:2px solid #ef4444; cursor:pointer; border-radius:8px; font-weight:bold; font-size:14px; font-family:'Orbitron'; transition:all 0.2s;" onmouseover="this.style.background='#ef4444'" onmouseout="this.style.background='#4c1d1d'">
+                            💥 PERDER VIDA
+                        </button>
+                        <button class="btn-accion" style="border-color:var(--neon-legal); color:var(--neon-legal); width:auto; padding:10px 18px;" onclick="guardarVidasPerfilGamer()">
+                            💾 SINCRONIZAR
+                        </button>
                     </div>
-                    <button class="btn-accion" style="border-color:var(--neon-legal); color:var(--neon-legal); max-width:250px; margin:10px auto 0 auto;" onclick="guardarVidasPerfilGamer()">💾 GESTIONAR Y SINCRONIZAR VIDAS</button>
+
+                    <!-- Iconos de corazones -->
+                    <div class="vidas-iconos" id="perf-vidas-iconos"></div>
+
+                    <!-- Barra de progreso -->
+                    <div class="vidas-barra-track">
+                        <div class="vidas-barra-fill" id="perf-vidas-fill"></div>
+                        <div class="vidas-barra-numero" id="perf-vidas-numero"></div>
+                    </div>
+                    <div style="text-align:center; font-size:10px; color:var(--texto-secundario); margin-top:4px; font-family:'Orbitron';" id="perf-vidas-subtexto"></div>
+                </div>
+
+                <!-- Cementerio integrado -->
+                <div style="background:#0d1117; padding:15px; border-radius:8px; border:1px solid #334155;">
+                    <h4 style="margin:0 0 12px 0; font-family:'Orbitron'; color:#ef4444; font-size:13px;">💀 CEMENTERIO DE PÍXELES</h4>
+                    <div id="cementerio-lista-local"></div>
                 </div>
             </div>
 
-            <div id="perf-view-cementerio" class="perfil-content-view">
-                <div style="background:#0d1117; padding:15px; border-radius:8px; border:1px solid #334155; margin-bottom:15px;">
-                    <h4 style="margin:0 0 10px 0; font-family:'Orbitron'; color:#ef4444; font-size:13px;">REGISTRAR BAJA CONFIRMADA</h4>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
-                        <input type="text" id="cem-input-nombre" placeholder="Nombre del Pokémon" class="admin-input-custom" style="padding:8px;">
-                        <input type="text" id="cem-input-ruta" placeholder="Ruta / Líder de la caída" class="admin-input-custom" style="padding:8px;">
-                    </div>
-                    <input type="text" id="cem-input-epitafio" placeholder="Epitafio / Últimas palabras" class="admin-input-custom" style="padding:8px; margin-bottom:10px;">
-                    <button class="btn-accion" style="background:#4c1d1d; border-color:#ef4444; color:#fff;" onclick="registrarBajaPokemon()">💀 ENVIAR AL CEMENTERIO (INMUTABLE)</button>
-                </div>
-                <div id="cementerio-lista-local"></div>
-            </div>
         </div>
 
+        <!-- Modal diario -->
         <div id="diario-overlay-sistema" class="diario-overlay">
             <div class="diario-modal">
                 <div class="diario-header">
@@ -561,6 +695,40 @@
                 <div class="diario-footer">
                     <textarea id="diario-input-texto" class="input-textarea-custom" rows="3" placeholder="Escribe tu hito de ruta aquí..."></textarea>
                     <button class="btn-accion" id="diario-btn-guardar" style="margin-top:10px; border-color:var(--neon-packs); color:var(--neon-packs);" onclick="guardarNuevaEntradaDiario()">ESTAMPAR EN LA BITÁCORA (GUARDAR)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             MODAL DE MUERTE DE POKÉMON
+             Se abre al pulsar "PERDER VIDA"
+        ═══════════════════════════════════════════ -->
+        <div id="muerte-overlay" class="muerte-overlay">
+            <div class="muerte-modal">
+                <h3>💀 REGISTRAR BAJA EN COMBATE</h3>
+                <label style="font-size:11px; color:var(--texto-secundario); display:block; margin-bottom:4px;">Nombre y mote del Pokémon:</label>
+                <input type="text" id="muerte-input-nombre" class="muerte-input" placeholder="Ej: Charmander «El Valiente»">
+
+                <label style="font-size:11px; color:var(--texto-secundario); display:block; margin-bottom:4px;">Motivo de la caída:</label>
+                <select id="muerte-select-motivo" class="muerte-select">
+                    <option value="Ruta">Ruta / Salvaje</option>
+                    <option value="Entrenador">Entrenador rival</option>
+                    <option value="Dominante">Dominante</option>
+                    <option value="Líder de Gimnasio">Líder de Gimnasio</option>
+                    <option value="Kahuna">Kahuna</option>
+                    <option value="Alto Mando">Alto Mando</option>
+                    <option value="Campeón">Campeón</option>
+                </select>
+
+                <label style="font-size:11px; color:var(--texto-secundario); display:block; margin-bottom:4px;">Lugar específico (ruta / nombre del líder...):</label>
+                <input type="text" id="muerte-input-ruta" class="muerte-input" placeholder="Ej: Ruta 12 / Brock / Kahuna Hala">
+
+                <label style="font-size:11px; color:var(--texto-secundario); display:block; margin-bottom:4px;">Últimas palabras / Epitafio:</label>
+                <input type="text" id="muerte-input-epitafio" class="muerte-input" placeholder="Ej: Nunca te olvidaremos, héroe.">
+
+                <div class="muerte-botones">
+                    <button class="btn-muerte-confirmar" onclick="confirmarMuertePokemon()">💀 CONFIRMAR BAJA Y PERDER VIDA</button>
+                    <button class="btn-muerte-cancelar" onclick="cerrarModalMuertePokemon()">CANCELAR</button>
                 </div>
             </div>
         </div>
@@ -683,9 +851,6 @@
 
             <hr style="border-color:#1e293b; margin:20px 0;">
 
-            <!-- ══════════════════════════════════════════
-                 FIX 2: BLOQUE RESET GACHA (AÑADIDO)
-            ══════════════════════════════════════════ -->
             <h3 style="color:var(--neon-arena); margin-top:0; font-size:14px; font-family:'Orbitron';">⚡ REINICIAR GACHA DIARIO</h3>
             <div style="margin-bottom:10px;">
                 <label style="font-size:11px; color:var(--texto-secundario);">Selecciona el entrenador:</label>
@@ -854,12 +1019,6 @@ function escaparHTML(str) {
     return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
 }
 
-function limpiarTextoPokemon(textoSucio) {
-    let textoLimpio = textoSucio.replace(/<[^>]*>/g, '');
-    textoLimpio = textoLimpio.replace(/https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp)/gi, '');
-    return textoLimpio.trim();
-}
-
 onValue(ref(db, 'silph_co_market'), (snapshot) => {
     const data = snapshot.val();
     if (data) {
@@ -900,81 +1059,167 @@ onValue(ref(db, 'silph_co_market'), (snapshot) => {
 function guardarBD() { set(ref(db, 'silph_co_market'), baseDatos); }
 
 // ═══════════════════════════════════════════
+// BARRA DE VIDAS — RENDER
+// ═══════════════════════════════════════════
+
+function actualizarBarraVidas() {
+    if (!userSesion || !baseDatos.jugadores[userSesion]) return;
+    let u = baseDatos.jugadores[userSesion];
+
+    let vidasTotales = parseInt(document.getElementById('perf-vidas-iniciales').value) || u.vidasTotales || 20;
+    let vidasActuales = u.vidasActuales !== undefined ? u.vidasActuales : vidasTotales;
+
+    // Clamp
+    if (vidasActuales < 0) vidasActuales = 0;
+    if (vidasActuales > vidasTotales) vidasActuales = vidasTotales;
+
+    let pct = vidasTotales > 0 ? (vidasActuales / vidasTotales) * 100 : 0;
+    let muerta = vidasActuales <= 0;
+
+    // Color según porcentaje
+    let claseColor = 'llena';
+    if (muerta)       claseColor = 'muerta';
+    else if (pct <= 15) claseColor = 'critica';
+    else if (pct <= 35) claseColor = 'baja';
+    else if (pct <= 60) claseColor = 'media';
+
+    let fill = document.getElementById('perf-vidas-fill');
+    let numero = document.getElementById('perf-vidas-numero');
+    let subtexto = document.getElementById('perf-vidas-subtexto');
+    let iconosBox = document.getElementById('perf-vidas-iconos');
+
+    if (fill) {
+        fill.style.width = (muerta ? 100 : pct) + '%';
+        fill.className = 'vidas-barra-fill ' + claseColor;
+    }
+    if (numero) {
+        numero.className = 'vidas-barra-numero' + (muerta ? ' muerta' : '');
+        numero.textContent = muerta ? '☠ LOCKE PERDIDO' : `${vidasActuales} / ${vidasTotales} vidas`;
+    }
+    if (subtexto) {
+        if (muerta) subtexto.textContent = 'El Locke ha terminado.';
+        else if (claseColor === 'critica') subtexto.textContent = '⚠ PELIGRO CRÍTICO — Una sola vida puede cambiar todo';
+        else if (claseColor === 'baja') subtexto.textContent = 'Situación delicada. Ve con cuidado.';
+        else if (claseColor === 'media') subtexto.textContent = 'A mitad de camino. No te confíes.';
+        else subtexto.textContent = 'Buen estado. Sigue adelante, entrenador.';
+    }
+
+    // Iconos de corazón (máx. 20 visibles para no desbordar)
+    if (iconosBox) {
+        let mostrar = Math.min(vidasTotales, 20);
+        let html = '';
+        for (let i = 0; i < mostrar; i++) {
+            let perdida = i >= vidasActuales;
+            html += `<span class="vida-icono${perdida ? ' perdida' : ''}">❤️</span>`;
+        }
+        if (vidasTotales > 20) {
+            html += `<span style="font-size:11px; color:var(--texto-secundario); align-self:center;">+${vidasTotales - 20} más</span>`;
+        }
+        iconosBox.innerHTML = html;
+    }
+}
+
+window.actualizarBarraVidas = actualizarBarraVidas;
+
+// ═══════════════════════════════════════════
+// MODAL DE MUERTE DE POKÉMON
+// ═══════════════════════════════════════════
+
+window.abrirModalMuertePokemon = function() {
+    document.getElementById('muerte-input-nombre').value = '';
+    document.getElementById('muerte-input-ruta').value = '';
+    document.getElementById('muerte-input-epitafio').value = '';
+    document.getElementById('muerte-select-motivo').value = 'Ruta';
+    let overlay = document.getElementById('muerte-overlay');
+    overlay.style.display = 'flex';
+    setTimeout(() => document.getElementById('muerte-input-nombre').focus(), 100);
+};
+
+window.cerrarModalMuertePokemon = function() {
+    document.getElementById('muerte-overlay').style.display = 'none';
+};
+
+window.confirmarMuertePokemon = function() {
+    let nombre   = document.getElementById('muerte-input-nombre').value.trim();
+    let motivo   = document.getElementById('muerte-select-motivo').value;
+    let ruta     = document.getElementById('muerte-input-ruta').value.trim();
+    let epitafio = document.getElementById('muerte-input-epitafio').value.trim();
+
+    if (!nombre) { alert("Introduce al menos el nombre del Pokémon."); return; }
+
+    let u = baseDatos.jugadores[userSesion];
+
+    // Descontar vida
+    let vidasActuales = (u.vidasActuales !== undefined) ? u.vidasActuales : (u.vidasTotales || 20);
+    if (vidasActuales > 0) vidasActuales--;
+    u.vidasActuales = vidasActuales;
+    if (vidasActuales <= 0) u.lockeStatus = 'perdido';
+
+    // Registrar en cementerio
+    if (!u.cementerio) u.cementerio = [];
+    let rutaCompleta = ruta ? `${motivo}: ${ruta}` : motivo;
+    u.cementerio.push({
+        nombre:   nombre,
+        ruta:     rutaCompleta,
+        epitafio: epitafio || "Sin epitafio.",
+        fecha:    new Date().toLocaleDateString()
+    });
+
+    // Entrada automática en el diario
+    inyectarEntradaDiarioAutomatica(`💀 RIP: '${nombre}' cayó (${rutaCompleta}). Epitafio: "${epitafio || '...'}". Vidas restantes: ${vidasActuales}.`);
+
+    guardarBD();
+    cerrarModalMuertePokemon();
+
+    // Actualizar DOM
+    document.getElementById('perf-vidas-iniciales').value = u.vidasTotales || 20;
+    actualizarBarraVidas();
+    renderizarCementerioDOM();
+
+    if (vidasActuales <= 0) {
+        setTimeout(() => alert("💀 HAS PERDIDO TODAS LAS VIDAS.\nEl Locke ha terminado.\n\nDescansa en paz, entrenador."), 200);
+    }
+};
+
+// ═══════════════════════════════════════════
 // ARENA DE APUESTAS
 // ═══════════════════════════════════════════
 
 window.crearCombateArena = function() {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
-    
     let jugA = document.getElementById('adm-arena-jugador-a').value;
     let jugB = document.getElementById('adm-arena-jugador-b').value;
     let desc = document.getElementById('adm-arena-descripcion').value.trim();
     let limite = parseInt(document.getElementById('adm-arena-limite').value) || 5;
-
     if (!jugA || !jugB) return alert("Selecciona los dos jugadores.");
     if (jugA === jugB) return alert("Los dos jugadores deben ser diferentes.");
     if (!desc) return alert("Añade una descripción del combate.");
-
     let combateId = "arena_" + Date.now();
     if (!baseDatos.arena) baseDatos.arena = {};
-
-    baseDatos.arena[combateId] = {
-        id: combateId,
-        jugadorA: jugA,
-        jugadorB: jugB,
-        descripcion: desc,
-        limitePf: limite,
-        estado: "abierto",
-        ganador: null,
-        apuestas: {},
-        boteA: 0,
-        boteB: 0,
-        fechaCreacion: new Date().toLocaleDateString()
-    };
-
-    guardarBD();
-    document.getElementById('adm-arena-descripcion').value = '';
-    alert(`¡Combate "${desc}" abierto en la Arena!`);
+    baseDatos.arena[combateId] = { id: combateId, jugadorA: jugA, jugadorB: jugB, descripcion: desc, limitePf: limite, estado: "abierto", ganador: null, apuestas: {}, boteA: 0, boteB: 0, fechaCreacion: new Date().toLocaleDateString() };
+    guardarBD(); document.getElementById('adm-arena-descripcion').value = ''; alert(`¡Combate "${desc}" abierto en la Arena!`);
 };
 
 window.cerrarApuestasCombate = function(combateId) {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return;
     if (!baseDatos.arena[combateId]) return;
-    baseDatos.arena[combateId].estado = "cerrado";
-    guardarBD();
+    baseDatos.arena[combateId].estado = "cerrado"; guardarBD();
 };
 
-// ═══════════════════════════════════════════
-// FIX 1: RESOLVER COMBATE - DISTRIBUCIÓN CORRECTA DE GANANCIAS
-// Lógica: cada ganador recupera su apuesta + su parte proporcional
-// del bote de los perdedores. Si nadie apostó al ganador, se devuelve
-// todo a los perdedores. Los perdedores pierden sus PF normalmente.
-// ═══════════════════════════════════════════
 window.resolverCombateArena = function(combateId, ganadorLado) {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
-    let c = baseDatos.arena[combateId];
-    if (!c) return;
-
-    c.ganador = ganadorLado; // 'A' o 'B'
-    c.estado = "resuelto";
-
+    let c = baseDatos.arena[combateId]; if (!c) return;
+    c.ganador = ganadorLado; c.estado = "resuelto";
     if (!c.apuestas) c.apuestas = {};
-
     let boteGanadores = ganadorLado === 'A' ? (c.boteA || 0) : (c.boteB || 0);
     let botePerdedores = ganadorLado === 'A' ? (c.boteB || 0) : (c.boteA || 0);
-
-    // Clasificar apostadores
-    let ganadores = [];
-    let perdedores = [];
+    let ganadores = []; let perdedores = [];
     Object.keys(c.apuestas).forEach(uid => {
         let ap = c.apuestas[uid];
         if (ap.lado === ganadorLado) ganadores.push({ uid, cantidad: ap.cantidad });
         else perdedores.push({ uid, cantidad: ap.cantidad });
     });
-
     if (ganadores.length > 0 && boteGanadores > 0) {
-        // Caso normal: hay apostadores al ganador
-        // Cada ganador recibe: su apuesta + su parte proporcional del bote perdedor
         ganadores.forEach(g => {
             let proporcion = g.cantidad / boteGanadores;
             let gananciaDePerdedores = Math.floor(botePerdedores * proporcion);
@@ -987,14 +1232,10 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
                 inyectarEntradaDiarioAutomaticaPara(g.uid, msgLog);
             }
         });
-        // Los perdedores ya han perdido sus PF (se descontaron al apostar)
         perdedores.forEach(g => {
-            if (baseDatos.jugadores[g.uid]) {
-                inyectarEntradaDiarioAutomaticaPara(g.uid, `🎰 ARENA: Apuesta perdida en [${c.descripcion}]. Perdiste ${g.cantidad} PF.`);
-            }
+            if (baseDatos.jugadores[g.uid]) inyectarEntradaDiarioAutomaticaPara(g.uid, `🎰 ARENA: Apuesta perdida en [${c.descripcion}]. Perdiste ${g.cantidad} PF.`);
         });
     } else if (ganadores.length === 0 && (perdedores.length > 0 || botePerdedores > 0)) {
-        // Nadie apostó al ganador: devolver PF a todos los perdedores (no hay quién los cobre)
         perdedores.forEach(g => {
             if (baseDatos.jugadores[g.uid]) {
                 baseDatos.jugadores[g.uid].pf = (baseDatos.jugadores[g.uid].pf || 0) + g.cantidad;
@@ -1002,54 +1243,35 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
             }
         });
     }
-    // Si no había nadie apostando, no pasa nada.
-
     let nombreGanador = ganadorLado === 'A' ? c.jugadorA : c.jugadorB;
     let resumenMsg = ganadores.length > 0
         ? `Ganador: ${nombreGanador.toUpperCase()} | ${botePerdedores} PF del bote repartidos entre ${ganadores.length} acertante(s).`
         : `Ganador: ${nombreGanador.toUpperCase()} | Nadie apostó al ganador, PF devueltos a los participantes.`;
-
-    guardarBD();
-    alert(`✅ Combate resuelto.\n${resumenMsg}`);
+    guardarBD(); alert(`✅ Combate resuelto.\n${resumenMsg}`);
 };
 
 window.apostarEnCombate = function(combateId, lado) {
     if (!userSesion) return;
     let c = baseDatos.arena[combateId];
     if (!c || c.estado !== "abierto") return alert("Las apuestas para este combate están cerradas.");
-
-    if (c.jugadorA === userSesion || c.jugadorB === userSesion) {
-        return alert("No puedes apostar en un combate en el que participas.");
-    }
-
-    if (c.apuestas && c.apuestas[userSesion]) {
-        return alert("Ya has apostado en este combate. Solo se permite una apuesta por combate.");
-    }
-
+    if (c.jugadorA === userSesion || c.jugadorB === userSesion) return alert("No puedes apostar en un combate en el que participas.");
+    if (c.apuestas && c.apuestas[userSesion]) return alert("Ya has apostado en este combate. Solo se permite una apuesta por combate.");
     let inputId = `arena-input-${combateId}`;
     let inputEl = document.getElementById(inputId);
     let cantidad = parseInt(inputEl ? inputEl.value : 0) || 0;
-
     if (cantidad <= 0) return alert("Introduce una cantidad válida de PF.");
     if (cantidad > c.limitePf) return alert(`La apuesta máxima para este combate es de ${c.limitePf} PF.`);
-
     let u = baseDatos.jugadores[userSesion];
     if ((u.pf || 0) < cantidad) return alert(`No tienes suficientes PF. Tienes ${u.pf || 0} PF.`);
-
     let nombreJugador = lado === 'A' ? c.jugadorA : c.jugadorB;
     if (!confirm(`¿Apostar ${cantidad} PF a que ${nombreJugador.toUpperCase()} gana "${c.descripcion}"?`)) return;
-
-    // Descontar los PF al apostar
     u.pf = (u.pf || 0) - cantidad;
     if (!c.apuestas) c.apuestas = {};
     c.apuestas[userSesion] = { lado, cantidad };
-
     if (lado === 'A') c.boteA = (c.boteA || 0) + cantidad;
     else c.boteB = (c.boteB || 0) + cantidad;
-
     inyectarEntradaDiarioAutomatica(`🎰 APUESTA: Aposté ${cantidad} PF a ${nombreJugador.toUpperCase()} en [${c.descripcion}].`);
-    guardarBD();
-    alert(`¡Apuesta registrada! ${cantidad} PF apostados a ${nombreJugador.toUpperCase()}.`);
+    guardarBD(); alert(`¡Apuesta registrada! ${cantidad} PF apostados a ${nombreJugador.toUpperCase()}.`);
 };
 
 function inyectarEntradaDiarioAutomaticaPara(uid, textoMsg) {
@@ -1064,19 +1286,10 @@ function inyectarEntradaDiarioAutomaticaPara(uid, textoMsg) {
 function renderizarArenaPublica() {
     let box = document.getElementById('arena-lista-combates');
     let statsBox = document.getElementById('arena-stats-personales');
-    if (!box) return;
-    box.innerHTML = '';
-
+    if (!box) return; box.innerHTML = '';
     if (!baseDatos.arena || Object.keys(baseDatos.arena).length === 0) {
-        box.innerHTML = `
-            <div style="text-align:center; padding:60px 20px; color:var(--texto-secundario); border:2px dashed var(--borde-arena); border-radius:12px; background:rgba(19,10,26,0.5);">
-                <div style="font-size:40px; margin-bottom:10px;">🎰</div>
-                <div style="font-family:'Orbitron'; font-size:14px; text-transform:uppercase; letter-spacing:2px;">Arena Vacía</div>
-                <div style="font-size:12px; margin-top:5px;">El Mercader aún no ha abierto ningún combate.</div>
-            </div>`;
-        return;
+        box.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--texto-secundario); border:2px dashed var(--borde-arena); border-radius:12px; background:rgba(19,10,26,0.5);"><div style="font-size:40px; margin-bottom:10px;">🎰</div><div style="font-family:'Orbitron'; font-size:14px; text-transform:uppercase; letter-spacing:2px;">Arena Vacía</div><div style="font-size:12px; margin-top:5px;">El Mercader aún no ha abierto ningún combate.</div></div>`; return;
     }
-
     if (statsBox && userSesion) {
         let apuestasGanadas = 0, apuestasPerdidas = 0;
         Object.values(baseDatos.arena).forEach(c => {
@@ -1086,139 +1299,53 @@ function renderizarArenaPublica() {
                 else apuestasPerdidas++;
             }
         });
-        statsBox.innerHTML = `
-            <div class="arena-stat-chip">Apuestas ganadas: <span>${apuestasGanadas}</span></div>
-            <div class="arena-stat-chip">Apuestas perdidas: <span>${apuestasPerdidas}</span></div>
-        `;
+        statsBox.innerHTML = `<div class="arena-stat-chip">Apuestas ganadas: <span>${apuestasGanadas}</span></div><div class="arena-stat-chip">Apuestas perdidas: <span>${apuestasPerdidas}</span></div>`;
     }
-
-    let combates = Object.values(baseDatos.arena).sort((a, b) => {
-        let orden = { abierto: 0, cerrado: 1, resuelto: 2 };
-        return (orden[a.estado] || 0) - (orden[b.estado] || 0);
-    });
-
+    let combates = Object.values(baseDatos.arena).sort((a, b) => { let orden = { abierto: 0, cerrado: 1, resuelto: 2 }; return (orden[a.estado] || 0) - (orden[b.estado] || 0); });
     combates.forEach(c => {
         let boteTotal = (c.boteA || 0) + (c.boteB || 0);
         let pctA = boteTotal > 0 ? Math.round(((c.boteA || 0) / boteTotal) * 100) : 50;
         let pctB = 100 - pctA;
-
         let miApuesta = c.apuestas && c.apuestas[userSesion] ? c.apuestas[userSesion] : null;
         let soyParticipante = c.jugadorA === userSesion || c.jugadorB === userSesion;
-
         let badgeHTML = '';
         if (c.estado === 'abierto') badgeHTML = '<span class="arena-badge-estado arena-badge-abierto">🟢 APUESTAS ABIERTAS</span>';
         else if (c.estado === 'cerrado') badgeHTML = '<span class="arena-badge-estado arena-badge-cerrado">🔒 APUESTAS CERRADAS</span>';
         else badgeHTML = '<span class="arena-badge-estado arena-badge-resuelto">✅ RESUELTO</span>';
-
         let claseResuelto = c.estado === 'resuelto' ? 'resuelto' : '';
-
-        let ladoAClase = 'lado-a';
-        let ladoBClase = 'lado-b';
-        if (c.estado === 'resuelto') {
-            ladoAClase += c.ganador === 'A' ? ' ganador' : ' perdedor';
-            ladoBClase += c.ganador === 'B' ? ' ganador' : ' perdedor';
-        }
-
+        let ladoAClase = 'lado-a'; let ladoBClase = 'lado-b';
+        if (c.estado === 'resuelto') { ladoAClase += c.ganador === 'A' ? ' ganador' : ' perdedor'; ladoBClase += c.ganador === 'B' ? ' ganador' : ' perdedor'; }
         let apostarHTML = '';
         if (c.estado === 'abierto' && !soyParticipante) {
-            if (miApuesta) {
-                let ladoApuestado = miApuesta.lado === 'A' ? c.jugadorA : c.jugadorB;
-                apostarHTML = `<div class="arena-mis-apuestas">✅ Ya apostaste ${miApuesta.cantidad} PF a ${escaparHTML(ladoApuestado.toUpperCase())}</div>`;
-            } else {
-                apostarHTML = `
-                    <div class="arena-apostar-row">
-                        <span style="font-size:11px; color:var(--texto-secundario); font-family:'Orbitron';">TU APUESTA (máx. ${c.limitePf} PF):</span>
-                        <input type="number" id="arena-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1">
-                        <button class="btn-apostar-a" onclick="apostarEnCombate('${c.id}', 'A')">APOSTAR A ${escaparHTML(c.jugadorA.toUpperCase())}</button>
-                        <button class="btn-apostar-b" onclick="apostarEnCombate('${c.id}', 'B')">APOSTAR A ${escaparHTML(c.jugadorB.toUpperCase())}</button>
-                    </div>`;
-            }
-        } else if (soyParticipante && c.estado === 'abierto') {
-            apostarHTML = `<div class="arena-mis-apuestas" style="color:var(--texto-secundario);">⚔️ Eres participante de este combate</div>`;
-        }
-
+            if (miApuesta) { let ladoApuestado = miApuesta.lado === 'A' ? c.jugadorA : c.jugadorB; apostarHTML = `<div class="arena-mis-apuestas">✅ Ya apostaste ${miApuesta.cantidad} PF a ${escaparHTML(ladoApuestado.toUpperCase())}</div>`; }
+            else { apostarHTML = `<div class="arena-apostar-row"><span style="font-size:11px; color:var(--texto-secundario); font-family:'Orbitron';">TU APUESTA (máx. ${c.limitePf} PF):</span><input type="number" id="arena-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1"><button class="btn-apostar-a" onclick="apostarEnCombate('${c.id}', 'A')">APOSTAR A ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-apostar-b" onclick="apostarEnCombate('${c.id}', 'B')">APOSTAR A ${escaparHTML(c.jugadorB.toUpperCase())}</button></div>`; }
+        } else if (soyParticipante && c.estado === 'abierto') { apostarHTML = `<div class="arena-mis-apuestas" style="color:var(--texto-secundario);">⚔️ Eres participante de este combate</div>`; }
         let resultadoHTML = '';
         if (c.estado === 'resuelto' && miApuesta) {
             if (miApuesta.lado === c.ganador) {
-                // Calcular cuánto ganó exactamente para mostrarlo
                 let boteG = c.ganador === 'A' ? (c.boteA || 0) : (c.boteB || 0);
                 let boteP = c.ganador === 'A' ? (c.boteB || 0) : (c.boteA || 0);
                 let proporcion = boteG > 0 ? miApuesta.cantidad / boteG : 0;
                 let ganancia = Math.floor(boteP * proporcion);
                 let totalRecibido = miApuesta.cantidad + ganancia;
                 resultadoHTML = `<div class="arena-resultado-banner arena-resultado-ganaste">🏆 ¡ACERTASTE! Recuperaste ${miApuesta.cantidad} PF + ${ganancia} PF de ganancia = <strong>${totalRecibido} PF</strong> en total.</div>`;
-            } else {
-                resultadoHTML = `<div class="arena-resultado-banner arena-resultado-perdiste">💸 Fallaste. Perdiste ${miApuesta.cantidad} PF. Mejor suerte la próxima.</div>`;
-            }
-        } else if (c.estado === 'resuelto' && !miApuesta && !soyParticipante) {
-            resultadoHTML = `<div class="arena-resultado-banner arena-resultado-noparticipio">— No participaste en este combate.</div>`;
-        }
-
-        box.innerHTML += `
-            <div class="arena-combate-card ${claseResuelto}">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; flex-wrap:wrap; gap:5px;">
-                    <div style="font-family:'Orbitron'; font-size:13px; color:#fff; font-weight:bold;">${escaparHTML(c.descripcion)} ${badgeHTML}</div>
-                    <div style="font-size:11px; color:var(--texto-secundario);">Bote total: <span style="color:var(--neon-arena); font-weight:bold; font-family:'Orbitron';">${boteTotal} PF</span></div>
-                </div>
-
-                <div class="arena-vs-row">
-                    <div class="arena-jugador-lado ${ladoAClase}">
-                        <div class="arena-nombre-jugador azul">${escaparHTML(c.jugadorA.toUpperCase())}</div>
-                        <div class="arena-bote-numero">${c.boteA || 0} PF</div>
-                        <div class="arena-bote-lado">${pctA}% del bote</div>
-                        ${c.estado === 'resuelto' && c.ganador === 'A' ? '<div style="font-size:18px; margin-top:4px;">🏆</div>' : ''}
-                    </div>
-                    <div class="arena-vs-badge">VS</div>
-                    <div class="arena-jugador-lado ${ladoBClase}">
-                        <div class="arena-nombre-jugador rojo">${escaparHTML(c.jugadorB.toUpperCase())}</div>
-                        <div class="arena-bote-numero">${c.boteB || 0} PF</div>
-                        <div class="arena-bote-lado">${pctB}% del bote</div>
-                        ${c.estado === 'resuelto' && c.ganador === 'B' ? '<div style="font-size:18px; margin-top:4px;">🏆</div>' : ''}
-                    </div>
-                </div>
-
-                <div class="arena-barra-apuestas">
-                    <div class="arena-barra-a" style="width:${pctA}%"></div>
-                    <div class="arena-barra-b" style="width:${pctB}%"></div>
-                </div>
-
-                ${apostarHTML}
-                ${resultadoHTML}
-            </div>`;
+            } else { resultadoHTML = `<div class="arena-resultado-banner arena-resultado-perdiste">💸 Fallaste. Perdiste ${miApuesta.cantidad} PF. Mejor suerte la próxima.</div>`; }
+        } else if (c.estado === 'resuelto' && !miApuesta && !soyParticipante) { resultadoHTML = `<div class="arena-resultado-banner arena-resultado-noparticipio">— No participaste en este combate.</div>`; }
+        box.innerHTML += `<div class="arena-combate-card ${claseResuelto}"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; flex-wrap:wrap; gap:5px;"><div style="font-family:'Orbitron'; font-size:13px; color:#fff; font-weight:bold;">${escaparHTML(c.descripcion)} ${badgeHTML}</div><div style="font-size:11px; color:var(--texto-secundario);">Bote total: <span style="color:var(--neon-arena); font-weight:bold; font-family:'Orbitron';">${boteTotal} PF</span></div></div><div class="arena-vs-row"><div class="arena-jugador-lado ${ladoAClase}"><div class="arena-nombre-jugador azul">${escaparHTML(c.jugadorA.toUpperCase())}</div><div class="arena-bote-numero">${c.boteA || 0} PF</div><div class="arena-bote-lado">${pctA}% del bote</div>${c.estado === 'resuelto' && c.ganador === 'A' ? '<div style="font-size:18px; margin-top:4px;">🏆</div>' : ''}</div><div class="arena-vs-badge">VS</div><div class="arena-jugador-lado ${ladoBClase}"><div class="arena-nombre-jugador rojo">${escaparHTML(c.jugadorB.toUpperCase())}</div><div class="arena-bote-numero">${c.boteB || 0} PF</div><div class="arena-bote-lado">${pctB}% del bote</div>${c.estado === 'resuelto' && c.ganador === 'B' ? '<div style="font-size:18px; margin-top:4px;">🏆</div>' : ''}</div></div><div class="arena-barra-apuestas"><div class="arena-barra-a" style="width:${pctA}%"></div><div class="arena-barra-b" style="width:${pctB}%"></div></div>${apostarHTML}${resultadoHTML}</div>`;
     });
 }
 
 function renderizarAdminArena() {
-    let box = document.getElementById('adm-arena-combates-activos');
-    if (!box) return;
-    box.innerHTML = '';
-
-    if (!baseDatos.arena || Object.keys(baseDatos.arena).length === 0) {
-        box.innerHTML = '<div style="color:var(--texto-secundario); font-size:11px; text-align:center; padding:10px;">No hay combates creados aún.</div>';
-        return;
-    }
-
+    let box = document.getElementById('adm-arena-combates-activos'); if (!box) return; box.innerHTML = '';
+    if (!baseDatos.arena || Object.keys(baseDatos.arena).length === 0) { box.innerHTML = '<div style="color:var(--texto-secundario); font-size:11px; text-align:center; padding:10px;">No hay combates creados aún.</div>'; return; }
     Object.values(baseDatos.arena).forEach(c => {
         if (c.estado === 'resuelto') return;
-        box.innerHTML += `
-            <div class="admin-card-inner" style="border-color:var(--borde-arena);">
-                <div style="font-size:12px; color:var(--neon-arena); font-weight:bold; margin-bottom:8px;">${escaparHTML(c.descripcion)}</div>
-                <div style="font-size:11px; color:var(--texto-secundario); margin-bottom:8px;">
-                    <span style="color:#60a5fa;">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171;">${escaparHTML(c.jugadorB.toUpperCase())}</span>
-                    — Estado: <strong>${c.estado.toUpperCase()}</strong>
-                    — Bote: ${(c.boteA||0) + (c.boteB||0)} PF
-                </div>
-                <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                    ${c.estado === 'abierto' ? `<button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; border-color:#f59e0b; color:#f59e0b;" onclick="cerrarApuestasCombate('${c.id}')">🔒 CERRAR APUESTAS</button>` : ''}
-                    <button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; background:#064e3b; border-color:#10b981; color:#10b981;" onclick="resolverCombateArena('${c.id}', 'A')">🏆 GANA ${escaparHTML(c.jugadorA.toUpperCase())}</button>
-                    <button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; background:#7f1d1d; border-color:#ef4444; color:#ef4444;" onclick="resolverCombateArena('${c.id}', 'B')">🏆 GANA ${escaparHTML(c.jugadorB.toUpperCase())}</button>
-                </div>
-            </div>`;
+        box.innerHTML += `<div class="admin-card-inner" style="border-color:var(--borde-arena);"><div style="font-size:12px; color:var(--neon-arena); font-weight:bold; margin-bottom:8px;">${escaparHTML(c.descripcion)}</div><div style="font-size:11px; color:var(--texto-secundario); margin-bottom:8px;"><span style="color:#60a5fa;">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171;">${escaparHTML(c.jugadorB.toUpperCase())}</span> — Estado: <strong>${c.estado.toUpperCase()}</strong> — Bote: ${(c.boteA||0) + (c.boteB||0)} PF</div><div style="display:flex; gap:6px; flex-wrap:wrap;">${c.estado === 'abierto' ? `<button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; border-color:#f59e0b; color:#f59e0b;" onclick="cerrarApuestasCombate('${c.id}')">🔒 CERRAR APUESTAS</button>` : ''}<button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; background:#064e3b; border-color:#10b981; color:#10b981;" onclick="resolverCombateArena('${c.id}', 'A')">🏆 GANA ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; background:#7f1d1d; border-color:#ef4444; color:#ef4444;" onclick="resolverCombateArena('${c.id}', 'B')">🏆 GANA ${escaparHTML(c.jugadorB.toUpperCase())}</button></div></div>`;
     });
 }
 
 // ═══════════════════════════════════════════
-// RESTO DE FUNCIONES (sin cambios)
+// RESTO DE FUNCIONES
 // ═══════════════════════════════════════════
 
 window.ingresarAlSistema = function() {
@@ -1278,15 +1405,13 @@ window.restablecerComprasDiariasDesdeMercader = function() {
     guardarBD(); alert("Compras reiniciadas globalmente.");
 };
 
-// FIX 2: Función que ya existía en JS pero no tenía botón en HTML
 window.restablecerGachaDiarioDesdeMercader = function() {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
     let targetId = document.getElementById('adm-reset-gacha-usuario').value;
     if (!targetId) return alert("Selecciona un entrenador.");
     if (!baseDatos.jugadores[targetId]) return alert("Entrenador no encontrado.");
     baseDatos.jugadores[targetId].ultimoHackeo = 0;
-    guardarBD();
-    alert(`Gacha diario de ${targetId.toUpperCase()} reiniciado. Ya puede reclamarlo de nuevo.`);
+    guardarBD(); alert(`Gacha diario de ${targetId.toUpperCase()} reiniciado. Ya puede reclamarlo de nuevo.`);
 };
 
 window.conmutarCajaPerfil = function() {
@@ -1299,7 +1424,7 @@ window.cambiarSubPestanaPerfil = function(sub) {
     document.querySelectorAll('.perfil-content-view').forEach(v => v.classList.remove('active'));
     document.getElementById(`subtab-${sub}`).classList.add('active');
     document.getElementById(`perf-view-${sub}`).classList.add('active');
-    if (sub === 'cementerio') renderizarCementerioDOM();
+    if (sub === 'vidas') { actualizarBarraVidas(); renderizarCementerioDOM(); }
 };
 
 window.abrirOverlayDiarioNativo = function() {
@@ -1316,13 +1441,8 @@ function redibujarHistorialDiario() {
     let boxLogs = document.getElementById('diario-historial-logs'); boxLogs.innerHTML = '';
     let logsFiltrados = u.diarioLogs ? u.diarioLogs.filter(l => l.timestamp !== "Inicio") : [];
     document.getElementById('diario-contador').innerText = `Registros: ${logsFiltrados.length} / 1500`;
-    if (logsFiltrados.length === 0) {
-        boxLogs.innerHTML = '<span style="color:var(--texto-secundario); font-size:12px; text-align:center; padding:20px;">Bitácora vacía.</span>';
-    } else {
-        logsFiltrados.forEach(log => {
-            boxLogs.innerHTML += `<div class="diario-entrada-item"><div class="diario-entrada-fecha">📅 ${escaparHTML(log.timestamp)}</div><div class="diario-entrada-texto">${escaparHTML(log.texto)}</div></div>`;
-        });
-    }
+    if (logsFiltrados.length === 0) { boxLogs.innerHTML = '<span style="color:var(--texto-secundario); font-size:12px; text-align:center; padding:20px;">Bitácora vacía.</span>'; }
+    else { logsFiltrados.forEach(log => { boxLogs.innerHTML += `<div class="diario-entrada-item"><div class="diario-entrada-fecha">📅 ${escaparHTML(log.timestamp)}</div><div class="diario-entrada-texto">${escaparHTML(log.texto)}</div></div>`; }); }
     boxLogs.scrollTop = boxLogs.scrollHeight;
 }
 
@@ -1350,10 +1470,11 @@ function cargarDatosPerfilEnDOM() {
     document.getElementById('perf-num-medallas').value = u.numMedallas || 0;
     document.getElementById('perf-txt-torneos').innerText = u.torneos || 0;
     document.getElementById('perf-vidas-iniciales').value = u.vidasTotales || 20;
-    document.getElementById('perf-txt-vidas').innerText = u.vidasActuales || 20;
     document.getElementById('perf-team-slot').value = "1";
     document.getElementById('perf-showdown-raw').value = (u.showdownEquipos && u.showdownEquipos[0] !== "Sin datos") ? u.showdownEquipos[0] : '';
-    parsearYRenderizarShowdown(); renderizarCementerioDOM();
+    parsearYRenderizarShowdown();
+    renderizarCementerioDOM();
+    actualizarBarraVidas();
 }
 
 window.cambiarRanuraEquipoShowdown = function() {
@@ -1379,18 +1500,11 @@ window.guardarDatosPerfilGamer = function() {
     guardarBD();
 };
 
-window.restarVidaContador = function() {
-    let txtVidas = document.getElementById('perf-txt-vidas');
-    let currentVidas = parseInt(txtVidas.innerText);
-    if (currentVidas > 0) txtVidas.innerText = currentVidas - 1;
-};
-
 window.guardarVidasPerfilGamer = function() {
     let u = baseDatos.jugadores[userSesion];
     u.vidasTotales = parseInt(document.getElementById('perf-vidas-iniciales').value) || 20;
-    u.vidasActuales = parseInt(document.getElementById('perf-txt-vidas').innerText);
-    if (u.vidasActuales <= 0) u.lockeStatus = 'perdido';
-    guardarBD(); alert("Contador de vidas sincronizado.");
+    // vidasActuales ya está en u, no se toca aquí (solo cambia con el modal)
+    guardarBD(); actualizarBarraVidas(); alert("Contador de vidas sincronizado.");
 };
 
 window.alterarTorneosPerfil = function(v) {
@@ -1399,393 +1513,7 @@ window.alterarTorneosPerfil = function(v) {
     document.getElementById('perf-txt-torneos').innerText = u.torneos; guardarBD();
 };
 
-window.registrarBajaPokemon = function() {
-    let u = baseDatos.jugadores[userSesion];
-    let nom = document.getElementById('cem-input-nombre').value.trim();
-    let ruta = document.getElementById('cem-input-ruta').value.trim();
-    let epitafio = document.getElementById('cem-input-epitafio').value.trim();
-    if (!nom || !ruta) return alert("El nombre y la ruta/líder de la baja son requeridos.");
-    if (!u.cementerio) u.cementerio = [];
-    let baja = { nombre: nom, ruta: ruta, epitafio: epitafio || "Sin epitafio.", fecha: new Date().toLocaleDateString() };
-    u.cementerio.push(baja);
-    inyectarEntradaDiarioAutomatica(`💀 RIP: '${nom}' cayó en combate contra/en [${ruta}]. Epitafio: "${epitafio || '...'}"`);
-    guardarBD();
-    document.getElementById('cem-input-nombre').value = ''; document.getElementById('cem-input-ruta').value = ''; document.getElementById('cem-input-epitafio').value = '';
-    renderInitializeLoaders(); alert("Pérdida registrada en el Cementerio.");
-};
-
-function limpiarNombrePokemonParaUrl(lineaRaw) {
-    let nombre = lineaRaw.split('@')[0].trim();
-    nombre = nombre.replace(/\(.*?\)/g, '').trim();
-    nombre = nombre.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
-    return nombre;
-}
-
-function renderizamientoInternoShowdownPlano(rawShowdown) {
-    if (!rawShowdown || rawShowdown === "Sin datos" || !rawShowdown.trim()) return '<span style="color:var(--texto-secundario);">No hay datos de Showdown.</span>';
-    let pokesRaw = rawShowdown.split(/\n\s*\n/);
-    let html = '<div class="red-visor-pokes-grid-custom">';
-    pokesRaw.forEach(bloque => {
-        let lineas = bloque.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-        if (lineas.length === 0) return;
-        let nom = lineas[0].split('@')[0].trim();
-        let apiName = limpiarNombrePokemonParaUrl(lineas[0]);
-        let urlGif = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${apiName}.gif`;
-        html += `<div class="rival-poke-mini-card"><img src="${urlGif}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; this.onerror=null;"><div class="rival-poke-mini-name">${escaparHTML(nom.split('(')[0].trim())}</div></div>`;
-    });
-    html += '</div>';
-    return html;
-}
-
-window.parsearYRenderizarShowdown = function() {
-    let raw = document.getElementById('perf-showdown-raw').value;
-    let box = document.getElementById('visualizador-showdown-team');
-    if (!box) return; box.innerHTML = '';
-    if (!raw || !raw.trim()) return;
-    let pokesRaw = raw.split(/\n\s*\n/);
-    pokesRaw.forEach(bloque => {
-        let lineas = bloque.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-        if (lineas.length === 0) return;
-        let primeraLinea = lineas[0]; let objeto = "";
-        if (primeraLinea.includes('@')) { let p = primeraLinea.split('@'); objeto = p[1].trim(); primeraLinea = p[0].trim(); }
-        let nombreMuestra = primeraLinea;
-        let apiName = limpiarNombrePokemonParaUrl(primeraLinea);
-        let urlGif = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${apiName}.gif`;
-        let moves = []; lineas.forEach(l => { if (l.startsWith('-')) moves.push(l.replace('-', '').trim()); });
-        let movesHTML = moves.map(m => `<div style="color:var(--texto-secundario); font-size:11px;">• ${escaparHTML(m)}</div>`).join('');
-        let txtObj = objeto ? `<div style="color:var(--neon-packs); font-size:11px; font-weight:bold;">Item: ${escaparHTML(objeto)}</div>` : '';
-        box.innerHTML += `<div class="poke-card-showdown"><div class="poke-card-gif-box"><img src="${urlGif}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; this.onerror=null;"></div><div class="poke-card-info"><div class="poke-card-name">${escaparHTML(nombreMuestra)}</div>${txtObj}<div style="margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:2px;">${movesHTML}</div></div></div>`;
-    });
-};
-
 function renderizarCementerioDOM() {
     if (!userSesion || !baseDatos.jugadores[userSesion]) return;
     let u = baseDatos.jugadores[userSesion];
-    let box = document.getElementById('cementerio-lista-local');
-    if (!box) return; box.innerHTML = '';
-    if (!u.cementerio || u.cementerio.length === 0) { box.innerHTML = '<div style="color:var(--texto-secundario); text-align:center; font-size:12px; padding:10px;">No hay bajas registradas en este Locke... Aún.</div>'; return; }
-    u.cementerio.forEach(b => {
-        box.innerHTML += `<div class="graveyard-item"><div><span style="color:#ef4444; font-weight:bold; font-size:13px;">💀 ${escaparHTML(b.nombre)}</span><span style="color:var(--texto-secundario); font-size:11px;"> en ${escaparHTML(b.ruta)} (${escaparHTML(b.fecha)})</span><div style="font-style:italic; font-size:12px; color:#cbd5e1; margin-top:2px;">"${escaparHTML(b.epitafio)}"</div></div></div>`;
-    });
-}
-
-window.reclamarHackeoDiario = function() {
-    let u = baseDatos.jugadores[userSesion];
-    let ahora = Date.now(); let unDiaMs = 24 * 60 * 60 * 1000;
-    if (ahora - (u.ultimoHackeo || 0) < unDiaMs) {
-        let rem = unDiaMs - (ahora - u.ultimoHackeo);
-        let horasFaltan = Math.ceil(rem / (1000 * 60 * 60));
-        return alert(`Sistemas protegidos. El firewall se reiniciará en ${horasFaltan} horas.`);
-    }
-    u.ultimoHackeo = ahora;
-    const itemsGen7 = [
-        {nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},
-        {nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},
-        {nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},
-        {nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Piedra Trueno",icon:"⚡"},{nombre:"Piedra Hoja",icon:"🍃"},
-        {nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},
-        {nombre:"Maxipepita",icon:"💰"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Trozo Estrella",icon:"💫"}
-    ];
-    let dineroGanado = Math.floor(Math.random() * 9001) + 1000;
-    let pfGanado = Math.floor(Math.random() * 10) + 1;
-    let itemAleatorio = itemsGen7[Math.floor(Math.random() * itemsGen7.length)];
-    let numRand = Math.random(); let premioMsg = "";
-    if (numRand < 0.33) { u.dinero = (u.dinero || 0) + dineroGanado; premioMsg = `Hackeo Exitoso: +${dineroGanado.toLocaleString()} P₠ inyectados.`; }
-    else if (numRand < 0.66) { u.pf = (u.pf || 0) + pfGanado; premioMsg = `Acceso Concedido: +${pfGanado} PF transferidos.`; }
-    else { if (!u.inventario) u.inventario = []; u.inventario.push({uid:"item_"+Date.now(),nombre:itemAleatorio.nombre,icon:itemAleatorio.icon,fecha:new Date().toLocaleDateString()}); premioMsg = `Robo de Suministros: Interceptado 1x [${itemAleatorio.icon} ${itemAleatorio.nombre}].`; }
-    inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${premioMsg}`);
-    guardarBD(); alert(`¡HACKEO EJECUTADO!\n${premioMsg}`);
-};
-
-window.aplicarFiltroCategoriaLegal = function() { filtroCategoriaGlobal = document.getElementById('filtro-categoria-legal').value; renderInitializeLoaders(); };
-
-window.cambiarSeccionTienda = function(tipo) {
-    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.market-view').forEach(v => v.classList.remove('active'));
-    document.getElementById(`tab-${tipo}`).classList.add('active');
-    document.getElementById(`vista-${tipo}`).classList.add('active');
-    if (tipo === 'red-entrenadores') renderizarVisorRivalPublico();
-    if (tipo === 'arena') renderizarArenaPublica();
-};
-
-window.ajustarCamposFormularioMercader = function() {
-    let tienda = document.getElementById('ins-tienda').value;
-    document.getElementById('form-bloque-legal-cat').style.display = tienda === 'legal' ? 'block' : 'none';
-    document.getElementById('form-bloque-pack-detalles').style.display = tienda === 'pack' ? 'block' : 'none';
-    document.getElementById('form-bloque-illegal-detalles').style.display = tienda === 'illegal' ? 'block' : 'none';
-    document.getElementById('bloque-ins-pf').style.display = tienda !== 'illegal' ? 'block' : 'none';
-    document.getElementById('lbl-ins-precio').innerText = tienda === 'illegal' ? "Coste (PF):" : "Coste (P₠):";
-};
-
-window.inyectarObjetoNuevoMaster = function() {
-    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
-    let tienda = document.getElementById('ins-tienda').value;
-    let nombre = document.getElementById('ins-nombre').value.trim();
-    let precio = parseInt(document.getElementById('ins-precio').value) || 0;
-    let stock = parseInt(document.getElementById('ins-stock').value) || 0;
-    if (!nombre) return alert("Falta nombre.");
-    let nuevo = { id: Date.now(), tienda, stock, icon: document.getElementById('ins-icono').value.trim() || '📦', nombre };
-    if (tienda === 'legal') { nuevo.cat = document.getElementById('ins-cat-legal').value; nuevo.precio = precio; nuevo.pf = parseInt(document.getElementById('ins-pf').value) || 0; }
-    else if (tienda === 'pack') { nuevo.cat = 'Pack Especial'; nuevo.precio = precio; nuevo.pf = parseInt(document.getElementById('ins-pf').value) || 0; nuevo.desc = document.getElementById('ins-pack-desc').value.trim(); nuevo.estrategia = document.getElementById('ins-pack-estrategia').value.trim(); }
-    else if (tienda === 'illegal') { nuevo.cat = 'Hack de Sistema'; nuevo.precioPf = precio; nuevo.desc = document.getElementById('ins-illegal-desc').value.trim(); }
-    if (!baseDatos.productos) baseDatos.productos = [];
-    baseDatos.productos.push(nuevo); guardarBD();
-    document.getElementById('ins-nombre').value = ''; document.getElementById('ins-precio').value = '';
-};
-
-function actualizarSelectorUsuariosBanco() {
-    let sb = document.getElementById('adm-banco-usuario');
-    let sr = document.getElementById('adm-reset-usuario');
-    let sg = document.getElementById('adm-reset-gacha-usuario');
-    let sa = document.getElementById('adm-arena-jugador-a');
-    let sb2 = document.getElementById('adm-arena-jugador-b');
-    if (!sb || !sr) return;
-    sb.innerHTML = ''; sr.innerHTML = '';
-    if (sg) sg.innerHTML = '';
-    if (sa) sa.innerHTML = '';
-    if (sb2) sb2.innerHTML = '';
-    Object.keys(baseDatos.jugadores).forEach(id => {
-        let u = baseDatos.jugadores[id];
-        sb.innerHTML += `<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;
-        sr.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-        if (sg) sg.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-        if (sa) sa.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-        if (sb2) sb2.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-    });
-}
-
-window.modificarFondosEntrenador = function(op) {
-    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
-    let userId = document.getElementById('adm-banco-usuario').value;
-    let cant = parseInt(document.getElementById('adm-banco-cantidad').value) || 0;
-    if (!userId || cant <= 0) return alert("Revisa los campos.");
-    baseDatos.jugadores[userId].dinero += (op === 'SUMAR' ? cant : -cant);
-    guardarBD(); document.getElementById('adm-banco-cantidad').value = '';
-};
-
-window.actualizarPropertyProducto = function(id, prop, val) {
-    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return;
-    let idx = baseDatos.productos.findIndex(p => p.id === id);
-    if (idx !== -1) { baseDatos.productos[idx][prop] = parseInt(val) || 0; guardarBD(); }
-};
-
-window.eliminarProductoMaster = function(id) {
-    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
-    if (confirm("¿Eliminar?")) { baseDatos.productos = baseDatos.productos.filter(p => p.id !== id); guardarBD(); }
-};
-
-window.conmutarEstadoTienda = function(tiendaProp, estado) {
-    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return;
-    baseDatos[tiendaProp] = estado; guardarBD();
-};
-
-window.emitirOrdenEconomicaGlobal = function() {
-    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
-    baseDatos.eventoSistema = document.getElementById('adm-evento-economico').value;
-    guardarBD(); alert(`Orden de Red distribuida.`);
-};
-
-function actualizarBannerAlertasVisuales() {
-    let banner = document.getElementById('alertas-sistema-marquee'); if (!banner) return;
-    let ev = baseDatos.eventoSistema || "normal";
-    if (ev === "normal") { banner.classList.remove('active'); banner.innerHTML = ""; }
-    else if (ev === "rebajas") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-legal)"; banner.style.color = "var(--neon-legal)"; banner.innerHTML = "📉 ALERTA DE RED: -25% de descuento en la Tienda Legal y Packs."; }
-    else if (ev === "inflacion") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-ilegal)"; banner.style.color = "#ff3366"; banner.innerHTML = "⚠️ RED INESTABLE: +50% de recargo en costes P₠."; }
-    else if (ev === "bonus_pf") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-packs)"; banner.style.color = "var(--neon-packs)"; banner.innerHTML = "🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!"; }
-}
-
-function redibujarConsolaAdminMaster() {
-    document.getElementById('chk-open-legal').checked = baseDatos.legalOpen !== false;
-    document.getElementById('chk-open-pack').checked = baseDatos.packOpen !== false;
-    document.getElementById('chk-open-illegal').checked = baseDatos.illegalOpen !== false;
-    if (baseDatos.eventoSistema) document.getElementById('adm-evento-economico').value = baseDatos.eventoSistema;
-    actualizarSelectorUsuariosBanco();
-    renderizarAdminArena();
-
-    let al = document.getElementById('admin-inventario-global'); if (!al) return; al.innerHTML = '';
-    baseDatos.productos.forEach(p => {
-        let esI = p.tienda === 'illegal';
-        al.innerHTML += `<div class="admin-card-inner"><button class="btn-delete-admin" onclick="eliminarProductoMaster(${p.id})">X</button><div style="color:#fff; font-size:13px;">${p.icon} ${p.nombre} [${p.tienda.toUpperCase()}]</div><div class="admin-edit-row"><div class="admin-edit-field"><label>Coste Base</label><input type="number" value="${esI ? p.precioPf : p.precio}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, '${esI ? 'precioPf' : 'precio'}', this.value)"></div><div class="admin-edit-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, 'stock', this.value)"></div></div></div>`;
-    });
-}
-
-window.invocarTerminalMercader = function() {
-    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") { alert("ERROR CRÍTICO: Credenciales no detectadas."); return; }
-    document.getElementById('pantalla-admin-master').style.display = 'block'; redibujarConsolaAdminMaster();
-};
-
-window.apagarTerminalMercader = function() { document.getElementById('pantalla-admin-master').style.display = 'none'; };
-
-window.comprarObjetoGamer = function(id) {
-    if (!userSesion) return;
-    let u = baseDatos.jugadores[userSesion]; let p = baseDatos.productos.find(prod => prod.id === id);
-    if (!p || p.stock <= 0) return alert("Objeto no disponible o sin stock.");
-    if (u.comprasDisponibles <= 0) return alert("No te quedan compras disponibles en este periodo.");
-    let ev = baseDatos.eventoSistema || "normal";
-    let precioFinalCalculado = p.precio; let bonoPfCalculado = p.pf || 0;
-    if (p.tienda !== 'illegal') {
-        if (ev === 'rebajas') precioFinalCalculado = Math.round(p.precio * 0.75);
-        else if (ev === 'inflacion') precioFinalCalculado = Math.round(p.precio * 1.50);
-        if (ev === 'bonus_pf') bonoPfCalculado = (p.pf || 0) * 2;
-    }
-    let txtCoste = p.tienda === 'illegal' ? `${p.precioPf} PF` : `${precioFinalCalculado} P₠`;
-    if (!confirm(`¿Deseas adquirir ${p.nombre} por ${txtCoste}?`)) return;
-    let txtBitacora = "";
-    if (p.tienda === 'illegal') {
-        if (u.pf < p.precioPf) return alert("No tienes suficientes PF.");
-        u.pf -= p.precioPf; txtBitacora = `Adquirió módulo prohibido: ${p.icon} '${p.nombre}' por ${p.precioPf} PF.`;
-    } else {
-        if (u.dinero < precioFinalCalculado) return alert("No tienes suficiente dinero.");
-        u.dinero -= precioFinalCalculado; u.pf += bonoPfCalculado;
-        txtBitacora = `Adquirió: ${p.icon} '${p.nombre}' por ${precioFinalCalculado} P₠ (+${bonoPfCalculado} PF).`;
-    }
-    p.stock--; u.comprasDisponibles--;
-    if (!u.inventario) u.inventario = [];
-    u.inventario.push({ uid: "item_" + Date.now() + Math.floor(Math.random() * 100), nombre: p.nombre, icon: p.icon, fecha: new Date().toLocaleDateString() });
-    inyectarEntradaDiarioAutomatica(txtBitacora); guardarBD(); alert(`¡Has adquirido ${p.nombre}!`);
-};
-
-window.consumirObjetoMochilaGamer = function(itemUid, itemNombre, itemIcon) {
-    if (!userSesion || !baseDatos.jugadores[userSesion]) return;
-    let u = baseDatos.jugadores[userSesion]; if (!u.inventario) return;
-    let index = u.inventario.findIndex(i => i.uid === itemUid);
-    if (index !== -1) {
-        u.inventario.splice(index, 1);
-        inyectarEntradaDiarioAutomatica(`Utilizó el objeto ${itemIcon} '${itemNombre}'. Consumido.`);
-        guardarBD(); alert(`Has usado '${itemNombre}'.`);
-    } else { alert("Error al procesar el objeto."); }
-};
-
-window.renderizarVisorRivalPublico = function() {
-    let selector = document.getElementById('red-select-jugador'); let target = selector.value;
-    let box = document.getElementById('red-visor-dinamico'); if (!box) return; box.innerHTML = '';
-    if (!target || !baseDatos.jugadores[target]) { box.innerHTML = '<div style="color:var(--texto-secundario); padding:20px; grid-column:span 2; text-align:center;">Selecciona un terminal activo.</div>'; return; }
-    let r = baseDatos.jugadores[target];
-    let statusTexto = r.lockeStatus === 'ganado' ? '🏆 GANADO' : (r.lockeStatus === 'perdido' ? '💀 PERDIDO' : '⏳ EN CURSO');
-    let htmlPerfil = `<div style="background:#0f1422; border:1px solid #1e293b; padding:15px; border-radius:8px; height:fit-content;"><h4 style="margin:0 0 10px 0; font-family:'Orbitron'; color:var(--neon-intercambio); font-size:14px;">ESTADO: ${escaparHTML(target.toUpperCase())}</h4><div style="font-size:12px; margin-bottom:6px;">REPUTACIÓN: <span style="color:var(--neon-packs); font-weight:bold;">${r.pf || 0} PF</span></div><div style="font-size:12px; margin-bottom:6px;">VIDAS: <span style="color:#ef4444; font-weight:bold;">❤️ ${r.vidasActuales || 0}/${r.vidasTotales || 20}</span></div><div style="font-size:12px; margin-bottom:6px;">DESAFÍO: <span style="color:#fff;">${statusTexto}</span></div><div style="font-size:12px; margin-bottom:6px;">MEDALLAS: <span style="color:var(--neon-legal);">${r.numMedallas || 0}/8</span></div><div style="font-size:12px;">TORNEOS: <span style="color:#fff;">${r.torneos || 0}</span></div></div>`;
-    let slotSelectHTML = `<select id="red-visor-slot-team" onchange="renderizarSubRanuraRivalShowdown('${target}')" style="background:#060914; color:#fff; padding:4px; border-radius:4px; font-size:11px; margin-bottom:8px; width:100%;">`;
-    for (let i = 1; i <= 10; i++) slotSelectHTML += `<option value="${i}">Equipo ${i}</option>`;
-    slotSelectHTML += `</select>`;
-    let deadHTML = `<div style="margin-top:15px; border-top:1px solid #1e293b; padding-top:12px;"><h5 style="margin:0 0 8px 0; font-family:'Orbitron'; color:#ef4444; font-size:12px;">💀 Cementerio</h5>`;
-    if (!r.cementerio || r.cementerio.length === 0) { deadHTML += `<div style="font-size:11px; color:var(--texto-secundario); font-style:italic;">Sin bajas registradas.</div>`; }
-    else { deadHTML += `<div class="rival-dead-grid">`; r.cementerio.forEach(b => { deadHTML += `<div class="rival-dead-card"><div class="rival-dead-title">💀 ${escaparHTML(b.nombre)}</div><div class="rival-dead-meta">Caído en: ${escaparHTML(b.ruta)}</div><div class="rival-dead-meta">Fecha: ${escaparHTML(b.fecha)}</div><div class="rival-dead-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`; }); deadHTML += `</div>`; }
-    deadHTML += `</div>`;
-    let htmlEquipos = `<div style="background:#0f1422; border:1px solid #1e293b; padding:15px; border-radius:8px;"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;"><h4 style="margin:0; font-family:'Orbitron'; color:#fff; font-size:13px;">SHOWDOWN</h4><div style="width:140px;">${slotSelectHTML}</div></div><div id="red-visor-pokes-area"></div>${deadHTML}</div>`;
-    box.innerHTML = htmlPerfil + htmlEquipos;
-    renderizarSubRanuraRivalShowdown(target);
-};
-
-window.renderizarSubRanuraRivalShowdown = function(targetUser) {
-    let slotIdx = parseInt(document.getElementById('red-visor-slot-team').value) - 1;
-    let r = baseDatos.jugadores[targetUser];
-    let area = document.getElementById('red-visor-pokes-area'); if (!area) return;
-    let rawTeam = (r.showdownEquipos && r.showdownEquipos[slotIdx]) ? r.showdownEquipos[slotIdx] : "Sin datos";
-    area.innerHTML = renderizamientoInternoShowdownPlano(rawTeam);
-};
-
-function renderInitializeLoaders() {
-    renderAparadorPublico('legal', 'contenedor-legal-view', baseDatos.legalOpen);
-    renderAparadorPublico('pack', 'contenedor-pack-view', baseDatos.packOpen);
-    renderAparadorPublico('illegal', 'contenedor-hacker-view', baseDatos.illegalOpen);
-}
-
-function refrescarPantallaGamer() {
-    if (!userSesion || !baseDatos.jugadores[userSesion]) return;
-    let u = baseDatos.jugadores[userSesion];
-    document.getElementById('usr-nombre').innerText = userSesion.toUpperCase();
-    document.getElementById('usr-dinero').innerText = u.dinero;
-    document.getElementById('usr-pf').innerText = u.pf;
-    document.getElementById('usr-compras').innerText = `${u.comprasDisponibles}/${MAX_COMPRAS}`;
-    let invBox = document.getElementById('lista-inventario'); invBox.innerHTML = '';
-    let itemsFiltrados = u.inventario ? u.inventario.filter(i => i.uid !== "init") : [];
-    if (itemsFiltrados.length === 0) { invBox.innerHTML = '<span style="color:var(--texto-secundario); font-size:12px;">Mochila vacía.</span>'; }
-    else { itemsFiltrados.forEach(i => { invBox.innerHTML += `<div class="mochila-item-tag" title="Adquirido el: ${escaparHTML(i.fecha)}"><span>${escaparHTML(i.icon) || '📦'} ${escaparHTML(i.nombre)}</span><button class="btn-usar-item" onclick="consumirObjetoMochilaGamer('${i.uid}', '${escaparHTML(i.nombre)}', '${escaparHTML(i.icon) || '📦'}')">Usar</button></div>`; }); }
-    let receptorSelect = document.getElementById('int-select-receptor'); let redSelectRival = document.getElementById('red-select-jugador');
-    if (receptorSelect && redSelectRival) {
-        let currentFav = receptorSelect.value; let currentRival = redSelectRival.value;
-        receptorSelect.innerHTML = ''; redSelectRival.innerHTML = '<option value="">-- SELECCIONAR RIVAL --</option>';
-        Object.keys(baseDatos.jugadores).forEach(id => {
-            redSelectRival.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-            if (id !== userSesion) receptorSelect.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-        });
-        if (currentFav) receptorSelect.value = currentFav;
-        if (currentRival) redSelectRival.value = currentRival;
-    }
-    renderInitializeLoaders();
-}
-
-function renderAparadorPublico(tiendaTipo, contenedorId, estaAbierta) {
-    let box = document.getElementById(contenedorId); if (!box) return; box.innerHTML = '';
-    if (estaAbierta === false) { box.innerHTML = `<div class="tienda-cerrada-msg">🔒 Red Cerrada temporalmente por el Administrador</div>`; return; }
-    let prods = baseDatos.productos.filter(p => { let mt = p.tienda === tiendaTipo; if (tiendaTipo === 'legal' && filtroCategoriaGlobal !== "") return mt && p.cat === filtroCategoriaGlobal; return mt; });
-    if (prods.length === 0) { box.innerHTML = `<div style="text-align:center; color:var(--texto-secundario); padding:30px;">No hay artículos disponibles.</div>`; return; }
-    let ev = baseDatos.eventoSistema || "normal"; let htmlGrid = '<div class="items-grid">';
-    prods.forEach(p => {
-        let esI = p.tienda === 'illegal'; let precioFinal = p.precio; let bonoPf = p.pf || 0; let estiloColorPrecio = "color: #fff;";
-        if (!esI) { if (ev === 'rebajas') { precioFinal = Math.round(p.precio * 0.75); estiloColorPrecio = "color: var(--neon-legal); font-weight: 900;"; } else if (ev === 'inflacion') { precioFinal = Math.round(p.precio * 1.50); estiloColorPrecio = "color: #ff3366; font-weight: 900;"; } if (ev === 'bonus_pf') bonoPf = (p.pf || 0) * 2; }
-        let txtCoste = esI ? `${p.precioPf} PF` : `${precioFinal} P₠`;
-        let txtBonoDisplay = (!esI && bonoPf > 0) ? `<div style="font-size:10px; color:var(--neon-ilegal); margin-top:2px;">+${bonoPf} PF (Bono)</div>` : '';
-        let txtDetalle = p.desc ? `<div class="item-desc">${escaparHTML(p.desc)}</div>` : '';
-        let txtEstrat = p.estrategia ? `<div class="item-estrategia">💡 ${escaparHTML(p.estrategia)}</div>` : '';
-        let txtCat = p.cat ? `<div class="categoria-tag">${escaparHTML(p.cat)}</div>` : '';
-        let deshabilitado = p.stock <= 0 ? 'disabled' : '';
-        let txtBoton = p.stock <= 0 ? 'AGOTADO' : `ADQUIRIR (${txtCoste})`;
-        let claseAgotado = p.stock <= 0 ? 'agotado' : '';
-        htmlGrid += `<div class="item-card ${claseAgotado}"><div>${txtCat}<div class="item-icon">${escaparHTML(p.icon)}</div><div class="item-titulo">${escaparHTML(p.nombre)}</div>${txtDetalle}${txtEstrat}</div><div><div style="font-size:11px; margin-bottom:8px; font-family:'Orbitron'; ${estiloColorPrecio}">PRECIO: ${txtCoste} ${txtBonoDisplay}</div><div style="font-size:11px; color:var(--texto-secundario); margin-bottom:8px; font-family:'Orbitron'">STOCK: ${p.stock}</div><button class="btn-accion" ${deshabilitado} onclick="comprarObjetoGamer(${p.id})">${txtBoton}</button></div></div>`;
-    });
-    htmlGrid += '</div>'; box.innerHTML = htmlGrid;
-}
-
-window.publicarPropuestaIntercambio = function() {
-    if (!userSesion) return; let u = baseDatos.jugadores[userSesion];
-    let ofreceTxt = document.getElementById('int-txt-ofrece').value.trim();
-    let pideTxt = document.getElementById('int-txt-pide').value.trim();
-    let escrowPf = parseInt(document.getElementById('int-num-escrow').value) || 0;
-    let receptorId = document.getElementById('int-select-receptor').value;
-    if (!ofreceTxt || !pideTxt) return alert("Rellena ambos campos.");
-    if (!receptorId) return alert("Selecciona un destinatario.");
-    if (u.pf < escrowPf) return alert(`Necesitas ${escrowPf} PF para la fianza.`);
-    u.pf -= escrowPf;
-    let tradeId = "trade_" + Date.now();
-    if (!baseDatos.intercambios) baseDatos.intercambios = {};
-    baseDatos.intercambios[tradeId] = { id: tradeId, proponente: userSesion, receptor: receptorId, ofrece: ofreceTxt, pide: pideTxt, depositoEscrow: escrowPf, estado: "evaluacion", votosSi: 0, votosNo: 0, registroVotos: { init: true } };
-    guardarBD(); document.getElementById('int-txt-ofrece').value = ''; document.getElementById('int-txt-pide').value = '';
-    alert(`Propuesta enviada. ${escrowPf} PF retenidos como aval.`);
-};
-
-window.votarIntercambio = function(tradeId, tipoVoto) {
-    if (!userSesion) return; let t = baseDatos.intercambios[tradeId]; if (!t) return;
-    if (!t.registroVotos) t.registroVotos = {};
-    if (t.registroVotos[userSesion]) return alert("Ya has emitido un veredicto.");
-    t.registroVotos[userSesion] = tipoVoto;
-    if (tipoVoto === 'SI') t.votosSi = (t.votosSi || 0) + 1;
-    if (tipoVoto === 'NO') t.votosNo = (t.votosNo || 0) + 1;
-    guardarBD();
-};
-
-window.resolverIntercambio = function(tradeId, resultado) {
-    let t = baseDatos.intercambios[tradeId]; if (!t) return;
-    let p = baseDatos.jugadores[t.proponente]; let r = baseDatos.jugadores[t.receptor];
-    let deposito = parseInt(t.depositoEscrow) || 0;
-    if (resultado === 'EXITOSO') {
-        if (r) r.pf = (parseInt(r.pf) || 0) + deposito;
-        t.estado = "completado";
-        inyectarEntradaDiarioAutomatica(`TRUEQUE COMPLETADO CON ${t.receptor.toUpperCase()}: Entregó ${t.ofrece} | Recibió ${t.pide}`);
-        alert("Trueque ejecutado. PF transferidos al receptor.");
-    } else { if (p) p.pf = (parseInt(p.pf) || 0) + deposito; t.estado = "fallido"; alert("Trueque cancelado. PF devueltos."); }
-    guardarBD();
-};
-
-function actualizarListaIntercambiosDOM() {
-    let box = document.getElementById('contenedor-intercambios-activos'); if (!box) return; box.innerHTML = '';
-    if (!baseDatos.intercambios || Object.keys(baseDatos.intercambios).length === 0) { box.innerHTML = `<div style="color:var(--texto-secundario); font-size:13px; padding:15px; text-align:center;">No hay operaciones en curso.</div>`; return; }
-    Object.keys(baseDatos.intercambios).forEach(id => {
-        let t = baseDatos.intercambios[id]; if (t.estado !== "evaluacion") return;
-        let yaVoto = t.registroVotos && t.registroVotos[userSesion]; let esCreador = t.proponente === userSesion;
-        let textoOfrece = t.ofrece || "Objeto"; let textoPide = t.pide || "Especificado por chat";
-        box.innerHTML += `<div class="intercambio-card"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;"><span style="font-family:'Orbitron'; font-size:12px; color:var(--neon-intercambio)">PROPUESTA: ${escaparHTML(t.proponente.toUpperCase())} ➡️ ${escaparHTML(t.receptor.toUpperCase())}</span><div><span class="votos-escrow" style="font-family:'Orbitron'; font-size:11px;">🛡️ Aval: ${t.depositoEscrow} PF</span><span class="votos-si">👍 SÍ: ${t.votosSi || 0}</span><span class="votos-no">👎 NO: ${t.votosNo || 0}</span></div></div><div style="font-size:13px; color:#fff; margin-bottom:12px; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px; border:1px solid #1e293b; display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><span style="color:var(--neon-legal); font-weight:bold; display:block; font-size:10px; text-transform:uppercase;">🎁 Ofrece:</span>${escaparHTML(textoOfrece)}</div><div style="border-left:1px dashed #2d3d5a; padding-left:10px;"><span style="color:var(--neon-packs); font-weight:bold; display:block; font-size:10px; text-transform:uppercase;">➡️ A cambio de:</span>${escaparHTML(textoPide)}</div></div><div style="display:flex; gap:10px;"><button class="btn-accion" style="padding:6px; background:#064e3b; border-color:#10b981; color:#10b981; width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'SI')">👍 Votar SÍ</button><button class="btn-accion" style="padding:6px; background:#7f1d1d; border-color:#f87171; color:#f87171; width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'NO')">👎 Votar NO</button>${esCreador ? `<div style="margin-left:auto; display:flex; gap:5px;"><button class="btn-accion" style="padding:6px; background:#1e3a8a; border-color:#60a5fa; color:#60a5fa; width:auto; font-size:11px;" onclick="resolverIntercambio('${t.id}', 'EXITOSO')">✔️ EJECUTAR</button><button class="btn-accion" style="padding:6px; background:#4c1d1d; border-color:#ef4444; color:#ef4444; width:auto; font-size:11px;" onclick="resolverIntercambio('${t.id}', 'FALLIDO')">❌ CANCELAR</button></div>` : ''}</div></div>`;
-    });
-}
-</script>
-</body>
-</html>
+    let box = document.getEle…
