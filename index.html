@@ -1391,6 +1391,16 @@ window.restablecerComprasDiariasDesdeMercader = function() {
     guardarBD(); alert("Compras reiniciadas globalmente.");
 };
 
+window.restablecerGachaDiarioDesdeMercader = function() {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
+    let targetId = document.getElementById('adm-reset-gacha-usuario').value;
+    if (!targetId) return alert("Selecciona un entrenador.");
+    if (!baseDatos.jugadores[targetId]) return alert("Entrenador no encontrado.");
+    baseDatos.jugadores[targetId].ultimoHackeo = 0;
+    guardarBD();
+    alert(`Gacha diario de ${targetId.toUpperCase()} reiniciado. Ya puede reclamarlo de nuevo.`);
+};
+
 window.conmutarCajaPerfil = function() {
     let box = document.getElementById('perfil-desplegable');
     box.style.display = (box.style.display === 'block') ? 'none' : 'block';
@@ -1637,14 +1647,17 @@ window.inyectarObjetoNuevoMaster = function() {
 
 function actualizarSelectorUsuariosBanco() {
     let sb = document.getElementById('adm-banco-usuario'); let sr = document.getElementById('adm-reset-usuario');
+    let sg = document.getElementById('adm-reset-gacha-usuario');
     let sa = document.getElementById('adm-arena-jugador-a'); let sb2 = document.getElementById('adm-arena-jugador-b');
     if (!sb || !sr) return;
     sb.innerHTML = ''; sr.innerHTML = '';
+    if (sg) sg.innerHTML = '';
     if (sa) sa.innerHTML = ''; if (sb2) sb2.innerHTML = '';
     Object.keys(baseDatos.jugadores).forEach(id => {
         let u = baseDatos.jugadores[id];
         sb.innerHTML += `<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;
         sr.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+        if (sg) sg.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
         if (sa) sa.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
         if (sb2) sb2.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
     });
@@ -1884,4 +1897,4 @@ function actualizarListaIntercambiosDOM() {
 }
 </script>
 </body>
-</html>
+    </html>
