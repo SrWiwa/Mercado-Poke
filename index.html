@@ -826,6 +826,15 @@
                 <input type="checkbox" id="chk-open-illegal" onchange="conmutarEstadoTienda('illegalOpen', this.checked)"> 🟣 TIENDA ILEGALIDADES ABIERTA
             </label>
             
+           <hr style="border-color:#1e293b; margin:20px 0;">
+
+<h3 style="color:var(--neon-packs); margin-top:0; font-size:14px; font-family:'Orbitron';">⚡ REINICIAR GACHA DIARIO</h3>
+<div style="margin-bottom:10px;">
+    <label style="font-size:11px; color:var(--texto-secundario);">Seleccionar Entrenador:</label>
+    <select id="adm-gacha-usuario" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px; text-transform:uppercase; font-family:'Orbitron'; font-size:12px;"></select>
+</div>
+<button class="btn-accion" style="background:linear-gradient(180deg,#1a0a2e,#2d1054); border-color:var(--neon-arena,#c084fc); color:var(--neon-arena,#c084fc); font-size:11px; margin-bottom:20px;" onclick="restablecerGachaDesdeMercader()">⚡ FORZAR REINICIO GACHA</button>
+            
             <hr style="border-color:#1e293b; margin:20px 0;">
             
             <h3 style="color:var(--neon-legal); margin-top:0; font-size:14px; font-family:'Orbitron';">➕ AÑADIR NUEVO PRODUCTO</h3>
@@ -1080,8 +1089,16 @@ function actualizarComprasPorTiempo() {
         u.ultimaRecarga = u.ultimaRecarga + (cargasGanadas * MS_EN_6_HORAS);
         guardarBD();
     }
-}
 
+    window.restablecerGachaDesdeMercader = function() {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
+    let targetId = document.getElementById('adm-gacha-usuario').value;
+    if (!targetId) return alert("Selecciona un entrenador.");
+    baseDatos.jugadores[targetId].ultimoHackeo = 0;
+    guardarBD();
+    alert(`Gacha diario de ${targetId.toUpperCase()} reiniciado. Ya puede reclamar su recompensa.`);
+};
+    
 window.restablecerComprasDiariasDesdeMercader = function() {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
     let targetId = document.getElementById('adm-reset-usuario').value;
@@ -1461,8 +1478,18 @@ window.inyectarObjetoNuevoMaster = function() {
 function actualizarSelectorUsuariosBanco() {
     let sb = document.getElementById('adm-banco-usuario');
     let sr = document.getElementById('adm-reset-usuario');
+    let sg = document.getElementById('adm-gacha-usuario');
     if(!sb || !sr) return;
     sb.innerHTML = ''; sr.innerHTML = '';
+    if(sg) sg.innerHTML = '';
+    
+    Object.keys(baseDatos.jugadores).forEach(id => {
+        let u = baseDatos.jugadores[id];
+        sb.innerHTML += `<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;
+        sr.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+        if(sg) sg.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+    });
+}
     
     Object.keys(baseDatos.jugadores).forEach(id => {
         let u = baseDatos.jugadores[id];
