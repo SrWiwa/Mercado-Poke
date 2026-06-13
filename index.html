@@ -1516,4 +1516,376 @@ window.alterarTorneosPerfil = function(v) {
 function renderizarCementerioDOM() {
     if (!userSesion || !baseDatos.jugadores[userSesion]) return;
     let u = baseDatos.jugadores[userSesion];
-    let box = document.getEle…
+    let box = document.getElementById('cementerio-lista-local');
+    if (!box) return; box.innerHTML = '';
+    if (!u.cementerio || u.cementerio.length === 0) {
+        box.innerHTML = '<div style="color:var(--texto-secundario); text-align:center; font-size:12px; padding:10px;">No hay bajas registradas en este Locke... Aún.</div>'; return;
+    }
+    u.cementerio.forEach(b => {
+        box.innerHTML += `<div class="graveyard-item"><div><span style="color:#ef4444; font-weight:bold; font-size:13px;">💀 ${escaparHTML(b.nombre)}</span><span style="color:var(--texto-secundario); font-size:11px;"> — ${escaparHTML(b.ruta)} (${escaparHTML(b.fecha)})</span><div style="font-style:italic; font-size:12px; color:#cbd5e1; margin-top:2px;">"${escaparHTML(b.epitafio)}"</div></div></div>`;
+    });
+}
+
+window.reclamarHackeoDiario = function() {
+    let u = baseDatos.jugadores[userSesion];
+    let ahora = Date.now(); let unDiaMs = 24 * 60 * 60 * 1000;
+    if (ahora - (u.ultimoHackeo || 0) < unDiaMs) {
+        let rem = unDiaMs - (ahora - u.ultimoHackeo);
+        let horasFaltan = Math.ceil(rem / (1000 * 60 * 60));
+        return alert(`Sistemas protegidos. El firewall se reiniciará en ${horasFaltan} horas.`);
+    }
+    u.ultimoHackeo = ahora;
+    const itemsGen7 = [
+        {nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},
+        {nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},
+        {nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},
+        {nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Piedra Trueno",icon:"⚡"},{nombre:"Piedra Hoja",icon:"🍃"},
+        {nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},
+        {nombre:"Maxipepita",icon:"💰"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Trozo Estrella",icon:"💫"}
+    ];
+    let dineroGanado = Math.floor(Math.random() * 9001) + 1000;
+    let pfGanado = Math.floor(Math.random() * 10) + 1;
+    let itemAleatorio = itemsGen7[Math.floor(Math.random() * itemsGen7.length)];
+    let numRand = Math.random(); let premioMsg = "";
+    if (numRand < 0.33) { u.dinero = (u.dinero || 0) + dineroGanado; premioMsg = `Hackeo Exitoso: +${dineroGanado.toLocaleString()} P₠ inyectados.`; }
+    else if (numRand < 0.66) { u.pf = (u.pf || 0) + pfGanado; premioMsg = `Acceso Concedido: +${pfGanado} PF transferidos.`; }
+    else { if (!u.inventario) u.inventario = []; u.inventario.push({uid:"item_"+Date.now(),nombre:itemAleatorio.nombre,icon:itemAleatorio.icon,fecha:new Date().toLocaleDateString()}); premioMsg = `Robo de Suministros: Interceptado 1x [${itemAleatorio.icon} ${itemAleatorio.nombre}].`; }
+    inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${premioMsg}`);
+    guardarBD(); alert(`¡HACKEO EJECUTADO!\n${premioMsg}`);
+};
+
+window.aplicarFiltroCategoriaLegal = function() { filtroCategoriaGlobal = document.getElementById('filtro-categoria-legal').value; renderInitializeLoaders(); };
+
+window.cambiarSeccionTienda = function(tipo) {
+    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.market-view').forEach(v => v.classList.remove('active'));
+    document.getElementById(`tab-${tipo}`).classList.add('active');
+    document.getElementById(`vista-${tipo}`).classList.add('active');
+    if (tipo === 'red-entrenadores') renderizarVisorRivalPublico();
+    if (tipo === 'arena') renderizarArenaPublica();
+};
+
+window.ajustarCamposFormularioMercader = function() {
+    let tienda = document.getElementById('ins-tienda').value;
+    document.getElementById('form-bloque-legal-cat').style.display = tienda === 'legal' ? 'block' : 'none';
+    document.getElementById('form-bloque-pack-detalles').style.display = tienda === 'pack' ? 'block' : 'none';
+    document.getElementById('form-bloque-illegal-detalles').style.display = tienda === 'illegal' ? 'block' : 'none';
+    document.getElementById('bloque-ins-pf').style.display = tienda !== 'illegal' ? 'block' : 'none';
+    document.getElementById('lbl-ins-precio').innerText = tienda === 'illegal' ? "Coste (PF):" : "Coste (P₠):";
+};
+
+window.inyectarObjetoNuevoMaster = function() {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
+    let tienda = document.getElementById('ins-tienda').value;
+    let nombre = document.getElementById('ins-nombre').value.trim();
+    let precio = parseInt(document.getElementById('ins-precio').value) || 0;
+    let stock = parseInt(document.getElementById('ins-stock').value) || 0;
+    if (!nombre) return alert("Falta nombre.");
+    let nuevo = { id: Date.now(), tienda, stock, icon: document.getElementById('ins-icono').value.trim() || '📦', nombre };
+    if (tienda === 'legal') { nuevo.cat = document.getElementById('ins-cat-legal').value; nuevo.precio = precio; nuevo.pf = parseInt(document.getElementById('ins-pf').value) || 0; }
+    else if (tienda === 'pack') { nuevo.cat = 'Pack Especial'; nuevo.precio = precio; nuevo.pf = parseInt(document.getElementById('ins-pf').value) || 0; nuevo.desc = document.getElementById('ins-pack-desc').value.trim(); nuevo.estrategia = document.getElementById('ins-pack-estrategia').value.trim(); }
+    else if (tienda === 'illegal') { nuevo.cat = 'Hack de Sistema'; nuevo.precioPf = precio; nuevo.desc = document.getElementById('ins-illegal-desc').value.trim(); }
+    if (!baseDatos.productos) baseDatos.productos = [];
+    baseDatos.productos.push(nuevo); guardarBD();
+    document.getElementById('ins-nombre').value = ''; document.getElementById('ins-precio').value = '';
+};
+
+function actualizarSelectorUsuariosBanco() {
+    let sb = document.getElementById('adm-banco-usuario');
+    let sr = document.getElementById('adm-reset-usuario');
+    let sg = document.getElementById('adm-reset-gacha-usuario');
+    let sa = document.getElementById('adm-arena-jugador-a');
+    let sb2 = document.getElementById('adm-arena-jugador-b');
+    if (!sb || !sr) return;
+    sb.innerHTML = ''; sr.innerHTML = '';
+    if (sg) sg.innerHTML = '';
+    if (sa) sa.innerHTML = '';
+    if (sb2) sb2.innerHTML = '';
+    Object.keys(baseDatos.jugadores).forEach(id => {
+        let u = baseDatos.jugadores[id];
+        sb.innerHTML += `<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;
+        sr.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+        if (sg) sg.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+        if (sa) sa.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+        if (sb2) sb2.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+    });
+}
+
+window.modificarFondosEntrenador = function(op) {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
+    let userId = document.getElementById('adm-banco-usuario').value;
+    let cant = parseInt(document.getElementById('adm-banco-cantidad').value) || 0;
+    if (!userId || cant <= 0) return alert("Revisa los campos.");
+    baseDatos.jugadores[userId].dinero += (op === 'SUMAR' ? cant : -cant);
+    guardarBD(); document.getElementById('adm-banco-cantidad').value = '';
+};
+
+window.actualizarPropertyProducto = function(id, prop, val) {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return;
+    let idx = baseDatos.productos.findIndex(p => p.id === id);
+    if (idx !== -1) { baseDatos.productos[idx][prop] = parseInt(val) || 0; guardarBD(); }
+};
+
+window.eliminarProductoMaster = function(id) {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
+    if (confirm("¿Eliminar?")) { baseDatos.productos = baseDatos.productos.filter(p => p.id !== id); guardarBD(); }
+};
+
+window.conmutarEstadoTienda = function(tiendaProp, estado) {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return;
+    baseDatos[tiendaProp] = estado; guardarBD();
+};
+
+window.emitirOrdenEconomicaGlobal = function() {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
+    baseDatos.eventoSistema = document.getElementById('adm-evento-economico').value;
+    guardarBD(); alert(`Orden de Red distribuida.`);
+};
+
+function actualizarBannerAlertasVisuales() {
+    let banner = document.getElementById('alertas-sistema-marquee'); if (!banner) return;
+    let ev = baseDatos.eventoSistema || "normal";
+    if (ev === "normal") { banner.classList.remove('active'); banner.innerHTML = ""; }
+    else if (ev === "rebajas") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-legal)"; banner.style.color = "var(--neon-legal)"; banner.innerHTML = "📉 ALERTA DE RED: -25% de descuento en la Tienda Legal y Packs."; }
+    else if (ev === "inflacion") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-ilegal)"; banner.style.color = "#ff3366"; banner.innerHTML = "⚠️ RED INESTABLE: +50% de recargo en costes P₠."; }
+    else if (ev === "bonus_pf") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-packs)"; banner.style.color = "var(--neon-packs)"; banner.innerHTML = "🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!"; }
+}
+
+function redibujarConsolaAdminMaster() {
+    document.getElementById('chk-open-legal').checked = baseDatos.legalOpen !== false;
+    document.getElementById('chk-open-pack').checked = baseDatos.packOpen !== false;
+    document.getElementById('chk-open-illegal').checked = baseDatos.illegalOpen !== false;
+    if (baseDatos.eventoSistema) document.getElementById('adm-evento-economico').value = baseDatos.eventoSistema;
+    actualizarSelectorUsuariosBanco();
+    renderizarAdminArena();
+    let al = document.getElementById('admin-inventario-global'); if (!al) return; al.innerHTML = '';
+    baseDatos.productos.forEach(p => {
+        let esI = p.tienda === 'illegal';
+        al.innerHTML += `<div class="admin-card-inner"><button class="btn-delete-admin" onclick="eliminarProductoMaster(${p.id})">X</button><div style="color:#fff; font-size:13px;">${p.icon} ${p.nombre} [${p.tienda.toUpperCase()}]</div><div class="admin-edit-row"><div class="admin-edit-field"><label>Coste Base</label><input type="number" value="${esI ? p.precioPf : p.precio}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, '${esI ? 'precioPf' : 'precio'}', this.value)"></div><div class="admin-edit-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, 'stock', this.value)"></div></div></div>`;
+    });
+}
+
+window.invocarTerminalMercader = function() {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") { alert("ERROR CRÍTICO: Credenciales no detectadas."); return; }
+    document.getElementById('pantalla-admin-master').style.display = 'block'; redibujarConsolaAdminMaster();
+};
+
+window.apagarTerminalMercader = function() { document.getElementById('pantalla-admin-master').style.display = 'none'; };
+
+window.comprarObjetoGamer = function(id) {
+    if (!userSesion) return;
+    let u = baseDatos.jugadores[userSesion]; let p = baseDatos.productos.find(prod => prod.id === id);
+    if (!p || p.stock <= 0) return alert("Objeto no disponible o sin stock.");
+    if (u.comprasDisponibles <= 0) return alert("No te quedan compras disponibles en este periodo.");
+    let ev = baseDatos.eventoSistema || "normal";
+    let precioFinalCalculado = p.precio; let bonoPfCalculado = p.pf || 0;
+    if (p.tienda !== 'illegal') {
+        if (ev === 'rebajas') precioFinalCalculado = Math.round(p.precio * 0.75);
+        else if (ev === 'inflacion') precioFinalCalculado = Math.round(p.precio * 1.50);
+        if (ev === 'bonus_pf') bonoPfCalculado = (p.pf || 0) * 2;
+    }
+    let txtCoste = p.tienda === 'illegal' ? `${p.precioPf} PF` : `${precioFinalCalculado} P₠`;
+    if (!confirm(`¿Deseas adquirir ${p.nombre} por ${txtCoste}?`)) return;
+    let txtBitacora = "";
+    if (p.tienda === 'illegal') {
+        if (u.pf < p.precioPf) return alert("No tienes suficientes PF.");
+        u.pf -= p.precioPf; txtBitacora = `Adquirió módulo prohibido: ${p.icon} '${p.nombre}' por ${p.precioPf} PF.`;
+    } else {
+        if (u.dinero < precioFinalCalculado) return alert("No tienes suficiente dinero.");
+        u.dinero -= precioFinalCalculado; u.pf += bonoPfCalculado;
+        txtBitacora = `Adquirió: ${p.icon} '${p.nombre}' por ${precioFinalCalculado} P₠ (+${bonoPfCalculado} PF).`;
+    }
+    p.stock--; u.comprasDisponibles--;
+    if (!u.inventario) u.inventario = [];
+    u.inventario.push({ uid: "item_" + Date.now() + Math.floor(Math.random() * 100), nombre: p.nombre, icon: p.icon, fecha: new Date().toLocaleDateString() });
+    inyectarEntradaDiarioAutomatica(txtBitacora); guardarBD(); alert(`¡Has adquirido ${p.nombre}!`);
+};
+
+window.consumirObjetoMochilaGamer = function(itemUid, itemNombre, itemIcon) {
+    if (!userSesion || !baseDatos.jugadores[userSesion]) return;
+    let u = baseDatos.jugadores[userSesion]; if (!u.inventario) return;
+    let index = u.inventario.findIndex(i => i.uid === itemUid);
+    if (index !== -1) {
+        u.inventario.splice(index, 1);
+        inyectarEntradaDiarioAutomatica(`Utilizó el objeto ${itemIcon} '${itemNombre}'. Consumido.`);
+        guardarBD(); alert(`Has usado '${itemNombre}'.`);
+    } else { alert("Error al procesar el objeto."); }
+};
+
+window.renderizarVisorRivalPublico = function() {
+    let selector = document.getElementById('red-select-jugador'); let target = selector.value;
+    let box = document.getElementById('red-visor-dinamico'); if (!box) return; box.innerHTML = '';
+    if (!target || !baseDatos.jugadores[target]) { box.innerHTML = '<div style="color:var(--texto-secundario); padding:20px; grid-column:span 2; text-align:center;">Selecciona un terminal activo.</div>'; return; }
+    let r = baseDatos.jugadores[target];
+    let statusTexto = r.lockeStatus === 'ganado' ? '🏆 GANADO' : (r.lockeStatus === 'perdido' ? '💀 PERDIDO' : '⏳ EN CURSO');
+    let htmlPerfil = `<div style="background:#0f1422; border:1px solid #1e293b; padding:15px; border-radius:8px; height:fit-content;"><h4 style="margin:0 0 10px 0; font-family:'Orbitron'; color:var(--neon-intercambio); font-size:14px;">ESTADO: ${escaparHTML(target.toUpperCase())}</h4><div style="font-size:12px; margin-bottom:6px;">REPUTACIÓN: <span style="color:var(--neon-packs); font-weight:bold;">${r.pf || 0} PF</span></div><div style="font-size:12px; margin-bottom:6px;">VIDAS: <span style="color:#ef4444; font-weight:bold;">❤️ ${r.vidasActuales || 0}/${r.vidasTotales || 20}</span></div><div style="font-size:12px; margin-bottom:6px;">DESAFÍO: <span style="color:#fff;">${statusTexto}</span></div><div style="font-size:12px; margin-bottom:6px;">MEDALLAS: <span style="color:var(--neon-legal);">${r.numMedallas || 0}/8</span></div><div style="font-size:12px;">TORNEOS: <span style="color:#fff;">${r.torneos || 0}</span></div></div>`;
+    let slotSelectHTML = `<select id="red-visor-slot-team" onchange="renderizarSubRanuraRivalShowdown('${target}')" style="background:#060914; color:#fff; padding:4px; border-radius:4px; font-size:11px; margin-bottom:8px; width:100%;">`;
+    for (let i = 1; i <= 10; i++) slotSelectHTML += `<option value="${i}">Equipo ${i}</option>`;
+    slotSelectHTML += `</select>`;
+    let deadHTML = `<div style="margin-top:15px; border-top:1px solid #1e293b; padding-top:12px;"><h5 style="margin:0 0 8px 0; font-family:'Orbitron'; color:#ef4444; font-size:12px;">💀 Cementerio</h5>`;
+    if (!r.cementerio || r.cementerio.length === 0) { deadHTML += `<div style="font-size:11px; color:var(--texto-secundario); font-style:italic;">Sin bajas registradas.</div>`; }
+    else { deadHTML += `<div class="rival-dead-grid">`; r.cementerio.forEach(b => { deadHTML += `<div class="rival-dead-card"><div class="rival-dead-title">💀 ${escaparHTML(b.nombre)}</div><div class="rival-dead-meta">Caído en: ${escaparHTML(b.ruta)}</div><div class="rival-dead-meta">Fecha: ${escaparHTML(b.fecha)}</div><div class="rival-dead-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`; }); deadHTML += `</div>`; }
+    deadHTML += `</div>`;
+    let htmlEquipos = `<div style="background:#0f1422; border:1px solid #1e293b; padding:15px; border-radius:8px;"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;"><h4 style="margin:0; font-family:'Orbitron'; color:#fff; font-size:13px;">SHOWDOWN</h4><div style="width:140px;">${slotSelectHTML}</div></div><div id="red-visor-pokes-area"></div>${deadHTML}</div>`;
+    box.innerHTML = htmlPerfil + htmlEquipos;
+    renderizarSubRanuraRivalShowdown(target);
+};
+
+window.renderizarSubRanuraRivalShowdown = function(targetUser) {
+    let slotIdx = parseInt(document.getElementById('red-visor-slot-team').value) - 1;
+    let r = baseDatos.jugadores[targetUser];
+    let area = document.getElementById('red-visor-pokes-area'); if (!area) return;
+    let rawTeam = (r.showdownEquipos && r.showdownEquipos[slotIdx]) ? r.showdownEquipos[slotIdx] : "Sin datos";
+    area.innerHTML = renderizamientoInternoShowdownPlano(rawTeam);
+};
+
+function limpiarNombrePokemonParaUrl(lineaRaw) {
+    let nombre = lineaRaw.split('@')[0].trim();
+    nombre = nombre.replace(/\(.*?\)/g, '').trim();
+    nombre = nombre.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    return nombre;
+}
+
+function renderizamientoInternoShowdownPlano(rawShowdown) {
+    if (!rawShowdown || rawShowdown === "Sin datos" || !rawShowdown.trim()) return '<span style="color:var(--texto-secundario);">No hay datos de Showdown.</span>';
+    let pokesRaw = rawShowdown.split(/\n\s*\n/);
+    let html = '<div class="red-visor-pokes-grid-custom">';
+    pokesRaw.forEach(bloque => {
+        let lineas = bloque.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        if (lineas.length === 0) return;
+        let nom = lineas[0].split('@')[0].trim();
+        let apiName = limpiarNombrePokemonParaUrl(lineas[0]);
+        let urlGif = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${apiName}.gif`;
+        html += `<div class="rival-poke-mini-card"><img src="${urlGif}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; this.onerror=null;"><div class="rival-poke-mini-name">${escaparHTML(nom.split('(')[0].trim())}</div></div>`;
+    });
+    html += '</div>';
+    return html;
+}
+
+window.parsearYRenderizarShowdown = function() {
+    let raw = document.getElementById('perf-showdown-raw').value;
+    let box = document.getElementById('visualizador-showdown-team');
+    if (!box) return; box.innerHTML = '';
+    if (!raw || !raw.trim()) return;
+    let pokesRaw = raw.split(/\n\s*\n/);
+    pokesRaw.forEach(bloque => {
+        let lineas = bloque.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        if (lineas.length === 0) return;
+        let primeraLinea = lineas[0]; let objeto = "";
+        if (primeraLinea.includes('@')) { let p = primeraLinea.split('@'); objeto = p[1].trim(); primeraLinea = p[0].trim(); }
+        let nombreMuestra = primeraLinea;
+        let apiName = limpiarNombrePokemonParaUrl(primeraLinea);
+        let urlGif = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${apiName}.gif`;
+        let moves = []; lineas.forEach(l => { if (l.startsWith('-')) moves.push(l.replace('-', '').trim()); });
+        let movesHTML = moves.map(m => `<div style="color:var(--texto-secundario); font-size:11px;">• ${escaparHTML(m)}</div>`).join('');
+        let txtObj = objeto ? `<div style="color:var(--neon-packs); font-size:11px; font-weight:bold;">Item: ${escaparHTML(objeto)}</div>` : '';
+        box.innerHTML += `<div class="poke-card-showdown"><div class="poke-card-gif-box"><img src="${urlGif}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; this.onerror=null;"></div><div class="poke-card-info"><div class="poke-card-name">${escaparHTML(nombreMuestra)}</div>${txtObj}<div style="margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:2px;">${movesHTML}</div></div></div>`;
+    });
+};
+
+function renderInitializeLoaders() {
+    renderAparadorPublico('legal', 'contenedor-legal-view', baseDatos.legalOpen);
+    renderAparadorPublico('pack', 'contenedor-pack-view', baseDatos.packOpen);
+    renderAparadorPublico('illegal', 'contenedor-hacker-view', baseDatos.illegalOpen);
+}
+
+function refrescarPantallaGamer() {
+    if (!userSesion || !baseDatos.jugadores[userSesion]) return;
+    let u = baseDatos.jugadores[userSesion];
+    document.getElementById('usr-nombre').innerText = userSesion.toUpperCase();
+    document.getElementById('usr-dinero').innerText = u.dinero;
+    document.getElementById('usr-pf').innerText = u.pf;
+    document.getElementById('usr-compras').innerText = `${u.comprasDisponibles}/${MAX_COMPRAS}`;
+    let invBox = document.getElementById('lista-inventario'); invBox.innerHTML = '';
+    let itemsFiltrados = u.inventario ? u.inventario.filter(i => i.uid !== "init") : [];
+    if (itemsFiltrados.length === 0) { invBox.innerHTML = '<span style="color:var(--texto-secundario); font-size:12px;">Mochila vacía.</span>'; }
+    else { itemsFiltrados.forEach(i => { invBox.innerHTML += `<div class="mochila-item-tag" title="Adquirido el: ${escaparHTML(i.fecha)}"><span>${escaparHTML(i.icon) || '📦'} ${escaparHTML(i.nombre)}</span><button class="btn-usar-item" onclick="consumirObjetoMochilaGamer('${i.uid}', '${escaparHTML(i.nombre)}', '${escaparHTML(i.icon) || '📦'}')">Usar</button></div>`; }); }
+    let receptorSelect = document.getElementById('int-select-receptor'); let redSelectRival = document.getElementById('red-select-jugador');
+    if (receptorSelect && redSelectRival) {
+        let currentFav = receptorSelect.value; let currentRival = redSelectRival.value;
+        receptorSelect.innerHTML = ''; redSelectRival.innerHTML = '<option value="">-- SELECCIONAR RIVAL --</option>';
+        Object.keys(baseDatos.jugadores).forEach(id => {
+            redSelectRival.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+            if (id !== userSesion) receptorSelect.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+        });
+        if (currentFav) receptorSelect.value = currentFav;
+        if (currentRival) redSelectRival.value = currentRival;
+    }
+    renderInitializeLoaders();
+}
+
+function renderAparadorPublico(tiendaTipo, contenedorId, estaAbierta) {
+    let box = document.getElementById(contenedorId); if (!box) return; box.innerHTML = '';
+    if (estaAbierta === false) { box.innerHTML = `<div class="tienda-cerrada-msg">🔒 Red Cerrada temporalmente por el Administrador</div>`; return; }
+    let prods = baseDatos.productos.filter(p => { let mt = p.tienda === tiendaTipo; if (tiendaTipo === 'legal' && filtroCategoriaGlobal !== "") return mt && p.cat === filtroCategoriaGlobal; return mt; });
+    if (prods.length === 0) { box.innerHTML = `<div style="text-align:center; color:var(--texto-secundario); padding:30px;">No hay artículos disponibles.</div>`; return; }
+    let ev = baseDatos.eventoSistema || "normal"; let htmlGrid = '<div class="items-grid">';
+    prods.forEach(p => {
+        let esI = p.tienda === 'illegal'; let precioFinal = p.precio; let bonoPf = p.pf || 0; let estiloColorPrecio = "color: #fff;";
+        if (!esI) { if (ev === 'rebajas') { precioFinal = Math.round(p.precio * 0.75); estiloColorPrecio = "color: var(--neon-legal); font-weight: 900;"; } else if (ev === 'inflacion') { precioFinal = Math.round(p.precio * 1.50); estiloColorPrecio = "color: #ff3366; font-weight: 900;"; } if (ev === 'bonus_pf') bonoPf = (p.pf || 0) * 2; }
+        let txtCoste = esI ? `${p.precioPf} PF` : `${precioFinal} P₠`;
+        let txtBonoDisplay = (!esI && bonoPf > 0) ? `<div style="font-size:10px; color:var(--neon-ilegal); margin-top:2px;">+${bonoPf} PF (Bono)</div>` : '';
+        let txtDetalle = p.desc ? `<div class="item-desc">${escaparHTML(p.desc)}</div>` : '';
+        let txtEstrat = p.estrategia ? `<div class="item-estrategia">💡 ${escaparHTML(p.estrategia)}</div>` : '';
+        let txtCat = p.cat ? `<div class="categoria-tag">${escaparHTML(p.cat)}</div>` : '';
+        let deshabilitado = p.stock <= 0 ? 'disabled' : '';
+        let txtBoton = p.stock <= 0 ? 'AGOTADO' : `ADQUIRIR (${txtCoste})`;
+        let claseAgotado = p.stock <= 0 ? 'agotado' : '';
+        htmlGrid += `<div class="item-card ${claseAgotado}"><div>${txtCat}<div class="item-icon">${escaparHTML(p.icon)}</div><div class="item-titulo">${escaparHTML(p.nombre)}</div>${txtDetalle}${txtEstrat}</div><div><div style="font-size:11px; margin-bottom:8px; font-family:'Orbitron'; ${estiloColorPrecio}">PRECIO: ${txtCoste} ${txtBonoDisplay}</div><div style="font-size:11px; color:var(--texto-secundario); margin-bottom:8px; font-family:'Orbitron'">STOCK: ${p.stock}</div><button class="btn-accion" ${deshabilitado} onclick="comprarObjetoGamer(${p.id})">${txtBoton}</button></div></div>`;
+    });
+    htmlGrid += '</div>'; box.innerHTML = htmlGrid;
+}
+
+window.publicarPropuestaIntercambio = function() {
+    if (!userSesion) return; let u = baseDatos.jugadores[userSesion];
+    let ofreceTxt = document.getElementById('int-txt-ofrece').value.trim();
+    let pideTxt = document.getElementById('int-txt-pide').value.trim();
+    let escrowPf = parseInt(document.getElementById('int-num-escrow').value) || 0;
+    let receptorId = document.getElementById('int-select-receptor').value;
+    if (!ofreceTxt || !pideTxt) return alert("Rellena ambos campos.");
+    if (!receptorId) return alert("Selecciona un destinatario.");
+    if (u.pf < escrowPf) return alert(`Necesitas ${escrowPf} PF para la fianza.`);
+    u.pf -= escrowPf;
+    let tradeId = "trade_" + Date.now();
+    if (!baseDatos.intercambios) baseDatos.intercambios = {};
+    baseDatos.intercambios[tradeId] = { id: tradeId, proponente: userSesion, receptor: receptorId, ofrece: ofreceTxt, pide: pideTxt, depositoEscrow: escrowPf, estado: "evaluacion", votosSi: 0, votosNo: 0, registroVotos: { init: true } };
+    guardarBD(); document.getElementById('int-txt-ofrece').value = ''; document.getElementById('int-txt-pide').value = '';
+    alert(`Propuesta enviada. ${escrowPf} PF retenidos como aval.`);
+};
+
+window.votarIntercambio = function(tradeId, tipoVoto) {
+    if (!userSesion) return; let t = baseDatos.intercambios[tradeId]; if (!t) return;
+    if (!t.registroVotos) t.registroVotos = {};
+    if (t.registroVotos[userSesion]) return alert("Ya has emitido un veredicto.");
+    t.registroVotos[userSesion] = tipoVoto;
+    if (tipoVoto === 'SI') t.votosSi = (t.votosSi || 0) + 1;
+    if (tipoVoto === 'NO') t.votosNo = (t.votosNo || 0) + 1;
+    guardarBD();
+};
+
+window.resolverIntercambio = function(tradeId, resultado) {
+    let t = baseDatos.intercambios[tradeId]; if (!t) return;
+    let p = baseDatos.jugadores[t.proponente]; let r = baseDatos.jugadores[t.receptor];
+    let deposito = parseInt(t.depositoEscrow) || 0;
+    if (resultado === 'EXITOSO') {
+        if (r) r.pf = (parseInt(r.pf) || 0) + deposito;
+        t.estado = "completado";
+        inyectarEntradaDiarioAutomatica(`TRUEQUE COMPLETADO CON ${t.receptor.toUpperCase()}: Entregó ${t.ofrece} | Recibió ${t.pide}`);
+        alert("Trueque ejecutado. PF transferidos al receptor.");
+    } else { if (p) p.pf = (parseInt(p.pf) || 0) + deposito; t.estado = "fallido"; alert("Trueque cancelado. PF devueltos."); }
+    guardarBD();
+};
+
+function actualizarListaIntercambiosDOM() {
+    let box = document.getElementById('contenedor-intercambios-activos'); if (!box) return; box.innerHTML = '';
+    if (!baseDatos.intercambios || Object.keys(baseDatos.intercambios).length === 0) { box.innerHTML = `<div style="color:var(--texto-secundario); font-size:13px; padding:15px; text-align:center;">No hay operaciones en curso.</div>`; return; }
+    Object.keys(baseDatos.intercambios).forEach(id => {
+        let t = baseDatos.intercambios[id]; if (t.estado !== "evaluacion") return;
+        let yaVoto = t.registroVotos && t.registroVotos[userSesion]; let esCreador = t.proponente === userSesion;
+        let textoOfrece = t.ofrece || "Objeto"; let textoPide = t.pide || "Especificado por chat";
+        box.innerHTML += `<div class="intercambio-card"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;"><span style="font-family:'Orbitron'; font-size:12px; color:var(--neon-intercambio)">PROPUESTA: ${escaparHTML(t.proponente.toUpperCase())} ➡️ ${escaparHTML(t.receptor.toUpperCase())}</span><div><span class="votos-escrow" style="font-family:'Orbitron'; font-size:11px;">🛡️ Aval: ${t.depositoEscrow} PF</span><span class="votos-si">👍 SÍ: ${t.votosSi || 0}</span><span class="votos-no">👎 NO: ${t.votosNo || 0}</span></div></div><div style="font-size:13px; color:#fff; margin-bottom:12px; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px; border:1px solid #1e293b; display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><span style="color:var(--neon-legal); font-weight:bold; display:block; font-size:10px; text-transform:uppercase;">🎁 Ofrece:</span>${escaparHTML(textoOfrece)}</div><div style="border-left:1px dashed #2d3d5a; padding-left:10px;"><span style="color:var(--neon-packs); font-weight:bold; display:block; font-size:10px; text-transform:uppercase;">➡️ A cambio de:</span>${escaparHTML(textoPide)}</div></div><div style="display:flex; gap:10px;"><button class="btn-accion" style="padding:6px; background:#064e3b; border-color:#10b981; color:#10b981; width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'SI')">👍 Votar SÍ</button><button class="btn-accion" style="padding:6px; background:#7f1d1d; border-color:#f87171; color:#f87171; width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'NO')">👎 Votar NO</button>${esCreador ? `<div style="margin-left:auto; display:flex; gap:5px;"><button class="btn-accion" style="padding:6px; background:#1e3a8a; border-color:#60a5fa; color:#60a5fa; width:auto; font-size:11px;" onclick="resolverIntercambio('${t.id}', 'EXITOSO')">✔️ EJECUTAR</button><button class="btn-accion" style="padding:6px; background:#4c1d1d; border-color:#ef4444; color:#ef4444; width:auto; font-size:11px;" onclick="resolverIntercambio('${t.id}', 'FALLIDO')">❌ CANCELAR</button></div>` : ''}</div></div>`;
+    });
+}
+</script>
+</body>
+</html>
