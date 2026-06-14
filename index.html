@@ -525,34 +525,129 @@
         select { -webkit-appearance: none; appearance: none; }
 
         /* ═══════════════════════════════════════
-           BARRA DE VIDA — NUEVO
+           BARRA DE VIDA — ESTILO POKÉMON
         ═══════════════════════════════════════ */
+
+        /* Panel HP estilo pantalla de batalla */
+        .hp-panel {
+            background: #0d0d18;
+            border: 2px solid #1e1e30;
+            border-radius: var(--r-lg);
+            padding: 16px 20px 14px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Detalle lateral izquierdo — evoca el borde de color del panel de stats */
+        .hp-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, var(--neon-ilegal), transparent);
+            opacity: .5;
+        }
+
+        .hp-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+        .hp-tag {
+            font-family: var(--font-display);
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--txt-muted);
+            text-transform: uppercase;
+        }
+        .hp-numeros {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            line-height: 1;
+            transition: color .4s ease;
+        }
+
+        /* Contenedor barra */
         .vida-barra-contenedor {
             width: 100%;
-            background: var(--gris-800);
-            border-radius: 99px;
-            height: 18px;
+            background: #060610;
+            border-radius: 3px;
+            height: 20px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,.06);
             position: relative;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,.8);
         }
+        /* Segmentos internos — píxeles estilo GBA */
+        .vida-barra-contenedor::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 9px,
+                rgba(0,0,0,.3) 9px,
+                rgba(0,0,0,.3) 10px
+            );
+            z-index: 2;
+            pointer-events: none;
+        }
+
         .vida-barra-fill {
             height: 100%;
-            border-radius: 99px;
-            transition: width .5s cubic-bezier(.4,0,.2,1), background .4s ease;
+            border-radius: 2px;
+            transition: width .7s cubic-bezier(.4,0,.2,1), background .5s ease;
             position: relative;
         }
+        /* Brillo superior sprite */
         .vida-barra-fill::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(180deg, rgba(255,255,255,.15) 0%, transparent 100%);
-            border-radius: 99px;
+            top: 0; left: 0; right: 0;
+            height: 45%;
+            background: rgba(255,255,255,.2);
+            border-radius: 2px 2px 0 0;
         }
-        .vida-barra-fill.vidas-altas  { background: linear-gradient(90deg, #00c896, #34d399); }
-        .vida-barra-fill.vidas-medias { background: linear-gradient(90deg, #f5c518, #fbbf24); }
-        .vida-barra-fill.vidas-bajas  { background: linear-gradient(90deg, #cc2b2b, #e63946); }
-        .vida-barra-fill.vidas-cero   { background: var(--gris-600); }
+
+        .vida-barra-fill.vidas-altas {
+            background: linear-gradient(180deg, #00e87a 0%, #00c864 45%, #008c46 100%);
+            box-shadow: 0 0 14px rgba(0,200,100,.5), 0 0 4px rgba(0,232,122,.3);
+        }
+        .vida-barra-fill.vidas-medias {
+            background: linear-gradient(180deg, #ffe040 0%, #f5c518 45%, #b08a00 100%);
+            box-shadow: 0 0 14px rgba(245,197,24,.4), 0 0 4px rgba(255,224,64,.3);
+        }
+        .vida-barra-fill.vidas-bajas {
+            background: linear-gradient(180deg, #ff5050 0%, #cc2b2b 45%, #8c1a1a 100%);
+            box-shadow: 0 0 14px rgba(204,43,43,.5), 0 0 4px rgba(255,80,80,.3);
+            animation: parpadeo-critico 1s ease-in-out infinite;
+        }
+        .vida-barra-fill.vidas-cero {
+            background: var(--gris-600);
+            box-shadow: none;
+        }
+
+        @keyframes parpadeo-critico {
+            0%, 100% { opacity: 1; box-shadow: 0 0 14px rgba(204,43,43,.5); }
+            50%       { opacity: .55; box-shadow: 0 0 4px rgba(204,43,43,.2); }
+        }
+
+        .hp-pct-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+        }
+        .hp-pct-label {
+            font-size: 9px;
+            color: var(--txt-muted);
+            font-family: var(--font-display);
+            letter-spacing: .5px;
+        }
 
         /* Modal de baja unificado */
         .baja-modal-overlay {
@@ -634,9 +729,6 @@
 
         #int-select-receptor, #int-num-escrow, #red-select-jugador { background: var(--bg-base); color: var(--blanco); border: 1px solid var(--gris-800); padding: 10px 12px; border-radius: var(--r-md); font-size: 13px; width: 100%; transition: border-color .18s; }
         #int-select-receptor:focus, #int-num-escrow:focus, #red-select-jugador:focus { outline: none; border-color: var(--neon-intercambio); }
-
-        #cem-input-nombre, #cem-input-ruta, #cem-input-epitafio { background: var(--bg-base); color: var(--blanco); border: 1px solid var(--gris-800); padding: 8px 10px; border-radius: var(--r-sm); font-size: 12px; width: 100%; transition: border-color .18s; }
-        #cem-input-nombre:focus, #cem-input-ruta:focus, #cem-input-epitafio:focus { outline: none; border-color: var(--rojo-suave); }
 
         #diario-input-texto { border-color: var(--gris-800); }
         #diario-input-texto:focus { border-color: var(--amarillo-dim); }
@@ -746,18 +838,21 @@
             <!-- VIDAS + CEMENTERIO UNIFICADO -->
             <div id="perf-view-vidas" class="perfil-content-view">
 
-                <!-- Barra de vida -->
+                <!-- Barra de vida estilo Pokémon -->
                 <div style="background:var(--bg-base); padding:24px; border-radius:var(--r-lg); border:1px solid var(--gris-800); margin-bottom:20px;">
                     <h4 style="margin:0 0 18px 0; font-family:var(--font-display); font-size:13px; color:var(--neon-ilegal); letter-spacing:.5px;">❤️ CONTADOR DE VIDAS DEL LOCKE</h4>
 
-                    <!-- Barra visual -->
-                    <div style="margin-bottom:20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <span style="font-family:var(--font-display); font-size:10px; color:var(--txt-muted); letter-spacing:.5px; text-transform:uppercase;">Vidas restantes</span>
-                            <span id="perf-vidas-display" style="font-family:var(--font-display); font-size:22px; font-weight:900; color:var(--rojo-suave);">20 / 20</span>
+                    <!-- Panel HP -->
+                    <div class="hp-panel">
+                        <div class="hp-label-row">
+                            <span class="hp-tag">❤️ HP</span>
+                            <span id="perf-vidas-display" class="hp-numeros" style="color:var(--neon-legal);">20 / 20</span>
                         </div>
                         <div class="vida-barra-contenedor">
                             <div id="perf-vida-barra-fill" class="vida-barra-fill vidas-altas" style="width:100%;"></div>
+                        </div>
+                        <div class="hp-pct-row">
+                            <span id="perf-vida-pct" class="hp-pct-label">100%</span>
                         </div>
                     </div>
 
@@ -889,12 +984,11 @@
     </div>
 </div>
 
-<!-- MODAL DE BAJA (nueva) -->
+<!-- MODAL DE BAJA -->
 <div id="baja-modal-overlay" class="baja-modal-overlay">
     <div class="baja-modal-box">
         <h3 style="margin:0 0 6px 0; font-family:var(--font-display); font-size:14px; color:var(--rojo-suave); letter-spacing:.5px;">💀 REGISTRAR BAJA</h3>
         <p style="font-size:11px; color:var(--txt-muted); margin-bottom:20px; font-family:var(--font-display);">Se descontará 1 vida y la baja quedará registrada en el cementerio.</p>
-
         <div style="display:flex; flex-direction:column; gap:12px;">
             <div>
                 <label style="font-size:10px; color:var(--txt-secondary); font-family:var(--font-display); letter-spacing:.5px; text-transform:uppercase; display:block; margin-bottom:5px;">Nombre del Pokémon</label>
@@ -922,7 +1016,6 @@
                 <input type="text" id="baja-epitafio" class="baja-input-custom" placeholder="Ej: Siempre en mi corazón...">
             </div>
         </div>
-
         <div style="display:flex; gap:10px; margin-top:22px;">
             <button onclick="confirmarBaja()" style="flex:1; padding:11px; background:rgba(204,43,43,.1); color:var(--rojo-suave); border:1px solid rgba(204,43,43,.35); cursor:pointer; border-radius:var(--r-md); font-weight:700; font-size:11px; font-family:var(--font-display); text-transform:uppercase; letter-spacing:.5px; transition:all .18s;" onmouseover="this.style.background='rgba(204,43,43,.25)'" onmouseout="this.style.background='rgba(204,43,43,.1)'">💀 CONFIRMAR BAJA</button>
             <button onclick="cerrarModalBaja()" style="padding:11px 18px; background:var(--bg-overlay); color:var(--txt-secondary); border:1px solid var(--gris-800); cursor:pointer; border-radius:var(--r-md); font-weight:700; font-size:11px; font-family:var(--font-display); text-transform:uppercase; letter-spacing:.5px; transition:all .18s;" onmouseover="this.style.borderColor='var(--gris-600)'" onmouseout="this.style.borderColor='var(--gris-800)'">CANCELAR</button>
@@ -974,6 +1067,26 @@
                 <button class="btn-accion" style="background:rgba(0,200,150,.06); border-color:rgba(0,200,150,.35); color:var(--neon-legal); font-size:10px;" onclick="modificarFondosEntrenador('SUMAR')">➕ AÑADIR</button>
                 <button class="btn-accion" style="background:rgba(204,43,43,.06); border-color:rgba(204,43,43,.35); color:var(--rojo-suave); font-size:10px;" onclick="modificarFondosEntrenador('RESTAR')">➖ QUITAR</button>
             </div>
+
+            <hr style="border:none; border-top:1px solid var(--gris-800); margin:16px 0;">
+
+            <!-- ══════════════════════════════════
+                 NUEVO: AJUSTAR VIDAS DESDE ADMIN
+            ══════════════════════════════════ -->
+            <h3 style="color:var(--rojo-suave); margin:0 0 10px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">❤️ AJUSTAR VIDAS</h3>
+            <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:5px; text-transform:uppercase;">Entrenador:</label>
+            <select id="adm-vidas-usuario" style="margin-bottom:10px; text-transform:uppercase;"></select>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+                <div>
+                    <label style="font-size:9px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px; text-transform:uppercase;">Vidas Iniciales:</label>
+                    <input type="number" id="adm-vidas-iniciales" class="admin-input-custom" min="1" value="20" style="color:var(--neon-legal); font-weight:700;">
+                </div>
+                <div>
+                    <label style="font-size:9px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px; text-transform:uppercase;">Vidas Actuales:</label>
+                    <input type="number" id="adm-vidas-actuales" class="admin-input-custom" min="0" value="20" style="color:var(--rojo-suave); font-weight:700;">
+                </div>
+            </div>
+            <button class="btn-accion" style="background:rgba(204,43,43,.06); border-color:rgba(204,43,43,.35); color:var(--rojo-suave); font-size:10px; margin-bottom:20px;" onclick="ajustarVidasEntrenador()">❤️ APLICAR CAMBIO DE VIDAS</button>
 
             <hr style="border:none; border-top:1px solid var(--gris-800); margin:16px 0;">
 
@@ -1062,7 +1175,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAgN5I8-o1WpWXfRq96FZXCF8ELmdC-ghw",
@@ -1118,12 +1231,6 @@ function escaparHTML(str) {
     return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
 }
 
-function limpiarTextoPokemon(textoSucio) {
-    let textoLimpio = textoSucio.replace(/<[^>]*>/g, '');
-    textoLimpio = textoLimpio.replace(/https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp)/gi, '');
-    return textoLimpio.trim();
-}
-
 onValue(ref(db, 'silph_co_market'), (snapshot) => {
     const data = snapshot.val();
     if (data) {
@@ -1147,6 +1254,12 @@ onValue(ref(db, 'silph_co_market'), (snapshot) => {
         actualizarBannerAlertasVisuales();
         renderizarArenaPublica();
 
+        // Actualizar barra de vida en tiempo real si está visible
+        if (document.getElementById('perf-view-vidas').classList.contains('active')) {
+            actualizarBarraVidasDesdeDB();
+            renderizarCementerioDOM();
+        }
+
         const bBall = document.getElementById('btn-master-pokeball');
         if (bBall) bBall.style.display = (userSesion.toLowerCase() === "srwiwa") ? "block" : "none";
 
@@ -1164,7 +1277,7 @@ onValue(ref(db, 'silph_co_market'), (snapshot) => {
 function guardarBD() { set(ref(db, 'silph_co_market'), baseDatos); }
 
 // ═══════════════════════════════════════════
-// MODAL DE BAJA UNIFICADO
+// MODAL DE BAJA
 // ═══════════════════════════════════════════
 
 window.abrirModalBaja = function() {
@@ -1181,77 +1294,66 @@ window.cerrarModalBaja = function() {
 };
 
 window.confirmarBaja = function() {
-    let nombre = document.getElementById('baja-nombre').value.trim();
-    let mote = document.getElementById('baja-mote').value.trim();
-    let motivo = document.getElementById('baja-motivo').value;
-    let lugar = document.getElementById('baja-lugar').value.trim();
+    let nombre  = document.getElementById('baja-nombre').value.trim();
+    let mote    = document.getElementById('baja-mote').value.trim();
+    let motivo  = document.getElementById('baja-motivo').value;
+    let lugar   = document.getElementById('baja-lugar').value.trim();
     let epitafio = document.getElementById('baja-epitafio').value.trim();
 
     if (!nombre) return alert("El nombre del Pokémon es requerido.");
-    if (!lugar) return alert("Indica el lugar o rival de la caída.");
+    if (!lugar)  return alert("Indica el lugar o rival de la caída.");
 
     let u = baseDatos.jugadores[userSesion];
-
-    // Descontar vida
     let vidasActuales = (u.vidasActuales !== undefined) ? u.vidasActuales : (u.vidasTotales || 20);
     if (vidasActuales > 0) vidasActuales--;
     u.vidasActuales = vidasActuales;
     if (vidasActuales <= 0) u.lockeStatus = 'perdido';
 
-    // Construir nombre con mote
     let nombreCompleto = mote ? `${nombre} "${mote}"` : nombre;
-    let rutaCompleta = `[${motivo}] ${lugar}`;
+    let rutaCompleta   = `[${motivo}] ${lugar}`;
 
-    // Registrar en cementerio
     if (!u.cementerio) u.cementerio = [];
-    u.cementerio.push({
-        nombre: nombreCompleto,
-        ruta: rutaCompleta,
-        epitafio: epitafio || "Sin últimas palabras.",
-        fecha: new Date().toLocaleDateString()
-    });
+    u.cementerio.push({ nombre: nombreCompleto, ruta: rutaCompleta, epitafio: epitafio || "Sin últimas palabras.", fecha: new Date().toLocaleDateString() });
 
-    // Entrada en diario
     inyectarEntradaDiarioAutomatica(`💀 RIP: '${nombreCompleto}' cayó ante ${rutaCompleta}. Últimas palabras: "${epitafio || '...'}"`);
-
     guardarBD();
     cerrarModalBaja();
-
-    // Actualizar barra en DOM
-    actualizarBarraVidasDesdeDB();
-    renderizarCementerioDOM();
-
     alert(`💀 ${nombreCompleto} ha sido añadido al cementerio.\n❤️ Vidas restantes: ${vidasActuales}`);
 };
 
 // ═══════════════════════════════════════════
-// BARRA DE VIDA
+// BARRA DE VIDA — ESTILO POKÉMON
 // ═══════════════════════════════════════════
 
 window.actualizarBarraVidas = function() {
+    if (!userSesion || !baseDatos.jugadores[userSesion]) return;
+    let u = baseDatos.jugadores[userSesion];
     let iniciales = parseInt(document.getElementById('perf-vidas-iniciales').value) || 20;
-    let actuales = parseInt(document.getElementById('perf-txt-vidas') ? document.getElementById('perf-txt-vidas').innerText : iniciales) || 0;
+    let actuales  = (u.vidasActuales !== undefined) ? u.vidasActuales : iniciales;
     _renderizarBarra(actuales, iniciales);
 };
 
 function actualizarBarraVidasDesdeDB() {
     if (!userSesion || !baseDatos.jugadores[userSesion]) return;
     let u = baseDatos.jugadores[userSesion];
-    let iniciales = u.vidasTotales || 20;
-    let actuales = (u.vidasActuales !== undefined) ? u.vidasActuales : iniciales;
+    let iniciales = u.vidasTotales  || 20;
+    let actuales  = (u.vidasActuales !== undefined) ? u.vidasActuales : iniciales;
+    // Sincronizar el input de iniciales con la BD
+    let inputIni = document.getElementById('perf-vidas-iniciales');
+    if (inputIni) inputIni.value = iniciales;
     _renderizarBarra(actuales, iniciales);
 }
 
 function _renderizarBarra(actuales, iniciales) {
-    let fill = document.getElementById('perf-vida-barra-fill');
+    let fill    = document.getElementById('perf-vida-barra-fill');
     let display = document.getElementById('perf-vidas-display');
+    let pctLbl  = document.getElementById('perf-vida-pct');
     if (!fill || !display) return;
 
     let pct = iniciales > 0 ? Math.max(0, Math.min(100, (actuales / iniciales) * 100)) : 0;
     fill.style.width = pct + '%';
-
-    // Color según porcentaje
     fill.className = 'vida-barra-fill';
+
     if (actuales <= 0) {
         fill.classList.add('vidas-cero');
         display.style.color = 'var(--gris-600)';
@@ -1267,7 +1369,44 @@ function _renderizarBarra(actuales, iniciales) {
     }
 
     display.innerText = `${actuales} / ${iniciales}`;
+    if (pctLbl) pctLbl.innerText = Math.round(pct) + '%';
 }
+
+// ═══════════════════════════════════════════
+// ADMIN — AJUSTAR VIDAS (NUEVO, CON FIREBASE)
+// ═══════════════════════════════════════════
+
+window.ajustarVidasEntrenador = function() {
+    if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
+    let userId       = document.getElementById('adm-vidas-usuario').value;
+    let nuevasIni    = parseInt(document.getElementById('adm-vidas-iniciales').value) || 20;
+    let nuevasAct    = parseInt(document.getElementById('adm-vidas-actuales').value);
+    if (!userId) return alert("Selecciona un entrenador.");
+    if (isNaN(nuevasAct)) return alert("Introduce las vidas actuales.");
+
+    // Clampear: actuales nunca mayor que iniciales ni negativas
+    nuevasAct = Math.max(0, Math.min(nuevasAct, nuevasIni));
+
+    baseDatos.jugadores[userId].vidasTotales  = nuevasIni;
+    baseDatos.jugadores[userId].vidasActuales = nuevasAct;
+    if (nuevasAct <= 0) baseDatos.jugadores[userId].lockeStatus = 'perdido';
+
+    // Entrada automática en el diario del entrenador afectado
+    inyectarEntradaDiarioAutomaticaPara(userId, `[ADMIN] El Mercader ajustó tus vidas → ❤️ ${nuevasAct}/${nuevasIni}`);
+
+    // Guardar en Firebase — se propaga en tiempo real a todos
+    guardarBD();
+    alert(`✅ ${userId.toUpperCase()}: vidas ajustadas a ${nuevasAct}/${nuevasIni}`);
+};
+
+// Carga los datos del jugador seleccionado en los inputs de vidas admin
+window.cargarVidasEnAdmin = function() {
+    let userId = document.getElementById('adm-vidas-usuario').value;
+    if (!userId || !baseDatos.jugadores[userId]) return;
+    let u = baseDatos.jugadores[userId];
+    document.getElementById('adm-vidas-iniciales').value = u.vidasTotales  || 20;
+    document.getElementById('adm-vidas-actuales').value  = (u.vidasActuales !== undefined) ? u.vidasActuales : (u.vidasTotales || 20);
+};
 
 // ═══════════════════════════════════════════
 // ARENA DE APUESTAS
@@ -1275,9 +1414,9 @@ function _renderizarBarra(actuales, iniciales) {
 
 window.crearCombateArena = function() {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
-    let jugA = document.getElementById('adm-arena-jugador-a').value;
-    let jugB = document.getElementById('adm-arena-jugador-b').value;
-    let desc = document.getElementById('adm-arena-descripcion').value.trim();
+    let jugA  = document.getElementById('adm-arena-jugador-a').value;
+    let jugB  = document.getElementById('adm-arena-jugador-b').value;
+    let desc  = document.getElementById('adm-arena-descripcion').value.trim();
     let limite = parseInt(document.getElementById('adm-arena-limite').value) || 5;
     if (!jugA || !jugB) return alert("Selecciona los dos jugadores.");
     if (jugA === jugB) return alert("Los dos jugadores deben ser diferentes.");
@@ -1302,12 +1441,11 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
     let c = baseDatos.arena[combateId];
     if (!c) return;
     c.ganador = ganadorLado;
-    c.estado = "resuelto";
+    c.estado  = "resuelto";
     if (!c.apuestas) c.apuestas = {};
     let boteGanadores = ganadorLado === 'A' ? (c.boteA || 0) : (c.boteB || 0);
     let botePerdedores = ganadorLado === 'A' ? (c.boteB || 0) : (c.boteA || 0);
-    let ganadores = [];
-    let perdedores = [];
+    let ganadores = [], perdedores = [];
     Object.keys(c.apuestas).forEach(uid => {
         let ap = c.apuestas[uid];
         if (ap.lado === ganadorLado) ganadores.push({ uid, cantidad: ap.cantidad });
@@ -1320,16 +1458,17 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
             let totalRecibido = g.cantidad + gananciaDePerdedores;
             if (baseDatos.jugadores[g.uid]) {
                 baseDatos.jugadores[g.uid].pf = (baseDatos.jugadores[g.uid].pf || 0) + totalRecibido;
-                let msgLog = gananciaDePerdedores > 0 ? `🎰 ARENA: ¡Apuesta correcta en [${c.descripcion}]! Recuperaste ${g.cantidad} PF + ${gananciaDePerdedores} PF de ganancia. Total recibido: ${totalRecibido} PF.` : `🎰 ARENA: Apuesta correcta en [${c.descripcion}]. No había apuestas contrarias, recuperaste tus ${g.cantidad} PF.`;
+                let msgLog = gananciaDePerdedores > 0
+                    ? `🎰 ARENA: ¡Apuesta correcta en [${c.descripcion}]! Recuperaste ${g.cantidad} PF + ${gananciaDePerdedores} PF de ganancia. Total: ${totalRecibido} PF.`
+                    : `🎰 ARENA: Apuesta correcta en [${c.descripcion}]. No había apuestas contrarias, recuperaste tus ${g.cantidad} PF.`;
                 inyectarEntradaDiarioAutomaticaPara(g.uid, msgLog);
             }
         });
         perdedores.forEach(g => {
-            if (baseDatos.jugadores[g.uid]) {
+            if (baseDatos.jugadores[g.uid])
                 inyectarEntradaDiarioAutomaticaPara(g.uid, `🎰 ARENA: Apuesta perdida en [${c.descripcion}]. Perdiste ${g.cantidad} PF.`);
-            }
         });
-    } else if (ganadores.length === 0 && (perdedores.length > 0 || botePerdedores > 0)) {
+    } else if (ganadores.length === 0 && perdedores.length > 0) {
         perdedores.forEach(g => {
             if (baseDatos.jugadores[g.uid]) {
                 baseDatos.jugadores[g.uid].pf = (baseDatos.jugadores[g.uid].pf || 0) + g.cantidad;
@@ -1338,7 +1477,9 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
         });
     }
     let nombreGanador = ganadorLado === 'A' ? c.jugadorA : c.jugadorB;
-    let resumenMsg = ganadores.length > 0 ? `Ganador: ${nombreGanador.toUpperCase()} | ${botePerdedores} PF del bote repartidos entre ${ganadores.length} acertante(s).` : `Ganador: ${nombreGanador.toUpperCase()} | Nadie apostó al ganador, PF devueltos a los participantes.`;
+    let resumenMsg = ganadores.length > 0
+        ? `Ganador: ${nombreGanador.toUpperCase()} | ${botePerdedores} PF repartidos entre ${ganadores.length} acertante(s).`
+        : `Ganador: ${nombreGanador.toUpperCase()} | Nadie apostó al ganador, PF devueltos.`;
     guardarBD();
     alert(`✅ Combate resuelto.\n${resumenMsg}`);
 };
@@ -1348,12 +1489,11 @@ window.apostarEnCombate = function(combateId, lado) {
     let c = baseDatos.arena[combateId];
     if (!c || c.estado !== "abierto") return alert("Las apuestas para este combate están cerradas.");
     if (c.jugadorA === userSesion || c.jugadorB === userSesion) return alert("No puedes apostar en un combate en el que participas.");
-    if (c.apuestas && c.apuestas[userSesion]) return alert("Ya has apostado en este combate. Solo se permite una apuesta por combate.");
-    let inputId = `arena-input-${combateId}`;
-    let inputEl = document.getElementById(inputId);
+    if (c.apuestas && c.apuestas[userSesion]) return alert("Ya has apostado en este combate.");
+    let inputEl  = document.getElementById(`arena-input-${combateId}`);
     let cantidad = parseInt(inputEl ? inputEl.value : 0) || 0;
     if (cantidad <= 0) return alert("Introduce una cantidad válida de PF.");
-    if (cantidad > c.limitePf) return alert(`La apuesta máxima para este combate es de ${c.limitePf} PF.`);
+    if (cantidad > c.limitePf) return alert(`La apuesta máxima es de ${c.limitePf} PF.`);
     let u = baseDatos.jugadores[userSesion];
     if ((u.pf || 0) < cantidad) return alert(`No tienes suficientes PF. Tienes ${u.pf || 0} PF.`);
     let nombreJugador = lado === 'A' ? c.jugadorA : c.jugadorB;
@@ -1372,9 +1512,9 @@ function inyectarEntradaDiarioAutomaticaPara(uid, textoMsg) {
     if (!baseDatos.jugadores[uid]) return;
     let u = baseDatos.jugadores[uid];
     let d = new Date();
-    let fechaActual = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+    let ts = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
     if (!u.diarioLogs) u.diarioLogs = [];
-    u.diarioLogs.push({ timestamp: fechaActual, texto: textoMsg, text: textoMsg });
+    u.diarioLogs.push({ timestamp: ts, texto: textoMsg, text: textoMsg });
 }
 
 function renderizarArenaPublica() {
@@ -1390,43 +1530,37 @@ function renderizarArenaPublica() {
         let apuestasGanadas = 0, apuestasPerdidas = 0;
         Object.values(baseDatos.arena).forEach(c => {
             if (c.estado === 'resuelto' && c.apuestas && c.apuestas[userSesion]) {
-                let ap = c.apuestas[userSesion];
-                if (ap.lado === c.ganador) apuestasGanadas++;
+                if (c.apuestas[userSesion].lado === c.ganador) apuestasGanadas++;
                 else apuestasPerdidas++;
             }
         });
         statsBox.innerHTML = `<div class="arena-stat-chip">Ganadas: <span>${apuestasGanadas}</span></div><div class="arena-stat-chip">Perdidas: <span>${apuestasPerdidas}</span></div>`;
     }
-    let combates = Object.values(baseDatos.arena).sort((a, b) => { let orden = { abierto: 0, cerrado: 1, resuelto: 2 }; return (orden[a.estado] || 0) - (orden[b.estado] || 0); });
+    let combates = Object.values(baseDatos.arena).sort((a, b) => { let o = { abierto:0, cerrado:1, resuelto:2 }; return (o[a.estado]||0)-(o[b.estado]||0); });
     combates.forEach(c => {
-        let boteTotal = (c.boteA || 0) + (c.boteB || 0);
-        let pctA = boteTotal > 0 ? Math.round(((c.boteA || 0) / boteTotal) * 100) : 50;
-        let pctB = 100 - pctA;
+        let boteTotal = (c.boteA||0)+(c.boteB||0);
+        let pctA = boteTotal > 0 ? Math.round(((c.boteA||0)/boteTotal)*100) : 50;
+        let pctB = 100-pctA;
         let miApuesta = c.apuestas && c.apuestas[userSesion] ? c.apuestas[userSesion] : null;
-        let soyParticipante = c.jugadorA === userSesion || c.jugadorB === userSesion;
-        let badgeHTML = '';
-        if (c.estado === 'abierto') badgeHTML = '<span class="arena-badge-estado arena-badge-abierto">🟢 ABIERTAS</span>';
-        else if (c.estado === 'cerrado') badgeHTML = '<span class="arena-badge-estado arena-badge-cerrado">🔒 CERRADAS</span>';
-        else badgeHTML = '<span class="arena-badge-estado arena-badge-resuelto">✅ RESUELTO</span>';
-        let claseResuelto = c.estado === 'resuelto' ? 'resuelto' : '';
-        let ladoAClase = 'lado-a';
-        let ladoBClase = 'lado-b';
-        if (c.estado === 'resuelto') { ladoAClase += c.ganador === 'A' ? ' ganador' : ' perdedor'; ladoBClase += c.ganador === 'B' ? ' ganador' : ' perdedor'; }
+        let soyParticipante = c.jugadorA===userSesion || c.jugadorB===userSesion;
+        let badgeHTML = c.estado==='abierto' ? '<span class="arena-badge-estado arena-badge-abierto">🟢 ABIERTAS</span>' : c.estado==='cerrado' ? '<span class="arena-badge-estado arena-badge-cerrado">🔒 CERRADAS</span>' : '<span class="arena-badge-estado arena-badge-resuelto">✅ RESUELTO</span>';
+        let ladoAClase = 'lado-a', ladoBClase = 'lado-b';
+        if (c.estado==='resuelto') { ladoAClase += c.ganador==='A' ? ' ganador' : ' perdedor'; ladoBClase += c.ganador==='B' ? ' ganador' : ' perdedor'; }
         let apostarHTML = '';
-        if (c.estado === 'abierto' && !soyParticipante) {
-            if (miApuesta) { let ladoApuestado = miApuesta.lado === 'A' ? c.jugadorA : c.jugadorB; apostarHTML = `<div class="arena-mis-apuestas">✅ Apostaste ${miApuesta.cantidad} PF a ${escaparHTML(ladoApuestado.toUpperCase())}</div>`; }
-            else { apostarHTML = `<div class="arena-apostar-row"><span style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.3px;">APUESTA (máx. ${c.limitePf} PF):</span><input type="number" id="arena-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1"><button class="btn-apostar-a" onclick="apostarEnCombate('${c.id}', 'A')">A ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-apostar-b" onclick="apostarEnCombate('${c.id}', 'B')">B ${escaparHTML(c.jugadorB.toUpperCase())}</button></div>`; }
-        } else if (soyParticipante && c.estado === 'abierto') {
+        if (c.estado==='abierto' && !soyParticipante) {
+            if (miApuesta) { apostarHTML = `<div class="arena-mis-apuestas">✅ Apostaste ${miApuesta.cantidad} PF a ${escaparHTML((miApuesta.lado==='A'?c.jugadorA:c.jugadorB).toUpperCase())}</div>`; }
+            else { apostarHTML = `<div class="arena-apostar-row"><span style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display);">APUESTA (máx. ${c.limitePf} PF):</span><input type="number" id="arena-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1"><button class="btn-apostar-a" onclick="apostarEnCombate('${c.id}','A')">A ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-apostar-b" onclick="apostarEnCombate('${c.id}','B')">B ${escaparHTML(c.jugadorB.toUpperCase())}</button></div>`; }
+        } else if (soyParticipante && c.estado==='abierto') {
             apostarHTML = `<div class="arena-mis-apuestas" style="color:var(--txt-muted);">⚔️ Eres participante de este combate</div>`;
         }
         let resultadoHTML = '';
-        if (c.estado === 'resuelto' && miApuesta) {
-            if (miApuesta.lado === c.ganador) { let boteG = c.ganador === 'A' ? (c.boteA || 0) : (c.boteB || 0); let boteP = c.ganador === 'A' ? (c.boteB || 0) : (c.boteA || 0); let proporcion = boteG > 0 ? miApuesta.cantidad / boteG : 0; let ganancia = Math.floor(boteP * proporcion); let totalRecibido = miApuesta.cantidad + ganancia; resultadoHTML = `<div class="arena-resultado-banner arena-resultado-ganaste">🏆 ¡ACERTASTE! Recuperaste ${miApuesta.cantidad} PF + ${ganancia} PF = <strong>${totalRecibido} PF</strong> en total.</div>`; }
-            else { resultadoHTML = `<div class="arena-resultado-banner arena-resultado-perdiste">💸 Fallaste. Perdiste ${miApuesta.cantidad} PF.</div>`; }
-        } else if (c.estado === 'resuelto' && !miApuesta && !soyParticipante) {
-            resultadoHTML = `<div class="arena-resultado-banner arena-resultado-noparticipio">— No participaste en este combate.</div>`;
+        if (c.estado==='resuelto' && miApuesta) {
+            if (miApuesta.lado===c.ganador) { let bG=c.ganador==='A'?(c.boteA||0):(c.boteB||0); let bP=c.ganador==='A'?(c.boteB||0):(c.boteA||0); let prop=bG>0?miApuesta.cantidad/bG:0; let gan=Math.floor(bP*prop); let tot=miApuesta.cantidad+gan; resultadoHTML=`<div class="arena-resultado-banner arena-resultado-ganaste">🏆 ¡ACERTASTE! Recuperaste ${miApuesta.cantidad} PF + ${gan} PF = <strong>${tot} PF</strong> en total.</div>`; }
+            else { resultadoHTML=`<div class="arena-resultado-banner arena-resultado-perdiste">💸 Fallaste. Perdiste ${miApuesta.cantidad} PF.</div>`; }
+        } else if (c.estado==='resuelto' && !miApuesta && !soyParticipante) {
+            resultadoHTML=`<div class="arena-resultado-banner arena-resultado-noparticipio">— No participaste en este combate.</div>`;
         }
-        box.innerHTML += `<div class="arena-combate-card ${claseResuelto}"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;"><div style="font-family:var(--font-display); font-size:12px; color:var(--txt-primary); font-weight:700; letter-spacing:.3px;">${escaparHTML(c.descripcion)} ${badgeHTML}</div><div style="font-size:10px; color:var(--txt-muted);">Bote: <span style="color:var(--neon-arena); font-weight:700; font-family:var(--font-display);">${boteTotal} PF</span></div></div><div class="arena-vs-row"><div class="arena-jugador-lado ${ladoAClase}"><div class="arena-nombre-jugador azul">${escaparHTML(c.jugadorA.toUpperCase())}</div><div class="arena-bote-numero">${c.boteA || 0} PF</div><div class="arena-bote-lado">${pctA}% del bote</div>${c.estado === 'resuelto' && c.ganador === 'A' ? '<div style="font-size:20px; margin-top:6px;">🏆</div>' : ''}</div><div class="arena-vs-badge">VS</div><div class="arena-jugador-lado ${ladoBClase}"><div class="arena-nombre-jugador rojo">${escaparHTML(c.jugadorB.toUpperCase())}</div><div class="arena-bote-numero">${c.boteB || 0} PF</div><div class="arena-bote-lado">${pctB}% del bote</div>${c.estado === 'resuelto' && c.ganador === 'B' ? '<div style="font-size:20px; margin-top:6px;">🏆</div>' : ''}</div></div><div class="arena-barra-apuestas"><div class="arena-barra-a" style="width:${pctA}%"></div><div class="arena-barra-b" style="width:${pctB}%"></div></div>${apostarHTML}${resultadoHTML}</div>`;
+        box.innerHTML += `<div class="arena-combate-card ${c.estado==='resuelto'?'resuelto':''}"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;"><div style="font-family:var(--font-display); font-size:12px; color:var(--txt-primary); font-weight:700;">${escaparHTML(c.descripcion)} ${badgeHTML}</div><div style="font-size:10px; color:var(--txt-muted);">Bote: <span style="color:var(--neon-arena); font-weight:700; font-family:var(--font-display);">${boteTotal} PF</span></div></div><div class="arena-vs-row"><div class="arena-jugador-lado ${ladoAClase}"><div class="arena-nombre-jugador azul">${escaparHTML(c.jugadorA.toUpperCase())}</div><div class="arena-bote-numero">${c.boteA||0} PF</div><div class="arena-bote-lado">${pctA}% del bote</div>${c.estado==='resuelto'&&c.ganador==='A'?'<div style="font-size:20px;margin-top:6px;">🏆</div>':''}</div><div class="arena-vs-badge">VS</div><div class="arena-jugador-lado ${ladoBClase}"><div class="arena-nombre-jugador rojo">${escaparHTML(c.jugadorB.toUpperCase())}</div><div class="arena-bote-numero">${c.boteB||0} PF</div><div class="arena-bote-lado">${pctB}% del bote</div>${c.estado==='resuelto'&&c.ganador==='B'?'<div style="font-size:20px;margin-top:6px;">🏆</div>':''}</div></div><div class="arena-barra-apuestas"><div class="arena-barra-a" style="width:${pctA}%"></div><div class="arena-barra-b" style="width:${pctB}%"></div></div>${apostarHTML}${resultadoHTML}</div>`;
     });
 }
 
@@ -1437,7 +1571,7 @@ function renderizarAdminArena() {
     if (!baseDatos.arena || Object.keys(baseDatos.arena).length === 0) { box.innerHTML = '<div style="color:var(--txt-muted); font-size:10px; text-align:center; padding:10px; font-family:var(--font-display);">No hay combates creados.</div>'; return; }
     Object.values(baseDatos.arena).forEach(c => {
         if (c.estado === 'resuelto') return;
-        box.innerHTML += `<div class="admin-card-inner" style="border-color:var(--borde-arena);"><div style="font-size:11px; color:var(--neon-arena); font-weight:700; margin-bottom:6px; font-family:var(--font-display);">${escaparHTML(c.descripcion)}</div><div style="font-size:10px; color:var(--txt-secondary); margin-bottom:8px;"><span style="color:#60a5fa;">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171;">${escaparHTML(c.jugadorB.toUpperCase())}</span> — ${c.estado.toUpperCase()} — Bote: ${(c.boteA||0)+(c.boteB||0)} PF</div><div style="display:flex; gap:6px; flex-wrap:wrap;">${c.estado === 'abierto' ? `<button class="btn-accion" style="width:auto; padding:4px 10px; font-size:9px; border-color:rgba(245,197,24,.4); color:var(--neon-packs);" onclick="cerrarApuestasCombate('${c.id}')">🔒 CERRAR</button>` : ''}<button class="btn-accion" style="width:auto; padding:4px 10px; font-size:9px; border-color:rgba(0,200,150,.4); color:var(--neon-legal);" onclick="resolverCombateArena('${c.id}', 'A')">🏆 GANA ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-accion" style="width:auto; padding:4px 10px; font-size:9px; border-color:rgba(204,43,43,.4); color:var(--rojo-suave);" onclick="resolverCombateArena('${c.id}', 'B')">🏆 GANA ${escaparHTML(c.jugadorB.toUpperCase())}</button></div></div>`;
+        box.innerHTML += `<div class="admin-card-inner" style="border-color:var(--borde-arena);"><div style="font-size:11px; color:var(--neon-arena); font-weight:700; margin-bottom:6px; font-family:var(--font-display);">${escaparHTML(c.descripcion)}</div><div style="font-size:10px; color:var(--txt-secondary); margin-bottom:8px;"><span style="color:#60a5fa;">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171;">${escaparHTML(c.jugadorB.toUpperCase())}</span> — ${c.estado.toUpperCase()} — Bote: ${(c.boteA||0)+(c.boteB||0)} PF</div><div style="display:flex; gap:6px; flex-wrap:wrap;">${c.estado==='abierto'?`<button class="btn-accion" style="width:auto;padding:4px 10px;font-size:9px;border-color:rgba(245,197,24,.4);color:var(--neon-packs);" onclick="cerrarApuestasCombate('${c.id}')">🔒 CERRAR</button>`:''}<button class="btn-accion" style="width:auto;padding:4px 10px;font-size:9px;border-color:rgba(0,200,150,.4);color:var(--neon-legal);" onclick="resolverCombateArena('${c.id}','A')">🏆 GANA ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-accion" style="width:auto;padding:4px 10px;font-size:9px;border-color:rgba(204,43,43,.4);color:var(--rojo-suave);" onclick="resolverCombateArena('${c.id}','B')">🏆 GANA ${escaparHTML(c.jugadorB.toUpperCase())}</button></div></div>`;
     });
 }
 
@@ -1461,6 +1595,9 @@ window.ingresarAlSistema = function() {
         if (!baseDatos.jugadores[id].diarioLogs) baseDatos.jugadores[id].diarioLogs = [{timestamp:"Inicio",texto:"Sistema iniciado."}];
         if (!baseDatos.jugadores[id].cementerio) baseDatos.jugadores[id].cementerio = [];
         if (!baseDatos.jugadores[id].ultimoHackeo) baseDatos.jugadores[id].ultimoHackeo = 0;
+        // Garantizar campos de vidas para usuarios antiguos
+        if (baseDatos.jugadores[id].vidasTotales === undefined)  baseDatos.jugadores[id].vidasTotales  = 20;
+        if (baseDatos.jugadores[id].vidasActuales === undefined) baseDatos.jugadores[id].vidasActuales = 20;
     }
     guardarBD();
     document.getElementById('pantalla-lobby').style.display = 'none';
@@ -1499,14 +1636,13 @@ window.restablecerComprasDiariasDesdeMercader = function() {
     if (!targetId) return alert("Selecciona un entrenador.");
     baseDatos.jugadores[targetId].comprasDisponibles = MAX_COMPRAS;
     baseDatos.jugadores[targetId].ultimaRecarga = Date.now();
-    guardarBD(); alert("Compras reiniciadas globalmente.");
+    guardarBD(); alert("Compras reiniciadas.");
 };
 
 window.restablecerGachaDiarioDesdeMercader = function() {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
     let targetId = document.getElementById('adm-reset-gacha-usuario').value;
-    if (!targetId) return alert("Selecciona un entrenador.");
-    if (!baseDatos.jugadores[targetId]) return alert("Entrenador no encontrado.");
+    if (!targetId || !baseDatos.jugadores[targetId]) return alert("Entrenador no encontrado.");
     baseDatos.jugadores[targetId].ultimoHackeo = 0;
     guardarBD();
     alert(`Gacha diario de ${targetId.toUpperCase()} reiniciado.`);
@@ -1531,7 +1667,6 @@ window.cambiarSubPestanaPerfil = function(sub) {
 window.abrirOverlayDiarioNativo = function() {
     document.getElementById('diario-overlay-sistema').style.display = 'flex'; redibujarHistorialDiario();
 };
-
 window.cerrarOverlayDiarioNativo = function() {
     document.getElementById('diario-overlay-sistema').style.display = 'none';
 };
@@ -1558,9 +1693,9 @@ function inyectarEntradaDiarioAutomatica(textoMsg) {
     if (!userSesion || !baseDatos.jugadores[userSesion]) return;
     let u = baseDatos.jugadores[userSesion];
     let d = new Date();
-    let fechaActual = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+    let ts = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
     if (!u.diarioLogs) u.diarioLogs = [];
-    u.diarioLogs.push({ timestamp: fechaActual, text: textoMsg, texto: textoMsg });
+    u.diarioLogs.push({ timestamp: ts, text: textoMsg, texto: textoMsg });
 }
 
 function cargarDatosPerfilEnDOM() {
@@ -1595,19 +1730,18 @@ window.guardarEquipoShowdownActual = function() {
 
 window.guardarDatosPerfilGamer = function() {
     let u = baseDatos.jugadores[userSesion];
-    u.lockeStatus = document.getElementById('perf-locke-status').value;
+    u.lockeStatus  = document.getElementById('perf-locke-status').value;
     u.tipoMedallas = document.getElementById('perf-tipo-medallas').value;
-    u.numMedallas = parseInt(document.getElementById('perf-num-medallas').value) || 0;
+    u.numMedallas  = parseInt(document.getElementById('perf-num-medallas').value) || 0;
     guardarBD();
 };
 
 window.guardarVidasPerfilGamer = function() {
     let u = baseDatos.jugadores[userSesion];
     let iniciales = parseInt(document.getElementById('perf-vidas-iniciales').value) || 20;
-    u.vidasTotales = iniciales;
+    u.vidasTotales  = iniciales;
     u.vidasActuales = (u.vidasActuales !== undefined) ? u.vidasActuales : iniciales;
     if (u.vidasActuales <= 0) u.lockeStatus = 'perdido';
-    actualizarBarraVidasDesdeDB();
     guardarBD();
     alert("Contador de vidas sincronizado.");
 };
@@ -1634,11 +1768,10 @@ function renderizarCementerioDOM() {
 
 window.reclamarHackeoDiario = function() {
     let u = baseDatos.jugadores[userSesion];
-    let ahora = Date.now(); let unDiaMs = 24 * 60 * 60 * 1000;
-    if (ahora - (u.ultimoHackeo || 0) < unDiaMs) {
+    let ahora = Date.now(); let unDiaMs = 24*60*60*1000;
+    if (ahora - (u.ultimoHackeo||0) < unDiaMs) {
         let rem = unDiaMs - (ahora - u.ultimoHackeo);
-        let horasFaltan = Math.ceil(rem / (1000 * 60 * 60));
-        return alert(`Sistemas protegidos. El firewall se reiniciará en ${horasFaltan} horas.`);
+        return alert(`Sistemas protegidos. El firewall se reiniciará en ${Math.ceil(rem/(1000*60*60))} horas.`);
     }
     u.ultimoHackeo = ahora;
     const itemsGen7 = [
@@ -1649,13 +1782,13 @@ window.reclamarHackeoDiario = function() {
         {nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},
         {nombre:"Maxipepita",icon:"💰"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Trozo Estrella",icon:"💫"}
     ];
-    let dineroGanado = Math.floor(Math.random() * 9001) + 1000;
-    let pfGanado = Math.floor(Math.random() * 10) + 1;
-    let itemAleatorio = itemsGen7[Math.floor(Math.random() * itemsGen7.length)];
+    let dineroGanado = Math.floor(Math.random()*9001)+1000;
+    let pfGanado = Math.floor(Math.random()*10)+1;
+    let itemAleatorio = itemsGen7[Math.floor(Math.random()*itemsGen7.length)];
     let numRand = Math.random(); let premioMsg = "";
-    if (numRand < 0.33) { u.dinero = (u.dinero || 0) + dineroGanado; premioMsg = `Hackeo Exitoso: +${dineroGanado.toLocaleString()} P₠ inyectados.`; }
-    else if (numRand < 0.66) { u.pf = (u.pf || 0) + pfGanado; premioMsg = `Acceso Concedido: +${pfGanado} PF transferidos.`; }
-    else { if (!u.inventario) u.inventario = []; u.inventario.push({uid:"item_"+Date.now(),nombre:itemAleatorio.nombre,icon:itemAleatorio.icon,fecha:new Date().toLocaleDateString()}); premioMsg = `Robo de Suministros: Interceptado 1x [${itemAleatorio.icon} ${itemAleatorio.nombre}].`; }
+    if (numRand < 0.33) { u.dinero = (u.dinero||0)+dineroGanado; premioMsg = `Hackeo Exitoso: +${dineroGanado.toLocaleString()} P₠ inyectados.`; }
+    else if (numRand < 0.66) { u.pf = (u.pf||0)+pfGanado; premioMsg = `Acceso Concedido: +${pfGanado} PF transferidos.`; }
+    else { if (!u.inventario) u.inventario=[]; u.inventario.push({uid:"item_"+Date.now(),nombre:itemAleatorio.nombre,icon:itemAleatorio.icon,fecha:new Date().toLocaleDateString()}); premioMsg = `Robo de Suministros: Interceptado 1x [${itemAleatorio.icon} ${itemAleatorio.nombre}].`; }
     inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${premioMsg}`);
     guardarBD(); alert(`¡HACKEO EJECUTADO!\n${premioMsg}`);
 };
@@ -1673,11 +1806,11 @@ window.cambiarSeccionTienda = function(tipo) {
 
 window.ajustarCamposFormularioMercader = function() {
     let tienda = document.getElementById('ins-tienda').value;
-    document.getElementById('form-bloque-legal-cat').style.display = tienda === 'legal' ? 'block' : 'none';
-    document.getElementById('form-bloque-pack-detalles').style.display = tienda === 'pack' ? 'block' : 'none';
-    document.getElementById('form-bloque-illegal-detalles').style.display = tienda === 'illegal' ? 'block' : 'none';
-    document.getElementById('bloque-ins-pf').style.display = tienda !== 'illegal' ? 'block' : 'none';
-    document.getElementById('lbl-ins-precio').innerText = tienda === 'illegal' ? "Coste (PF):" : "Coste (P₠):";
+    document.getElementById('form-bloque-legal-cat').style.display = tienda==='legal' ? 'block' : 'none';
+    document.getElementById('form-bloque-pack-detalles').style.display = tienda==='pack' ? 'block' : 'none';
+    document.getElementById('form-bloque-illegal-detalles').style.display = tienda==='illegal' ? 'block' : 'none';
+    document.getElementById('bloque-ins-pf').style.display = tienda!=='illegal' ? 'block' : 'none';
+    document.getElementById('lbl-ins-precio').innerText = tienda==='illegal' ? "Coste (PF):" : "Coste (P₠):";
 };
 
 window.inyectarObjetoNuevoMaster = function() {
@@ -1685,56 +1818,65 @@ window.inyectarObjetoNuevoMaster = function() {
     let tienda = document.getElementById('ins-tienda').value;
     let nombre = document.getElementById('ins-nombre').value.trim();
     let precio = parseInt(document.getElementById('ins-precio').value) || 0;
-    let stock = parseInt(document.getElementById('ins-stock').value) || 0;
+    let stock  = parseInt(document.getElementById('ins-stock').value) || 0;
     if (!nombre) return alert("Falta nombre.");
     let nuevo = { id: Date.now(), tienda, stock, icon: document.getElementById('ins-icono').value.trim() || '📦', nombre };
-    if (tienda === 'legal') { nuevo.cat = document.getElementById('ins-cat-legal').value; nuevo.precio = precio; nuevo.pf = parseInt(document.getElementById('ins-pf').value) || 0; }
-    else if (tienda === 'pack') { nuevo.cat = 'Pack Especial'; nuevo.precio = precio; nuevo.pf = parseInt(document.getElementById('ins-pf').value) || 0; nuevo.desc = document.getElementById('ins-pack-desc').value.trim(); nuevo.estrategia = document.getElementById('ins-pack-estrategia').value.trim(); }
-    else if (tienda === 'illegal') { nuevo.cat = 'Hack de Sistema'; nuevo.precioPf = precio; nuevo.desc = document.getElementById('ins-illegal-desc').value.trim(); }
+    if (tienda==='legal') { nuevo.cat=document.getElementById('ins-cat-legal').value; nuevo.precio=precio; nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0; }
+    else if (tienda==='pack') { nuevo.cat='Pack Especial'; nuevo.precio=precio; nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0; nuevo.desc=document.getElementById('ins-pack-desc').value.trim(); nuevo.estrategia=document.getElementById('ins-pack-estrategia').value.trim(); }
+    else if (tienda==='illegal') { nuevo.cat='Hack de Sistema'; nuevo.precioPf=precio; nuevo.desc=document.getElementById('ins-illegal-desc').value.trim(); }
     if (!baseDatos.productos) baseDatos.productos = [];
     baseDatos.productos.push(nuevo); guardarBD();
-    document.getElementById('ins-nombre').value = ''; document.getElementById('ins-precio').value = '';
+    document.getElementById('ins-nombre').value=''; document.getElementById('ins-precio').value='';
 };
 
 function actualizarSelectorUsuariosBanco() {
-    let sb = document.getElementById('adm-banco-usuario');
-    let sr = document.getElementById('adm-reset-usuario');
-    let sg = document.getElementById('adm-reset-gacha-usuario');
-    let sa = document.getElementById('adm-arena-jugador-a');
+    let sb  = document.getElementById('adm-banco-usuario');
+    let sr  = document.getElementById('adm-reset-usuario');
+    let sg  = document.getElementById('adm-reset-gacha-usuario');
+    let sa  = document.getElementById('adm-arena-jugador-a');
     let sb2 = document.getElementById('adm-arena-jugador-b');
+    let sv  = document.getElementById('adm-vidas-usuario');   // NUEVO
     if (!sb || !sr) return;
-    sb.innerHTML = ''; sr.innerHTML = '';
-    if (sg) sg.innerHTML = '';
-    if (sa) sa.innerHTML = '';
-    if (sb2) sb2.innerHTML = '';
+    sb.innerHTML=''; sr.innerHTML='';
+    if (sg) sg.innerHTML='';
+    if (sa) sa.innerHTML='';
+    if (sb2) sb2.innerHTML='';
+    if (sv) sv.innerHTML='';
     Object.keys(baseDatos.jugadores).forEach(id => {
         let u = baseDatos.jugadores[id];
-        sb.innerHTML += `<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;
-        sr.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-        if (sg) sg.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-        if (sa) sa.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+        let vidasStr = `❤️ ${u.vidasActuales ?? u.vidasTotales ?? 20}/${u.vidasTotales ?? 20}`;
+        sb.innerHTML  += `<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;
+        sr.innerHTML  += `<option value="${id}">${id.toUpperCase()}</option>`;
+        if (sg)  sg.innerHTML  += `<option value="${id}">${id.toUpperCase()}</option>`;
+        if (sa)  sa.innerHTML  += `<option value="${id}">${id.toUpperCase()}</option>`;
         if (sb2) sb2.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+        // Selector de vidas muestra el estado actual de cada jugador
+        if (sv)  sv.innerHTML  += `<option value="${id}">${id.toUpperCase()} (${vidasStr})</option>`;
     });
+    // Al cambiar el selector de vidas, cargar automáticamente los valores en los inputs
+    if (sv) sv.onchange = window.cargarVidasEnAdmin;
+    // Cargar valores del primer jugador al abrir
+    if (sv && sv.value) window.cargarVidasEnAdmin();
 }
 
 window.modificarFondosEntrenador = function(op) {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
     let userId = document.getElementById('adm-banco-usuario').value;
-    let cant = parseInt(document.getElementById('adm-banco-cantidad').value) || 0;
-    if (!userId || cant <= 0) return alert("Revisa los campos.");
-    baseDatos.jugadores[userId].dinero += (op === 'SUMAR' ? cant : -cant);
-    guardarBD(); document.getElementById('adm-banco-cantidad').value = '';
+    let cant   = parseInt(document.getElementById('adm-banco-cantidad').value) || 0;
+    if (!userId || cant<=0) return alert("Revisa los campos.");
+    baseDatos.jugadores[userId].dinero += (op==='SUMAR' ? cant : -cant);
+    guardarBD(); document.getElementById('adm-banco-cantidad').value='';
 };
 
 window.actualizarPropertyProducto = function(id, prop, val) {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return;
-    let idx = baseDatos.productos.findIndex(p => p.id === id);
-    if (idx !== -1) { baseDatos.productos[idx][prop] = parseInt(val) || 0; guardarBD(); }
+    let idx = baseDatos.productos.findIndex(p => p.id===id);
+    if (idx !== -1) { baseDatos.productos[idx][prop] = parseInt(val)||0; guardarBD(); }
 };
 
 window.eliminarProductoMaster = function(id) {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
-    if (confirm("¿Eliminar?")) { baseDatos.productos = baseDatos.productos.filter(p => p.id !== id); guardarBD(); }
+    if (confirm("¿Eliminar?")) { baseDatos.productos = baseDatos.productos.filter(p => p.id!==id); guardarBD(); }
 };
 
 window.conmutarEstadoTienda = function(tiendaProp, estado) {
@@ -1751,82 +1893,81 @@ window.emitirOrdenEconomicaGlobal = function() {
 function actualizarBannerAlertasVisuales() {
     let banner = document.getElementById('alertas-sistema-marquee'); if (!banner) return;
     let ev = baseDatos.eventoSistema || "normal";
-    if (ev === "normal") { banner.classList.remove('active'); banner.innerHTML = ""; }
-    else if (ev === "rebajas") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-legal)"; banner.style.color = "var(--neon-legal)"; banner.innerHTML = "📉 ALERTA DE RED: −25% de descuento en Tienda Legal y Packs."; }
-    else if (ev === "inflacion") { banner.classList.add('active'); banner.style.borderColor = "var(--rojo-suave)"; banner.style.color = "var(--rojo-suave)"; banner.innerHTML = "⚠️ RED INESTABLE: +50% de recargo en costes P₠."; }
-    else if (ev === "bonus_pf") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-packs)"; banner.style.color = "var(--neon-packs)"; banner.innerHTML = "🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!"; }
+    if (ev==="normal") { banner.classList.remove('active'); banner.innerHTML=""; }
+    else if (ev==="rebajas")   { banner.classList.add('active'); banner.style.borderColor="var(--neon-legal)";  banner.style.color="var(--neon-legal)";  banner.innerHTML="📉 ALERTA DE RED: −25% de descuento en Tienda Legal y Packs."; }
+    else if (ev==="inflacion") { banner.classList.add('active'); banner.style.borderColor="var(--rojo-suave)"; banner.style.color="var(--rojo-suave)"; banner.innerHTML="⚠️ RED INESTABLE: +50% de recargo en costes P₠."; }
+    else if (ev==="bonus_pf") { banner.classList.add('active'); banner.style.borderColor="var(--neon-packs)";  banner.style.color="var(--neon-packs)";  banner.innerHTML="🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!"; }
 }
 
 function redibujarConsolaAdminMaster() {
-    document.getElementById('chk-open-legal').checked = baseDatos.legalOpen !== false;
-    document.getElementById('chk-open-pack').checked = baseDatos.packOpen !== false;
+    document.getElementById('chk-open-legal').checked   = baseDatos.legalOpen   !== false;
+    document.getElementById('chk-open-pack').checked    = baseDatos.packOpen    !== false;
     document.getElementById('chk-open-illegal').checked = baseDatos.illegalOpen !== false;
     if (baseDatos.eventoSistema) document.getElementById('adm-evento-economico').value = baseDatos.eventoSistema;
     actualizarSelectorUsuariosBanco();
     renderizarAdminArena();
-    let al = document.getElementById('admin-inventario-global'); if (!al) return; al.innerHTML = '';
+    let al = document.getElementById('admin-inventario-global'); if (!al) return; al.innerHTML='';
     baseDatos.productos.forEach(p => {
-        let esI = p.tienda === 'illegal';
-        al.innerHTML += `<div class="admin-card-inner"><button class="btn-delete-admin" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary); font-size:12px; font-weight:600; margin-bottom:4px;">${p.icon} ${p.nombre} <span style="color:var(--txt-muted); font-size:10px;">[${p.tienda.toUpperCase()}]</span></div><div class="admin-edit-row"><div class="admin-edit-field"><label>Coste Base</label><input type="number" value="${esI ? p.precioPf : p.precio}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, '${esI ? 'precioPf' : 'precio'}', this.value)"></div><div class="admin-edit-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, 'stock', this.value)"></div></div></div>`;
+        let esI = p.tienda==='illegal';
+        al.innerHTML += `<div class="admin-card-inner"><button class="btn-delete-admin" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary); font-size:12px; font-weight:600; margin-bottom:4px;">${p.icon} ${p.nombre} <span style="color:var(--txt-muted); font-size:10px;">[${p.tienda.toUpperCase()}]</span></div><div class="admin-edit-row"><div class="admin-edit-field"><label>Coste Base</label><input type="number" value="${esI?p.precioPf:p.precio}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id},'${esI?'precioPf':'precio'}',this.value)"></div><div class="admin-edit-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id},'stock',this.value)"></div></div></div>`;
     });
 }
 
 window.invocarTerminalMercader = function() {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") { alert("ERROR CRÍTICO: Credenciales no detectadas."); return; }
-    document.getElementById('pantalla-admin-master').style.display = 'block'; redibujarConsolaAdminMaster();
+    document.getElementById('pantalla-admin-master').style.display='block'; redibujarConsolaAdminMaster();
 };
-
-window.apagarTerminalMercader = function() { document.getElementById('pantalla-admin-master').style.display = 'none'; };
+window.apagarTerminalMercader = function() { document.getElementById('pantalla-admin-master').style.display='none'; };
 
 window.comprarObjetoGamer = function(id) {
     if (!userSesion) return;
-    let u = baseDatos.jugadores[userSesion]; let p = baseDatos.productos.find(prod => prod.id === id);
-    if (!p || p.stock <= 0) return alert("Objeto no disponible o sin stock.");
-    if (u.comprasDisponibles <= 0) return alert("No te quedan compras disponibles en este periodo.");
-    let ev = baseDatos.eventoSistema || "normal";
-    let precioFinalCalculado = p.precio; let bonoPfCalculado = p.pf || 0;
-    if (p.tienda !== 'illegal') {
-        if (ev === 'rebajas') precioFinalCalculado = Math.round(p.precio * 0.75);
-        else if (ev === 'inflacion') precioFinalCalculado = Math.round(p.precio * 1.50);
-        if (ev === 'bonus_pf') bonoPfCalculado = (p.pf || 0) * 2;
+    let u = baseDatos.jugadores[userSesion]; let p = baseDatos.productos.find(prod => prod.id===id);
+    if (!p || p.stock<=0) return alert("Objeto no disponible o sin stock.");
+    if (u.comprasDisponibles<=0) return alert("No te quedan compras disponibles en este periodo.");
+    let ev = baseDatos.eventoSistema||"normal";
+    let precioFinalCalculado=p.precio; let bonoPfCalculado=p.pf||0;
+    if (p.tienda!=='illegal') {
+        if (ev==='rebajas') precioFinalCalculado=Math.round(p.precio*0.75);
+        else if (ev==='inflacion') precioFinalCalculado=Math.round(p.precio*1.50);
+        if (ev==='bonus_pf') bonoPfCalculado=(p.pf||0)*2;
     }
-    let txtCoste = p.tienda === 'illegal' ? `${p.precioPf} PF` : `${precioFinalCalculado} P₠`;
+    let txtCoste = p.tienda==='illegal' ? `${p.precioPf} PF` : `${precioFinalCalculado} P₠`;
     if (!confirm(`¿Deseas adquirir ${p.nombre} por ${txtCoste}?`)) return;
-    let txtBitacora = "";
-    if (p.tienda === 'illegal') {
-        if (u.pf < p.precioPf) return alert("No tienes suficientes PF.");
-        u.pf -= p.precioPf; txtBitacora = `Adquirió módulo prohibido: ${p.icon} '${p.nombre}' por ${p.precioPf} PF.`;
+    let txtBitacora="";
+    if (p.tienda==='illegal') {
+        if (u.pf<p.precioPf) return alert("No tienes suficientes PF.");
+        u.pf-=p.precioPf; txtBitacora=`Adquirió módulo prohibido: ${p.icon} '${p.nombre}' por ${p.precioPf} PF.`;
     } else {
-        if (u.dinero < precioFinalCalculado) return alert("No tienes suficiente dinero.");
-        u.dinero -= precioFinalCalculado; u.pf += bonoPfCalculado;
-        txtBitacora = `Adquirió: ${p.icon} '${p.nombre}' por ${precioFinalCalculado} P₠ (+${bonoPfCalculado} PF).`;
+        if (u.dinero<precioFinalCalculado) return alert("No tienes suficiente dinero.");
+        u.dinero-=precioFinalCalculado; u.pf+=bonoPfCalculado;
+        txtBitacora=`Adquirió: ${p.icon} '${p.nombre}' por ${precioFinalCalculado} P₠ (+${bonoPfCalculado} PF).`;
     }
     p.stock--; u.comprasDisponibles--;
-    if (!u.inventario) u.inventario = [];
-    u.inventario.push({ uid: "item_" + Date.now() + Math.floor(Math.random() * 100), nombre: p.nombre, icon: p.icon, fecha: new Date().toLocaleDateString() });
+    if (!u.inventario) u.inventario=[];
+    u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:p.nombre,icon:p.icon,fecha:new Date().toLocaleDateString()});
     inyectarEntradaDiarioAutomatica(txtBitacora); guardarBD(); alert(`¡Has adquirido ${p.nombre}!`);
 };
 
 window.consumirObjetoMochilaGamer = function(itemUid, itemNombre, itemIcon) {
     if (!userSesion || !baseDatos.jugadores[userSesion]) return;
     let u = baseDatos.jugadores[userSesion]; if (!u.inventario) return;
-    let index = u.inventario.findIndex(i => i.uid === itemUid);
-    if (index !== -1) { u.inventario.splice(index, 1); inyectarEntradaDiarioAutomatica(`Utilizó el objeto ${itemIcon} '${itemNombre}'. Consumido.`); guardarBD(); alert(`Has usado '${itemNombre}'.`); }
+    let index = u.inventario.findIndex(i => i.uid===itemUid);
+    if (index !== -1) { u.inventario.splice(index,1); inyectarEntradaDiarioAutomatica(`Utilizó el objeto ${itemIcon} '${itemNombre}'. Consumido.`); guardarBD(); alert(`Has usado '${itemNombre}'.`); }
     else { alert("Error al procesar el objeto."); }
 };
 
 window.renderizarVisorRivalPublico = function() {
     let selector = document.getElementById('red-select-jugador'); let target = selector.value;
-    let box = document.getElementById('red-visor-dinamico'); if (!box) return; box.innerHTML = '';
-    if (!target || !baseDatos.jugadores[target]) { box.innerHTML = '<div style="color:var(--txt-muted); padding:20px; grid-column:span 2; text-align:center; font-family:var(--font-display); font-size:11px;">Selecciona un terminal activo.</div>'; return; }
+    let box = document.getElementById('red-visor-dinamico'); if (!box) return; box.innerHTML='';
+    if (!target || !baseDatos.jugadores[target]) { box.innerHTML='<div style="color:var(--txt-muted); padding:20px; grid-column:span 2; text-align:center; font-family:var(--font-display); font-size:11px;">Selecciona un terminal activo.</div>'; return; }
     let r = baseDatos.jugadores[target];
-    let statusTexto = r.lockeStatus === 'ganado' ? '🏆 GANADO' : (r.lockeStatus === 'perdido' ? '💀 PERDIDO' : '⏳ EN CURSO');
-    let htmlPerfil = `<div style="background:var(--bg-elevated); border:1px solid var(--gris-800); padding:16px; border-radius:var(--r-md); height:fit-content;"><h4 style="margin:0 0 12px 0; font-family:var(--font-display); color:var(--neon-intercambio); font-size:12px; letter-spacing:.5px;">ESTADO: ${escaparHTML(target.toUpperCase())}</h4><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">REPUTACIÓN: <span style="color:var(--neon-packs); font-weight:700;">${r.pf || 0} PF</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">VIDAS: <span style="color:var(--rojo-suave); font-weight:700;">❤️ ${r.vidasActuales || 0}/${r.vidasTotales || 20}</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">DESAFÍO: <span style="color:var(--txt-primary);">${statusTexto}</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">MEDALLAS: <span style="color:var(--neon-legal);">${r.numMedallas || 0}/8</span></div><div style="font-size:12px; color:var(--txt-secondary);">TORNEOS: <span style="color:var(--txt-primary);">${r.torneos || 0}</span></div></div>`;
+    let statusTexto = r.lockeStatus==='ganado' ? '🏆 GANADO' : (r.lockeStatus==='perdido' ? '💀 PERDIDO' : '⏳ EN CURSO');
+    let htmlPerfil = `<div style="background:var(--bg-elevated); border:1px solid var(--gris-800); padding:16px; border-radius:var(--r-md); height:fit-content;"><h4 style="margin:0 0 12px 0; font-family:var(--font-display); color:var(--neon-intercambio); font-size:12px; letter-spacing:.5px;">ESTADO: ${escaparHTML(target.toUpperCase())}</h4><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">REPUTACIÓN: <span style="color:var(--neon-packs); font-weight:700;">${r.pf||0} PF</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">VIDAS: <span style="color:var(--rojo-suave); font-weight:700;">❤️ ${r.vidasActuales||0}/${r.vidasTotales||20}</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">DESAFÍO: <span style="color:var(--txt-primary);">${statusTexto}</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">MEDALLAS: <span style="color:var(--neon-legal);">${r.numMedallas||0}/8</span></div><div style="font-size:12px; color:var(--txt-secondary);">TORNEOS: <span style="color:var(--txt-primary);">${r.torneos||0}</span></div></div>`;
     let slotSelectHTML = `<select id="red-visor-slot-team" onchange="renderizarSubRanuraRivalShowdown('${target}')">`;
-    for (let i = 1; i <= 10; i++) slotSelectHTML += `<option value="${i}">Equipo ${i}</option>`;
+    for (let i=1; i<=10; i++) slotSelectHTML += `<option value="${i}">Equipo ${i}</option>`;
     slotSelectHTML += `</select>`;
     let deadHTML = `<div style="margin-top:16px; border-top:1px solid var(--gris-800); padding-top:14px;"><h5 style="margin:0 0 8px 0; font-family:var(--font-display); color:var(--rojo-suave); font-size:11px; letter-spacing:.5px;">💀 CEMENTERIO</h5>`;
-    if (!r.cementerio || r.cementerio.length === 0) { deadHTML += `<div style="font-size:11px; color:var(--txt-muted); font-style:italic; font-family:var(--font-display);">Sin bajas registradas.</div>`; }
+    if (!r.cementerio || r.cementerio.length===0) { deadHTML += `<div style="font-size:11px; color:var(--txt-muted); font-style:italic; font-family:var(--font-display);">Sin bajas registradas.</div>`; }
     else { deadHTML += `<div class="rival-dead-grid">`; r.cementerio.forEach(b => { deadHTML += `<div class="rival-dead-card"><div class="rival-dead-title">💀 ${escaparHTML(b.nombre)}</div><div class="rival-dead-meta">Caído en: ${escaparHTML(b.ruta)}</div><div class="rival-dead-meta">Fecha: ${escaparHTML(b.fecha)}</div><div class="rival-dead-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`; }); deadHTML += `</div>`; }
     deadHTML += `</div>`;
     let htmlEquipos = `<div style="background:var(--bg-elevated); border:1px solid var(--gris-800); padding:16px; border-radius:var(--r-md);"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><h4 style="margin:0; font-family:var(--font-display); color:var(--txt-primary); font-size:12px; letter-spacing:.5px;">EQUIPO SHOWDOWN</h4><div style="width:130px;">${slotSelectHTML}</div></div><div id="red-visor-pokes-area"></div>${deadHTML}</div>`;
@@ -1850,12 +1991,12 @@ function limpiarNombrePokemonParaUrl(lineaRaw) {
 }
 
 function renderizamientoInternoShowdownPlano(rawShowdown) {
-    if (!rawShowdown || rawShowdown === "Sin datos" || !rawShowdown.trim()) return '<span style="color:var(--txt-muted); font-size:12px; font-family:var(--font-display);">Sin datos de equipo.</span>';
+    if (!rawShowdown || rawShowdown==="Sin datos" || !rawShowdown.trim()) return '<span style="color:var(--txt-muted); font-size:12px; font-family:var(--font-display);">Sin datos de equipo.</span>';
     let pokesRaw = rawShowdown.split(/\n\s*\n/);
     let html = '<div class="red-visor-pokes-grid-custom">';
     pokesRaw.forEach(bloque => {
-        let lineas = bloque.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-        if (lineas.length === 0) return;
+        let lineas = bloque.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
+        if (lineas.length===0) return;
         let nom = lineas[0].split('@')[0].trim();
         let apiName = limpiarNombrePokemonParaUrl(lineas[0]);
         let urlGif = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${apiName}.gif`;
@@ -1868,127 +2009,126 @@ function renderizamientoInternoShowdownPlano(rawShowdown) {
 window.parsearYRenderizarShowdown = function() {
     let raw = document.getElementById('perf-showdown-raw').value;
     let box = document.getElementById('visualizador-showdown-team');
-    if (!box) return; box.innerHTML = '';
+    if (!box) return; box.innerHTML='';
     if (!raw || !raw.trim()) return;
     let pokesRaw = raw.split(/\n\s*\n/);
     pokesRaw.forEach(bloque => {
-        let lineas = bloque.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-        if (lineas.length === 0) return;
-        let primeraLinea = lineas[0]; let objeto = "";
-        if (primeraLinea.includes('@')) { let p = primeraLinea.split('@'); objeto = p[1].trim(); primeraLinea = p[0].trim(); }
-        let nombreMuestra = primeraLinea;
+        let lineas = bloque.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
+        if (lineas.length===0) return;
+        let primeraLinea=lineas[0]; let objeto="";
+        if (primeraLinea.includes('@')) { let p=primeraLinea.split('@'); objeto=p[1].trim(); primeraLinea=p[0].trim(); }
         let apiName = limpiarNombrePokemonParaUrl(primeraLinea);
         let urlGif = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${apiName}.gif`;
-        let moves = []; lineas.forEach(l => { if (l.startsWith('-')) moves.push(l.replace('-', '').trim()); });
+        let moves=[]; lineas.forEach(l => { if (l.startsWith('-')) moves.push(l.replace('-','').trim()); });
         let movesHTML = moves.map(m => `<div style="color:var(--txt-secondary); font-size:10px;">• ${escaparHTML(m)}</div>`).join('');
         let txtObj = objeto ? `<div style="color:var(--neon-packs); font-size:10px; font-weight:700; font-family:var(--font-display);">Item: ${escaparHTML(objeto)}</div>` : '';
-        box.innerHTML += `<div class="poke-card-showdown"><div class="poke-card-gif-box"><img src="${urlGif}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; this.onerror=null;"></div><div class="poke-card-info"><div class="poke-card-name">${escaparHTML(nombreMuestra)}</div>${txtObj}<div style="margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:2px;">${movesHTML}</div></div></div>`;
+        box.innerHTML += `<div class="poke-card-showdown"><div class="poke-card-gif-box"><img src="${urlGif}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; this.onerror=null;"></div><div class="poke-card-info"><div class="poke-card-name">${escaparHTML(primeraLinea)}</div>${txtObj}<div style="margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:2px;">${movesHTML}</div></div></div>`;
     });
 };
 
 function renderInitializeLoaders() {
-    renderAparadorPublico('legal', 'contenedor-legal-view', baseDatos.legalOpen);
-    renderAparadorPublico('pack', 'contenedor-pack-view', baseDatos.packOpen);
+    renderAparadorPublico('legal',   'contenedor-legal-view',  baseDatos.legalOpen);
+    renderAparadorPublico('pack',    'contenedor-pack-view',   baseDatos.packOpen);
     renderAparadorPublico('illegal', 'contenedor-hacker-view', baseDatos.illegalOpen);
 }
 
 function refrescarPantallaGamer() {
     if (!userSesion || !baseDatos.jugadores[userSesion]) return;
     let u = baseDatos.jugadores[userSesion];
-    document.getElementById('usr-nombre').innerText = userSesion.toUpperCase();
-    document.getElementById('usr-dinero').innerText = u.dinero;
-    document.getElementById('usr-pf').innerText = u.pf;
+    document.getElementById('usr-nombre').innerText  = userSesion.toUpperCase();
+    document.getElementById('usr-dinero').innerText  = u.dinero;
+    document.getElementById('usr-pf').innerText      = u.pf;
     document.getElementById('usr-compras').innerText = `${u.comprasDisponibles}/${MAX_COMPRAS}`;
-    let invBox = document.getElementById('lista-inventario'); invBox.innerHTML = '';
-    let itemsFiltrados = u.inventario ? u.inventario.filter(i => i.uid !== "init") : [];
-    if (itemsFiltrados.length === 0) { invBox.innerHTML = '<span style="color:var(--txt-muted); font-size:11px; font-family:var(--font-display);">Mochila vacía.</span>'; }
-    else { itemsFiltrados.forEach(i => { invBox.innerHTML += `<div class="mochila-item-tag" title="Adquirido el: ${escaparHTML(i.fecha)}"><span>${escaparHTML(i.icon) || '📦'} ${escaparHTML(i.nombre)}</span><button class="btn-usar-item" onclick="consumirObjetoMochilaGamer('${i.uid}', '${escaparHTML(i.nombre)}', '${escaparHTML(i.icon) || '📦'}')">Usar</button></div>`; }); }
-    let receptorSelect = document.getElementById('int-select-receptor'); let redSelectRival = document.getElementById('red-select-jugador');
+    let invBox = document.getElementById('lista-inventario'); invBox.innerHTML='';
+    let itemsFiltrados = u.inventario ? u.inventario.filter(i => i.uid!=="init") : [];
+    if (itemsFiltrados.length===0) { invBox.innerHTML='<span style="color:var(--txt-muted); font-size:11px; font-family:var(--font-display);">Mochila vacía.</span>'; }
+    else { itemsFiltrados.forEach(i => { invBox.innerHTML += `<div class="mochila-item-tag" title="Adquirido el: ${escaparHTML(i.fecha)}"><span>${escaparHTML(i.icon)||'📦'} ${escaparHTML(i.nombre)}</span><button class="btn-usar-item" onclick="consumirObjetoMochilaGamer('${i.uid}','${escaparHTML(i.nombre)}','${escaparHTML(i.icon)||'📦'}')">Usar</button></div>`; }); }
+    let receptorSelect = document.getElementById('int-select-receptor');
+    let redSelectRival = document.getElementById('red-select-jugador');
     if (receptorSelect && redSelectRival) {
         let currentFav = receptorSelect.value; let currentRival = redSelectRival.value;
-        receptorSelect.innerHTML = ''; redSelectRival.innerHTML = '<option value="">-- SELECCIONAR RIVAL --</option>';
+        receptorSelect.innerHTML=''; redSelectRival.innerHTML='<option value="">-- SELECCIONAR RIVAL --</option>';
         Object.keys(baseDatos.jugadores).forEach(id => {
             redSelectRival.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
-            if (id !== userSesion) receptorSelect.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
+            if (id!==userSesion) receptorSelect.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
         });
-        if (currentFav) receptorSelect.value = currentFav;
-        if (currentRival) redSelectRival.value = currentRival;
+        if (currentFav) receptorSelect.value=currentFav;
+        if (currentRival) redSelectRival.value=currentRival;
     }
     renderInitializeLoaders();
 }
 
 function renderAparadorPublico(tiendaTipo, contenedorId, estaAbierta) {
-    let box = document.getElementById(contenedorId); if (!box) return; box.innerHTML = '';
-    if (estaAbierta === false) { box.innerHTML = `<div class="tienda-cerrada-msg">🔒 Red Cerrada temporalmente por el Administrador</div>`; return; }
-    let prods = baseDatos.productos.filter(p => { let mt = p.tienda === tiendaTipo; if (tiendaTipo === 'legal' && filtroCategoriaGlobal !== "") return mt && p.cat === filtroCategoriaGlobal; return mt; });
-    if (prods.length === 0) { box.innerHTML = `<div style="text-align:center; color:var(--txt-muted); padding:40px; font-family:var(--font-display); font-size:12px;">Sin artículos disponibles.</div>`; return; }
-    let ev = baseDatos.eventoSistema || "normal"; let htmlGrid = '<div class="items-grid">';
+    let box = document.getElementById(contenedorId); if (!box) return; box.innerHTML='';
+    if (estaAbierta===false) { box.innerHTML=`<div class="tienda-cerrada-msg">🔒 Red Cerrada temporalmente por el Administrador</div>`; return; }
+    let prods = baseDatos.productos.filter(p => { let mt=p.tienda===tiendaTipo; if (tiendaTipo==='legal'&&filtroCategoriaGlobal!=="") return mt&&p.cat===filtroCategoriaGlobal; return mt; });
+    if (prods.length===0) { box.innerHTML=`<div style="text-align:center; color:var(--txt-muted); padding:40px; font-family:var(--font-display); font-size:12px;">Sin artículos disponibles.</div>`; return; }
+    let ev=baseDatos.eventoSistema||"normal"; let htmlGrid='<div class="items-grid">';
     prods.forEach(p => {
-        let esI = p.tienda === 'illegal'; let precioFinal = p.precio; let bonoPf = p.pf || 0; let estiloColorPrecio = "color: var(--txt-primary);";
-        if (!esI) { if (ev === 'rebajas') { precioFinal = Math.round(p.precio * 0.75); estiloColorPrecio = "color: var(--neon-legal); font-weight: 900;"; } else if (ev === 'inflacion') { precioFinal = Math.round(p.precio * 1.50); estiloColorPrecio = "color: var(--rojo-suave); font-weight: 900;"; } if (ev === 'bonus_pf') bonoPf = (p.pf || 0) * 2; }
-        let txtCoste = esI ? `${p.precioPf} PF` : `${precioFinal} P₠`;
-        let txtBonoDisplay = (!esI && bonoPf > 0) ? `<div style="font-size:9px; color:var(--neon-ilegal); margin-top:2px; font-family:var(--font-display);">+${bonoPf} PF</div>` : '';
-        let txtDetalle = p.desc ? `<div class="item-desc">${escaparHTML(p.desc)}</div>` : '';
-        let txtEstrat = p.estrategia ? `<div class="item-estrategia">💡 ${escaparHTML(p.estrategia)}</div>` : '';
-        let txtCat = p.cat ? `<div class="categoria-tag">${escaparHTML(p.cat)}</div>` : '';
-        let deshabilitado = p.stock <= 0 ? 'disabled' : '';
-        let txtBoton = p.stock <= 0 ? 'AGOTADO' : `ADQUIRIR · ${txtCoste}`;
-        let claseAgotado = p.stock <= 0 ? 'agotado' : '';
-        htmlGrid += `<div class="item-card ${claseAgotado}"><div>${txtCat}<div class="item-icon">${escaparHTML(p.icon)}</div><div class="item-titulo">${escaparHTML(p.nombre)}</div>${txtDetalle}${txtEstrat}</div><div><div style="font-size:10px; margin-bottom:6px; font-family:var(--font-display); ${estiloColorPrecio}">${txtCoste} ${txtBonoDisplay}</div><div style="font-size:10px; color:var(--txt-muted); margin-bottom:8px; font-family:var(--font-display);">STOCK: ${p.stock}</div><button class="btn-accion" ${deshabilitado} onclick="comprarObjetoGamer(${p.id})">${txtBoton}</button></div></div>`;
+        let esI=p.tienda==='illegal'; let precioFinal=p.precio; let bonoPf=p.pf||0; let estiloColorPrecio="color:var(--txt-primary);";
+        if (!esI) { if (ev==='rebajas') { precioFinal=Math.round(p.precio*0.75); estiloColorPrecio="color:var(--neon-legal);font-weight:900;"; } else if (ev==='inflacion') { precioFinal=Math.round(p.precio*1.50); estiloColorPrecio="color:var(--rojo-suave);font-weight:900;"; } if (ev==='bonus_pf') bonoPf=(p.pf||0)*2; }
+        let txtCoste=esI?`${p.precioPf} PF`:`${precioFinal} P₠`;
+        let txtBonoDisplay=(!esI&&bonoPf>0)?`<div style="font-size:9px;color:var(--neon-ilegal);margin-top:2px;font-family:var(--font-display);">+${bonoPf} PF</div>`:'';
+        let txtDetalle=p.desc?`<div class="item-desc">${escaparHTML(p.desc)}</div>`:'';
+        let txtEstrat=p.estrategia?`<div class="item-estrategia">💡 ${escaparHTML(p.estrategia)}</div>`:'';
+        let txtCat=p.cat?`<div class="categoria-tag">${escaparHTML(p.cat)}</div>`:'';
+        let deshabilitado=p.stock<=0?'disabled':'';
+        let txtBoton=p.stock<=0?'AGOTADO':`ADQUIRIR · ${txtCoste}`;
+        htmlGrid += `<div class="item-card ${p.stock<=0?'agotado':''}"><div>${txtCat}<div class="item-icon">${escaparHTML(p.icon)}</div><div class="item-titulo">${escaparHTML(p.nombre)}</div>${txtDetalle}${txtEstrat}</div><div><div style="font-size:10px;margin-bottom:6px;font-family:var(--font-display);${estiloColorPrecio}">${txtCoste} ${txtBonoDisplay}</div><div style="font-size:10px;color:var(--txt-muted);margin-bottom:8px;font-family:var(--font-display);">STOCK: ${p.stock}</div><button class="btn-accion" ${deshabilitado} onclick="comprarObjetoGamer(${p.id})">${txtBoton}</button></div></div>`;
     });
     htmlGrid += '</div>'; box.innerHTML = htmlGrid;
 }
 
 window.publicarPropuestaIntercambio = function() {
-    if (!userSesion) return; let u = baseDatos.jugadores[userSesion];
-    let ofreceTxt = document.getElementById('int-txt-ofrece').value.trim();
-    let pideTxt = document.getElementById('int-txt-pide').value.trim();
-    let escrowPf = parseInt(document.getElementById('int-num-escrow').value) || 0;
-    let receptorId = document.getElementById('int-select-receptor').value;
-    if (!ofreceTxt || !pideTxt) return alert("Rellena ambos campos.");
+    if (!userSesion) return; let u=baseDatos.jugadores[userSesion];
+    let ofreceTxt=document.getElementById('int-txt-ofrece').value.trim();
+    let pideTxt=document.getElementById('int-txt-pide').value.trim();
+    let escrowPf=parseInt(document.getElementById('int-num-escrow').value)||0;
+    let receptorId=document.getElementById('int-select-receptor').value;
+    if (!ofreceTxt||!pideTxt) return alert("Rellena ambos campos.");
     if (!receptorId) return alert("Selecciona un destinatario.");
-    if (u.pf < escrowPf) return alert(`Necesitas ${escrowPf} PF para la fianza.`);
-    u.pf -= escrowPf;
-    let tradeId = "trade_" + Date.now();
-    if (!baseDatos.intercambios) baseDatos.intercambios = {};
-    baseDatos.intercambios[tradeId] = { id: tradeId, proponente: userSesion, receptor: receptorId, ofrece: ofreceTxt, pide: pideTxt, depositoEscrow: escrowPf, estado: "evaluacion", votosSi: 0, votosNo: 0, registroVotos: { init: true } };
-    guardarBD(); document.getElementById('int-txt-ofrece').value = ''; document.getElementById('int-txt-pide').value = '';
+    if (u.pf<escrowPf) return alert(`Necesitas ${escrowPf} PF para la fianza.`);
+    u.pf-=escrowPf;
+    let tradeId="trade_"+Date.now();
+    if (!baseDatos.intercambios) baseDatos.intercambios={};
+    baseDatos.intercambios[tradeId]={id:tradeId,proponente:userSesion,receptor:receptorId,ofrece:ofreceTxt,pide:pideTxt,depositoEscrow:escrowPf,estado:"evaluacion",votosSi:0,votosNo:0,registroVotos:{init:true}};
+    guardarBD(); document.getElementById('int-txt-ofrece').value=''; document.getElementById('int-txt-pide').value='';
     alert(`Propuesta enviada. ${escrowPf} PF retenidos como aval.`);
 };
 
 window.votarIntercambio = function(tradeId, tipoVoto) {
-    if (!userSesion) return; let t = baseDatos.intercambios[tradeId]; if (!t) return;
-    if (!t.registroVotos) t.registroVotos = {};
+    if (!userSesion) return; let t=baseDatos.intercambios[tradeId]; if (!t) return;
+    if (!t.registroVotos) t.registroVotos={};
     if (t.registroVotos[userSesion]) return alert("Ya has emitido un veredicto.");
-    t.registroVotos[userSesion] = tipoVoto;
-    if (tipoVoto === 'SI') t.votosSi = (t.votosSi || 0) + 1;
-    if (tipoVoto === 'NO') t.votosNo = (t.votosNo || 0) + 1;
+    t.registroVotos[userSesion]=tipoVoto;
+    if (tipoVoto==='SI') t.votosSi=(t.votosSi||0)+1;
+    if (tipoVoto==='NO') t.votosNo=(t.votosNo||0)+1;
     guardarBD();
 };
 
 window.resolverIntercambio = function(tradeId, resultado) {
-    let t = baseDatos.intercambios[tradeId]; if (!t) return;
-    let p = baseDatos.jugadores[t.proponente]; let r = baseDatos.jugadores[t.receptor];
-    let deposito = parseInt(t.depositoEscrow) || 0;
-    if (resultado === 'EXITOSO') {
-        if (r) r.pf = (parseInt(r.pf) || 0) + deposito;
-        t.estado = "completado";
+    let t=baseDatos.intercambios[tradeId]; if (!t) return;
+    let p=baseDatos.jugadores[t.proponente]; let r=baseDatos.jugadores[t.receptor];
+    let deposito=parseInt(t.depositoEscrow)||0;
+    if (resultado==='EXITOSO') {
+        if (r) r.pf=(parseInt(r.pf)||0)+deposito;
+        t.estado="completado";
         inyectarEntradaDiarioAutomatica(`TRUEQUE COMPLETADO CON ${t.receptor.toUpperCase()}: Entregó ${t.ofrece} | Recibió ${t.pide}`);
         alert("Trueque ejecutado. PF transferidos al receptor.");
-    } else { if (p) p.pf = (parseInt(p.pf) || 0) + deposito; t.estado = "fallido"; alert("Trueque cancelado. PF devueltos."); }
+    } else { if (p) p.pf=(parseInt(p.pf)||0)+deposito; t.estado="fallido"; alert("Trueque cancelado. PF devueltos."); }
     guardarBD();
 };
 
 function actualizarListaIntercambiosDOM() {
-    let box = document.getElementById('contenedor-intercambios-activos'); if (!box) return; box.innerHTML = '';
-    if (!baseDatos.intercambios || Object.keys(baseDatos.intercambios).length === 0) { box.innerHTML = `<div style="color:var(--txt-muted); font-size:12px; padding:20px; text-align:center; font-family:var(--font-display);">Sin operaciones en curso.</div>`; return; }
+    let box=document.getElementById('contenedor-intercambios-activos'); if (!box) return; box.innerHTML='';
+    if (!baseDatos.intercambios||Object.keys(baseDatos.intercambios).length===0) { box.innerHTML=`<div style="color:var(--txt-muted);font-size:12px;padding:20px;text-align:center;font-family:var(--font-display);">Sin operaciones en curso.</div>`; return; }
     Object.keys(baseDatos.intercambios).forEach(id => {
-        let t = baseDatos.intercambios[id]; if (t.estado !== "evaluacion") return;
-        let yaVoto = t.registroVotos && t.registroVotos[userSesion]; let esCreador = t.proponente === userSesion;
-        let textoOfrece = t.ofrece || "Objeto"; let textoPide = t.pide || "Especificado por chat";
-        box.innerHTML += `<div class="intercambio-card"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;"><span style="font-family:var(--font-display); font-size:11px; color:var(--neon-intercambio); letter-spacing:.3px;">${escaparHTML(t.proponente.toUpperCase())} ➡️ ${escaparHTML(t.receptor.toUpperCase())}</span><div><span class="votos-badge votos-escrow">🛡️ ${t.depositoEscrow} PF</span><span class="votos-badge votos-si">👍 ${t.votosSi || 0}</span><span class="votos-badge votos-no">👎 ${t.votosNo || 0}</span></div></div><div style="font-size:13px; color:var(--txt-primary); margin-bottom:12px; background:rgba(0,0,0,.3); padding:12px; border-radius:var(--r-sm); border:1px solid var(--gris-800); display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><span style="color:var(--neon-legal); font-weight:700; display:block; font-size:9px; text-transform:uppercase; font-family:var(--font-display); letter-spacing:.5px; margin-bottom:4px;">🎁 Ofrece:</span>${escaparHTML(textoOfrece)}</div><div style="border-left:1px dashed var(--gris-800); padding-left:10px;"><span style="color:var(--neon-packs); font-weight:700; display:block; font-size:9px; text-transform:uppercase; font-family:var(--font-display); letter-spacing:.5px; margin-bottom:4px;">➡️ A cambio de:</span>${escaparHTML(textoPide)}</div></div><div style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn-accion" style="padding:6px 12px; background:rgba(0,200,150,.08); border-color:rgba(0,200,150,.3); color:var(--neon-legal); width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'SI')">👍 Votar SÍ</button><button class="btn-accion" style="padding:6px 12px; background:rgba(204,43,43,.08); border-color:rgba(204,43,43,.3); color:var(--rojo-suave); width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'NO')">👎 Votar NO</button>${esCreador ? `<div style="margin-left:auto; display:flex; gap:6px;"><button class="btn-accion" style="padding:6px 12px; background:rgba(74,158,255,.08); border-color:rgba(74,158,255,.3); color:var(--neon-intercambio); width:auto; font-size:9px;" onclick="resolverIntercambio('${t.id}', 'EXITOSO')">✔️ EJECUTAR</button><button class="btn-accion" style="padding:6px 12px; background:rgba(204,43,43,.08); border-color:rgba(204,43,43,.3); color:var(--rojo-suave); width:auto; font-size:9px;" onclick="resolverIntercambio('${t.id}', 'FALLIDO')">✕ CANCELAR</button></div>` : ''}</div></div>`;
+        let t=baseDatos.intercambios[id]; if (t.estado!=="evaluacion") return;
+        let yaVoto=t.registroVotos&&t.registroVotos[userSesion]; let esCreador=t.proponente===userSesion;
+        box.innerHTML += `<div class="intercambio-card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;"><span style="font-family:var(--font-display);font-size:11px;color:var(--neon-intercambio);">${escaparHTML(t.proponente.toUpperCase())} ➡️ ${escaparHTML(t.receptor.toUpperCase())}</span><div><span class="votos-badge votos-escrow">🛡️ ${t.depositoEscrow} PF</span><span class="votos-badge votos-si">👍 ${t.votosSi||0}</span><span class="votos-badge votos-no">👎 ${t.votosNo||0}</span></div></div><div style="font-size:13px;color:var(--txt-primary);margin-bottom:12px;background:rgba(0,0,0,.3);padding:12px;border-radius:var(--r-sm);border:1px solid var(--gris-800);display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div><span style="color:var(--neon-legal);font-weight:700;display:block;font-size:9px;text-transform:uppercase;font-family:var(--font-display);letter-spacing:.5px;margin-bottom:4px;">🎁 Ofrece:</span>${escaparHTML(t.ofrece||'')}</div><div style="border-left:1px dashed var(--gris-800);padding-left:10px;"><span style="color:var(--neon-packs);font-weight:700;display:block;font-size:9px;text-transform:uppercase;font-family:var(--font-display);letter-spacing:.5px;margin-bottom:4px;">➡️ A cambio de:</span>${escaparHTML(t.pide||'')}</div></div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-accion" style="padding:6px 12px;background:rgba(0,200,150,.08);border-color:rgba(0,200,150,.3);color:var(--neon-legal);width:auto;" ${yaVoto?'disabled':''} onclick="votarIntercambio('${t.id}','SI')">👍 Votar SÍ</button><button class="btn-accion" style="padding:6px 12px;background:rgba(204,43,43,.08);border-color:rgba(204,43,43,.3);color:var(--rojo-suave);width:auto;" ${yaVoto?'disabled':''} onclick="votarIntercambio('${t.id}','NO')">👎 Votar NO</button>${esCreador?`<div style="margin-left:auto;display:flex;gap:6px;"><button class="btn-accion" style="padding:6px 12px;background:rgba(74,158,255,.08);border-color:rgba(74,158,255,.3);color:var(--neon-intercambio);width:auto;font-size:9px;" onclick="resolverIntercambio('${t.id}','EXITOSO')">✔️ EJECUTAR</button><button class="btn-accion" style="padding:6px 12px;background:rgba(204,43,43,.08);border-color:rgba(204,43,43,.3);color:var(--rojo-suave);width:auto;font-size:9px;" onclick="resolverIntercambio('${t.id}','FALLIDO')">✕ CANCELAR</button></div>`:''}`;
+        box.innerHTML += `</div></div>`;
     });
 }
 </script>
 </body>
-</html>
+                                </html>
