@@ -5,1261 +5,458 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Comercial y Registro de Entrenadores - Silph Co.</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Changa:wght=400;600;800&family=Orbitron:wght=500;700;900&display=swap');
 
-        /* ═══════════════════════════════════════
-           TOKENS DE DISEÑO — SILPH CO. v2
-        ═══════════════════════════════════════ */
         :root {
-            /* Fondos */
-            --bg-base:        #09090f;
-            --bg-surface:     #111118;
-            --bg-elevated:    #16161f;
-            --bg-overlay:     #1c1c28;
-
-            /* Paleta Pokémon refinada */
-            --rojo:           #cc2b2b;
-            --rojo-suave:     #e63946;
-            --amarillo:       #f5c518;
-            --amarillo-dim:   #c9a814;
-            --blanco:         #f0f0f5;
-            --gris-400:       #9999b0;
-            --gris-600:       #55556a;
-            --gris-800:       #2a2a38;
-
-            /* Acento por zona */
-            --neon-legal:       #00c896;
-            --neon-packs:       #f5c518;
-            --neon-ilegal:      #e040fb;
-            --neon-intercambio: #4a9eff;
-            --neon-arena:       #c084fc;
-
-            --borde-legal:       #0d4a38;
-            --borde-packs:       #5a470d;
-            --borde-ilegal:      #5c1278;
-            --borde-intercambio: #1a3a6b;
-            --borde-arena:       #5b2d8a;
-
-            --panel-legal:       #09130f;
-            --panel-packs:       #121008;
-            --panel-ilegal:      #110a18;
-            --panel-intercambio: #0a1220;
-            --panel-arena:       #0f0818;
-
-            /* Texto */
-            --txt-primary:   #eeeef5;
-            --txt-secondary: #8888a0;
-            --txt-muted:     #55556a;
-
-            /* Sombras */
-            --shadow-sm:  0 1px 3px rgba(0,0,0,.5);
-            --shadow-md:  0 4px 16px rgba(0,0,0,.6);
-            --shadow-lg:  0 8px 32px rgba(0,0,0,.7);
-            --shadow-xl:  0 16px 48px rgba(0,0,0,.8);
-
-            /* Radios */
-            --r-sm:  6px;
-            --r-md: 10px;
-            --r-lg: 16px;
-            --r-xl: 22px;
-
-            /* Tipografía */
-            --font-body:    'Inter', system-ui, sans-serif;
-            --font-display: 'Orbitron', sans-serif;
+            --bg-principal: #060914;
+            --bg-gradiente: radial-gradient(circle at 50% 10%, #121829 0%, #060914 70%);
+            --panel-legal: #0b1313;
+            --panel-packs: #141108;
+            --panel-ilegal: #130910;
+            --panel-intercambio: #0e1726;
+            --panel-arena: #130a1a;
+            
+            --borde-legal: #1b4d3e;
+            --borde-packs: #614a16;
+            --borde-ilegal: #5c134f;
+            --borde-intercambio: #1d3b6b;
+            --borde-arena: #6b21a8;
+            
+            --neon-legal: #00ffaa;
+            --neon-packs: #ffbb00;
+            --neon-ilegal: #ff00bb;
+            --neon-intercambio: #3b82f6;
+            --neon-arena: #c084fc;
+            
+            --texto-principal: #e2e8f0;
+            --texto-secundario: #94a3b8;
         }
 
-        /* ── Reset ── */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Changa', sans-serif;
+            letter-spacing: 0.5px;
         }
 
         body {
-            font-family: var(--font-body);
-            background-color: var(--bg-base);
-            background-image:
-                radial-gradient(ellipse 80% 40% at 50% 0%, rgba(204,43,43,.08) 0%, transparent 70%),
-                radial-gradient(ellipse 60% 30% at 80% 100%, rgba(245,197,24,.04) 0%, transparent 60%);
-            color: var(--txt-primary);
+            background-color: var(--bg-principal);
+            background-image: var(--bg-gradiente);
+            color: var(--texto-principal);
+            margin: 0;
+            padding: 20px;
             min-height: 100vh;
-            padding: 0;
-            font-size: 14px;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* ── Scrollbar ── */
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: var(--gris-800); border-radius: 99px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--gris-600); }
-
-        /* ═══════════════════════════════════════
-           LAYOUT PRINCIPAL
-        ═══════════════════════════════════════ */
         .container {
-            max-width: 1080px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 24px 20px 80px;
         }
 
-        /* ═══════════════════════════════════════
-           BANNER DE ALERTA GLOBAL
-        ═══════════════════════════════════════ */
         .banner-alerta-global {
-            background: rgba(245,197,24,.06);
-            border: 1px solid var(--amarillo-dim);
-            border-radius: var(--r-md);
+            background: #111424;
+            border: 2px dashed var(--neon-packs);
+            border-radius: 8px;
             padding: 10px 20px;
             text-align: center;
-            font-family: var(--font-display);
-            font-size: 11px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            margin-bottom: 16px;
+            box-shadow: 0 0 15px rgba(255, 187, 0, 0.1);
             display: none;
-            animation: pulse-border 2.5s ease-in-out infinite;
         }
         .banner-alerta-global.active { display: block; }
 
-        @keyframes pulse-border {
-            0%, 100% { box-shadow: 0 0 0 rgba(245,197,24,0); }
-            50%       { box-shadow: 0 0 16px rgba(245,197,24,.18); }
-        }
-
-        /* ═══════════════════════════════════════
-           TOPBAR / MARCADOR DE RECURSOS
-        ═══════════════════════════════════════ */
         .marcador-recursos {
-            background: var(--bg-elevated);
-            border: 1px solid var(--gris-800);
-            border-radius: var(--r-lg);
-            padding: 14px 20px;
+            background: rgba(11, 15, 26, 0.85);
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 15px;
             margin-bottom: 20px;
-            box-shadow: var(--shadow-md);
-            backdrop-filter: blur(8px);
-            position: sticky;
-            top: 12px;
-            z-index: 100;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
         }
-
-        .marcador-dato {
-            font-family: var(--font-display);
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--txt-secondary);
-            letter-spacing: .5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .marcador-dato span {
-            font-size: 14px;
-            font-weight: 900;
-            color: var(--blanco);
-        }
-
-        /* Píldoras del topbar */
-        .btn-perfil-trigger,
-        .btn-logout-trigger,
-        .subtab-btn[onclick*="reclamar"] {
-            font-family: var(--font-display);
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: .8px;
-            text-transform: uppercase;
-            padding: 5px 11px;
-            border-radius: 99px;
-            cursor: pointer;
-            transition: all .2s ease;
-            border: 1px solid transparent;
-        }
-
+        .marcador-dato { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; }
+        .marcador-dato span { font-weight: 900; font-size: 16px; }
+        
         .btn-perfil-trigger {
-            background: var(--bg-overlay);
-            color: var(--txt-primary);
-            border-color: var(--gris-800);
+            background: #1e293b; color: #fff; padding: 4px 10px; border-radius: 6px;
+            cursor: pointer; font-size: 11px; margin-left: 8px; border: 1px solid #475569;
+            text-transform: uppercase; transition: all 0.2s;
         }
-        .btn-perfil-trigger:hover {
-            background: var(--amarillo);
-            color: #000;
-            border-color: var(--amarillo);
-        }
+        .btn-perfil-trigger:hover { background: var(--neon-packs); color: #000; }
 
         .btn-logout-trigger {
-            background: rgba(204,43,43,.12);
-            color: var(--rojo-suave);
-            border-color: rgba(204,43,43,.3);
+            background: #4c1d1d; color: #ef4444; padding: 4px 10px; border-radius: 6px;
+            cursor: pointer; font-size: 11px; margin-left: 5px; border: 1px solid #ef4444;
+            text-transform: uppercase; transition: all 0.2s; font-weight: bold;
         }
-        .btn-logout-trigger:hover {
-            background: var(--rojo-suave);
-            color: #fff;
-        }
+        .btn-logout-trigger:hover { background: #ef4444; color: #fff; }
 
-        /* Botón gacha diario */
-        .marcador-recursos .subtab-btn {
-            font-family: var(--font-display);
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: .8px;
-            text-transform: uppercase;
-            padding: 6px 14px;
-            border-radius: 99px;
-            cursor: pointer;
-            background: linear-gradient(135deg, rgba(245,197,24,.15), rgba(245,197,24,.05));
-            color: var(--amarillo);
-            border: 1px solid rgba(245,197,24,.35);
-            transition: all .2s ease;
-        }
-        .marcador-recursos .subtab-btn:hover {
-            background: var(--amarillo);
-            color: #000;
-            box-shadow: 0 0 20px rgba(245,197,24,.3);
-        }
-
-        /* ═══════════════════════════════════════
-           PANEL DE PERFIL
-        ═══════════════════════════════════════ */
         .perfil-desplegable-box {
-            background: var(--bg-elevated);
-            border: 1px solid var(--gris-800);
-            border-radius: var(--r-lg);
-            padding: 24px;
-            margin-bottom: 20px;
-            display: none;
-            box-shadow: var(--shadow-xl);
-            animation: slideDown .25s cubic-bezier(.16,1,.3,1);
+            background: #0f1422; border: 2px solid #334155; border-radius: 12px;
+            padding: 20px; margin-bottom: 25px; display: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-8px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
         .perfil-tabs {
-            display: flex;
-            gap: 6px;
-            border-bottom: 1px solid var(--gris-800);
-            padding-bottom: 14px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            display: flex; gap: 8px; border-bottom: 1px solid #1e293b;
+            padding-bottom: 10px; margin-bottom: 15px; flex-wrap: wrap;
         }
-
         .subtab-btn {
-            background: transparent;
-            color: var(--txt-secondary);
-            border: 1px solid var(--gris-800);
-            padding: 6px 14px;
-            font-size: 11px;
-            font-family: var(--font-display);
-            font-weight: 700;
-            letter-spacing: .5px;
-            border-radius: var(--r-sm);
-            cursor: pointer;
-            transition: all .18s ease;
-            text-transform: uppercase;
+            background: #060914; color: var(--texto-secundario); border: 1px solid #1e293b;
+            padding: 6px 14px; font-size: 12px; border-radius: 4px; cursor: pointer; font-weight: bold;
         }
-        .subtab-btn:hover { background: var(--bg-overlay); color: var(--blanco); border-color: var(--gris-600); }
-        .subtab-btn.active { background: var(--bg-overlay); color: #fff; border-color: var(--gris-600); }
-
+        .subtab-btn.active { background: #1e293b; color: #fff; border-color: #475569; }
         .perfil-content-view { display: none; }
-        .perfil-content-view.active { display: block; animation: fadeIn .2s ease; }
+        .perfil-content-view.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Inputs genéricos */
         .input-textarea-custom {
-            width: 100%;
-            background: var(--bg-base);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            border-radius: var(--r-md);
-            padding: 10px 12px;
-            font-size: 13px;
-            font-family: var(--font-body);
-            resize: vertical;
-            transition: border-color .18s;
+            width: 100%; background: #060914; color: #fff; border: 1px solid #334155;
+            border-radius: 6px; padding: 10px; font-size: 13px; resize: vertical;
         }
-        .input-textarea-custom:focus {
-            outline: none;
-            border-color: var(--amarillo-dim);
-            box-shadow: 0 0 0 3px rgba(245,197,24,.08);
-        }
+        .input-textarea-custom:focus { outline: none; border-color: var(--neon-packs); }
 
-        /* Cards Showdown */
         .showdown-team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 10px;
-            margin-top: 14px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px; margin-top: 12px;
         }
         .poke-card-showdown {
-            background: var(--bg-overlay);
-            border: 1px solid var(--gris-800);
-            border-radius: var(--r-md);
-            padding: 12px 14px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: border-color .2s, transform .2s;
+            background: #161d30; border: 1px solid #24324f; border-radius: 6px;
+            padding: 12px; font-size: 12px; display: flex; align-items: center; gap: 15px;
         }
-        .poke-card-showdown:hover { border-color: var(--gris-600); transform: translateY(-1px); }
         .poke-card-info { flex: 1; }
         .poke-card-gif-box {
-            width: 64px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-base);
-            border-radius: var(--r-sm);
-            border: 1px solid var(--gris-800);
-            flex-shrink: 0;
+            width: 65px; height: 65px; display: flex; align-items: center; justify-content: center;
+            background: rgba(6, 9, 20, 0.6); border-radius: 6px; border: 1px dashed #24324f;
         }
-        .poke-card-gif-box img { max-width: 56px; max-height: 56px; object-fit: contain; }
-        .poke-card-name {
-            font-weight: 700;
-            color: var(--neon-legal);
-            font-size: 12px;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            font-family: var(--font-display);
-        }
+        .poke-card-gif-box img { max-width: 60px; max-height: 60px; object-fit: contain; }
+        .poke-card-name { font-weight: 800; color: var(--neon-legal); font-size: 13px; margin-bottom: 4px; text-transform: uppercase;}
 
-        /* ═══════════════════════════════════════
-           MOCHILA / INVENTARIO
-        ═══════════════════════════════════════ */
         .bolsa-contenedor {
-            background: var(--bg-surface);
-            border: 1px solid var(--gris-800);
-            border-radius: var(--r-lg);
-            padding: 16px 20px;
-            margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.4); border: 1px dashed #334155;
+            border-radius: 10px; padding: 15px 20px; margin-bottom: 25px;
         }
-        .bolsa-titulo {
-            font-size: 10px;
-            color: var(--txt-muted);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            font-family: var(--font-display);
-        }
+        .bolsa-titulo { font-size: 12px; color: var(--texto-secundario); text-transform: uppercase; margin-bottom: 8px; font-weight: 600;}
+        
         .mochila-item-tag {
-            background: var(--bg-elevated);
-            padding: 6px 12px;
-            border-radius: 99px;
-            font-size: 12px;
-            border: 1px solid var(--gris-800);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: border-color .18s;
+            background: #161d30; padding: 6px 10px; border-radius: 6px; font-size: 12px;
+            border: 1px solid #2d3d5a; display: flex; align-items: center; gap: 8px;
         }
-        .mochila-item-tag:hover { border-color: var(--gris-600); }
         .btn-usar-item {
-            background: rgba(0,200,150,.1);
-            color: var(--neon-legal);
-            border: 1px solid rgba(0,200,150,.25);
-            padding: 2px 8px;
-            border-radius: 99px;
-            font-size: 9px;
-            font-weight: 700;
-            font-family: var(--font-display);
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            transition: all .18s;
+            background: #1b4d3e; color: var(--neon-legal); border: 1px solid var(--neon-legal);
+            padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;
+            cursor: pointer; text-transform: uppercase; transition: all 0.2s;
         }
         .btn-usar-item:hover { background: var(--neon-legal); color: #000; }
 
-        /* ═══════════════════════════════════════
-           DIARIO OVERLAY
-        ═══════════════════════════════════════ */
         .diario-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(5,5,12,.92);
-            backdrop-filter: blur(12px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(4, 6, 14, 0.9); backdrop-filter: blur(8px);
+            z-index: 2000; justify-content: center; align-items: center; padding: 20px;
         }
         .diario-modal {
-            background: var(--bg-elevated);
-            border: 1px solid var(--gris-800);
-            box-shadow: var(--shadow-xl), 0 0 40px rgba(245,197,24,.08);
-            width: 100%;
-            max-width: 660px;
-            height: 85vh;
-            border-radius: var(--r-xl);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            animation: desplegarEfecto .3s cubic-bezier(.16,1,.3,1);
+            background: #0f1422; border: 2px solid var(--borde-packs);
+            box-shadow: 0 0 30px rgba(255, 187, 0, 0.2); width: 100%; max-width: 650px;
+            height: 85vh; border-radius: 12px; display: flex; flex-direction: column;
+            overflow: hidden; animation: desplegarEfecto 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes desplegarEfecto {
-            from { transform: scale(.96); opacity: 0; }
-            to   { transform: scale(1); opacity: 1; }
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         .diario-header {
-            background: var(--bg-overlay);
-            padding: 18px 22px;
-            border-bottom: 1px solid var(--gris-800);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: #141108; padding: 15px 20px; border-bottom: 1px solid var(--borde-packs);
+            display: flex; justify-content: space-between; align-items: center;
         }
         .diario-logs-area {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background: var(--bg-base);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            flex: 1; padding: 20px; overflow-y: auto; background: #060914;
+            display: flex; flex-direction: column; gap: 12px;
         }
         .diario-entrada-item {
-            background: var(--bg-surface);
-            border: 1px solid var(--gris-800);
-            border-left: 3px solid var(--amarillo-dim);
-            padding: 10px 14px;
-            border-radius: 0 var(--r-sm) var(--r-sm) 0;
-            transition: border-left-color .18s;
+            background: #0f1422; border: 1px solid #1e293b;
+            border-left: 3px solid var(--neon-packs); padding: 10px 14px; border-radius: 4px;
         }
-        .diario-entrada-item:hover { border-left-color: var(--amarillo); }
-        .diario-entrada-fecha { font-family: var(--font-display); font-size: 9px; color: var(--txt-muted); margin-bottom: 4px; letter-spacing: .5px; }
-        .diario-entrada-texto { font-size: 13px; color: var(--txt-primary); white-space: pre-wrap; }
-        .diario-footer {
-            padding: 16px 20px;
-            background: var(--bg-elevated);
-            border-top: 1px solid var(--gris-800);
-        }
+        .diario-entrada-fecha { font-family: 'Orbitron', sans-serif; font-size: 10px; color: var(--texto-secundario); margin-bottom: 4px; }
+        .diario-entrada-texto { font-size: 13px; color: #fff; white-space: pre-wrap; }
+        .diario-footer { padding: 15px 20px; background: #0f1422; border-top: 1px solid #1e293b; }
 
-        /* ═══════════════════════════════════════
-           ICONOS DE ITEM
-        ═══════════════════════════════════════ */
         .item-icon {
-            width: 56px;
-            height: 56px;
-            margin: 0 auto 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            position: relative;
-            border-radius: 50%;
-            background: var(--bg-overlay);
-            border: 1px solid var(--gris-800);
-            box-shadow: var(--shadow-sm);
-            transition: transform .2s;
+            width: 60px; height: 60px; margin: 0 auto 12px auto;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; position: relative; border-radius: 50%;
+            background: radial-gradient(circle, #242f49 0%, #0f172a 100%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .item-card:hover .item-icon { transform: scale(1.08); }
         .item-icon::after {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 50%;
-            z-index: -1;
-            opacity: .6;
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border-radius: 50%; z-index: -1; opacity: 0.7;
         }
-        .legal-zone .item-icon::after { background: radial-gradient(circle, rgba(0,200,150,.25), transparent 70%); }
-        .pack-zone   .item-icon::after { background: radial-gradient(circle, rgba(245,197,24,.2),  transparent 70%); }
-        .illegal-zone .item-icon::after { background: radial-gradient(circle, rgba(224,64,251,.2),  transparent 70%); border-radius: 40% 60% 55% 45% / 40% 45% 55% 60%; }
+        .legal-zone .item-icon::after { background: linear-gradient(135deg, var(--neon-legal), transparent); }
+        .pack-zone .item-icon::after { background: linear-gradient(135deg, var(--neon-packs), transparent); }
+        .illegal-zone .item-icon::after { background: linear-gradient(135deg, var(--neon-ilegal), transparent); border-radius: 35% 65% 61% 39% / 37% 34% 66% 63%; }
 
-        /* ═══════════════════════════════════════
-           TABS DE SECCIÓN
-        ═══════════════════════════════════════ */
-        .tabs-container {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
+        .tabs-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
         .tab-button {
-            background: var(--bg-elevated);
-            color: var(--txt-secondary);
-            border: 1px solid var(--gris-800);
-            padding: 9px 18px;
-            cursor: pointer;
-            border-radius: 99px;
-            font-weight: 700;
-            font-size: 10px;
-            font-family: var(--font-display);
-            text-transform: uppercase;
-            letter-spacing: .8px;
-            transition: all .2s ease;
-            white-space: nowrap;
+            background: #111726; color: var(--texto-secundario); border: 2px solid #1e293b;
+            padding: 10px 24px; cursor: pointer; border-radius: 8px; font-weight: bold;
+            font-size: 13px; text-transform: uppercase; transition: all 0.2s ease;
         }
-        .tab-button:hover { color: var(--blanco); border-color: var(--gris-600); background: var(--bg-overlay); }
+        .tab-button:hover { color: #fff; border-color: #475569; }
+        .tab-button.tab-legal.active { background: var(--panel-legal); color: var(--neon-legal); border-color: var(--borde-legal); box-shadow: 0 0 10px rgba(0, 255, 170, 0.15); }
+        .tab-button.tab-pack.active { background: var(--panel-packs); color: var(--neon-packs); border-color: var(--borde-packs); box-shadow: 0 0 10px rgba(255, 187, 0, 0.15); }
+        .tab-button.tab-illegal.active { background: var(--panel-ilegal); color: var(--neon-ilegal); border-color: var(--borde-ilegal); box-shadow: 0 0 10px rgba(255, 0, 187, 0.15); }
+        .tab-button.tab-intercambio.active { background: var(--panel-intercambio); color: var(--neon-intercambio); border-color: var(--borde-intercambio); box-shadow: 0 0 10px rgba(59, 130, 246, 0.15); }
+        .tab-button.tab-red-entrenadores.active { background: #0f172a; color: #fff; border-color: #475569; box-shadow: 0 0 10px rgba(255, 255, 255, 0.15); }
+        .tab-button.tab-arena.active { background: var(--panel-arena); color: var(--neon-arena); border-color: var(--borde-arena); box-shadow: 0 0 10px rgba(192, 132, 252, 0.2); }
 
-        .tab-button.tab-legal.active       { background: rgba(0,200,150,.1);  color: var(--neon-legal);       border-color: rgba(0,200,150,.4);       box-shadow: 0 0 16px rgba(0,200,150,.1); }
-        .tab-button.tab-pack.active        { background: rgba(245,197,24,.1); color: var(--neon-packs);       border-color: rgba(245,197,24,.4);       box-shadow: 0 0 16px rgba(245,197,24,.1); }
-        .tab-button.tab-illegal.active     { background: rgba(224,64,251,.1); color: var(--neon-ilegal);      border-color: rgba(224,64,251,.4);       box-shadow: 0 0 16px rgba(224,64,251,.1); }
-        .tab-button.tab-intercambio.active { background: rgba(74,158,255,.1); color: var(--neon-intercambio); border-color: rgba(74,158,255,.4);       box-shadow: 0 0 16px rgba(74,158,255,.1); }
-        .tab-button.tab-red-entrenadores.active { background: var(--bg-overlay); color: #fff; border-color: var(--gris-600); }
-        .tab-button.tab-arena.active       { background: rgba(192,132,252,.1); color: var(--neon-arena);      border-color: rgba(192,132,252,.4);      box-shadow: 0 0 16px rgba(192,132,252,.12); }
-
-        /* ═══════════════════════════════════════
-           VISTAS DE MERCADO
-        ═══════════════════════════════════════ */
-        .market-view { display: none; animation: fadeIn .22s ease; }
+        .market-view { display: none; }
         .market-view.active { display: block; }
 
-        /* Filtro categoría */
-        .selector-cat-tienda {
-            background: var(--bg-elevated);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 8px 14px;
-            border-radius: var(--r-md);
-            margin-bottom: 18px;
-            font-family: var(--font-display);
-            font-size: 11px;
-            cursor: pointer;
-            width: 100%;
-            max-width: 320px;
-            transition: border-color .18s;
-        }
-        .selector-cat-tienda:focus { outline: none; border-color: var(--neon-legal); }
-
-        /* ═══════════════════════════════════════
-           GRID DE ITEMS
-        ═══════════════════════════════════════ */
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-            gap: 16px;
-        }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
         .item-card {
-            border-radius: var(--r-lg);
-            padding: 20px 16px 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: center;
-            position: relative;
-            background: var(--bg-elevated);
-            border: 1px solid var(--gris-800);
-            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-            overflow: hidden;
+            border-radius: 12px; padding: 16px; display: flex; flex-direction: column; 
+            justify-content: space-between; text-align: center; position: relative;
+            background-color: #0f1422; border: 2px solid #1e293b; transition: all 0.2s ease;
         }
-        .item-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            opacity: 0;
-            transition: opacity .2s;
-        }
-        .item-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-        .item-card:hover::before { opacity: 1; }
+        .legal-zone .item-card { background: var(--panel-legal); border-color: var(--borde-legal); }
+        .pack-zone .item-card { background: var(--panel-packs); border-color: var(--borde-packs); }
+        .illegal-zone .item-card { background: var(--panel-ilegal); border-color: var(--borde-ilegal); }
+        .item-card.agotado { opacity: 0.4; filter: grayscale(90%); border-color: #334155 !important; }
 
-        .legal-zone   .item-card { border-color: var(--borde-legal);       background: var(--panel-legal); }
-        .pack-zone    .item-card { border-color: var(--borde-packs);       background: var(--panel-packs); }
-        .illegal-zone .item-card { border-color: var(--borde-ilegal);      background: var(--panel-ilegal); }
+        .categoria-tag { font-size: 10px; color: var(--texto-secundario); text-transform: uppercase; font-weight: bold; margin-bottom: 8px; opacity: 0.6; }
+        .item-titulo { font-size: 14px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; }
+        .item-desc { font-size: 11px; color: var(--texto-secundario); line-height: 1.4; margin-bottom: 12px; text-align: left; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; }
+        .item-estrategia { font-size: 10px; color: var(--neon-packs); font-style: italic; margin-bottom: 12px; text-align: left; }
 
-        .legal-zone   .item-card:hover { border-color: rgba(0,200,150,.5);  box-shadow: 0 8px 32px rgba(0,200,150,.08); }
-        .pack-zone    .item-card:hover { border-color: rgba(245,197,24,.5); box-shadow: 0 8px 32px rgba(245,197,24,.08); }
-        .illegal-zone .item-card:hover { border-color: rgba(224,64,251,.4); box-shadow: 0 8px 32px rgba(224,64,251,.08); }
-
-        .legal-zone   .item-card::before { background: var(--neon-legal); }
-        .pack-zone    .item-card::before { background: var(--neon-packs); }
-        .illegal-zone .item-card::before { background: var(--neon-ilegal); }
-
-        .item-card.agotado { opacity: .35; filter: grayscale(1); pointer-events: none; }
-
-        .categoria-tag {
-            font-size: 9px;
-            color: var(--txt-muted);
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 1.2px;
-            margin-bottom: 8px;
-            font-family: var(--font-display);
-        }
-        .item-titulo {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            margin-bottom: 8px;
-            font-family: var(--font-display);
-        }
-        .item-desc {
-            font-size: 11px;
-            color: var(--txt-secondary);
-            line-height: 1.5;
-            margin-bottom: 10px;
-            text-align: left;
-            background: rgba(0,0,0,.25);
-            padding: 7px 9px;
-            border-radius: var(--r-sm);
-            border: 1px solid rgba(255,255,255,.04);
-        }
-        .item-estrategia {
-            font-size: 10px;
-            color: var(--amarillo-dim);
-            font-style: italic;
-            margin-bottom: 10px;
-            text-align: left;
-        }
-
-        /* Tienda cerrada */
         .tienda-cerrada-msg {
-            text-align: center;
-            padding: 64px 20px;
-            color: var(--txt-muted);
-            font-size: 14px;
-            font-weight: 700;
-            font-family: var(--font-display);
-            border: 1px dashed var(--gris-800);
-            border-radius: var(--r-xl);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: var(--bg-surface);
+            text-align: center; padding: 60px 20px; color: var(--texto-secundario);
+            font-size: 18px; font-weight: bold; font-family: 'Orbitron', sans-serif;
+            border: 2px dashed #334155; border-radius: 12px; background: rgba(15, 23, 42, 0.6);
+            letter-spacing: 2px; text-transform: uppercase;
         }
 
-        /* ═══════════════════════════════════════
-           BOTONES DE ACCIÓN
-        ═══════════════════════════════════════ */
-        button.btn-accion {
-            background: var(--bg-overlay);
-            color: var(--txt-primary);
-            border: 1px solid var(--gris-800);
-            padding: 10px 14px;
-            cursor: pointer;
-            width: 100%;
-            border-radius: var(--r-md);
-            font-weight: 700;
-            font-family: var(--font-display);
-            text-transform: uppercase;
-            font-size: 10px;
-            letter-spacing: .8px;
-            transition: all .2s ease;
-            position: relative;
-            overflow: hidden;
+        button.btn-accion { 
+            background: #1e293b; color: #fff; border: 1px solid #334155; 
+            padding: 10px; cursor: pointer; width: 100%; border-radius: 6px; 
+            font-weight: bold; text-transform: uppercase; font-size: 12px;
         }
-        button.btn-accion::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,.04);
-            opacity: 0;
-            transition: opacity .18s;
-        }
-        button.btn-accion:hover::after { opacity: 1; }
+        .legal-zone button.btn-accion:not(:disabled) { background: linear-gradient(180deg, #1b4d3e, #0e2e24); border-color: var(--neon-legal); color: var(--neon-legal); }
+        .pack-zone button.btn-accion:not(:disabled) { background: linear-gradient(180deg, #614a16, #3b2c0b); border-color: var(--neon-packs); color: var(--neon-packs); }
+        .illegal-zone button.btn-accion:not(:disabled) { background: linear-gradient(180deg, #5c134f, #310729); border-color: var(--neon-ilegal); color: var(--neon-ilegal); }
+        button:disabled { background: #11141d !important; color: #334155 !important; border-color: #1e293b !important; cursor: not-allowed; }
 
-        .legal-zone   button.btn-accion:not(:disabled) { background: rgba(0,200,150,.08);  border-color: rgba(0,200,150,.4);       color: var(--neon-legal); }
-        .pack-zone    button.btn-accion:not(:disabled) { background: rgba(245,197,24,.08); border-color: rgba(245,197,24,.4);      color: var(--neon-packs); }
-        .illegal-zone button.btn-accion:not(:disabled) { background: rgba(224,64,251,.08); border-color: rgba(224,64,251,.4);      color: var(--neon-ilegal); }
+        .lobby-box { max-width: 380px; margin: 120px auto; text-align: center; background: #0f1422; border: 2px solid #1e293b; padding: 30px; border-radius: 16px; }
+        .lobby-box input { background: #060914; color: #fff; border: 1px solid #334155; padding: 12px; width: 100%; margin-bottom: 15px; text-align: center; border-radius: 8px; font-size: 14px; }
 
-        .legal-zone   button.btn-accion:not(:disabled):hover { background: rgba(0,200,150,.15);  box-shadow: 0 0 16px rgba(0,200,150,.15); }
-        .pack-zone    button.btn-accion:not(:disabled):hover { background: rgba(245,197,24,.15); box-shadow: 0 0 16px rgba(245,197,24,.12); }
-        .illegal-zone button.btn-accion:not(:disabled):hover { background: rgba(224,64,251,.15); box-shadow: 0 0 16px rgba(224,64,251,.12); }
-
-        button:disabled {
-            background: var(--bg-surface) !important;
-            color: var(--txt-muted) !important;
-            border-color: var(--gris-800) !important;
-            cursor: not-allowed;
-        }
-
-        /* ═══════════════════════════════════════
-           PANTALLA LOBBY / LOGIN
-        ═══════════════════════════════════════ */
-        .lobby-box {
-            max-width: 400px;
-            margin: 100px auto;
-            text-align: center;
-            background: var(--bg-elevated);
-            border: 1px solid var(--gris-800);
-            padding: 40px 36px;
-            border-radius: var(--r-xl);
-            box-shadow: var(--shadow-xl), 0 0 60px rgba(204,43,43,.06);
-            animation: slideDown .4s cubic-bezier(.16,1,.3,1);
-        }
-        .lobby-box::before {
-            content: '';
-            display: block;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--rojo), var(--rojo-suave));
-            margin: 0 auto 20px;
-            box-shadow: 0 4px 20px rgba(204,43,43,.4);
-        }
-        .lobby-box input {
-            background: var(--bg-base);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 12px 16px;
-            width: 100%;
-            margin-bottom: 14px;
-            text-align: center;
-            border-radius: var(--r-md);
-            font-size: 14px;
-            font-family: var(--font-display);
-            letter-spacing: 1px;
-            transition: border-color .18s;
-        }
-        .lobby-box input:focus { outline: none; border-color: var(--rojo-suave); box-shadow: 0 0 0 3px rgba(204,43,43,.1); }
-        .lobby-box input::placeholder { color: var(--txt-muted); font-size: 11px; }
-
-        /* ═══════════════════════════════════════
-           CONSOLA ADMIN
-        ═══════════════════════════════════════ */
-        .consola-admin-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--bg-base);
-            z-index: 9999;
-            padding: 28px;
-            overflow-y: auto;
-        }
-        .grid-admin {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-        }
+        .consola-admin-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #060914; z-index: 9999; padding: 25px; overflow-y: auto; }
+        .grid-admin { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
         @media(max-width: 900px) { .grid-admin { grid-template-columns: 1fr; } }
-
-        .admin-card-inner {
-            background: var(--bg-elevated);
-            border: 1px solid var(--gris-800);
-            padding: 14px;
-            border-radius: var(--r-md);
-            margin-bottom: 10px;
-            position: relative;
-        }
+        
+        .admin-card-inner { background: #0f1422; border: 1px solid #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 12px; position: relative;}
         .admin-input-custom {
-            background: var(--bg-base);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 7px 10px;
-            width: 100%;
-            border-radius: var(--r-sm);
-            font-family: var(--font-display);
-            font-size: 11px;
-            transition: border-color .18s;
+            background: #060914; color: #fff; border: 1px solid #334155;
+            padding: 6px; width: 100%; border-radius: 4px;
+            font-family: 'Orbitron', sans-serif; font-size: 12px;
         }
-        .admin-input-custom:focus { outline: none; border-color: var(--gris-600); }
         .admin-edit-row { display: flex; gap: 10px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
         .admin-edit-field { flex: 1; min-width: 70px; }
-        .admin-edit-field label { font-size: 9px; color: var(--txt-muted); display: block; text-transform: uppercase; letter-spacing: .8px; font-family: var(--font-display); margin-bottom: 3px; }
+        .admin-edit-field label { font-size: 10px; color: var(--texto-secundario); display: block; text-transform: uppercase;}
         .btn-delete-admin {
-            position: absolute;
-            top: 10px; right: 10px;
-            background: rgba(204,43,43,.15);
-            color: var(--rojo-suave);
-            border: 1px solid rgba(204,43,43,.25);
-            width: 22px; height: 22px;
-            border-radius: var(--r-sm);
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .18s;
+            position: absolute; top: 10px; right: 10px;
+            background: #ef4444; color: #fff; border: none;
+            width: 22px; height: 22px; border-radius: 4px;
+            cursor: pointer; font-weight: bold; font-size: 11px;
+            display: flex; align-items: center; justify-content: center;
         }
-        .btn-delete-admin:hover { background: var(--rojo-suave); color: #fff; border-color: var(--rojo-suave); }
 
-        /* ═══════════════════════════════════════
-           POKEBALL FLOTANTE (ADMIN)
-        ═══════════════════════════════════════ */
         .pokeball-mercader-btn {
             display: none;
-            position: fixed;
-            bottom: 20px; left: 20px;
-            width: 50px; height: 50px;
-            background: #fff;
-            border-radius: 50%;
-            border: 3px solid #111;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: var(--shadow-lg);
-            transition: transform .2s, box-shadow .2s;
-            z-index: 999;
+            position: fixed; bottom: 15px; left: 15px;
+            width: 45px; height: 45px; background: #fff;
+            border-radius: 50%; border: 3px solid #11141d;
+            overflow: hidden; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: transform 0.2s ease; z-index: 999;
         }
-        .pokeball-mercader-btn:hover { transform: scale(1.1) rotate(20deg); box-shadow: 0 8px 24px rgba(0,0,0,.7); }
         .pokeball-mercader-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 50%;
-            background: var(--rojo);
-            border-bottom: 3px solid #111;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: #ef4444;
+            border-bottom: 3px solid #11141d;
         }
         .pokeball-mercader-btn::after {
-            content: '';
-            position: absolute;
-            top: calc(50% - 7px);
-            left: calc(50% - 7px);
-            width: 14px; height: 14px;
-            background: #fff;
-            border: 3px solid #111;
-            border-radius: 50%;
+            content: ''; position: absolute; top: calc(50% - 6px); left: calc(50% - 6px);
+            width: 12px; height: 12px; background: #fff; border: 3px solid #11141d; border-radius: 50%;
         }
 
-        /* ═══════════════════════════════════════
-           INTERCAMBIO
-        ═══════════════════════════════════════ */
         .intercambio-box {
-            background: var(--bg-elevated);
-            border: 1px solid var(--borde-intercambio);
-            border-radius: var(--r-lg);
-            padding: 22px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 30px rgba(74,158,255,.05);
+            background: #0f1422; border: 2px solid var(--borde-intercambio); border-radius: 12px; padding: 20px; margin-bottom: 20px;
         }
         .intercambio-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--gris-800);
-            padding: 16px;
-            border-radius: var(--r-md);
-            margin-top: 14px;
-            border-left: 3px solid var(--neon-intercambio);
-            transition: border-left-color .18s;
+            background: #111827; border: 1px solid #1f2937; padding: 15px; border-radius: 8px; margin-top: 15px;
+            border-left: 4px solid var(--neon-intercambio);
         }
-        .intercambio-card:hover { border-left-color: #7bb8ff; }
+        .votos-badge { display: inline-block; padding: 3px 8px; font-size: 11px; border-radius: 4px; font-family: 'Orbitron'; font-weight: bold; margin-right: 5px; }
+        .votos-si { background: #064e3b; color: #34d399; }
+        .votos-no { background: #7f1d1d; color: #f87171; }
+        .votos-escrow { background: #1e3a8a; color: #93c5fd; }
 
-        .votos-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 9px;
-            font-size: 10px;
-            border-radius: 99px;
-            font-family: var(--font-display);
-            font-weight: 700;
-            margin-right: 4px;
-            letter-spacing: .3px;
-        }
-        .votos-si     { background: rgba(0,200,150,.12);  color: #34d399; border: 1px solid rgba(0,200,150,.2); }
-        .votos-no     { background: rgba(204,43,43,.12);  color: #f87171; border: 1px solid rgba(204,43,43,.2); }
-        .votos-escrow { background: rgba(74,158,255,.1);  color: #93c5fd; border: 1px solid rgba(74,158,255,.2); }
-
-        /* ═══════════════════════════════════════
-           CEMENTERIO
-        ═══════════════════════════════════════ */
         .graveyard-item {
-            background: var(--bg-surface);
-            border: 1px solid var(--gris-800);
-            border-left: 3px solid rgba(204,43,43,.4);
-            padding: 12px 14px;
-            border-radius: 0 var(--r-sm) var(--r-sm) 0;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: #14161d; border: 1px dashed #475569; padding: 12px; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
         }
-
-        /* ═══════════════════════════════════════
-           RED DE ENTRENADORES
-        ═══════════════════════════════════════ */
-        .red-entrenadores-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
+        .red-entrenadores-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        @media(max-width:768px){ .red-entrenadores-grid { grid-template-columns: 1fr; } }
+        .selector-cat-tienda {
+            background: #0f1422; color: #fff; border: 1px solid #1b4d3e; padding: 8px 12px; border-radius: 6px; margin-bottom: 15px; font-family: 'Orbitron'; font-size: 12px; cursor: pointer;
         }
-        @media(max-width: 768px) { .red-entrenadores-grid { grid-template-columns: 1fr; } }
 
         .red-visor-pokes-grid-custom {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 8px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px;
         }
         .rival-poke-mini-card {
-            background: var(--bg-base);
-            padding: 10px 8px;
-            border-radius: var(--r-md);
-            border: 1px solid var(--gris-800);
-            color: var(--txt-primary);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            transition: border-color .18s, transform .18s;
+            background: #090d16; padding: 8px; border-radius: 6px; border: 1px solid #24324f;
+            color: #fff; text-align: center; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 4px;
         }
-        .rival-poke-mini-card:hover { border-color: var(--gris-600); transform: translateY(-2px); }
-        .rival-poke-mini-card img { max-width: 44px; max-height: 44px; object-fit: contain; }
+        .rival-poke-mini-card img { max-width: 45px; max-height: 45px; object-fit: contain; }
         .rival-poke-mini-name {
-            font-size: 9px;
-            font-weight: 700;
-            font-family: var(--font-display);
-            text-transform: uppercase;
-            letter-spacing: .3px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 100%;
+            font-size: 10px; font-weight: bold; text-transform: uppercase;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%;
         }
 
-        .rival-dead-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-top: 8px; }
-        .rival-dead-card {
-            background: rgba(204,43,43,.04);
-            border: 1px solid rgba(204,43,43,.2);
-            padding: 12px;
-            border-radius: var(--r-md);
-        }
-        .rival-dead-title { color: var(--rojo-suave); font-weight: 700; font-size: 12px; text-transform: uppercase; font-family: var(--font-display); }
-        .rival-dead-meta { font-size: 10px; color: var(--txt-muted); margin-top: 2px; }
-        .rival-dead-epitafio { font-style: italic; font-size: 11px; color: var(--txt-secondary); margin-top: 6px; border-top: 1px solid rgba(204,43,43,.15); padding-top: 5px; }
+        .rival-dead-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 8px; }
+        .rival-dead-card { background: #150d11; border: 1px dashed #ef4444; padding: 10px; border-radius: 6px; position: relative; }
+        .rival-dead-title { color: #ef4444; font-weight: 800; font-size: 12px; text-transform: uppercase; }
+        .rival-dead-meta { font-size: 10px; color: var(--texto-secundario); margin-top: 2px; }
+        .rival-dead-epitafio { font-style: italic; font-size: 11px; color: #cbd5e1; margin-top: 5px; border-top: 1px solid rgba(239, 68, 68, 0.2); padding-top: 4px; }
 
-        /* ═══════════════════════════════════════
-           ARENA DE APUESTAS
-        ═══════════════════════════════════════ */
+        /* ARENA */
         .arena-header-box {
-            background: linear-gradient(135deg, rgba(91,45,138,.15) 0%, rgba(15,8,24,0) 100%);
-            border: 1px solid var(--borde-arena);
-            border-radius: var(--r-xl);
-            padding: 24px;
+            background: linear-gradient(135deg, #1a0a2e 0%, #0d0618 100%);
+            border: 2px solid var(--borde-arena);
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(192, 132, 252, 0.1);
             position: relative;
             overflow: hidden;
         }
         .arena-header-box::before {
             content: '🎰';
             position: absolute;
-            right: 24px; top: 50%;
+            right: 20px;
+            top: 50%;
             transform: translateY(-50%);
-            font-size: 64px;
-            opacity: .06;
-            pointer-events: none;
+            font-size: 60px;
+            opacity: 0.08;
         }
 
         .arena-combate-card {
-            background: var(--panel-arena);
-            border: 1px solid var(--borde-arena);
-            border-radius: var(--r-lg);
+            background: #100818;
+            border: 2px solid var(--borde-arena);
+            border-radius: 12px;
             padding: 20px;
-            margin-bottom: 14px;
+            margin-bottom: 15px;
             position: relative;
-            transition: box-shadow .2s, border-color .2s;
+            transition: box-shadow 0.2s;
         }
-        .arena-combate-card:hover { box-shadow: 0 0 24px rgba(192,132,252,.1); border-color: rgba(192,132,252,.35); }
-        .arena-combate-card.resuelto { opacity: .5; filter: grayscale(.7); border-color: var(--gris-800); }
+        .arena-combate-card:hover { box-shadow: 0 0 15px rgba(192, 132, 252, 0.15); }
+        .arena-combate-card.resuelto { opacity: 0.5; filter: grayscale(60%); border-color: #334155; }
 
         .arena-vs-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: 14px 0;
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; margin: 15px 0;
         }
         .arena-jugador-lado {
-            flex: 1;
-            text-align: center;
-            background: rgba(0,0,0,.3);
-            border-radius: var(--r-md);
-            padding: 14px 10px;
-            border: 1px solid var(--gris-800);
-            transition: all .2s;
+            flex: 1; text-align: center; background: rgba(0,0,0,0.3);
+            border-radius: 8px; padding: 12px; border: 1px solid #1e293b; transition: all 0.2s;
         }
-        .arena-jugador-lado.lado-a { border-color: rgba(29,78,216,.4); }
-        .arena-jugador-lado.lado-b { border-color: rgba(185,28,28,.4); }
-        .arena-jugador-lado.ganador { border-color: var(--neon-packs) !important; background: rgba(245,197,24,.05); box-shadow: 0 0 16px rgba(245,197,24,.15); }
-        .arena-jugador-lado.perdedor { opacity: .35; filter: grayscale(1); }
+        .arena-jugador-lado.lado-a { border-color: #1d4ed8; }
+        .arena-jugador-lado.lado-b { border-color: #b91c1c; }
+        .arena-jugador-lado.ganador { border-color: var(--neon-packs) !important; background: rgba(255,187,0,0.05); box-shadow: 0 0 10px rgba(255,187,0,0.2); }
+        .arena-jugador-lado.perdedor { opacity: 0.4; filter: grayscale(80%); }
 
-        .arena-nombre-jugador { font-family: var(--font-display); font-size: 13px; font-weight: 900; text-transform: uppercase; margin-bottom: 4px; letter-spacing: .5px; }
+        .arena-nombre-jugador { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
         .arena-nombre-jugador.azul { color: #60a5fa; }
         .arena-nombre-jugador.rojo { color: #f87171; }
 
-        .arena-bote-lado { font-size: 10px; color: var(--txt-muted); margin-top: 3px; }
-        .arena-bote-numero { font-family: var(--font-display); font-size: 17px; font-weight: 900; color: var(--neon-arena); }
+        .arena-bote-lado { font-size: 11px; color: var(--texto-secundario); margin-top: 4px; }
+        .arena-bote-numero { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; color: var(--neon-arena); }
 
-        .arena-vs-badge { font-family: var(--font-display); font-size: 18px; font-weight: 900; color: var(--neon-arena); flex-shrink: 0; text-shadow: 0 0 12px rgba(192,132,252,.4); }
+        .arena-vs-badge { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; color: var(--neon-arena); text-shadow: 0 0 10px rgba(192,132,252,0.5); flex-shrink: 0; }
 
-        .arena-barra-apuestas { height: 6px; border-radius: 99px; background: var(--gris-800); margin: 10px 0; overflow: hidden; display: flex; }
-        .arena-barra-a { background: linear-gradient(90deg, #1d4ed8, #3b82f6); transition: width .5s ease; }
-        .arena-barra-b { background: linear-gradient(90deg, #b91c1c, #ef4444); transition: width .5s ease; }
+        .arena-barra-apuestas { height: 8px; border-radius: 4px; background: #1e293b; margin: 10px 0; overflow: hidden; display: flex; }
+        .arena-barra-a { background: linear-gradient(90deg, #1d4ed8, #3b82f6); transition: width 0.5s ease; border-radius: 4px 0 0 4px; }
+        .arena-barra-b { background: linear-gradient(90deg, #b91c1c, #ef4444); transition: width 0.5s ease; border-radius: 0 4px 4px 0; }
 
-        .arena-apostar-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid var(--gris-800);
-        }
+        .arena-apostar-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid #1e293b; }
 
         .arena-input-apuesta {
-            background: var(--bg-base);
-            color: var(--neon-arena);
-            border: 1px solid var(--borde-arena);
-            padding: 8px 10px;
-            border-radius: var(--r-md);
-            font-family: var(--font-display);
-            font-size: 13px;
-            font-weight: 700;
-            width: 90px;
-            text-align: center;
-            transition: border-color .18s, box-shadow .18s;
+            background: #060914; color: var(--neon-arena); border: 1px solid var(--borde-arena);
+            padding: 8px 12px; border-radius: 6px; font-family: 'Orbitron', sans-serif;
+            font-size: 13px; font-weight: bold; width: 100px; text-align: center;
         }
-        .arena-input-apuesta:focus { outline: none; border-color: var(--neon-arena); box-shadow: 0 0 0 3px rgba(192,132,252,.1); }
+        .arena-input-apuesta:focus { outline: none; box-shadow: 0 0 8px rgba(192,132,252,0.3); }
 
-        .btn-apostar-a { background: rgba(29,78,216,.15); color: #93c5fd; border: 1px solid rgba(59,130,246,.35); padding: 8px 14px; border-radius: var(--r-md); cursor: pointer; font-weight: 700; font-size: 10px; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .5px; transition: all .2s; flex: 1; }
-        .btn-apostar-a:hover:not(:disabled) { background: rgba(37,99,235,.3); color: #fff; }
+        .btn-apostar-a { background: linear-gradient(180deg, #1e3a8a, #1d4ed8); color: #93c5fd; border: 1px solid #3b82f6; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; text-transform: uppercase; transition: all 0.2s; flex: 1; }
+        .btn-apostar-a:hover:not(:disabled) { background: #2563eb; color: #fff; }
 
-        .btn-apostar-b { background: rgba(127,29,29,.15); color: #fca5a5; border: 1px solid rgba(239,68,68,.35); padding: 8px 14px; border-radius: var(--r-md); cursor: pointer; font-weight: 700; font-size: 10px; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .5px; transition: all .2s; flex: 1; }
-        .btn-apostar-b:hover:not(:disabled) { background: rgba(185,28,28,.3); color: #fff; }
+        .btn-apostar-b { background: linear-gradient(180deg, #7f1d1d, #b91c1c); color: #fca5a5; border: 1px solid #ef4444; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; text-transform: uppercase; transition: all 0.2s; flex: 1; }
+        .btn-apostar-b:hover:not(:disabled) { background: #dc2626; color: #fff; }
 
-        .arena-mis-apuestas { font-size: 10px; color: var(--neon-arena); font-family: var(--font-display); margin-top: 6px; text-align: center; min-height: 16px; letter-spacing: .3px; }
+        .arena-mis-apuestas { font-size: 11px; color: var(--neon-arena); font-family: 'Orbitron', sans-serif; margin-top: 6px; text-align: center; min-height: 16px; }
 
-        .arena-badge-estado { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 9px; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-left: 8px; }
-        .arena-badge-abierto  { background: rgba(0,200,150,.1);  color: #34d399; border: 1px solid rgba(0,200,150,.25); }
-        .arena-badge-cerrado  { background: rgba(204,43,43,.1);  color: #fca5a5; border: 1px solid rgba(204,43,43,.25); }
-        .arena-badge-resuelto { background: rgba(74,158,255,.1); color: #93c5fd; border: 1px solid rgba(74,158,255,.25); }
+        .arena-badge-estado { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-family: 'Orbitron', sans-serif; font-weight: bold; text-transform: uppercase; margin-left: 8px; }
+        .arena-badge-abierto { background: #064e3b; color: #34d399; }
+        .arena-badge-cerrado { background: #4c1d1d; color: #fca5a5; }
+        .arena-badge-resuelto { background: #1e3a5f; color: #93c5fd; }
 
-        .arena-resultado-banner { text-align: center; padding: 10px; border-radius: var(--r-md); margin-top: 10px; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .3px; }
-        .arena-resultado-ganaste       { background: rgba(0,200,150,.08);  border: 1px solid rgba(0,200,150,.25);  color: var(--neon-legal); }
-        .arena-resultado-perdiste      { background: rgba(204,43,43,.08);  border: 1px solid rgba(204,43,43,.25);  color: #fca5a5; }
-        .arena-resultado-noparticipio  { background: rgba(85,85,106,.08);  border: 1px solid rgba(85,85,106,.2);   color: var(--txt-secondary); }
+        .arena-resultado-banner { text-align: center; padding: 10px; border-radius: 8px; margin-top: 10px; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: bold; }
+        .arena-resultado-ganaste { background: rgba(0,255,170,0.1); border: 1px solid var(--neon-legal); color: var(--neon-legal); }
+        .arena-resultado-perdiste { background: rgba(239,68,68,0.1); border: 1px solid #ef4444; color: #fca5a5; }
+        .arena-resultado-noparticipio { background: rgba(100,116,139,0.1); border: 1px solid #475569; color: var(--texto-secundario); }
 
-        .arena-admin-box { background: var(--bg-elevated); border: 1px solid var(--borde-arena); border-radius: var(--r-lg); padding: 20px; margin-top: 20px; }
+        .arena-admin-box { background: #0f1422; border: 2px solid var(--borde-arena); border-radius: 12px; padding: 20px; margin-top: 20px; }
 
-        .arena-stats-mini { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-        .arena-stat-chip {
-            background: rgba(0,0,0,.3);
-            border: 1px solid var(--gris-800);
-            border-radius: 99px;
-            padding: 4px 12px;
-            font-size: 10px;
-            color: var(--txt-secondary);
-            font-family: var(--font-display);
-        }
-        .arena-stat-chip span { color: var(--neon-arena); font-weight: 700; }
-
-        /* ═══════════════════════════════════════
-           INPUTS GENÉRICOS (formularios)
-        ═══════════════════════════════════════ */
-        input[type="text"],
-        input[type="number"],
-        select,
-        textarea {
-            font-family: var(--font-body);
-        }
-
-        /* Selects globales de formularios */
-        select {
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        /* ═══════════════════════════════════════
-           RESPONSIVE
-        ═══════════════════════════════════════ */
-        @media (max-width: 768px) {
-            .container { padding: 12px 12px 80px; }
-
-            .marcador-recursos {
-                position: static;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-                padding: 14px 16px;
-            }
-
-            .tabs-container { gap: 6px; }
-            .tab-button { padding: 7px 12px; font-size: 9px; }
-
-            .items-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-
-            .lobby-box { margin: 40px auto; padding: 28px 20px; }
-
-            .diario-modal { height: 92vh; border-radius: var(--r-lg); }
-
-            .arena-vs-row { gap: 8px; }
-            .arena-jugador-lado { padding: 10px 8px; }
-            .arena-nombre-jugador { font-size: 11px; }
-
-            .arena-apostar-row { flex-direction: column; align-items: stretch; }
-            .arena-input-apuesta { width: 100%; }
-
-            .intercambio-box > div[style*="grid-template-columns: 1fr 1fr"] {
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            .intercambio-box > div[style*="grid-template-columns: 2fr 1fr"] {
-                display: flex !important;
-                flex-direction: column !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .items-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .item-card { padding: 14px 12px 12px; }
-            .item-titulo { font-size: 11px; }
-            .showdown-team-grid { grid-template-columns: 1fr; }
-        }
-
-        /* ═══════════════════════════════════════
-           UTILIDADES
-        ═══════════════════════════════════════ */
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--txt-primary);
-            letter-spacing: .5px;
-            text-transform: uppercase;
-            border-bottom: 1px solid var(--gris-800);
-            padding-bottom: 10px;
-            margin-bottom: 16px;
-        }
-
-        /* Estilos inline override — admin panel selects */
-        .consola-admin-screen select,
-        .consola-admin-screen input[type="number"],
-        .consola-admin-screen input[type="text"] {
-            background: var(--bg-base);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 7px 10px;
-            border-radius: var(--r-sm);
-            font-family: var(--font-display);
-            font-size: 11px;
-            width: 100%;
-            transition: border-color .18s;
-        }
-        .consola-admin-screen select:focus,
-        .consola-admin-screen input:focus { outline: none; border-color: var(--gris-600); }
-
-        /* Perfil - inputs internos */
-        #perf-view-equipo select,
-        #perf-view-progreso select,
-        #perf-view-progreso input,
-        #perf-view-vidas input {
-            background: var(--bg-elevated);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 6px 10px;
-            border-radius: var(--r-sm);
-            font-size: 12px;
-            transition: border-color .18s;
-        }
-        #perf-view-equipo select:focus,
-        #perf-view-progreso select:focus,
-        #perf-view-progreso input:focus,
-        #perf-view-vidas input:focus { outline: none; border-color: var(--gris-600); }
-
-        /* Intercambio selects */
-        #int-select-receptor,
-        #int-num-escrow,
-        #red-select-jugador {
-            background: var(--bg-base);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 10px 12px;
-            border-radius: var(--r-md);
-            font-size: 13px;
-            width: 100%;
-            transition: border-color .18s;
-        }
-        #int-select-receptor:focus,
-        #int-num-escrow:focus,
-        #red-select-jugador:focus { outline: none; border-color: var(--neon-intercambio); }
-
-        /* Cementerio inputs */
-        #cem-input-nombre, #cem-input-ruta, #cem-input-epitafio {
-            background: var(--bg-base);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 8px 10px;
-            border-radius: var(--r-sm);
-            font-size: 12px;
-            width: 100%;
-            transition: border-color .18s;
-        }
-        #cem-input-nombre:focus, #cem-input-ruta:focus, #cem-input-epitafio:focus { outline: none; border-color: var(--rojo-suave); }
-
-        /* Diario input */
-        #diario-input-texto { border-color: var(--gris-800); }
-        #diario-input-texto:focus { border-color: var(--amarillo-dim); }
-
-        /* Arena input coste */
-        #adm-arena-limite, #adm-arena-descripcion {
-            background: var(--bg-base);
-            border: 1px solid var(--borde-arena);
-        }
-
-        /* Locke status select */
-        #perf-locke-status {
-            background: var(--bg-elevated);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 4px 8px;
-            border-radius: var(--r-sm);
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        /* Red select rival */
-        #red-visor-slot-team {
-            background: var(--bg-base);
-            color: var(--blanco);
-            border: 1px solid var(--gris-800);
-            padding: 4px 8px;
-            border-radius: var(--r-sm);
-            font-size: 11px;
-            width: 100%;
-        }
+        .arena-stats-mini { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .arena-stat-chip { background: #161d30; border: 1px solid #24324f; border-radius: 6px; padding: 4px 10px; font-size: 11px; color: var(--texto-secundario); }
+        .arena-stat-chip span { color: var(--neon-arena); font-weight: bold; font-family: 'Orbitron', sans-serif; }
     </style>
 </head>
 <body>
 
 <div class="container">
 
-    <!-- LOGIN -->
     <div id="pantalla-lobby" class="lobby-box">
-        <h2 style="font-family:var(--font-display); font-size:17px; margin:0 0 4px 0; color:var(--neon-packs); letter-spacing:1px;">ACCESO DE ENTRENADOR</h2>
-        <p style="font-size:11px; color:var(--txt-muted); margin-bottom:24px; letter-spacing:.5px;">Red de Intercambio Comercial · Silph Co.</p>
+        <h2 style="font-family:'Orbitron', sans-serif; font-size:18px; margin:0 0 5px 0; color:var(--neon-packs);">ACCESO DE ENTRENADOR</h2>
+        <p style="font-size:12px; color:var(--texto-secundario); margin-bottom:20px;">Red de Intercambio Comercial Silph Co.</p>
         <input type="text" id="login-nombre" placeholder="INTRODUCE TU OPERADOR ID">
-        <button class="btn-accion" style="border-color:var(--neon-packs); color:var(--neon-packs); background:rgba(245,197,24,.06);" onclick="ingresarAlSistema()">CONECTAR A LA RED</button>
+        <button class="btn-accion" style="border-color:var(--neon-packs); color:var(--neon-packs);" onclick="ingresarAlSistema()">CONECTAR</button>
     </div>
 
-    <!-- MERCADO -->
     <div id="pantalla-mercado" style="display:none;">
-
+        
         <div id="alertas-sistema-marquee" class="banner-alerta-global"></div>
 
-        <!-- TOPBAR -->
         <div class="marcador-recursos">
-            <div class="marcador-dato">
-                OPERADOR: <span id="usr-nombre" style="color:var(--blanco);">---</span>
-                <button class="btn-perfil-trigger" onclick="conmutarCajaPerfil()">👤 Perfil</button>
+            <div class="marcador-dato">OPERADOR: <span id="usr-nombre" style="color: #fff;">---</span> 
+                <button class="btn-perfil-trigger" onclick="conmutarCajaPerfil()">👤 Ver Perfil</button>
                 <button class="btn-logout-trigger" onclick="cerrarSesionOperador()">🔓 Salir</button>
             </div>
-            <div class="marcador-dato">COMPRAS: <span id="usr-compras" style="color:var(--neon-packs);">3/3</span></div>
-            <div class="marcador-dato">EFECTIVO: <span id="usr-dinero" style="color:var(--neon-legal);">0</span> <span style="color:var(--txt-muted); font-size:9px;">P₠</span></div>
-            <div class="marcador-dato">PUNTOS FAVOR: <span id="usr-pf" style="color:var(--neon-ilegal);">0</span> <span style="color:var(--txt-muted); font-size:9px;">PF</span></div>
-            <button class="subtab-btn" style="border-color:var(--neon-packs); color:var(--neon-packs);" onclick="reclamarHackeoDiario()">⚡ GACHA DIARIO</button>
+            <div class="marcador-dato">COMPRAS: <span id="usr-compras" style="color: var(--neon-packs);">3/3</span></div>
+            <div class="marcador-dato">EFECTIVO: <span id="usr-dinero" style="color: var(--neon-legal);">0</span> P₠</div>
+            <div class="marcador-dato">PUNTOS FAVOR: <span id="usr-pf" style="color: var(--neon-ilegal);">0</span> PF</div>
+            <button class="subtab-btn" style="border-color: var(--neon-packs); color: #fff; font-family:'Orbitron';" onclick="reclamarHackeoDiario()">⚡ RECLAMAR GACHA DIARIO</button>
         </div>
 
-        <!-- PERFIL DESPLEGABLE -->
         <div id="perfil-desplegable" class="perfil-desplegable-box">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-                <h3 style="margin:0; font-family:var(--font-display); font-size:13px; color:var(--neon-packs); letter-spacing:.5px;">FICHA DE ENTRENADOR</h3>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px;">ESTADO LOCKE:</label>
-                    <select id="perf-locke-status" onchange="guardarDatosPerfilGamer()">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="margin:0; font-family:'Orbitron'; font-size:14px; color:var(--neon-packs);">FICHA DE ENTRENADOR AVANZADA</h3>
+                <div>
+                    <label style="font-size:11px; color:var(--texto-secundario); margin-right:5px;">ESTADO LOCKE:</label>
+                    <select id="perf-locke-status" onchange="guardarDatosPerfilGamer()" style="background:#060914; color:#fff; border:1px solid #334155; padding:3px; border-radius:4px; font-size:11px; font-weight:bold;">
                         <option value="jugando">⏳ EN PROGRESO</option>
                         <option value="ganado">🏆 LOCKE GANADO</option>
                         <option value="perdido">💀 LOCKE PERDIDO</option>
@@ -1270,129 +467,121 @@
             <div class="perfil-tabs">
                 <button class="subtab-btn active" id="subtab-equipo" onclick="cambiarSubPestanaPerfil('equipo')">EQUIPO POKÉMON</button>
                 <button class="subtab-btn" id="subtab-progreso" onclick="cambiarSubPestanaPerfil('progreso')">MEDALLAS Y TORNEOS</button>
-                <button class="subtab-btn" id="subtab-vidas" onclick="cambiarSubPestanaPerfil('vidas')" style="border-color:rgba(224,64,251,.35); color:var(--neon-ilegal);">❤️ CONTADOR DE VIDAS</button>
-                <button class="subtab-btn" id="subtab-cementerio" onclick="cambiarSubPestanaPerfil('cementerio')" style="border-color:var(--gris-600); color:var(--txt-secondary);">💀 CEMENTERIO</button>
-                <button class="subtab-btn" id="subtab-aventura" onclick="abrirOverlayDiarioNativo()" style="border-color:rgba(245,197,24,.35); color:var(--neon-packs);">📖 DIARIO INMUTABLE</button>
+                <button class="subtab-btn" id="subtab-vidas" onclick="cambiarSubPestanaPerfil('vidas')" style="border-color: var(--neon-ilegal); color: var(--neon-ilegal);">❤️ CONTADOR DE VIDAS</button>
+                <button class="subtab-btn" id="subtab-cementerio" onclick="cambiarSubPestanaPerfil('cementerio')" style="border-color: #64748b; color: #cbd5e1;">💀 CEMENTERIO DE PIXELES</button>
+                <button class="subtab-btn" id="subtab-aventura" onclick="abrirOverlayDiarioNativo()" style="border-color: var(--neon-packs); color: var(--neon-packs);">📖 ABRIR DIARIO INMUTABLE</button>
             </div>
 
-            <!-- EQUIPO -->
             <div id="perf-view-equipo" class="perfil-content-view active">
-                <div style="display:flex; gap:14px; align-items:center; margin-bottom:14px; background:var(--bg-base); padding:12px 14px; border-radius:var(--r-md); border:1px solid var(--gris-800);">
+                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 12px; background: #060914; padding: 10px; border-radius: 6px; border: 1px solid #1e293b;">
                     <div>
-                        <label style="font-size:10px; font-weight:700; color:var(--neon-packs); display:block; margin-bottom:4px; font-family:var(--font-display); letter-spacing:.5px;">RANURA:</label>
-                        <select id="perf-team-slot" onchange="cambiarRanuraEquipoShowdown()" style="width:130px;">
+                        <label style="font-size:12px; font-weight:bold; color:var(--neon-packs); display:block; margin-bottom:2px;">RANURA DE EQUIPO:</label>
+                        <select id="perf-team-slot" onchange="cambiarRanuraEquipoShowdown()" style="background:#161d30; color:#fff; border:1px solid #334155; padding:5px; border-radius:4px; font-size:12px; font-weight:bold; width:140px;">
                             <option value="1">Equipo 1</option><option value="2">Equipo 2</option><option value="3">Equipo 3</option>
                             <option value="4">Equipo 4</option><option value="5">Equipo 5</option><option value="6">Equipo 6</option>
                             <option value="7">Equipo 7</option><option value="8">Equipo 8</option><option value="9">Equipo 9</option>
                             <option value="10">Equipo 10</option>
                         </select>
                     </div>
-                    <div style="flex:1; text-align:right; margin-top:14px;">
-                        <button class="btn-accion" style="border-color:var(--neon-legal); color:var(--neon-legal); background:rgba(0,200,150,.06); width:auto; padding:7px 18px;" onclick="guardarEquipoShowdownActual()">💾 GUARDAR EQUIPO</button>
+                    <div style="flex: 1; text-align: right; margin-top: 15px;">
+                        <button class="btn-accion" style="border-color:var(--neon-legal); color:var(--neon-legal); width:auto; padding:6px 20px;" onclick="guardarEquipoShowdownActual()">💾 ENVIAR Y GUARDAR EQUIPO</button>
                     </div>
                 </div>
-                <p style="font-size:11px; color:var(--txt-muted); margin:0 0 8px 0;">Pega el código exportado de Pokémon Showdown para la ranura seleccionada:</p>
+                <p style="font-size:11px; color:var(--texto-secundario); margin:0 0 8px 0;">Pega aquí el código limpio de tu equipo exportado de Pokémon Showdown para la ranura seleccionada:</p>
                 <textarea id="perf-showdown-raw" class="input-textarea-custom" rows="4" placeholder="Pega el formato Showdown aquí..." oninput="parsearYRenderizarShowdown()"></textarea>
                 <div id="visualizador-showdown-team" class="showdown-team-grid"></div>
             </div>
 
-            <!-- PROGRESO -->
             <div id="perf-view-progreso" class="perfil-content-view">
-                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
-                    <div style="background:var(--bg-base); padding:14px; border-radius:var(--r-md); border:1px solid var(--gris-800);">
-                        <label style="display:block; font-size:10px; font-weight:700; font-family:var(--font-display); margin-bottom:6px; color:var(--txt-secondary); letter-spacing:.5px;">SISTEMA DE LOGROS:</label>
-                        <select id="perf-tipo-medallas" onchange="guardarDatosPerfilGamer()" style="width:100%; margin-bottom:12px;">
-                            <option value="medallas">Medallas de Gimnasio</option>
-                            <option value="kahunas">Pruebas / Kahunas</option>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
+                    <div style="background:#060914; padding:12px; border-radius:8px; border:1px solid #1e293b;">
+                        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">SISTEMA DE LOGROS:</label>
+                        <select id="perf-tipo-medallas" onchange="guardarDatosPerfilGamer()" style="width:100%; background:#161d30; color:#fff; border:1px solid #334155; padding:6px; border-radius:4px; font-size:12px; margin-bottom:12px;">
+                            <option value="medallas">Medallas de Gimnasio Clásicas</option>
+                            <option value="kahunas">Pruebas / Kahunas (Sol y Luna)</option>
                         </select>
-                        <label style="display:block; font-size:10px; font-weight:700; font-family:var(--font-display); margin-bottom:6px; color:var(--txt-secondary); letter-spacing:.5px;">DERROTADOS:</label>
-                        <input type="number" id="perf-num-medallas" min="0" max="8" value="0" oninput="guardarDatosPerfilGamer()" style="width:100%;">
+                        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px;">CANTIDAD DERROTADOS:</label>
+                        <input type="number" id="perf-num-medallas" min="0" max="8" value="0" oninput="guardarDatosPerfilGamer()" style="width:100%; background:#161d30; color:#fff; border:1px solid #334155; padding:6px; border-radius:4px; font-size:12px;">
                     </div>
-                    <div style="background:var(--bg-base); padding:14px; border-radius:var(--r-md); border:1px solid var(--gris-800); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-                        <label style="display:block; font-size:10px; font-weight:700; font-family:var(--font-display); margin-bottom:10px; color:var(--txt-secondary); letter-spacing:.5px;">🏆 TORNEOS GANADOS</label>
-                        <div style="display:flex; align-items:center; gap:14px;">
-                            <button onclick="alterarTorneosPerfil(-1)" style="padding:6px 14px; background:var(--bg-elevated); color:var(--blanco); border:1px solid var(--gris-800); cursor:pointer; border-radius:var(--r-sm); font-weight:700; font-size:16px; transition:all .18s;" onmouseover="this.style.borderColor='var(--gris-600)'" onmouseout="this.style.borderColor='var(--gris-800)'">−</button>
-                            <span id="perf-txt-torneos" style="font-family:var(--font-display); font-size:28px; font-weight:900; color:var(--neon-packs); min-width:40px;">0</span>
-                            <button onclick="alterarTorneosPerfil(1)" style="padding:6px 14px; background:var(--bg-elevated); color:var(--blanco); border:1px solid var(--gris-800); cursor:pointer; border-radius:var(--r-sm); font-weight:700; font-size:16px; transition:all .18s;" onmouseover="this.style.borderColor='var(--gris-600)'" onmouseout="this.style.borderColor='var(--gris-800)'">+</button>
+                    <div style="background:#060914; padding:12px; border-radius:8px; border:1px solid #1e293b; display:flex; flex-direction:column; justify-content:center;">
+                        <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:5px; text-align:center;">🏆 TORNEOS GANADOS VS RIVALES</label>
+                        <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-top:5px;">
+                            <button onclick="alterarTorneosPerfil(-1)" style="padding:5px 12px; background:#1e293b; color:#fff; border:none; cursor:pointer; border-radius:4px; font-weight:bold;">-</button>
+                            <span id="perf-txt-torneos" style="font-family:'Orbitron'; font-size:18px; font-weight:900; color:var(--neon-packs);">0</span>
+                            <button onclick="alterarTorneosPerfil(1)" style="padding:5px 12px; background:#1e293b; color:#fff; border:none; cursor:pointer; border-radius:4px; font-weight:bold;">+</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- VIDAS -->
             <div id="perf-view-vidas" class="perfil-content-view">
-                <div style="background:var(--bg-base); padding:24px; border-radius:var(--r-lg); border:1px solid var(--gris-800); text-align:center;">
-                    <h4 style="margin:0 0 16px 0; font-family:var(--font-display); font-size:13px; color:var(--neon-ilegal); letter-spacing:.5px;">GESTIÓN DE VIDAS DEL LOCKE</h4>
-                    <div style="display:flex; justify-content:center; align-items:center; gap:30px; margin:20px 0; flex-wrap:wrap;">
+                <div style="background:#060914; padding:20px; border-radius:12px; border:1px solid #1e293b; text-align:center;">
+                    <h4 style="margin:0 0 10px 0; font-family:'Orbitron'; font-size:14px; color:var(--neon-ilegal);">GESTIÓN DE VIDAS DEL LOCKE</h4>
+                    <div style="display:flex; justify-content:center; align-items:center; gap:25px; margin:20px 0;">
                         <div>
-                            <label style="display:block; font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; text-transform:uppercase; margin-bottom:6px;">Vidas Iniciales</label>
-                            <input type="number" id="perf-vidas-iniciales" min="1" value="20" style="width:80px; background:var(--bg-elevated); color:var(--blanco); border:1px solid var(--gris-800); padding:8px; border-radius:var(--r-sm); text-align:center; font-family:var(--font-display); font-size:14px;">
+                            <label style="display:block; font-size:11px; color:var(--texto-secundario); text-transform:uppercase; margin-bottom:5px;">Vidas Totales / Iniciales</label>
+                            <input type="number" id="perf-vidas-iniciales" min="1" value="20" style="width:80px; background:#161d30; color:#fff; border:1px solid #334155; padding:6px; border-radius:4px; text-align:center; font-family:'Orbitron'; font-size:14px;">
                         </div>
-                        <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
-                            <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; text-transform:uppercase;">Vidas Actuales</label>
-                            <div style="display:flex; align-items:center; gap:14px;">
-                                <button onclick="restarVidaContador()" style="padding:8px 18px; background:rgba(204,43,43,.1); color:var(--rojo-suave); border:1px solid rgba(204,43,43,.3); cursor:pointer; border-radius:var(--r-md); font-weight:700; font-size:13px; transition:all .18s;" onmouseover="this.style.background='rgba(204,43,43,.2)'" onmouseout="this.style.background='rgba(204,43,43,.1)'">💥 PERDER VIDA</button>
-                                <span id="perf-txt-vidas" style="font-family:var(--font-display); font-size:36px; font-weight:900; color:var(--rojo-suave); min-width:50px; display:inline-block;">20</span>
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                            <label style="display:block; font-size:11px; color:var(--texto-secundario); text-transform:uppercase; margin-bottom:5px;">Vidas Actuales</label>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <button onclick="restarVidaContador()" style="padding:8px 16px; background:#4c1d1d; color:#fff; border:1px solid #ef4444; cursor:pointer; border-radius:6px; font-weight:bold; font-size:16px;">💥 PERDER VIDA</button>
+                                <span id="perf-txt-vidas" style="font-family:'Orbitron'; font-size:32px; font-weight:900; color:#ef4444; min-width:50px; display:inline-block;">20</span>
                             </div>
                         </div>
                     </div>
-                    <button class="btn-accion" style="border-color:var(--neon-legal); color:var(--neon-legal); background:rgba(0,200,150,.06); max-width:260px; margin:0 auto;" onclick="guardarVidasPerfilGamer()">💾 SINCRONIZAR VIDAS</button>
+                    <button class="btn-accion" style="border-color:var(--neon-legal); color:var(--neon-legal); max-width:250px; margin:10px auto 0 auto;" onclick="guardarVidasPerfilGamer()">💾 GESTIONAR Y SINCRONIZAR VIDAS</button>
                 </div>
             </div>
 
-            <!-- CEMENTERIO -->
             <div id="perf-view-cementerio" class="perfil-content-view">
-                <div style="background:var(--bg-base); padding:16px; border-radius:var(--r-md); border:1px solid var(--gris-800); margin-bottom:16px;">
-                    <h4 style="margin:0 0 12px 0; font-family:var(--font-display); color:var(--rojo-suave); font-size:12px; letter-spacing:.5px;">REGISTRAR BAJA CONFIRMADA</h4>
+                <div style="background:#0d1117; padding:15px; border-radius:8px; border:1px solid #334155; margin-bottom:15px;">
+                    <h4 style="margin:0 0 10px 0; font-family:'Orbitron'; color:#ef4444; font-size:13px;">REGISTRAR BAJA CONFIRMADA</h4>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
-                        <input type="text" id="cem-input-nombre" placeholder="Nombre del Pokémon">
-                        <input type="text" id="cem-input-ruta" placeholder="Ruta / Líder de la caída">
+                        <input type="text" id="cem-input-nombre" placeholder="Nombre del Pokémon" class="admin-input-custom" style="padding:8px;">
+                        <input type="text" id="cem-input-ruta" placeholder="Ruta / Líder de la caída" class="admin-input-custom" style="padding:8px;">
                     </div>
-                    <input type="text" id="cem-input-epitafio" placeholder="Epitafio / Últimas palabras" style="margin-bottom:10px;">
-                    <button class="btn-accion" style="background:rgba(204,43,43,.08); border-color:rgba(204,43,43,.35); color:var(--rojo-suave);" onclick="registrarBajaPokemon()">💀 ENVIAR AL CEMENTERIO (INMUTABLE)</button>
+                    <input type="text" id="cem-input-epitafio" placeholder="Epitafio / Últimas palabras" class="admin-input-custom" style="padding:8px; margin-bottom:10px;">
+                    <button class="btn-accion" style="background:#4c1d1d; border-color:#ef4444; color:#fff;" onclick="registrarBajaPokemon()">💀 ENVIAR AL CEMENTERIO (INMUTABLE)</button>
                 </div>
                 <div id="cementerio-lista-local"></div>
             </div>
         </div>
 
-        <!-- DIARIO OVERLAY -->
         <div id="diario-overlay-sistema" class="diario-overlay">
             <div class="diario-modal">
                 <div class="diario-header">
                     <div>
-                        <h3 style="margin:0; font-family:var(--font-display); font-size:14px; color:var(--neon-packs); letter-spacing:.5px;">📖 BITÁCORA DE AVENTURA</h3>
-                        <span id="diario-contador" style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display);">Registros: 0 / 1500</span>
+                        <h3 style="margin:0; font-family:'Orbitron'; font-size:15px; color:var(--neon-packs);">📖 BITÁCORA DE AVENTURA INMUTABLE</h3>
+                        <span id="diario-contador" style="font-size:11px; color:var(--texto-secundario);">Registros: 0 / 1500</span>
                     </div>
-                    <button onclick="cerrarOverlayDiarioNativo()" style="background:rgba(204,43,43,.15); border:1px solid rgba(204,43,43,.3); color:var(--rojo-suave); padding:6px 14px; border-radius:var(--r-sm); font-weight:700; cursor:pointer; font-family:var(--font-display); font-size:11px; transition:all .18s;" onmouseover="this.style.background='var(--rojo-suave)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(204,43,43,.15)'; this.style.color='var(--rojo-suave)'">✕ CERRAR</button>
+                    <button onclick="cerrarOverlayDiarioNativo()" style="background:#ef4444; border:none; color:#fff; padding:5px 12px; border-radius:4px; font-weight:bold; cursor:pointer;">X</button>
                 </div>
                 <div id="diario-historial-logs" class="diario-logs-area"></div>
                 <div class="diario-footer">
                     <textarea id="diario-input-texto" class="input-textarea-custom" rows="3" placeholder="Escribe tu hito de ruta aquí..."></textarea>
-                    <button class="btn-accion" id="diario-btn-guardar" style="margin-top:10px; border-color:var(--neon-packs); color:var(--neon-packs); background:rgba(245,197,24,.06);" onclick="guardarNuevaEntradaDiario()">ESTAMPAR EN LA BITÁCORA</button>
+                    <button class="btn-accion" id="diario-btn-guardar" style="margin-top:10px; border-color:var(--neon-packs); color:var(--neon-packs);" onclick="guardarNuevaEntradaDiario()">ESTAMPAR EN LA BITÁCORA (GUARDAR)</button>
                 </div>
             </div>
         </div>
 
-        <!-- MOCHILA -->
         <div class="bolsa-contenedor">
-            <div class="bolsa-titulo">🎒 Adquisiciones Recientes</div>
-            <div id="lista-inventario" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+            <div class="bolsa-titulo">🎒 Tus Adquisiciones Recientes:</div>
+            <div id="lista-inventario" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
         </div>
 
-        <!-- TABS -->
         <div class="tabs-container">
             <button class="tab-button tab-legal active" id="tab-legal" onclick="cambiarSeccionTienda('legal')">TIENDA LEGAL</button>
             <button class="tab-button tab-pack" id="tab-pack" onclick="cambiarSeccionTienda('pack')">SHOP PF PACK</button>
-            <button class="tab-button tab-illegal" id="tab-illegal" onclick="cambiarSeccionTienda('illegal')">ILEGALIDADES</button>
-            <button class="tab-button tab-intercambio" id="tab-intercambio" onclick="cambiarSeccionTienda('intercambio')" style="border-color:rgba(74,158,255,.3); color:var(--neon-intercambio);">🏛️ CÁMARA DE COMERCIO</button>
+            <button class="tab-button tab-illegal" id="tab-illegal" onclick="cambiarSeccionTienda('illegal')">TIENDA DE ILEGALIDADES</button>
+            <button class="tab-button tab-intercambio" id="tab-intercambio" onclick="cambiarSeccionTienda('intercambio')" style="border-color:var(--neon-intercambio); color:var(--neon-intercambio);">🏛️ CAMARA DE COMERCIO</button>
             <button class="tab-button tab-red-entrenadores" id="tab-red-entrenadores" onclick="cambiarSeccionTienda('red-entrenadores')">📡 RED DE ENTRENADORES</button>
-            <button class="tab-button tab-arena" id="tab-arena" onclick="cambiarSeccionTienda('arena')" style="border-color:rgba(192,132,252,.3); color:var(--neon-arena);">🎰 ARENA DE APUESTAS</button>
+            <button class="tab-button tab-arena" id="tab-arena" onclick="cambiarSeccionTienda('arena')" style="border-color:var(--borde-arena); color:var(--neon-arena);">🎰 ARENA DE APUESTAS</button>
         </div>
 
-        <!-- VISTA LEGAL -->
         <div id="vista-legal" class="market-view active legal-zone">
             <select id="filtro-categoria-legal" class="selector-cat-tienda" onchange="aplicarFiltroCategoriaLegal()">
-                <option value="">✨ Todas las Categorías</option>
+                <option value="">✨ Mostrar Todas las Categorías</option>
                 <option value="EV/IV">EV/IV</option>
                 <option value="Bayas">Bayas</option>
                 <option value="Poké Balls">Poké Balls</option>
@@ -1402,64 +591,57 @@
             </select>
             <div id="contenedor-legal-view"></div>
         </div>
-
-        <!-- VISTA PACK -->
         <div id="vista-pack" class="market-view pack-zone"><div id="contenedor-pack-view"></div></div>
-
-        <!-- VISTA ILLEGAL -->
         <div id="vista-illegal" class="market-view illegal-zone"><div id="contenedor-hacker-view"></div></div>
-
-        <!-- VISTA INTERCAMBIO -->
+        
         <div id="vista-intercambio" class="market-view">
             <div class="intercambio-box">
-                <h3 style="font-family:var(--font-display); color:var(--neon-intercambio); margin:0 0 16px 0; font-size:13px; letter-spacing:.5px;">🔄 PROPONER TRUEQUE BIDIRECCIONAL</h3>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+                <h3 style="font-family:'Orbitron'; color:var(--neon-intercambio); margin-top:0;">🔄 PROPONER TRUEQUE BIDIRECCIONAL</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:12px;">
                     <div>
-                        <label style="font-size:10px; color:var(--txt-muted); font-weight:700; display:block; margin-bottom:5px; font-family:var(--font-display); letter-spacing:.5px; text-transform:uppercase;">🎁 Lo que ofreces:</label>
-                        <input type="text" id="int-txt-ofrece" placeholder="Ej: 1 Gafas Elegidas + 1 Buceo Ball" class="admin-input-custom" style="padding:10px; font-size:13px; border-color:rgba(0,200,150,.3); font-family:var(--font-body);">
+                        <label style="font-size:11px; color:var(--texto-secundario); font-weight: bold;">🎁 LO QUE TÚ OFRECES:</label>
+                        <input type="text" id="int-txt-ofrece" placeholder="Ej: 1 Gafas Elegidas + 1 Buceo Ball" class="admin-input-custom" style="padding:10px; font-size:13px; border-color: var(--neon-legal);">
                     </div>
                     <div>
-                        <label style="font-size:10px; color:var(--txt-muted); font-weight:700; display:block; margin-bottom:5px; font-family:var(--font-display); letter-spacing:.5px; text-transform:uppercase;">➡️ Lo que pides:</label>
-                        <input type="text" id="int-txt-pide" placeholder="Ej: 1 Piedra Fuego o un Gligar" class="admin-input-custom" style="padding:10px; font-size:13px; border-color:rgba(245,197,24,.3); font-family:var(--font-body);">
+                        <label style="font-size:11px; color:var(--texto-secundario); font-weight: bold;">➡️ LO QUE PIDES A CAMBIO:</label>
+                        <input type="text" id="int-txt-pide" placeholder="Ej: 1 Piedra Fuego o un Gligar" class="admin-input-custom" style="padding:10px; font-size:13px; border-color: var(--neon-packs);">
                     </div>
                 </div>
-                <div style="display:grid; grid-template-columns:2fr 1fr; gap:14px; margin-bottom:16px;">
+                <div style="display:grid; grid-template-columns: 2fr 1fr; gap:15px; margin-bottom:15px;">
                     <div>
-                        <label style="font-size:10px; color:var(--txt-muted); display:block; margin-bottom:5px; font-family:var(--font-display); letter-spacing:.5px; text-transform:uppercase;">Entrenador Destinatario</label>
-                        <select id="int-select-receptor"></select>
+                        <label style="font-size:11px; color:var(--texto-secundario);">Entrenador Destinatario (ID exacto)</label>
+                        <select id="int-select-receptor" style="width:100%; padding:10px; background:#060914; color:#fff; border:1px solid #334155; border-radius:6px; font-size:13px;"></select>
                     </div>
                     <div>
-                        <label style="font-size:10px; color:var(--txt-muted); display:block; margin-bottom:5px; font-family:var(--font-display); letter-spacing:.5px; text-transform:uppercase;">Aval de Garantía (PF)</label>
-                        <select id="int-num-escrow" style="color:var(--neon-ilegal); font-weight:700;">
-                            <option value="1">1 PF — Menor</option>
-                            <option value="2" selected>2 PF — Estándar</option>
-                            <option value="3">3 PF — Importante</option>
-                            <option value="5">5 PF — Pesado</option>
-                            <option value="10">10 PF — Máximo</option>
+                        <label style="font-size:11px; color:var(--texto-secundario);">Aval de Garantía (Coste PF)</label>
+                        <select id="int-num-escrow" style="width:100%; padding:10px; background:#060914; color:var(--neon-ilegal); border:1px solid #334155; border-radius:6px; font-weight:bold; font-size:13px; font-family:'Orbitron';">
+                            <option value="1">1 PF (Trato Menor)</option>
+                            <option value="2" selected>2 PF (Estándar)</option>
+                            <option value="3">3 PF (Importante)</option>
+                            <option value="5">5 PF (Módulo Pesado)</option>
+                            <option value="10">10 PF (Máximo Riesgo)</option>
                         </select>
                     </div>
                 </div>
-                <button class="btn-accion" style="background:rgba(74,158,255,.08); border-color:rgba(74,158,255,.4); color:var(--neon-intercambio);" onclick="publicarPropuestaIntercambio()">🚀 ENVIAR TRATO A LA CÁMARA</button>
+                <button class="btn-accion" style="background:linear-gradient(180deg, #1d3b6b, #0c1e3a); border-color:var(--neon-intercambio); color:var(--neon-intercambio);" onclick="publicarPropuestaIntercambio()">🚀 ENVIAR TRATO A LA CÁMARA</button>
             </div>
-            <h3 style="font-family:var(--font-display); color:var(--txt-primary); font-size:13px; border-bottom:1px solid var(--gris-800); padding-bottom:10px; margin-bottom:16px; letter-spacing:.5px;">⚖️ TRUEQUES ACTIVOS</h3>
+            <h3 style="font-family:'Orbitron'; color:#fff; border-bottom:1px solid #1e293b; padding-bottom:8px;">⚖️ REGISTRO DE TRUEQUES Y VOTACIONES</h3>
             <div id="contenedor-intercambios-activos"></div>
         </div>
 
-        <!-- VISTA RED DE ENTRENADORES -->
         <div id="vista-red-entrenadores" class="market-view">
-            <div class="intercambio-box" style="border-color:var(--gris-600);">
-                <h3 style="font-family:var(--font-display); color:var(--blanco); margin:0 0 14px 0; font-size:13px; letter-spacing:.5px;">📡 MONITOR DE LA RED DE ENTRENADORES</h3>
-                <label style="font-size:10px; color:var(--txt-muted); display:block; margin-bottom:6px; font-family:var(--font-display); letter-spacing:.5px; text-transform:uppercase;">Selecciona un rival para escanear:</label>
-                <select id="red-select-jugador" onchange="renderizarVisorRivalPublico()" style="color:var(--neon-legal); font-family:var(--font-display); font-weight:700; border-color:rgba(0,200,150,.3);"></select>
+            <div class="intercambio-box" style="border-color:#475569;">
+                <h3 style="font-family:'Orbitron'; color:#fff; margin-top:0;">📡 PANEL MONITOR DE LA RED DE ENTRENADORES</h3>
+                <label style="font-size:12px; color:var(--texto-secundario); display:block; margin-bottom:5px;">SELECCIONA UN RIVAL PARA PASARLE ESCÁNER:</label>
+                <select id="red-select-jugador" onchange="renderizarVisorRivalPublico()" style="width:100%; padding:10px; background:#060914; color:var(--neon-legal); font-weight:bold; border:1px solid #334155; border-radius:6px; font-size:14px;"></select>
             </div>
             <div id="red-visor-dinamico" class="red-entrenadores-grid"></div>
         </div>
 
-        <!-- VISTA ARENA -->
         <div id="vista-arena" class="market-view">
             <div class="arena-header-box">
-                <h2 style="margin:0 0 6px 0; font-family:var(--font-display); font-size:18px; color:var(--neon-arena); letter-spacing:1px;">🎰 ARENA DE APUESTAS</h2>
-                <p style="margin:0; font-size:12px; color:var(--txt-secondary);">Apuesta PF en combates de torneo. El administrador abre enfrentamientos y declara al ganador.</p>
+                <h2 style="margin:0 0 5px 0; font-family:'Orbitron'; font-size:18px; color:var(--neon-arena);">🎰 ARENA DE APUESTAS</h2>
+                <p style="margin:0; font-size:12px; color:var(--texto-secundario);">Apuesta PF en los combates de torneo entre entrenadores. El admin abre los enfrentamientos y declara al ganador.</p>
                 <div class="arena-stats-mini" id="arena-stats-personales"></div>
             </div>
             <div id="arena-lista-combates"></div>
@@ -1468,141 +650,152 @@
     </div>
 </div>
 
-<!-- POKEBALL ADMIN -->
-<div class="pokeball-mercader-btn" id="btn-master-pokeball" title="Panel de Control Mercader" onclick="invocarTerminalMercader()"></div>
+<div class="pokeball-mercader-btn" id="btn-master-pokeball" title="Panel de Gestión Mercader" onclick="invocarTerminalMercader()"></div>
 
-<!-- CONSOLA ADMIN -->
 <div class="consola-admin-screen" id="pantalla-admin-master">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--gris-800); padding-bottom:16px; margin-bottom:22px;">
-        <h2 style="color:var(--neon-packs); margin:0; font-family:var(--font-display); font-size:14px; letter-spacing:.5px;">🖥️ TERMINAL DE CONTROL CENTRAL</h2>
-        <button onclick="apagarTerminalMercader()" style="background:rgba(204,43,43,.15); color:var(--rojo-suave); border:1px solid rgba(204,43,43,.3); padding:8px 18px; cursor:pointer; border-radius:var(--r-md); font-weight:700; font-family:var(--font-display); font-size:10px; transition:all .18s;" onmouseover="this.style.background='var(--rojo-suave)'; this.style.color='#fff'" onmouseout="this.style.background='rgba(204,43,43,.15)'; this.style.color='var(--rojo-suave)'">✕ CERRAR</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:15px; margin-bottom:20px;">
+        <h2 style="color:var(--neon-packs); margin:0; font-family:'Orbitron'; font-size:16px;">🖥️ TERMINAL DE CONTROL CENTRAL (MERCADER PRO)</h2>
+        <button onclick="apagarTerminalMercader()" style="background:#ef4444; color:#fff; border:none; padding:8px 16px; cursor:pointer; border-radius:4px; font-weight:bold;">CERRAR PANEL</button>
     </div>
-
+    
     <div class="grid-admin">
-        <!-- Columna izquierda -->
-        <div style="background:var(--bg-elevated); border:1px solid var(--gris-800); padding:20px; border-radius:var(--r-lg); height:fit-content;">
+        <div style="background:#0f1422; border:1px solid #1e293b; padding:20px; border-radius:12px; height:fit-content;">
+            
+            <h3 style="color:var(--neon-packs); margin-top:0; font-size:14px; font-family:'Orbitron';">📢 EVENTOS Y MODIFICADORES ECONÓMICOS</h3>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:11px; color:var(--texto-secundario);">Selecciona el Evento Comercial Global:</label>
+                <select id="adm-evento-economico" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px; font-family:'Orbitron'; font-size:12px;">
+                    <option value="normal">🌐 Red Silph Co. Estable (1.0x Precios Base)</option>
+                    <option value="rebajas">📉 Rebajas de Suministros (25% Descuento)</option>
+                    <option value="inflacion">📈 Inflación por Sanción de la Liga (50% Recargo)</option>
+                    <option value="bonus_pf">🪙 Burbuja Especulativa (Doble Bono de PF)</option>
+                </select>
+            </div>
+            <button class="btn-accion" style="background: linear-gradient(180deg, #3b2c0b, #614a16); border-color:#ffbb00; color:#ffbb00; font-size:11px; margin-bottom:20px;" onclick="emitirOrdenEconomicaGlobal()">📢 EMITIR ORDEN DE RED ECONÓMICA</button>
 
-            <h3 style="color:var(--neon-packs); margin:0 0 10px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">📢 EVENTO ECONÓMICO GLOBAL</h3>
-            <select id="adm-evento-economico" style="margin-bottom:10px;">
-                <option value="normal">🌐 Red Estable (1.0x)</option>
-                <option value="rebajas">📉 Rebajas (−25%)</option>
-                <option value="inflacion">📈 Inflación (+50%)</option>
-                <option value="bonus_pf">🪙 Doble Bono PF</option>
-            </select>
-            <button class="btn-accion" style="background:rgba(245,197,24,.06); border-color:rgba(245,197,24,.4); color:var(--neon-packs); font-size:10px; margin-bottom:20px;" onclick="emitirOrdenEconomicaGlobal()">📢 EMITIR ORDEN DE RED</button>
+            <hr style="border-color:#1e293b; margin:20px 0;">
 
-            <hr style="border:none; border-top:1px solid var(--gris-800); margin:16px 0;">
+            <h3 style="color:var(--neon-packs); margin-top:0; font-size:14px; font-family:'Orbitron';">🔄 RESTABLECER COMPRAS DIARIAS</h3>
+            <div style="margin-bottom:10px;">
+                <select id="adm-reset-usuario" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px; text-transform:uppercase; font-family:'Orbitron'; font-size:12px;"></select>
+            </div>
+            <button class="btn-accion" style="background:#ffbb00; border-color:#ffbb00; color:#000; font-size:11px; margin-bottom:20px;" onclick="restablecerComprasDiariasDesdeMercader()">🔄 FORZAR REINICIO (3/3 COMPRAS)</button>
 
-            <h3 style="color:var(--neon-packs); margin:0 0 10px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">🔄 RESTABLECER COMPRAS</h3>
-            <select id="adm-reset-usuario" style="margin-bottom:10px; text-transform:uppercase;"></select>
-            <button class="btn-accion" style="background:rgba(245,197,24,.06); border-color:rgba(245,197,24,.4); color:var(--neon-packs); font-size:10px; margin-bottom:20px;" onclick="restablecerComprasDiariasDesdeMercader()">🔄 FORZAR REINICIO 3/3</button>
+            <hr style="border-color:#1e293b; margin:20px 0;">
 
-            <hr style="border:none; border-top:1px solid var(--gris-800); margin:16px 0;">
+            <!-- ══════════════════════════════════════════
+                 FIX 2: BLOQUE RESET GACHA (AÑADIDO)
+            ══════════════════════════════════════════ -->
+            <h3 style="color:var(--neon-arena); margin-top:0; font-size:14px; font-family:'Orbitron';">⚡ REINICIAR GACHA DIARIO</h3>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:11px; color:var(--texto-secundario);">Selecciona el entrenador:</label>
+                <select id="adm-reset-gacha-usuario" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px; text-transform:uppercase; font-family:'Orbitron'; font-size:12px;"></select>
+            </div>
+            <button class="btn-accion" style="background:#1a0a2e; border-color:var(--neon-arena); color:var(--neon-arena); font-size:11px; margin-bottom:20px;" onclick="restablecerGachaDiarioDesdeMercader()">⚡ REINICIAR GACHA DEL ENTRENADOR</button>
 
-            <h3 style="color:var(--neon-arena); margin:0 0 10px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">⚡ REINICIAR GACHA</h3>
-            <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:5px;">Selecciona el entrenador:</label>
-            <select id="adm-reset-gacha-usuario" style="margin-bottom:10px; text-transform:uppercase;"></select>
-            <button class="btn-accion" style="background:rgba(192,132,252,.06); border-color:rgba(192,132,252,.35); color:var(--neon-arena); font-size:10px; margin-bottom:20px;" onclick="restablecerGachaDiarioDesdeMercader()">⚡ REINICIAR GACHA</button>
+            <hr style="border-color:#1e293b; margin:20px 0;">
 
-            <hr style="border:none; border-top:1px solid var(--gris-800); margin:16px 0;">
-
-            <h3 style="color:var(--neon-legal); margin:0 0 10px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">💰 AJUSTAR EFECTIVO</h3>
-            <select id="adm-banco-usuario" style="margin-bottom:10px; text-transform:uppercase;"></select>
-            <input type="number" id="adm-banco-cantidad" class="admin-input-custom" placeholder="Cantidad P₠" style="font-size:13px; font-weight:700; color:var(--neon-legal); margin-bottom:10px;">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:20px;">
-                <button class="btn-accion" style="background:rgba(0,200,150,.06); border-color:rgba(0,200,150,.35); color:var(--neon-legal); font-size:10px;" onclick="modificarFondosEntrenador('SUMAR')">➕ AÑADIR</button>
-                <button class="btn-accion" style="background:rgba(204,43,43,.06); border-color:rgba(204,43,43,.35); color:var(--rojo-suave); font-size:10px;" onclick="modificarFondosEntrenador('RESTAR')">➖ QUITAR</button>
+            <h3 style="color:var(--neon-legal); margin-top:0; font-size:14px; font-family:'Orbitron';">💰 AJUSTAR EFECTIVO ENTRENADORES</h3>
+            <div style="margin-bottom:10px;">
+                <select id="adm-banco-usuario" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px; text-transform:uppercase; font-family:'Orbitron'; font-size:12px;"></select>
+            </div>
+            <div style="margin-bottom:12px;">
+                <input type="number" id="adm-banco-cantidad" class="admin-input-custom" placeholder="Ej: 3445" style="font-size:14px; font-weight:bold; color:var(--neon-legal);">
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+                <button class="btn-accion" style="background:#1b4d3e; border-color:var(--neon-legal); color:var(--neon-legal); font-size:11px;" onclick="modificarFondosEntrenador('SUMAR')">➕ AÑADIR</button>
+                <button class="btn-accion" style="background:#4c1d1d; border-color:#ef4444; color:#ef4444; font-size:11px;" onclick="modificarFondosEntrenador('RESTAR')">➖ QUITAR</button>
             </div>
 
-            <hr style="border:none; border-top:1px solid var(--gris-800); margin:16px 0;">
+            <hr style="border-color:#1e293b; margin:20px 0;">
 
-            <h3 style="color:var(--neon-packs); margin:0 0 10px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">📦 INTERRUPTORES DE RED</h3>
-            <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:pointer; font-size:12px; color:var(--txt-primary);">
-                <input type="checkbox" id="chk-open-legal" onchange="conmutarEstadoTienda('legalOpen', this.checked)"> 🟢 Tienda Legal Abierta
+            <h3 style="color:var(--neon-packs); margin-top:0; font-size:14px; font-family:'Orbitron';">📦 INTERRUPTORES DE RED</h3>
+            <label style="display:flex; align-items:center; gap:10px; margin-bottom:12px; cursor:pointer; font-size:13px;">
+                <input type="checkbox" id="chk-open-legal" onchange="conmutarEstadoTienda('legalOpen', this.checked)"> 🟢 TIENDA LEGAL ABIERTA
             </label>
-            <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:pointer; font-size:12px; color:var(--txt-primary);">
-                <input type="checkbox" id="chk-open-pack" onchange="conmutarEstadoTienda('packOpen', this.checked)"> 🟡 Shop PF Pack Abierta
+            <label style="display:flex; align-items:center; gap:10px; margin-bottom:12px; cursor:pointer; font-size:13px;">
+                <input type="checkbox" id="chk-open-pack" onchange="conmutarEstadoTienda('packOpen', this.checked)"> 🟡 SHOP PF PACK ABIERTA
             </label>
-            <label style="display:flex; align-items:center; gap:10px; margin-bottom:10px; cursor:pointer; font-size:12px; color:var(--txt-primary);">
-                <input type="checkbox" id="chk-open-illegal" onchange="conmutarEstadoTienda('illegalOpen', this.checked)"> 🟣 Tienda Ilegalidades Abierta
+            <label style="display:flex; align-items:center; gap:10px; margin-bottom:12px; cursor:pointer; font-size:13px;">
+                <input type="checkbox" id="chk-open-illegal" onchange="conmutarEstadoTienda('illegalOpen', this.checked)"> 🟣 TIENDA ILEGALIDADES ABIERTA
             </label>
-
-            <hr style="border:none; border-top:1px solid var(--gris-800); margin:16px 0;">
-
-            <h3 style="color:var(--neon-legal); margin:0 0 10px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">➕ AÑADIR PRODUCTO</h3>
-            <select id="ins-tienda" onchange="ajustarCamposFormularioMercader()" style="margin-bottom:8px;">
-                <option value="legal">Tienda Legal</option><option value="pack">Shop PF Pack</option><option value="illegal">Tienda de Ilegalidades</option>
-            </select>
-            <div id="form-bloque-legal-cat" style="margin-bottom:8px;">
-                <select id="ins-cat-legal">
+            
+            <hr style="border-color:#1e293b; margin:20px 0;">
+            
+            <h3 style="color:var(--neon-legal); margin-top:0; font-size:14px; font-family:'Orbitron';">➕ AÑADIR NUEVO PRODUCTO</h3>
+            <div style="margin-bottom:10px;">
+                <select id="ins-tienda" onchange="ajustarCamposFormularioMercader()" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px;">
+                    <option value="legal">Tienda Legal</option><option value="pack">Shop PF Pack</option><option value="illegal">Tienda de Ilegalidades</option>
+                </select>
+            </div>
+            <div id="form-bloque-legal-cat" style="margin-bottom:10px;">
+                <select id="ins-cat-legal" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px;">
                     <option value="EV/IV">EV/IV</option><option value="Bayas">Bayas</option><option value="Poké Balls">Poké Balls</option>
                     <option value="Objetos de Exploración">Objetos de Exploración</option><option value="Objetos de Combate (X)">Objetos de Combate (X)</option>
                     <option value="Objetos Competitivos">Objetos Competitivos</option>
                 </select>
             </div>
-            <div id="form-bloque-pack-detalles" style="margin-bottom:8px; display:none;">
-                <input type="text" id="ins-pack-desc" placeholder="Contenido del Pack" class="admin-input-custom" style="margin-bottom:6px; font-family:var(--font-body);">
-                <input type="text" id="ins-pack-estrategia" placeholder="Enfoque estratégico (opcional)" class="admin-input-custom" style="font-family:var(--font-body);">
+            <div id="form-bloque-pack-detalles" style="margin-bottom:10px; display:none;">
+                <input type="text" id="ins-pack-desc" placeholder="Contenido del Pack" style="width:100%; margin-bottom:8px; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px; font-size:12px;">
+                <input type="text" id="ins-pack-estrategia" placeholder="Enfoque estratégico (Opcional)" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px; font-size:12px;">
             </div>
-            <div id="form-bloque-illegal-detalles" style="margin-bottom:8px; display:none;">
-                <input type="text" id="ins-illegal-desc" placeholder="Descripción del servicio" class="admin-input-custom" style="font-family:var(--font-body);">
+            <div id="form-bloque-illegal-detalles" style="margin-bottom:10px; display:none;">
+                <input type="text" id="ins-illegal-desc" placeholder="Descripción del servicio prohibido" style="width:100%; padding:8px; background:#060914; color:#fff; border:1px solid #1e293b; border-radius:4px; font-size:12px;">
             </div>
-            <input type="text" id="ins-icono" value="📦" class="admin-input-custom" style="margin-bottom:8px; font-size:16px;">
-            <div style="margin-bottom:8px;">
-                <label id="lbl-ins-nombre" style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px;">Nombre del artículo:</label>
-                <input type="text" id="ins-nombre" class="admin-input-custom" style="font-family:var(--font-body);">
+            <div style="margin-bottom:10px;">
+                <input type="text" id="ins-icono" value="📦" class="admin-input-custom" style="font-size:14px;">
             </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+            <div style="margin-bottom:10px;">
+                <label id="lbl-ins-nombre" style="font-size:11px; color:var(--texto-secundario);">Nombre del Artículo:</label>
+                <input type="text" id="ins-nombre" class="admin-input-custom">
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
                 <div>
-                    <label id="lbl-ins-precio" style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px;">Coste:</label>
+                    <label id="lbl-ins-precio" style="font-size:11px; color:var(--texto-secundario);">Coste:</label>
                     <input type="number" id="ins-precio" class="admin-input-custom">
                 </div>
                 <div id="bloque-ins-pf">
-                    <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px;">Bono PF:</label>
+                    <label style="font-size:11px; color:var(--texto-secundario);">Bono PF:</label>
                     <input type="number" id="ins-pf" value="1" class="admin-input-custom">
                 </div>
             </div>
-            <div style="margin-bottom:14px;">
-                <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px;">Stock inicial:</label>
+            <div style="margin-bottom:15px;">
+                <label style="font-size:11px; color:var(--texto-secundario);">Stock Inicial:</label>
                 <input type="number" id="ins-stock" value="10" class="admin-input-custom">
             </div>
-            <button class="btn-accion" style="border-color:rgba(0,200,150,.4); color:var(--neon-legal); background:rgba(0,200,150,.06);" onclick="inyectarObjetoNuevoMaster()">PUBLICAR EN TIENDA</button>
+            <button class="btn-accion" style="border-color:var(--neon-legal); color:var(--neon-legal);" onclick="inyectarObjetoNuevoMaster()">PUBLICAR EN TIENDA</button>
 
-            <hr style="border:none; border-top:1px solid var(--gris-800); margin:16px 0;">
-
-            <h3 style="color:var(--neon-arena); margin:0 0 10px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">🎰 ARENA DE APUESTAS</h3>
-            <p style="font-size:10px; color:var(--txt-muted); margin-bottom:10px; font-family:var(--font-display); letter-spacing:.3px;">Crea un combate de torneo para apuestas.</p>
+            <hr style="border-color:#1e293b; margin:20px 0;">
+            <h3 style="color:var(--neon-arena); margin-top:0; font-size:14px; font-family:'Orbitron';">🎰 GESTIONAR ARENA DE APUESTAS</h3>
+            <p style="font-size:11px; color:var(--texto-secundario); margin-bottom:10px;">Crea un nuevo combate de torneo para que los jugadores apuesten.</p>
             <div style="margin-bottom:8px;">
-                <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px; text-transform:uppercase;">Jugador A (Azul):</label>
-                <select id="adm-arena-jugador-a" style="color:#60a5fa; border-color:rgba(29,78,216,.4);"></select>
+                <label style="font-size:11px; color:var(--texto-secundario);">Jugador A (Lado Azul):</label>
+                <select id="adm-arena-jugador-a" style="width:100%; padding:8px; background:#060914; color:#60a5fa; border:1px solid #1d4ed8; border-radius:4px; font-family:'Orbitron'; font-size:12px; font-weight:bold;"></select>
             </div>
             <div style="margin-bottom:8px;">
-                <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px; text-transform:uppercase;">Jugador B (Rojo):</label>
-                <select id="adm-arena-jugador-b" style="color:#f87171; border-color:rgba(185,28,28,.4);"></select>
+                <label style="font-size:11px; color:var(--texto-secundario);">Jugador B (Lado Rojo):</label>
+                <select id="adm-arena-jugador-b" style="width:100%; padding:8px; background:#060914; color:#f87171; border:1px solid #b91c1c; border-radius:4px; font-family:'Orbitron'; font-size:12px; font-weight:bold;"></select>
             </div>
             <div style="margin-bottom:8px;">
-                <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px; text-transform:uppercase;">Descripción del combate:</label>
-                <input type="text" id="adm-arena-descripcion" class="admin-input-custom" placeholder="Torneo / Ronda / Descripción" style="border-color:var(--borde-arena); font-family:var(--font-body);">
+                <label style="font-size:11px; color:var(--texto-secundario);">Descripción del combate (Ej: "Final Kahuna 2"):</label>
+                <input type="text" id="adm-arena-descripcion" class="admin-input-custom" placeholder="Torneo / Ronda / Descripción" style="border-color:var(--borde-arena);">
             </div>
             <div style="margin-bottom:12px;">
-                <label style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.5px; display:block; margin-bottom:3px; text-transform:uppercase;">Límite máximo (PF):</label>
+                <label style="font-size:11px; color:var(--texto-secundario);">Límite máximo de apuesta (PF):</label>
                 <input type="number" id="adm-arena-limite" class="admin-input-custom" value="5" style="border-color:var(--borde-arena); color:var(--neon-arena);">
             </div>
-            <button class="btn-accion" style="border-color:rgba(192,132,252,.4); color:var(--neon-arena); background:rgba(192,132,252,.06); margin-bottom:20px;" onclick="crearCombateArena()">🎰 ABRIR COMBATE EN LA ARENA</button>
+            <button class="btn-accion" style="border-color:var(--neon-arena); color:var(--neon-arena); background:linear-gradient(180deg,#2d1054,#1a0a2e); margin-bottom:20px;" onclick="crearCombateArena()">🎰 ABRIR COMBATE EN LA ARENA</button>
+
             <div id="adm-arena-combates-activos" style="max-height:300px; overflow-y:auto;"></div>
         </div>
 
-        <!-- Columna derecha: inventario global -->
-        <div style="background:var(--bg-elevated); border:1px solid var(--gris-800); padding:20px; border-radius:var(--r-lg);">
-            <h3 style="color:var(--neon-packs); margin:0 0 16px 0; font-size:12px; font-family:var(--font-display); letter-spacing:.5px;">📦 ALMACÉN GLOBAL — PRECIOS Y STOCKS</h3>
-            <div id="admin-inventario-global" style="max-height:640px; overflow-y:auto; padding-right:4px;"></div>
+        <div style="background:#0f1422; border:1px solid #1e293b; padding:20px; border-radius:12px;">
+            <h3 style="color:var(--neon-packs); margin-top:0; font-size:14px; font-family:'Orbitron';">📦 ALMACÉN GLOBAL Y EDICIÓN DE PRECIOS / STOCKS</h3>
+            <div id="admin-inventario-global" style="max-height:600px; overflow-y:auto; padding-right:5px;"></div>
         </div>
     </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     JAVASCRIPT — SIN MODIFICACIONES
-════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -1751,12 +944,18 @@ window.cerrarApuestasCombate = function(combateId) {
     guardarBD();
 };
 
+// ═══════════════════════════════════════════
+// FIX 1: RESOLVER COMBATE - DISTRIBUCIÓN CORRECTA DE GANANCIAS
+// Lógica: cada ganador recupera su apuesta + su parte proporcional
+// del bote de los perdedores. Si nadie apostó al ganador, se devuelve
+// todo a los perdedores. Los perdedores pierden sus PF normalmente.
+// ═══════════════════════════════════════════
 window.resolverCombateArena = function(combateId, ganadorLado) {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
     let c = baseDatos.arena[combateId];
     if (!c) return;
 
-    c.ganador = ganadorLado;
+    c.ganador = ganadorLado; // 'A' o 'B'
     c.estado = "resuelto";
 
     if (!c.apuestas) c.apuestas = {};
@@ -1764,6 +963,7 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
     let boteGanadores = ganadorLado === 'A' ? (c.boteA || 0) : (c.boteB || 0);
     let botePerdedores = ganadorLado === 'A' ? (c.boteB || 0) : (c.boteA || 0);
 
+    // Clasificar apostadores
     let ganadores = [];
     let perdedores = [];
     Object.keys(c.apuestas).forEach(uid => {
@@ -1773,6 +973,8 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
     });
 
     if (ganadores.length > 0 && boteGanadores > 0) {
+        // Caso normal: hay apostadores al ganador
+        // Cada ganador recibe: su apuesta + su parte proporcional del bote perdedor
         ganadores.forEach(g => {
             let proporcion = g.cantidad / boteGanadores;
             let gananciaDePerdedores = Math.floor(botePerdedores * proporcion);
@@ -1785,12 +987,14 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
                 inyectarEntradaDiarioAutomaticaPara(g.uid, msgLog);
             }
         });
+        // Los perdedores ya han perdido sus PF (se descontaron al apostar)
         perdedores.forEach(g => {
             if (baseDatos.jugadores[g.uid]) {
                 inyectarEntradaDiarioAutomaticaPara(g.uid, `🎰 ARENA: Apuesta perdida en [${c.descripcion}]. Perdiste ${g.cantidad} PF.`);
             }
         });
     } else if (ganadores.length === 0 && (perdedores.length > 0 || botePerdedores > 0)) {
+        // Nadie apostó al ganador: devolver PF a todos los perdedores (no hay quién los cobre)
         perdedores.forEach(g => {
             if (baseDatos.jugadores[g.uid]) {
                 baseDatos.jugadores[g.uid].pf = (baseDatos.jugadores[g.uid].pf || 0) + g.cantidad;
@@ -1798,6 +1002,7 @@ window.resolverCombateArena = function(combateId, ganadorLado) {
             }
         });
     }
+    // Si no había nadie apostando, no pasa nada.
 
     let nombreGanador = ganadorLado === 'A' ? c.jugadorA : c.jugadorB;
     let resumenMsg = ganadores.length > 0
@@ -1834,6 +1039,7 @@ window.apostarEnCombate = function(combateId, lado) {
     let nombreJugador = lado === 'A' ? c.jugadorA : c.jugadorB;
     if (!confirm(`¿Apostar ${cantidad} PF a que ${nombreJugador.toUpperCase()} gana "${c.descripcion}"?`)) return;
 
+    // Descontar los PF al apostar
     u.pf = (u.pf || 0) - cantidad;
     if (!c.apuestas) c.apuestas = {};
     c.apuestas[userSesion] = { lado, cantidad };
@@ -1863,10 +1069,10 @@ function renderizarArenaPublica() {
 
     if (!baseDatos.arena || Object.keys(baseDatos.arena).length === 0) {
         box.innerHTML = `
-            <div style="text-align:center; padding:64px 20px; color:var(--txt-muted); border:1px dashed var(--borde-arena); border-radius:var(--r-xl); background:var(--panel-arena);">
-                <div style="font-size:40px; margin-bottom:12px;">🎰</div>
-                <div style="font-family:var(--font-display); font-size:13px; text-transform:uppercase; letter-spacing:2px; color:var(--txt-secondary);">Arena Vacía</div>
-                <div style="font-size:11px; margin-top:6px;">El Mercader aún no ha abierto ningún combate.</div>
+            <div style="text-align:center; padding:60px 20px; color:var(--texto-secundario); border:2px dashed var(--borde-arena); border-radius:12px; background:rgba(19,10,26,0.5);">
+                <div style="font-size:40px; margin-bottom:10px;">🎰</div>
+                <div style="font-family:'Orbitron'; font-size:14px; text-transform:uppercase; letter-spacing:2px;">Arena Vacía</div>
+                <div style="font-size:12px; margin-top:5px;">El Mercader aún no ha abierto ningún combate.</div>
             </div>`;
         return;
     }
@@ -1881,8 +1087,8 @@ function renderizarArenaPublica() {
             }
         });
         statsBox.innerHTML = `
-            <div class="arena-stat-chip">Ganadas: <span>${apuestasGanadas}</span></div>
-            <div class="arena-stat-chip">Perdidas: <span>${apuestasPerdidas}</span></div>
+            <div class="arena-stat-chip">Apuestas ganadas: <span>${apuestasGanadas}</span></div>
+            <div class="arena-stat-chip">Apuestas perdidas: <span>${apuestasPerdidas}</span></div>
         `;
     }
 
@@ -1900,8 +1106,8 @@ function renderizarArenaPublica() {
         let soyParticipante = c.jugadorA === userSesion || c.jugadorB === userSesion;
 
         let badgeHTML = '';
-        if (c.estado === 'abierto') badgeHTML = '<span class="arena-badge-estado arena-badge-abierto">🟢 ABIERTAS</span>';
-        else if (c.estado === 'cerrado') badgeHTML = '<span class="arena-badge-estado arena-badge-cerrado">🔒 CERRADAS</span>';
+        if (c.estado === 'abierto') badgeHTML = '<span class="arena-badge-estado arena-badge-abierto">🟢 APUESTAS ABIERTAS</span>';
+        else if (c.estado === 'cerrado') badgeHTML = '<span class="arena-badge-estado arena-badge-cerrado">🔒 APUESTAS CERRADAS</span>';
         else badgeHTML = '<span class="arena-badge-estado arena-badge-resuelto">✅ RESUELTO</span>';
 
         let claseResuelto = c.estado === 'resuelto' ? 'resuelto' : '';
@@ -1917,31 +1123,32 @@ function renderizarArenaPublica() {
         if (c.estado === 'abierto' && !soyParticipante) {
             if (miApuesta) {
                 let ladoApuestado = miApuesta.lado === 'A' ? c.jugadorA : c.jugadorB;
-                apostarHTML = `<div class="arena-mis-apuestas">✅ Apostaste ${miApuesta.cantidad} PF a ${escaparHTML(ladoApuestado.toUpperCase())}</div>`;
+                apostarHTML = `<div class="arena-mis-apuestas">✅ Ya apostaste ${miApuesta.cantidad} PF a ${escaparHTML(ladoApuestado.toUpperCase())}</div>`;
             } else {
                 apostarHTML = `
                     <div class="arena-apostar-row">
-                        <span style="font-size:10px; color:var(--txt-muted); font-family:var(--font-display); letter-spacing:.3px;">APUESTA (máx. ${c.limitePf} PF):</span>
+                        <span style="font-size:11px; color:var(--texto-secundario); font-family:'Orbitron';">TU APUESTA (máx. ${c.limitePf} PF):</span>
                         <input type="number" id="arena-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1">
-                        <button class="btn-apostar-a" onclick="apostarEnCombate('${c.id}', 'A')">A ${escaparHTML(c.jugadorA.toUpperCase())}</button>
-                        <button class="btn-apostar-b" onclick="apostarEnCombate('${c.id}', 'B')">B ${escaparHTML(c.jugadorB.toUpperCase())}</button>
+                        <button class="btn-apostar-a" onclick="apostarEnCombate('${c.id}', 'A')">APOSTAR A ${escaparHTML(c.jugadorA.toUpperCase())}</button>
+                        <button class="btn-apostar-b" onclick="apostarEnCombate('${c.id}', 'B')">APOSTAR A ${escaparHTML(c.jugadorB.toUpperCase())}</button>
                     </div>`;
             }
         } else if (soyParticipante && c.estado === 'abierto') {
-            apostarHTML = `<div class="arena-mis-apuestas" style="color:var(--txt-muted);">⚔️ Eres participante de este combate</div>`;
+            apostarHTML = `<div class="arena-mis-apuestas" style="color:var(--texto-secundario);">⚔️ Eres participante de este combate</div>`;
         }
 
         let resultadoHTML = '';
         if (c.estado === 'resuelto' && miApuesta) {
             if (miApuesta.lado === c.ganador) {
+                // Calcular cuánto ganó exactamente para mostrarlo
                 let boteG = c.ganador === 'A' ? (c.boteA || 0) : (c.boteB || 0);
                 let boteP = c.ganador === 'A' ? (c.boteB || 0) : (c.boteA || 0);
                 let proporcion = boteG > 0 ? miApuesta.cantidad / boteG : 0;
                 let ganancia = Math.floor(boteP * proporcion);
                 let totalRecibido = miApuesta.cantidad + ganancia;
-                resultadoHTML = `<div class="arena-resultado-banner arena-resultado-ganaste">🏆 ¡ACERTASTE! Recuperaste ${miApuesta.cantidad} PF + ${ganancia} PF = <strong>${totalRecibido} PF</strong> en total.</div>`;
+                resultadoHTML = `<div class="arena-resultado-banner arena-resultado-ganaste">🏆 ¡ACERTASTE! Recuperaste ${miApuesta.cantidad} PF + ${ganancia} PF de ganancia = <strong>${totalRecibido} PF</strong> en total.</div>`;
             } else {
-                resultadoHTML = `<div class="arena-resultado-banner arena-resultado-perdiste">💸 Fallaste. Perdiste ${miApuesta.cantidad} PF.</div>`;
+                resultadoHTML = `<div class="arena-resultado-banner arena-resultado-perdiste">💸 Fallaste. Perdiste ${miApuesta.cantidad} PF. Mejor suerte la próxima.</div>`;
             }
         } else if (c.estado === 'resuelto' && !miApuesta && !soyParticipante) {
             resultadoHTML = `<div class="arena-resultado-banner arena-resultado-noparticipio">— No participaste en este combate.</div>`;
@@ -1949,29 +1156,32 @@ function renderizarArenaPublica() {
 
         box.innerHTML += `
             <div class="arena-combate-card ${claseResuelto}">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
-                    <div style="font-family:var(--font-display); font-size:12px; color:var(--txt-primary); font-weight:700; letter-spacing:.3px;">${escaparHTML(c.descripcion)} ${badgeHTML}</div>
-                    <div style="font-size:10px; color:var(--txt-muted);">Bote: <span style="color:var(--neon-arena); font-weight:700; font-family:var(--font-display);">${boteTotal} PF</span></div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; flex-wrap:wrap; gap:5px;">
+                    <div style="font-family:'Orbitron'; font-size:13px; color:#fff; font-weight:bold;">${escaparHTML(c.descripcion)} ${badgeHTML}</div>
+                    <div style="font-size:11px; color:var(--texto-secundario);">Bote total: <span style="color:var(--neon-arena); font-weight:bold; font-family:'Orbitron';">${boteTotal} PF</span></div>
                 </div>
+
                 <div class="arena-vs-row">
                     <div class="arena-jugador-lado ${ladoAClase}">
                         <div class="arena-nombre-jugador azul">${escaparHTML(c.jugadorA.toUpperCase())}</div>
                         <div class="arena-bote-numero">${c.boteA || 0} PF</div>
                         <div class="arena-bote-lado">${pctA}% del bote</div>
-                        ${c.estado === 'resuelto' && c.ganador === 'A' ? '<div style="font-size:20px; margin-top:6px;">🏆</div>' : ''}
+                        ${c.estado === 'resuelto' && c.ganador === 'A' ? '<div style="font-size:18px; margin-top:4px;">🏆</div>' : ''}
                     </div>
                     <div class="arena-vs-badge">VS</div>
                     <div class="arena-jugador-lado ${ladoBClase}">
                         <div class="arena-nombre-jugador rojo">${escaparHTML(c.jugadorB.toUpperCase())}</div>
                         <div class="arena-bote-numero">${c.boteB || 0} PF</div>
                         <div class="arena-bote-lado">${pctB}% del bote</div>
-                        ${c.estado === 'resuelto' && c.ganador === 'B' ? '<div style="font-size:20px; margin-top:6px;">🏆</div>' : ''}
+                        ${c.estado === 'resuelto' && c.ganador === 'B' ? '<div style="font-size:18px; margin-top:4px;">🏆</div>' : ''}
                     </div>
                 </div>
+
                 <div class="arena-barra-apuestas">
                     <div class="arena-barra-a" style="width:${pctA}%"></div>
                     <div class="arena-barra-b" style="width:${pctB}%"></div>
                 </div>
+
                 ${apostarHTML}
                 ${resultadoHTML}
             </div>`;
@@ -1984,7 +1194,7 @@ function renderizarAdminArena() {
     box.innerHTML = '';
 
     if (!baseDatos.arena || Object.keys(baseDatos.arena).length === 0) {
-        box.innerHTML = '<div style="color:var(--txt-muted); font-size:10px; text-align:center; padding:10px; font-family:var(--font-display);">No hay combates creados.</div>';
+        box.innerHTML = '<div style="color:var(--texto-secundario); font-size:11px; text-align:center; padding:10px;">No hay combates creados aún.</div>';
         return;
     }
 
@@ -1992,15 +1202,16 @@ function renderizarAdminArena() {
         if (c.estado === 'resuelto') return;
         box.innerHTML += `
             <div class="admin-card-inner" style="border-color:var(--borde-arena);">
-                <div style="font-size:11px; color:var(--neon-arena); font-weight:700; margin-bottom:6px; font-family:var(--font-display);">${escaparHTML(c.descripcion)}</div>
-                <div style="font-size:10px; color:var(--txt-secondary); margin-bottom:8px;">
+                <div style="font-size:12px; color:var(--neon-arena); font-weight:bold; margin-bottom:8px;">${escaparHTML(c.descripcion)}</div>
+                <div style="font-size:11px; color:var(--texto-secundario); margin-bottom:8px;">
                     <span style="color:#60a5fa;">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171;">${escaparHTML(c.jugadorB.toUpperCase())}</span>
-                    — ${c.estado.toUpperCase()} — Bote: ${(c.boteA||0)+(c.boteB||0)} PF
+                    — Estado: <strong>${c.estado.toUpperCase()}</strong>
+                    — Bote: ${(c.boteA||0) + (c.boteB||0)} PF
                 </div>
                 <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                    ${c.estado === 'abierto' ? `<button class="btn-accion" style="width:auto; padding:4px 10px; font-size:9px; border-color:rgba(245,197,24,.4); color:var(--neon-packs);" onclick="cerrarApuestasCombate('${c.id}')">🔒 CERRAR</button>` : ''}
-                    <button class="btn-accion" style="width:auto; padding:4px 10px; font-size:9px; border-color:rgba(0,200,150,.4); color:var(--neon-legal);" onclick="resolverCombateArena('${c.id}', 'A')">🏆 GANA ${escaparHTML(c.jugadorA.toUpperCase())}</button>
-                    <button class="btn-accion" style="width:auto; padding:4px 10px; font-size:9px; border-color:rgba(204,43,43,.4); color:var(--rojo-suave);" onclick="resolverCombateArena('${c.id}', 'B')">🏆 GANA ${escaparHTML(c.jugadorB.toUpperCase())}</button>
+                    ${c.estado === 'abierto' ? `<button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; border-color:#f59e0b; color:#f59e0b;" onclick="cerrarApuestasCombate('${c.id}')">🔒 CERRAR APUESTAS</button>` : ''}
+                    <button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; background:#064e3b; border-color:#10b981; color:#10b981;" onclick="resolverCombateArena('${c.id}', 'A')">🏆 GANA ${escaparHTML(c.jugadorA.toUpperCase())}</button>
+                    <button class="btn-accion" style="width:auto; padding:4px 10px; font-size:10px; background:#7f1d1d; border-color:#ef4444; color:#ef4444;" onclick="resolverCombateArena('${c.id}', 'B')">🏆 GANA ${escaparHTML(c.jugadorB.toUpperCase())}</button>
                 </div>
             </div>`;
     });
@@ -2067,6 +1278,7 @@ window.restablecerComprasDiariasDesdeMercader = function() {
     guardarBD(); alert("Compras reiniciadas globalmente.");
 };
 
+// FIX 2: Función que ya existía en JS pero no tenía botón en HTML
 window.restablecerGachaDiarioDesdeMercader = function() {
     if (!userSesion || userSesion.toLowerCase() !== "srwiwa") return alert("Acceso denegado.");
     let targetId = document.getElementById('adm-reset-gacha-usuario').value;
@@ -2074,7 +1286,7 @@ window.restablecerGachaDiarioDesdeMercader = function() {
     if (!baseDatos.jugadores[targetId]) return alert("Entrenador no encontrado.");
     baseDatos.jugadores[targetId].ultimoHackeo = 0;
     guardarBD();
-    alert(`Gacha diario de ${targetId.toUpperCase()} reiniciado.`);
+    alert(`Gacha diario de ${targetId.toUpperCase()} reiniciado. Ya puede reclamarlo de nuevo.`);
 };
 
 window.conmutarCajaPerfil = function() {
@@ -2105,7 +1317,7 @@ function redibujarHistorialDiario() {
     let logsFiltrados = u.diarioLogs ? u.diarioLogs.filter(l => l.timestamp !== "Inicio") : [];
     document.getElementById('diario-contador').innerText = `Registros: ${logsFiltrados.length} / 1500`;
     if (logsFiltrados.length === 0) {
-        boxLogs.innerHTML = '<span style="color:var(--txt-muted); font-size:12px; text-align:center; padding:20px; font-family:var(--font-display);">Bitácora vacía.</span>';
+        boxLogs.innerHTML = '<span style="color:var(--texto-secundario); font-size:12px; text-align:center; padding:20px;">Bitácora vacía.</span>';
     } else {
         logsFiltrados.forEach(log => {
             boxLogs.innerHTML += `<div class="diario-entrada-item"><div class="diario-entrada-fecha">📅 ${escaparHTML(log.timestamp)}</div><div class="diario-entrada-texto">${escaparHTML(log.texto)}</div></div>`;
@@ -2210,7 +1422,7 @@ function limpiarNombrePokemonParaUrl(lineaRaw) {
 }
 
 function renderizamientoInternoShowdownPlano(rawShowdown) {
-    if (!rawShowdown || rawShowdown === "Sin datos" || !rawShowdown.trim()) return '<span style="color:var(--txt-muted); font-size:12px; font-family:var(--font-display);">Sin datos de equipo.</span>';
+    if (!rawShowdown || rawShowdown === "Sin datos" || !rawShowdown.trim()) return '<span style="color:var(--texto-secundario);">No hay datos de Showdown.</span>';
     let pokesRaw = rawShowdown.split(/\n\s*\n/);
     let html = '<div class="red-visor-pokes-grid-custom">';
     pokesRaw.forEach(bloque => {
@@ -2240,8 +1452,8 @@ window.parsearYRenderizarShowdown = function() {
         let apiName = limpiarNombrePokemonParaUrl(primeraLinea);
         let urlGif = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${apiName}.gif`;
         let moves = []; lineas.forEach(l => { if (l.startsWith('-')) moves.push(l.replace('-', '').trim()); });
-        let movesHTML = moves.map(m => `<div style="color:var(--txt-secondary); font-size:10px;">• ${escaparHTML(m)}</div>`).join('');
-        let txtObj = objeto ? `<div style="color:var(--neon-packs); font-size:10px; font-weight:700; font-family:var(--font-display);">Item: ${escaparHTML(objeto)}</div>` : '';
+        let movesHTML = moves.map(m => `<div style="color:var(--texto-secundario); font-size:11px;">• ${escaparHTML(m)}</div>`).join('');
+        let txtObj = objeto ? `<div style="color:var(--neon-packs); font-size:11px; font-weight:bold;">Item: ${escaparHTML(objeto)}</div>` : '';
         box.innerHTML += `<div class="poke-card-showdown"><div class="poke-card-gif-box"><img src="${urlGif}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; this.onerror=null;"></div><div class="poke-card-info"><div class="poke-card-name">${escaparHTML(nombreMuestra)}</div>${txtObj}<div style="margin-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:2px;">${movesHTML}</div></div></div>`;
     });
 };
@@ -2251,9 +1463,9 @@ function renderizarCementerioDOM() {
     let u = baseDatos.jugadores[userSesion];
     let box = document.getElementById('cementerio-lista-local');
     if (!box) return; box.innerHTML = '';
-    if (!u.cementerio || u.cementerio.length === 0) { box.innerHTML = '<div style="color:var(--txt-muted); text-align:center; font-size:11px; padding:12px; font-family:var(--font-display);">Sin bajas registradas en este Locke... Aún.</div>'; return; }
+    if (!u.cementerio || u.cementerio.length === 0) { box.innerHTML = '<div style="color:var(--texto-secundario); text-align:center; font-size:12px; padding:10px;">No hay bajas registradas en este Locke... Aún.</div>'; return; }
     u.cementerio.forEach(b => {
-        box.innerHTML += `<div class="graveyard-item"><div><span style="color:var(--rojo-suave); font-weight:700; font-size:13px; font-family:var(--font-display);">💀 ${escaparHTML(b.nombre)}</span><span style="color:var(--txt-muted); font-size:11px;"> en ${escaparHTML(b.ruta)} (${escaparHTML(b.fecha)})</span><div style="font-style:italic; font-size:12px; color:var(--txt-secondary); margin-top:2px;">"${escaparHTML(b.epitafio)}"</div></div></div>`;
+        box.innerHTML += `<div class="graveyard-item"><div><span style="color:#ef4444; font-weight:bold; font-size:13px;">💀 ${escaparHTML(b.nombre)}</span><span style="color:var(--texto-secundario); font-size:11px;"> en ${escaparHTML(b.ruta)} (${escaparHTML(b.fecha)})</span><div style="font-style:italic; font-size:12px; color:#cbd5e1; margin-top:2px;">"${escaparHTML(b.epitafio)}"</div></div></div>`;
     });
 }
 
@@ -2377,8 +1589,8 @@ function actualizarBannerAlertasVisuales() {
     let banner = document.getElementById('alertas-sistema-marquee'); if (!banner) return;
     let ev = baseDatos.eventoSistema || "normal";
     if (ev === "normal") { banner.classList.remove('active'); banner.innerHTML = ""; }
-    else if (ev === "rebajas") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-legal)"; banner.style.color = "var(--neon-legal)"; banner.innerHTML = "📉 ALERTA DE RED: −25% de descuento en Tienda Legal y Packs."; }
-    else if (ev === "inflacion") { banner.classList.add('active'); banner.style.borderColor = "var(--rojo-suave)"; banner.style.color = "var(--rojo-suave)"; banner.innerHTML = "⚠️ RED INESTABLE: +50% de recargo en costes P₠."; }
+    else if (ev === "rebajas") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-legal)"; banner.style.color = "var(--neon-legal)"; banner.innerHTML = "📉 ALERTA DE RED: -25% de descuento en la Tienda Legal y Packs."; }
+    else if (ev === "inflacion") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-ilegal)"; banner.style.color = "#ff3366"; banner.innerHTML = "⚠️ RED INESTABLE: +50% de recargo en costes P₠."; }
     else if (ev === "bonus_pf") { banner.classList.add('active'); banner.style.borderColor = "var(--neon-packs)"; banner.style.color = "var(--neon-packs)"; banner.innerHTML = "🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!"; }
 }
 
@@ -2393,7 +1605,7 @@ function redibujarConsolaAdminMaster() {
     let al = document.getElementById('admin-inventario-global'); if (!al) return; al.innerHTML = '';
     baseDatos.productos.forEach(p => {
         let esI = p.tienda === 'illegal';
-        al.innerHTML += `<div class="admin-card-inner"><button class="btn-delete-admin" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary); font-size:12px; font-weight:600; margin-bottom:4px;">${p.icon} ${p.nombre} <span style="color:var(--txt-muted); font-size:10px;">[${p.tienda.toUpperCase()}]</span></div><div class="admin-edit-row"><div class="admin-edit-field"><label>Coste Base</label><input type="number" value="${esI ? p.precioPf : p.precio}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, '${esI ? 'precioPf' : 'precio'}', this.value)"></div><div class="admin-edit-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, 'stock', this.value)"></div></div></div>`;
+        al.innerHTML += `<div class="admin-card-inner"><button class="btn-delete-admin" onclick="eliminarProductoMaster(${p.id})">X</button><div style="color:#fff; font-size:13px;">${p.icon} ${p.nombre} [${p.tienda.toUpperCase()}]</div><div class="admin-edit-row"><div class="admin-edit-field"><label>Coste Base</label><input type="number" value="${esI ? p.precioPf : p.precio}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, '${esI ? 'precioPf' : 'precio'}', this.value)"></div><div class="admin-edit-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input-custom" oninput="actualizarPropertyProducto(${p.id}, 'stock', this.value)"></div></div></div>`;
     });
 }
 
@@ -2447,18 +1659,18 @@ window.consumirObjetoMochilaGamer = function(itemUid, itemNombre, itemIcon) {
 window.renderizarVisorRivalPublico = function() {
     let selector = document.getElementById('red-select-jugador'); let target = selector.value;
     let box = document.getElementById('red-visor-dinamico'); if (!box) return; box.innerHTML = '';
-    if (!target || !baseDatos.jugadores[target]) { box.innerHTML = '<div style="color:var(--txt-muted); padding:20px; grid-column:span 2; text-align:center; font-family:var(--font-display); font-size:11px;">Selecciona un terminal activo.</div>'; return; }
+    if (!target || !baseDatos.jugadores[target]) { box.innerHTML = '<div style="color:var(--texto-secundario); padding:20px; grid-column:span 2; text-align:center;">Selecciona un terminal activo.</div>'; return; }
     let r = baseDatos.jugadores[target];
     let statusTexto = r.lockeStatus === 'ganado' ? '🏆 GANADO' : (r.lockeStatus === 'perdido' ? '💀 PERDIDO' : '⏳ EN CURSO');
-    let htmlPerfil = `<div style="background:var(--bg-elevated); border:1px solid var(--gris-800); padding:16px; border-radius:var(--r-md); height:fit-content;"><h4 style="margin:0 0 12px 0; font-family:var(--font-display); color:var(--neon-intercambio); font-size:12px; letter-spacing:.5px;">ESTADO: ${escaparHTML(target.toUpperCase())}</h4><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">REPUTACIÓN: <span style="color:var(--neon-packs); font-weight:700;">${r.pf || 0} PF</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">VIDAS: <span style="color:var(--rojo-suave); font-weight:700;">❤️ ${r.vidasActuales || 0}/${r.vidasTotales || 20}</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">DESAFÍO: <span style="color:var(--txt-primary);">${statusTexto}</span></div><div style="font-size:12px; margin-bottom:6px; color:var(--txt-secondary);">MEDALLAS: <span style="color:var(--neon-legal);">${r.numMedallas || 0}/8</span></div><div style="font-size:12px; color:var(--txt-secondary);">TORNEOS: <span style="color:var(--txt-primary);">${r.torneos || 0}</span></div></div>`;
-    let slotSelectHTML = `<select id="red-visor-slot-team" onchange="renderizarSubRanuraRivalShowdown('${target}')">`;
+    let htmlPerfil = `<div style="background:#0f1422; border:1px solid #1e293b; padding:15px; border-radius:8px; height:fit-content;"><h4 style="margin:0 0 10px 0; font-family:'Orbitron'; color:var(--neon-intercambio); font-size:14px;">ESTADO: ${escaparHTML(target.toUpperCase())}</h4><div style="font-size:12px; margin-bottom:6px;">REPUTACIÓN: <span style="color:var(--neon-packs); font-weight:bold;">${r.pf || 0} PF</span></div><div style="font-size:12px; margin-bottom:6px;">VIDAS: <span style="color:#ef4444; font-weight:bold;">❤️ ${r.vidasActuales || 0}/${r.vidasTotales || 20}</span></div><div style="font-size:12px; margin-bottom:6px;">DESAFÍO: <span style="color:#fff;">${statusTexto}</span></div><div style="font-size:12px; margin-bottom:6px;">MEDALLAS: <span style="color:var(--neon-legal);">${r.numMedallas || 0}/8</span></div><div style="font-size:12px;">TORNEOS: <span style="color:#fff;">${r.torneos || 0}</span></div></div>`;
+    let slotSelectHTML = `<select id="red-visor-slot-team" onchange="renderizarSubRanuraRivalShowdown('${target}')" style="background:#060914; color:#fff; padding:4px; border-radius:4px; font-size:11px; margin-bottom:8px; width:100%;">`;
     for (let i = 1; i <= 10; i++) slotSelectHTML += `<option value="${i}">Equipo ${i}</option>`;
     slotSelectHTML += `</select>`;
-    let deadHTML = `<div style="margin-top:16px; border-top:1px solid var(--gris-800); padding-top:14px;"><h5 style="margin:0 0 8px 0; font-family:var(--font-display); color:var(--rojo-suave); font-size:11px; letter-spacing:.5px;">💀 CEMENTERIO</h5>`;
-    if (!r.cementerio || r.cementerio.length === 0) { deadHTML += `<div style="font-size:11px; color:var(--txt-muted); font-style:italic; font-family:var(--font-display);">Sin bajas registradas.</div>`; }
+    let deadHTML = `<div style="margin-top:15px; border-top:1px solid #1e293b; padding-top:12px;"><h5 style="margin:0 0 8px 0; font-family:'Orbitron'; color:#ef4444; font-size:12px;">💀 Cementerio</h5>`;
+    if (!r.cementerio || r.cementerio.length === 0) { deadHTML += `<div style="font-size:11px; color:var(--texto-secundario); font-style:italic;">Sin bajas registradas.</div>`; }
     else { deadHTML += `<div class="rival-dead-grid">`; r.cementerio.forEach(b => { deadHTML += `<div class="rival-dead-card"><div class="rival-dead-title">💀 ${escaparHTML(b.nombre)}</div><div class="rival-dead-meta">Caído en: ${escaparHTML(b.ruta)}</div><div class="rival-dead-meta">Fecha: ${escaparHTML(b.fecha)}</div><div class="rival-dead-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`; }); deadHTML += `</div>`; }
     deadHTML += `</div>`;
-    let htmlEquipos = `<div style="background:var(--bg-elevated); border:1px solid var(--gris-800); padding:16px; border-radius:var(--r-md);"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><h4 style="margin:0; font-family:var(--font-display); color:var(--txt-primary); font-size:12px; letter-spacing:.5px;">EQUIPO SHOWDOWN</h4><div style="width:130px;">${slotSelectHTML}</div></div><div id="red-visor-pokes-area"></div>${deadHTML}</div>`;
+    let htmlEquipos = `<div style="background:#0f1422; border:1px solid #1e293b; padding:15px; border-radius:8px;"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;"><h4 style="margin:0; font-family:'Orbitron'; color:#fff; font-size:13px;">SHOWDOWN</h4><div style="width:140px;">${slotSelectHTML}</div></div><div id="red-visor-pokes-area"></div>${deadHTML}</div>`;
     box.innerHTML = htmlPerfil + htmlEquipos;
     renderizarSubRanuraRivalShowdown(target);
 };
@@ -2486,7 +1698,7 @@ function refrescarPantallaGamer() {
     document.getElementById('usr-compras').innerText = `${u.comprasDisponibles}/${MAX_COMPRAS}`;
     let invBox = document.getElementById('lista-inventario'); invBox.innerHTML = '';
     let itemsFiltrados = u.inventario ? u.inventario.filter(i => i.uid !== "init") : [];
-    if (itemsFiltrados.length === 0) { invBox.innerHTML = '<span style="color:var(--txt-muted); font-size:11px; font-family:var(--font-display);">Mochila vacía.</span>'; }
+    if (itemsFiltrados.length === 0) { invBox.innerHTML = '<span style="color:var(--texto-secundario); font-size:12px;">Mochila vacía.</span>'; }
     else { itemsFiltrados.forEach(i => { invBox.innerHTML += `<div class="mochila-item-tag" title="Adquirido el: ${escaparHTML(i.fecha)}"><span>${escaparHTML(i.icon) || '📦'} ${escaparHTML(i.nombre)}</span><button class="btn-usar-item" onclick="consumirObjetoMochilaGamer('${i.uid}', '${escaparHTML(i.nombre)}', '${escaparHTML(i.icon) || '📦'}')">Usar</button></div>`; }); }
     let receptorSelect = document.getElementById('int-select-receptor'); let redSelectRival = document.getElementById('red-select-jugador');
     if (receptorSelect && redSelectRival) {
@@ -2506,20 +1718,20 @@ function renderAparadorPublico(tiendaTipo, contenedorId, estaAbierta) {
     let box = document.getElementById(contenedorId); if (!box) return; box.innerHTML = '';
     if (estaAbierta === false) { box.innerHTML = `<div class="tienda-cerrada-msg">🔒 Red Cerrada temporalmente por el Administrador</div>`; return; }
     let prods = baseDatos.productos.filter(p => { let mt = p.tienda === tiendaTipo; if (tiendaTipo === 'legal' && filtroCategoriaGlobal !== "") return mt && p.cat === filtroCategoriaGlobal; return mt; });
-    if (prods.length === 0) { box.innerHTML = `<div style="text-align:center; color:var(--txt-muted); padding:40px; font-family:var(--font-display); font-size:12px;">Sin artículos disponibles.</div>`; return; }
+    if (prods.length === 0) { box.innerHTML = `<div style="text-align:center; color:var(--texto-secundario); padding:30px;">No hay artículos disponibles.</div>`; return; }
     let ev = baseDatos.eventoSistema || "normal"; let htmlGrid = '<div class="items-grid">';
     prods.forEach(p => {
-        let esI = p.tienda === 'illegal'; let precioFinal = p.precio; let bonoPf = p.pf || 0; let estiloColorPrecio = "color: var(--txt-primary);";
-        if (!esI) { if (ev === 'rebajas') { precioFinal = Math.round(p.precio * 0.75); estiloColorPrecio = "color: var(--neon-legal); font-weight: 900;"; } else if (ev === 'inflacion') { precioFinal = Math.round(p.precio * 1.50); estiloColorPrecio = "color: var(--rojo-suave); font-weight: 900;"; } if (ev === 'bonus_pf') bonoPf = (p.pf || 0) * 2; }
+        let esI = p.tienda === 'illegal'; let precioFinal = p.precio; let bonoPf = p.pf || 0; let estiloColorPrecio = "color: #fff;";
+        if (!esI) { if (ev === 'rebajas') { precioFinal = Math.round(p.precio * 0.75); estiloColorPrecio = "color: var(--neon-legal); font-weight: 900;"; } else if (ev === 'inflacion') { precioFinal = Math.round(p.precio * 1.50); estiloColorPrecio = "color: #ff3366; font-weight: 900;"; } if (ev === 'bonus_pf') bonoPf = (p.pf || 0) * 2; }
         let txtCoste = esI ? `${p.precioPf} PF` : `${precioFinal} P₠`;
-        let txtBonoDisplay = (!esI && bonoPf > 0) ? `<div style="font-size:9px; color:var(--neon-ilegal); margin-top:2px; font-family:var(--font-display);">+${bonoPf} PF</div>` : '';
+        let txtBonoDisplay = (!esI && bonoPf > 0) ? `<div style="font-size:10px; color:var(--neon-ilegal); margin-top:2px;">+${bonoPf} PF (Bono)</div>` : '';
         let txtDetalle = p.desc ? `<div class="item-desc">${escaparHTML(p.desc)}</div>` : '';
         let txtEstrat = p.estrategia ? `<div class="item-estrategia">💡 ${escaparHTML(p.estrategia)}</div>` : '';
         let txtCat = p.cat ? `<div class="categoria-tag">${escaparHTML(p.cat)}</div>` : '';
         let deshabilitado = p.stock <= 0 ? 'disabled' : '';
-        let txtBoton = p.stock <= 0 ? 'AGOTADO' : `ADQUIRIR · ${txtCoste}`;
+        let txtBoton = p.stock <= 0 ? 'AGOTADO' : `ADQUIRIR (${txtCoste})`;
         let claseAgotado = p.stock <= 0 ? 'agotado' : '';
-        htmlGrid += `<div class="item-card ${claseAgotado}"><div>${txtCat}<div class="item-icon">${escaparHTML(p.icon)}</div><div class="item-titulo">${escaparHTML(p.nombre)}</div>${txtDetalle}${txtEstrat}</div><div><div style="font-size:10px; margin-bottom:6px; font-family:var(--font-display); ${estiloColorPrecio}">${txtCoste} ${txtBonoDisplay}</div><div style="font-size:10px; color:var(--txt-muted); margin-bottom:8px; font-family:var(--font-display);">STOCK: ${p.stock}</div><button class="btn-accion" ${deshabilitado} onclick="comprarObjetoGamer(${p.id})">${txtBoton}</button></div></div>`;
+        htmlGrid += `<div class="item-card ${claseAgotado}"><div>${txtCat}<div class="item-icon">${escaparHTML(p.icon)}</div><div class="item-titulo">${escaparHTML(p.nombre)}</div>${txtDetalle}${txtEstrat}</div><div><div style="font-size:11px; margin-bottom:8px; font-family:'Orbitron'; ${estiloColorPrecio}">PRECIO: ${txtCoste} ${txtBonoDisplay}</div><div style="font-size:11px; color:var(--texto-secundario); margin-bottom:8px; font-family:'Orbitron'">STOCK: ${p.stock}</div><button class="btn-accion" ${deshabilitado} onclick="comprarObjetoGamer(${p.id})">${txtBoton}</button></div></div>`;
     });
     htmlGrid += '</div>'; box.innerHTML = htmlGrid;
 }
@@ -2566,14 +1778,14 @@ window.resolverIntercambio = function(tradeId, resultado) {
 
 function actualizarListaIntercambiosDOM() {
     let box = document.getElementById('contenedor-intercambios-activos'); if (!box) return; box.innerHTML = '';
-    if (!baseDatos.intercambios || Object.keys(baseDatos.intercambios).length === 0) { box.innerHTML = `<div style="color:var(--txt-muted); font-size:12px; padding:20px; text-align:center; font-family:var(--font-display);">Sin operaciones en curso.</div>`; return; }
+    if (!baseDatos.intercambios || Object.keys(baseDatos.intercambios).length === 0) { box.innerHTML = `<div style="color:var(--texto-secundario); font-size:13px; padding:15px; text-align:center;">No hay operaciones en curso.</div>`; return; }
     Object.keys(baseDatos.intercambios).forEach(id => {
         let t = baseDatos.intercambios[id]; if (t.estado !== "evaluacion") return;
         let yaVoto = t.registroVotos && t.registroVotos[userSesion]; let esCreador = t.proponente === userSesion;
         let textoOfrece = t.ofrece || "Objeto"; let textoPide = t.pide || "Especificado por chat";
-        box.innerHTML += `<div class="intercambio-card"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;"><span style="font-family:var(--font-display); font-size:11px; color:var(--neon-intercambio); letter-spacing:.3px;">${escaparHTML(t.proponente.toUpperCase())} ➡️ ${escaparHTML(t.receptor.toUpperCase())}</span><div><span class="votos-badge votos-escrow">🛡️ ${t.depositoEscrow} PF</span><span class="votos-badge votos-si">👍 ${t.votosSi || 0}</span><span class="votos-badge votos-no">👎 ${t.votosNo || 0}</span></div></div><div style="font-size:13px; color:var(--txt-primary); margin-bottom:12px; background:rgba(0,0,0,.3); padding:12px; border-radius:var(--r-sm); border:1px solid var(--gris-800); display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><span style="color:var(--neon-legal); font-weight:700; display:block; font-size:9px; text-transform:uppercase; font-family:var(--font-display); letter-spacing:.5px; margin-bottom:4px;">🎁 Ofrece:</span>${escaparHTML(textoOfrece)}</div><div style="border-left:1px dashed var(--gris-800); padding-left:10px;"><span style="color:var(--neon-packs); font-weight:700; display:block; font-size:9px; text-transform:uppercase; font-family:var(--font-display); letter-spacing:.5px; margin-bottom:4px;">➡️ A cambio de:</span>${escaparHTML(textoPide)}</div></div><div style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn-accion" style="padding:6px 12px; background:rgba(0,200,150,.08); border-color:rgba(0,200,150,.3); color:var(--neon-legal); width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'SI')">👍 Votar SÍ</button><button class="btn-accion" style="padding:6px 12px; background:rgba(204,43,43,.08); border-color:rgba(204,43,43,.3); color:var(--rojo-suave); width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'NO')">👎 Votar NO</button>${esCreador ? `<div style="margin-left:auto; display:flex; gap:6px;"><button class="btn-accion" style="padding:6px 12px; background:rgba(74,158,255,.08); border-color:rgba(74,158,255,.3); color:var(--neon-intercambio); width:auto; font-size:9px;" onclick="resolverIntercambio('${t.id}', 'EXITOSO')">✔️ EJECUTAR</button><button class="btn-accion" style="padding:6px 12px; background:rgba(204,43,43,.08); border-color:rgba(204,43,43,.3); color:var(--rojo-suave); width:auto; font-size:9px;" onclick="resolverIntercambio('${t.id}', 'FALLIDO')">✕ CANCELAR</button></div>` : ''}</div></div>`;
+        box.innerHTML += `<div class="intercambio-card"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;"><span style="font-family:'Orbitron'; font-size:12px; color:var(--neon-intercambio)">PROPUESTA: ${escaparHTML(t.proponente.toUpperCase())} ➡️ ${escaparHTML(t.receptor.toUpperCase())}</span><div><span class="votos-escrow" style="font-family:'Orbitron'; font-size:11px;">🛡️ Aval: ${t.depositoEscrow} PF</span><span class="votos-si">👍 SÍ: ${t.votosSi || 0}</span><span class="votos-no">👎 NO: ${t.votosNo || 0}</span></div></div><div style="font-size:13px; color:#fff; margin-bottom:12px; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px; border:1px solid #1e293b; display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div><span style="color:var(--neon-legal); font-weight:bold; display:block; font-size:10px; text-transform:uppercase;">🎁 Ofrece:</span>${escaparHTML(textoOfrece)}</div><div style="border-left:1px dashed #2d3d5a; padding-left:10px;"><span style="color:var(--neon-packs); font-weight:bold; display:block; font-size:10px; text-transform:uppercase;">➡️ A cambio de:</span>${escaparHTML(textoPide)}</div></div><div style="display:flex; gap:10px;"><button class="btn-accion" style="padding:6px; background:#064e3b; border-color:#10b981; color:#10b981; width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'SI')">👍 Votar SÍ</button><button class="btn-accion" style="padding:6px; background:#7f1d1d; border-color:#f87171; color:#f87171; width:auto;" ${yaVoto ? 'disabled' : ''} onclick="votarIntercambio('${t.id}', 'NO')">👎 Votar NO</button>${esCreador ? `<div style="margin-left:auto; display:flex; gap:5px;"><button class="btn-accion" style="padding:6px; background:#1e3a8a; border-color:#60a5fa; color:#60a5fa; width:auto; font-size:11px;" onclick="resolverIntercambio('${t.id}', 'EXITOSO')">✔️ EJECUTAR</button><button class="btn-accion" style="padding:6px; background:#4c1d1d; border-color:#ef4444; color:#ef4444; width:auto; font-size:11px;" onclick="resolverIntercambio('${t.id}', 'FALLIDO')">❌ CANCELAR</button></div>` : ''}</div></div>`;
     });
 }
 </script>
 </body>
-    </html>
+</html>
