@@ -962,36 +962,38 @@
             <div id="ev-camara" class="evento-view">
                 <div class="camara-header">
                     <div class="camara-title">🏛️ Cámara de Comercio</div>
-                    <div class="arena-desc">Trueques publicados por la administración · Solo se pueden intercambiar objetos de la misma categoría</div>
+                    <div class="arena-desc">Intercambia y negocia con otros entrenadores</div>
                 </div>
-
-                <!-- TABLA DE CATEGORÍAS Y COSTES -->
-                <div style="background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:14px 18px;margin-bottom:18px;">
-                    <div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">📋 Tabla de Categorías</div>
-                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px;">
-                        <div style="background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.15);border-radius:var(--r-sm);padding:7px 10px;display:flex;align-items:center;gap:8px;">
-                            <span style="background:var(--neon-intercambio);color:#000;border-radius:99px;padding:1px 7px;font-size:9px;font-weight:900;font-family:var(--font-display);flex-shrink:0;">2 PF</span>
-                            <span style="font-size:10px;color:var(--txt-secondary);font-family:var(--font-display);">Objetos Comunes</span>
+                <div class="intercambio-form">
+                    <h3 style="font-family:var(--font-display);color:var(--neon-intercambio);margin:0 0 13px 0;font-size:12px;letter-spacing:.5px;">🔄 Proponer Trueque</h3>
+                    <div class="intercambio-form-grid">
+                        <div>
+                            <label class="form-label">🎁 Lo que ofreces</label>
+                            <input type="text" id="int-txt-ofrece" class="form-input" placeholder="Ej: 1 Gafas Elegidas + 1 Buceo Ball">
                         </div>
-                        <div style="background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.15);border-radius:var(--r-sm);padding:7px 10px;display:flex;align-items:center;gap:8px;">
-                            <span style="background:var(--neon-legal);color:#000;border-radius:99px;padding:1px 7px;font-size:9px;font-weight:900;font-family:var(--font-display);flex-shrink:0;">5 PF</span>
-                            <span style="font-size:10px;color:var(--txt-secondary);font-family:var(--font-display);">Objetos Competitivos</span>
-                        </div>
-                        <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15);border-radius:var(--r-sm);padding:7px 10px;display:flex;align-items:center;gap:8px;">
-                            <span style="background:var(--neon-packs);color:#000;border-radius:99px;padding:1px 7px;font-size:9px;font-weight:900;font-family:var(--font-display);flex-shrink:0;">7 PF</span>
-                            <span style="font-size:10px;color:var(--txt-secondary);font-family:var(--font-display);">Evoluciones</span>
-                        </div>
-                        <div style="background:rgba(168,85,247,.05);border:1px solid rgba(168,85,247,.15);border-radius:var(--r-sm);padding:7px 10px;display:flex;align-items:center;gap:8px;">
-                            <span style="background:var(--neon-ilegal);color:#000;border-radius:99px;padding:1px 7px;font-size:9px;font-weight:900;font-family:var(--font-display);flex-shrink:0;">10 PF</span>
-                            <span style="font-size:10px;color:var(--txt-secondary);font-family:var(--font-display);">Megaevoluciones</span>
-                        </div>
-                        <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:var(--r-sm);padding:7px 10px;display:flex;align-items:center;gap:8px;">
-                            <span style="background:var(--rojo);color:#fff;border-radius:99px;padding:1px 7px;font-size:9px;font-weight:900;font-family:var(--font-display);flex-shrink:0;">20 PF</span>
-                            <span style="font-size:10px;color:var(--txt-secondary);font-family:var(--font-display);">Pokémon / Fósiles</span>
+                        <div>
+                            <label class="form-label">➡️ Lo que pides</label>
+                            <input type="text" id="int-txt-pide" class="form-input" placeholder="Ej: 1 Piedra Fuego o Gligar">
                         </div>
                     </div>
+                    <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px;">
+                        <div>
+                            <label class="form-label">Entrenador Destinatario</label>
+                            <select id="int-select-receptor" class="form-select"></select>
+                        </div>
+                        <div>
+                            <label class="form-label">Aval de Garantía</label>
+                            <select id="int-num-escrow" class="form-select" style="color:var(--neon-ilegal);">
+                                <option value="1">1 PF — Menor</option>
+                                <option value="2" selected>2 PF — Estándar</option>
+                                <option value="3">3 PF — Importante</option>
+                                <option value="5">5 PF — Pesado</option>
+                                <option value="10">10 PF — Máximo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn-enviar-trato" onclick="publicarPropuestaIntercambio()">🚀 Enviar Trato a la Cámara</button>
                 </div>
-
                 <div class="intercambios-list-title">⚖️ Trueques Activos</div>
                 <div id="contenedor-intercambios-activos"></div>
             </div>
@@ -1324,37 +1326,6 @@
                 </div>
                 <button class="btn-admin arena" onclick="crearCombateArena()">🎰 Abrir Combate en la Arena</button>
                 <div id="adm-arena-combates-activos" style="max-height:280px;overflow-y:auto;"></div>
-
-                <div class="admin-hr"></div>
-                <div class="admin-section-title" style="color:var(--neon-intercambio);">🏛️ Cámara de Comercio</div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Entrenador A (ofrece)</label>
-                    <select id="adm-camara-jugador-a" class="admin-select" style="color:#60a5fa;"></select>
-                </div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Lo que ofrece A</label>
-                    <input type="text" id="adm-camara-ofrece" class="admin-input" placeholder="Ej: Banda Focus" style="font-family:var(--font-body);">
-                </div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Entrenador B (recibe / da)</label>
-                    <select id="adm-camara-jugador-b" class="admin-select" style="color:#f87171;"></select>
-                </div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Lo que ofrece B a cambio</label>
-                    <input type="text" id="adm-camara-pide" class="admin-input" placeholder="Ej: Gafas Elegidas" style="font-family:var(--font-body);">
-                </div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Categoría (misma para ambos)</label>
-                    <select id="adm-camara-categoria" class="admin-select" style="color:var(--neon-intercambio);">
-                        <option value="comun">🔵 Objetos Comunes (2 PF)</option>
-                        <option value="competitivo">🟢 Objetos Competitivos (5 PF)</option>
-                        <option value="evolucion">🟡 Evoluciones (7 PF)</option>
-                        <option value="megaevolucion">🟣 Megaevoluciones (10 PF)</option>
-                        <option value="pokemon">🔴 Pokémon / Fósiles (20 PF)</option>
-                    </select>
-                </div>
-                <button class="btn-admin" style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.25);color:var(--neon-intercambio);" onclick="crearTruequeCamara()">🏛️ Publicar Trueque</button>
-                <div id="adm-camara-trueques-activos" style="max-height:240px;overflow-y:auto;"></div>
             </div>
         </div>
         <div>
@@ -2253,79 +2224,49 @@ function inyectarEntradaDiarioAutomaticaPara(uid,txt) {
     u.diarioLogs.push({timestamp:ts,text:txt,texto:txt});
 }
 
-/* ════ CÁMARA DE COMERCIO (admin-managed) ════ */
-const CAMARA_CATEGORIAS = {
-    comun:        { label:'Objetos Comunes',    coste:2,  color:'var(--neon-intercambio)', bg:'rgba(59,130,246,.08)',  border:'rgba(59,130,246,.25)'  },
-    competitivo:  { label:'Objetos Competitivos',coste:5, color:'var(--neon-legal)',        bg:'rgba(16,185,129,.08)',  border:'rgba(16,185,129,.25)'  },
-    evolucion:    { label:'Evoluciones',         coste:7, color:'var(--neon-packs)',         bg:'rgba(245,158,11,.08)',  border:'rgba(245,158,11,.25)'  },
-    megaevolucion:{ label:'Megaevoluciones',     coste:10,color:'var(--neon-ilegal)',        bg:'rgba(168,85,247,.08)', border:'rgba(168,85,247,.25)'  },
-    pokemon:      { label:'Pokémon / Fósiles',   coste:20,color:'#f87171',                  bg:'rgba(239,68,68,.08)',   border:'rgba(239,68,68,.25)'   }
-};
-
-/* Admin: crear trueque */
-window.crearTruequeCamara = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
-    let jugA   = document.getElementById('adm-camara-jugador-a').value;
-    let ofrece = document.getElementById('adm-camara-ofrece').value.trim();
-    let jugB   = document.getElementById('adm-camara-jugador-b').value;
-    let pide   = document.getElementById('adm-camara-pide').value.trim();
-    let cat    = document.getElementById('adm-camara-categoria').value;
-    if(!jugA||!jugB) return alert("Selecciona los dos entrenadores.");
-    if(jugA===jugB) return alert("Los entrenadores deben ser diferentes.");
-    if(!ofrece||!pide) return alert("Rellena los objetos de ambos lados.");
-    let catData = CAMARA_CATEGORIAS[cat];
-    if(!catData) return alert("Categoría inválida.");
-    let tid = "trade_"+Date.now();
-    if(!baseDatos.intercambios) baseDatos.intercambios={};
-    baseDatos.intercambios[tid]={
-        id:tid, jugadorA:jugA, ofrece:ofrece, jugadorB:jugB, pide:pide,
-        categoria:cat, coste:catData.coste,
-        estado:"evaluacion", votosSi:0, votosNo:0, registroVotos:{},
-        fechaCreacion:new Date().toLocaleDateString()
-    };
-    // Notificar en diario de ambos implicados
-    inyectarEntradaDiarioAutomaticaPara(jugA,`🏛️ TRUEQUE PUBLICADO: Ofreces "${ofrece}" a ${jugB.toUpperCase()} a cambio de "${pide}" [${catData.label}] · Coste: ${catData.coste} PF si se acepta.`);
-    inyectarEntradaDiarioAutomaticaPara(jugB,`🏛️ TRUEQUE PUBLICADO: ${jugA.toUpperCase()} te ofrece "${ofrece}" a cambio de tu "${pide}" [${catData.label}] · Coste: ${catData.coste} PF si se acepta.`);
-    guardarBD();
-    document.getElementById('adm-camara-ofrece').value='';
-    document.getElementById('adm-camara-pide').value='';
-    alert(`✅ Trueque publicado en la Cámara de Comercio.`);
-};
-
-/* Admin: resolver trueque */
-window.resolverTruequeCamara = function(tid, resultado) {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
-    let t = baseDatos.intercambios[tid]; if(!t) return;
-    let catData = CAMARA_CATEGORIAS[t.categoria]||{coste:0,label:'?'};
-    let uA = baseDatos.jugadores[t.jugadorA];
-    let uB = baseDatos.jugadores[t.jugadorB];
-    if(resultado==='ACEPTADO') {
-        // Descontar PF a ambos
-        if(uA) uA.pf = Math.max(0,(uA.pf||0)-catData.coste);
-        if(uB) uB.pf = Math.max(0,(uB.pf||0)-catData.coste);
-        t.estado="completado";
-        inyectarEntradaDiarioAutomaticaPara(t.jugadorA,`🏛️ TRUEQUE COMPLETADO: Entregaste "${t.ofrece}" → Recibiste "${t.pide}" de ${t.jugadorB.toUpperCase()}. −${catData.coste} PF.`);
-        inyectarEntradaDiarioAutomaticaPara(t.jugadorB,`🏛️ TRUEQUE COMPLETADO: Entregaste "${t.pide}" → Recibiste "${t.ofrece}" de ${t.jugadorA.toUpperCase()}. −${catData.coste} PF.`);
-        guardarBD(); alert("✅ Trueque completado. PF descontados a ambos.");
-    } else {
-        t.estado="cancelado";
-        inyectarEntradaDiarioAutomaticaPara(t.jugadorA,`🏛️ TRUEQUE CANCELADO: El trueque de "${t.ofrece}" por "${t.pide}" fue cancelado por la administración.`);
-        inyectarEntradaDiarioAutomaticaPara(t.jugadorB,`🏛️ TRUEQUE CANCELADO: El trueque de "${t.ofrece}" por "${t.pide}" fue cancelado por la administración.`);
-        guardarBD(); alert("Trueque cancelado.");
-    }
-};
-
-/* Jugadores: votar trueque */
-window.votarTruequeCamara = function(tid, tipo) {
+/* ════ INTERCAMBIOS ════ */
+window.publicarPropuestaIntercambio = function() {
     if(!userSesion) return;
-    let t = baseDatos.intercambios[tid]; if(!t) return;
-    // Los implicados no pueden votar
-    if(t.jugadorA===userSesion||t.jugadorB===userSesion) return alert("Los implicados no pueden votar.");
+    let u=baseDatos.jugadores[userSesion];
+    let ofrece=document.getElementById('int-txt-ofrece').value.trim();
+    let pide=document.getElementById('int-txt-pide').value.trim();
+    let escrow=parseInt(document.getElementById('int-num-escrow').value)||0;
+    let receptor=document.getElementById('int-select-receptor').value;
+    if(!ofrece||!pide) return alert("Rellena ambos campos.");
+    if(!receptor) return alert("Selecciona un destinatario.");
+    if(u.pf<escrow) return alert(`Necesitas ${escrow} PF para la fianza.`);
+    u.pf-=escrow;
+    let tid="trade_"+Date.now();
+    if(!baseDatos.intercambios) baseDatos.intercambios={};
+    baseDatos.intercambios[tid]={id:tid,proponente:userSesion,receptor,ofrece,pide,depositoEscrow:escrow,estado:"evaluacion",votosSi:0,votosNo:0,registroVotos:{init:true}};
+    guardarBD(); document.getElementById('int-txt-ofrece').value=''; document.getElementById('int-txt-pide').value='';
+    alert(`Propuesta enviada. ${escrow} PF retenidos.`);
+};
+
+window.votarIntercambio = function(tid,tipo) {
+    if(!userSesion) return;
+    let t=baseDatos.intercambios[tid]; if(!t) return;
     if(!t.registroVotos) t.registroVotos={};
-    if(t.registroVotos[userSesion]) return alert("Ya emitiste tu voto.");
+    if(t.registroVotos[userSesion]) return alert("Ya emitiste un veredicto.");
     t.registroVotos[userSesion]=tipo;
     if(tipo==='SI') t.votosSi=(t.votosSi||0)+1;
     if(tipo==='NO') t.votosNo=(t.votosNo||0)+1;
+    guardarBD();
+};
+
+window.resolverIntercambio = function(tid,resultado) {
+    let t=baseDatos.intercambios[tid]; if(!t) return;
+    let p=baseDatos.jugadores[t.proponente], dep=parseInt(t.depositoEscrow)||0;
+    if(resultado==='EXITOSO') {
+        let r=baseDatos.jugadores[t.receptor];
+        if(r) r.pf=(parseInt(r.pf)||0)+dep;
+        t.estado="completado";
+        inyectarEntradaDiarioAutomatica(`TRUEQUE COMPLETADO CON ${t.receptor.toUpperCase()}: Entregó ${t.ofrece} | Recibió ${t.pide}`);
+        alert("Trueque ejecutado.");
+    } else {
+        if(p) p.pf=(parseInt(p.pf)||0)+dep;
+        t.estado="fallido"; alert("Trueque cancelado. PF devueltos.");
+    }
     guardarBD();
 };
 
@@ -2333,77 +2274,27 @@ function actualizarListaIntercambiosDOM() {
     let box=document.getElementById('contenedor-intercambios-activos'); if(!box) return;
     box.innerHTML='';
     if(!baseDatos.intercambios||!Object.keys(baseDatos.intercambios).length) {
-        box.innerHTML=`<div style="text-align:center;padding:50px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated);"><div style="font-size:32px;margin-bottom:12px;">🏛️</div><div style="font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:2px;">Sin trueques activos</div><div style="font-size:11px;margin-top:6px;">La administración publicará los trueques aquí.</div></div>`;
+        box.innerHTML='<div style="color:var(--txt-muted);font-size:12px;padding:20px;text-align:center;font-family:var(--font-display);">Sin operaciones en curso.</div>';
         return;
     }
-
-    let trueques = Object.values(baseDatos.intercambios).sort((a,b)=>{
-        let ord={evaluacion:0,completado:1,cancelado:2};
-        return (ord[a.estado]||0)-(ord[b.estado]||0);
-    });
-
-    trueques.forEach(t=>{
-        let catData = CAMARA_CATEGORIAS[t.categoria]||{label:'?',coste:0,color:'var(--txt-muted)',bg:'rgba(0,0,0,.1)',border:'var(--borde)'};
-        let soyImplicado = t.jugadorA===userSesion||t.jugadorB===userSesion;
-        let yaVote = t.registroVotos&&t.registroVotos[userSesion];
-        let esAdmin = userSesion&&userSesion.toLowerCase()==="srwiwa";
-
-        let estadoBadge = t.estado==='evaluacion'
-            ? '<span class="arena-badge badge-abierto">🟢 VOTACIÓN ABIERTA</span>'
-            : t.estado==='completado'
-            ? '<span class="arena-badge badge-resuelto">✅ COMPLETADO</span>'
-            : '<span class="arena-badge badge-cerrado">✕ CANCELADO</span>';
-
-        let votoRow = '';
-        if(t.estado==='evaluacion') {
-            if(soyImplicado) {
-                votoRow = `<div style="padding:10px 0;font-size:10px;color:var(--txt-muted);font-family:var(--font-display);text-align:center;">⚔️ Eres parte de este trueque — no puedes votar</div>`;
-            } else {
-                votoRow = `<div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:12px;margin-top:12px;border-top:1px solid var(--borde);">
-                    <button style="padding:7px 14px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--neon-legal);border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:all .15s;flex:1;" ${yaVote?'disabled':''} onclick="votarTruequeCamara('${t.id}','SI')">👍 A Favor</button>
-                    <button style="padding:7px 14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#f87171;border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:all .15s;flex:1;" ${yaVote?'disabled':''} onclick="votarTruequeCamara('${t.id}','NO')">👎 En Contra</button>
-                    ${esAdmin?`<div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;"><button style="padding:7px 12px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:var(--neon-intercambio);border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;" onclick="resolverTruequeCamara('${t.id}','ACEPTADO')">✔️ Aceptar</button><button style="padding:7px 12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#f87171;border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;" onclick="resolverTruequeCamara('${t.id}','CANCELAR')">✕ Cancelar</button></div>`:''}
-                </div>`;
-            }
-        }
-
-        let resRow = '';
-        if(t.estado==='completado') {
-            resRow = `<div class="arena-resultado resultado-gane" style="margin-top:10px;">✅ Trueque ejecutado · −${catData.coste} PF a cada parte</div>`;
-        } else if(t.estado==='cancelado') {
-            resRow = `<div class="arena-resultado resultado-perdi" style="margin-top:10px;">✕ Trueque cancelado por la administración</div>`;
-        }
-
-        box.innerHTML+=`<div class="intercambio-card" style="${t.estado!=='evaluacion'?'opacity:.55;filter:grayscale(.4);':''}">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
-                <div>
-                    <span style="font-family:var(--font-display);font-size:11px;color:var(--neon-intercambio);font-weight:700;">${escaparHTML(t.jugadorA.toUpperCase())} ↔ ${escaparHTML(t.jugadorB.toUpperCase())}</span>
-                    ${estadoBadge}
-                </div>
-                <div style="display:flex;gap:6px;align-items:center;">
-                    <span style="background:${catData.bg};border:1px solid ${catData.border};color:${catData.color};padding:3px 9px;border-radius:99px;font-size:9px;font-family:var(--font-display);font-weight:700;">${escaparHTML(catData.label)}</span>
-                    <span style="background:${catData.bg};border:1px solid ${catData.border};color:${catData.color};padding:3px 9px;border-radius:99px;font-size:9px;font-family:var(--font-display);font-weight:700;">−${catData.coste} PF c/u</span>
-                </div>
+    Object.values(baseDatos.intercambios).forEach(t=>{
+        if(t.estado!=="evaluacion") return;
+        let yaVoto=t.registroVotos&&t.registroVotos[userSesion];
+        let esCreador=t.proponente===userSesion;
+        box.innerHTML+=`<div class="intercambio-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+                <span style="font-family:var(--font-display);font-size:11px;color:var(--neon-intercambio);font-weight:700;">${escaparHTML(t.proponente.toUpperCase())} ➡️ ${escaparHTML(t.receptor.toUpperCase())}</span>
+                <div><span class="votos-badge votos-escrow">🛡️ ${t.depositoEscrow} PF</span><span class="votos-badge votos-si">👍 ${t.votosSi||0}</span><span class="votos-badge votos-no">👎 ${t.votosNo||0}</span></div>
             </div>
-            <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:rgba(0,0,0,.2);padding:12px;border-radius:var(--r-md);">
-                <div>
-                    <div style="font-size:9px;color:var(--neon-legal);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">🎁 ${escaparHTML(t.jugadorA.toUpperCase())} ofrece</div>
-                    <div style="font-size:14px;color:var(--blanco);font-weight:600;">${escaparHTML(t.ofrece||'')}</div>
-                </div>
-                <div style="font-family:var(--font-display);font-size:18px;color:var(--neon-intercambio);font-weight:900;text-align:center;">⇄</div>
-                <div style="text-align:right;">
-                    <div style="font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">🎁 ${escaparHTML(t.jugadorB.toUpperCase())} ofrece</div>
-                    <div style="font-size:14px;color:var(--blanco);font-weight:600;">${escaparHTML(t.pide||'')}</div>
-                </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;background:rgba(0,0,0,.2);padding:10px;border-radius:var(--r-sm);">
+                <div><span style="color:var(--neon-legal);font-weight:700;display:block;font-size:9px;font-family:var(--font-display);text-transform:uppercase;margin-bottom:3px;">🎁 Ofrece:</span><span style="font-size:13px;">${escaparHTML(t.ofrece||'')}</span></div>
+                <div style="border-left:1px dashed var(--borde);padding-left:10px;"><span style="color:var(--neon-packs);font-weight:700;display:block;font-size:9px;font-family:var(--font-display);text-transform:uppercase;margin-bottom:3px;">➡️ A cambio de:</span><span style="font-size:13px;">${escaparHTML(t.pide||'')}</span></div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
-                <span class="votos-badge votos-si">👍 ${t.votosSi||0}</span>
-                <span class="votos-badge votos-no">👎 ${t.votosNo||0}</span>
-                <span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);">${t.fechaCreacion||''}</span>
-                ${yaVote&&t.estado==='evaluacion'?`<span style="font-size:10px;color:var(--neon-legal);font-family:var(--font-display);margin-left:auto;">✓ Votaste ${t.registroVotos[userSesion]==='SI'?'a favor':'en contra'}</span>`:''}
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button style="padding:6px 12px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--neon-legal);border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:all .15s;" ${yaVoto?'disabled':''} onclick="votarIntercambio('${t.id}','SI')">👍 Sí</button>
+                <button style="padding:6px 12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#f87171;border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;transition:all .15s;" ${yaVoto?'disabled':''} onclick="votarIntercambio('${t.id}','NO')">👎 No</button>
+                ${esCreador?`<div style="margin-left:auto;display:flex;gap:6px;"><button style="padding:6px 12px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);color:var(--neon-intercambio);border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;" onclick="resolverIntercambio('${t.id}','EXITOSO')">✔️ Ejecutar</button><button style="padding:6px 12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#f87171;border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase;" onclick="resolverIntercambio('${t.id}','FALLIDO')">✕ Cancelar</button></div>`:''}
             </div>
-            ${votoRow}
-            ${resRow}
         </div>`;
     });
 }
@@ -2572,4 +2463,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </body>
-                </html>
+                    </html>
