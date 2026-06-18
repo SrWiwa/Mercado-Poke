@@ -1703,7 +1703,8 @@ window.comprarObjetoGamer = function(id) {
         inyectarEntradaDiarioAutomatica(`Adquirió: ${p.icon} '${p.nombre}' por ${precioFinal} P₠ (+${bonoPf} PF).`);
     }
     p.stock--;
-    u.comprasDisponibles--;
+    if(p.tienda === 'pack') u.comprasDisponibles -= 2;
+else if(p.tienda !== 'illegal') u.comprasDisponibles--;
     if(!u.inventario) u.inventario = [];
     u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:p.nombre,icon:p.icon,fecha:new Date().toLocaleDateString()});
     guardarBD();
