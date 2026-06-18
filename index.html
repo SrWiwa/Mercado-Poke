@@ -1679,7 +1679,10 @@ window.comprarObjetoGamer = function(id) {
     let u = baseDatos.jugadores[userSesion];
     let p = baseDatos.productos.find(prod=>prod.id===id);
     if(!p||p.stock<=0) return alert("Objeto no disponible.");
-    if(u.comprasDisponibles<=0) return alert("No te quedan compras disponibles.");
+    if(p.tienda !== 'illegal') {
+    let costeCompras = p.tienda === 'pack' ? 2 : 1;
+    if(u.comprasDisponibles < costeCompras) return alert(`No tienes compras suficientes (necesitas ${costeCompras}, tienes ${u.comprasDisponibles}).`);
+    }
     let ev = baseDatos.eventoSistema||"normal";
     let precioFinal=p.precio, bonoPf=p.pf||0;
     if(p.tienda!=='illegal') {
