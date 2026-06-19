@@ -695,11 +695,211 @@
             .tienda-tabs { gap: 5px; }
             .tienda-tab { padding: 7px 10px; font-size: 9px; }
         }
+
+        /* ═══════════════════════════════════════════════════
+           CAPA DE EXPERIENCIA — animaciones, brillo, terminal viva
+        ═══════════════════════════════════════════════════ */
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+        }
+
+        /* --- Botones: micro-interacción universal --- */
+        button, .nav-item, .tienda-tab, .evento-tab, .perfil-tab, .tienda-acceso-card, .item-card, .mochila-tag {
+            -webkit-tap-highlight-color: transparent;
+        }
+        button:not(:disabled) { transition: transform .15s cubic-bezier(.4,0,.2,1), box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease; }
+        button:not(:disabled):active { transform: scale(.96); }
+        .nav-item, .tienda-tab, .evento-tab, .perfil-tab { position: relative; }
+
+        /* --- Sidebar: barra de acento activa estilo terminal --- */
+        .nav-item { overflow: hidden; }
+        .nav-item::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translate(-100%,-50%);
+            width: 3px; height: 0; background: var(--rojo); border-radius: 0 3px 3px 0;
+            transition: height .25s cubic-bezier(.4,0,.2,1), transform .25s cubic-bezier(.4,0,.2,1);
+            box-shadow: 0 0 10px rgba(239,68,68,.6);
+        }
+        .nav-item.active::before { height: 60%; transform: translate(0,-50%); }
+        .nav-item:hover .nav-icon { transform: scale(1.12); }
+        .nav-icon { display: inline-block; transition: transform .18s ease; }
+
+        /* --- Drawer / overlays: transición de fondo --- */
+        .drawer-backdrop { transition: opacity .25s ease; opacity: 0; }
+        .drawer-backdrop.active { opacity: 1; }
+        .sidebar { will-change: transform; }
+
+        /* --- Pestañas: barrido de aparición + brillo en activo --- */
+        .tienda-tab, .evento-tab, .perfil-tab { transition: all .2s cubic-bezier(.4,0,.2,1); }
+        .tienda-tab.active-legal, .tienda-tab.active-pack, .tienda-tab.active-illegal,
+        .evento-tab.active-arena, .evento-tab.active-camara, .perfil-tab.active {
+            box-shadow: 0 0 14px -4px currentColor;
+        }
+        .tienda-view, .evento-view, .perfil-view, .page-section { animation: vistaEntrada .32s cubic-bezier(.16,1,.3,1); }
+        @keyframes vistaEntrada { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+
+        /* --- Tarjetas: profundidad y brillo ambiental al pasar el ratón --- */
+        .item-card, .tienda-acceso-card, .inicio-stat-card, .card, .arena-combate-card, .intercambio-card, .admin-item-card {
+            transition: transform .22s cubic-bezier(.4,0,.2,1), box-shadow .22s ease, border-color .22s ease;
+        }
+        .item-card:hover { box-shadow: var(--shadow-lg), 0 0 0 1px var(--borde-hover); }
+
+        /* --- Inputs/selects: foco con halo suave --- */
+        input, select, textarea { transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+
+        /* --- HP bar: brillo de fondo tipo Pokédex --- */
+        .hp-panel { position: relative; overflow: hidden; }
+        .hp-panel::after {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(circle at 85% 15%, rgba(239,68,68,.06), transparent 55%);
+        }
+
+        /* --- Pokeball admin: pulso sutil para indicar disponibilidad --- */
+        .pokeball-trigger { animation: pokeballIdle 3.2s ease-in-out infinite; }
+        @keyframes pokeballIdle { 0%,100%{ box-shadow: var(--shadow-lg); } 50%{ box-shadow: var(--shadow-lg), 0 0 18px rgba(239,68,68,.25); } }
+
+        /* --- Topbar gacha button: shimmer --- */
+        .topbar-gacha-btn { position: relative; overflow: hidden; }
+        .topbar-gacha-btn::after {
+            content:''; position:absolute; top:0; left:-60%; width:40%; height:100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,.18), transparent);
+            transform: skewX(-20deg); animation: gachaShimmer 3.6s ease-in-out infinite;
+        }
+        @keyframes gachaShimmer { 0%{ left:-60%; } 50%{ left:130%; } 100%{ left:130%; } }
+
+        /* --- Toggle de sonido --- */
+        .sonido-toggle-btn {
+            width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--r-md);
+            background: var(--bg-elevated); border: 1px solid var(--borde); color: var(--txt-secondary);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;
+            transition: all .2s ease;
+        }
+        .sonido-toggle-btn:hover { border-color: var(--borde-hover); color: var(--blanco); }
+        .sonido-toggle-btn.muted { color: var(--txt-muted); opacity: .55; }
+
+        /* ═══ TOASTS / NOTIFICACIONES ═══ */
+        .toast-container {
+            position: fixed; top: calc(var(--topbar-h) + 14px); right: 18px; z-index: 5000;
+            display: flex; flex-direction: column; gap: 10px; max-width: 340px; width: calc(100% - 36px);
+            pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto;
+            background: var(--bg-elevated); border: 1px solid var(--borde); border-left: 3px solid var(--neon-legal);
+            border-radius: var(--r-md); padding: 12px 14px; box-shadow: var(--shadow-lg);
+            display: flex; align-items: flex-start; gap: 10px;
+            transform: translateX(120%); opacity: 0; transition: transform .35s cubic-bezier(.16,1,.3,1), opacity .3s ease;
+        }
+        .toast.show { transform: translateX(0); opacity: 1; }
+        .toast.hide { transform: translateX(120%); opacity: 0; }
+        .toast.tipo-exito   { border-left-color: var(--neon-legal); }
+        .toast.tipo-error   { border-left-color: var(--rojo); }
+        .toast.tipo-info    { border-left-color: var(--neon-intercambio); }
+        .toast.tipo-pf      { border-left-color: var(--neon-ilegal); }
+        .toast.tipo-sacrificio { border-left-color: var(--neon-sacrificio); }
+        .toast-icon { font-size: 18px; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+        .toast-texto { font-size: 12px; color: var(--txt-primary); line-height: 1.4; font-family: var(--font-body); }
+        .toast-titulo { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--txt-secondary); margin-bottom: 2px; }
+
+        @media (max-width: 600px) {
+            .toast-container { right: 8px; left: 8px; max-width: none; width: auto; }
+        }
+
+        /* ═══ MODAL GENÉRICO (confirmación / info) ═══ */
+        .gx-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(5,5,12,.88); backdrop-filter: blur(10px);
+            z-index: 4500; justify-content: center; align-items: center; padding: 20px;
+            opacity: 0; transition: opacity .22s ease;
+        }
+        .gx-overlay.show { display: flex; opacity: 1; }
+        .gx-box {
+            background: var(--bg-elevated); border: 1px solid var(--borde); border-radius: var(--r-2xl);
+            padding: 26px; width: 100%; max-width: 420px; box-shadow: var(--shadow-xl);
+            transform: scale(.92) translateY(8px); opacity: 0; transition: transform .28s cubic-bezier(.16,1,.3,1), opacity .22s ease;
+            text-align: center;
+        }
+        .gx-overlay.show .gx-box { transform: scale(1) translateY(0); opacity: 1; }
+        .gx-icon { font-size: 38px; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(255,255,255,.08)); }
+        .gx-title { font-family: var(--font-display); font-size: 14px; font-weight: 900; color: var(--blanco); letter-spacing: .5px; margin-bottom: 8px; }
+        .gx-desc { font-size: 12px; color: var(--txt-secondary); line-height: 1.5; margin-bottom: 20px; white-space: pre-line; }
+        .gx-btns { display: flex; gap: 10px; }
+        .gx-btn { flex: 1; padding: 11px; border-radius: var(--r-md); font-family: var(--font-display); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; cursor: pointer; border: 1px solid; transition: all .18s ease; }
+        .gx-btn-confirmar { background: rgba(16,185,129,.1); color: var(--neon-legal); border-color: rgba(16,185,129,.3); }
+        .gx-btn-confirmar:hover { background: rgba(16,185,129,.22); box-shadow: 0 0 16px rgba(16,185,129,.15); }
+        .gx-btn-confirmar.peligro { background: rgba(239,68,68,.1); color: #f87171; border-color: rgba(239,68,68,.3); }
+        .gx-btn-confirmar.peligro:hover { background: rgba(239,68,68,.22); box-shadow: 0 0 16px rgba(239,68,68,.15); }
+        .gx-btn-confirmar.sacrificio { background: rgba(249,115,22,.1); color: var(--neon-sacrificio); border-color: rgba(249,115,22,.3); }
+        .gx-btn-confirmar.sacrificio:hover { background: rgba(249,115,22,.22); box-shadow: 0 0 16px rgba(249,115,22,.15); }
+        .gx-btn-cancelar { background: var(--bg-overlay); color: var(--txt-secondary); border-color: var(--borde); }
+        .gx-btn-cancelar:hover { color: var(--blanco); border-color: var(--borde-hover); }
+
+        /* ═══ REVELACIÓN GACHA ═══ */
+        .gacha-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(3,4,10,.92); backdrop-filter: blur(14px);
+            z-index: 4800; justify-content: center; align-items: center; padding: 20px;
+            opacity: 0; transition: opacity .25s ease;
+        }
+        .gacha-overlay.show { display: flex; opacity: 1; }
+        .gacha-card {
+            position: relative; width: 100%; max-width: 360px; border-radius: var(--r-2xl);
+            padding: 36px 28px 30px; text-align: center; overflow: hidden;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,.06), transparent 60%), var(--bg-elevated);
+            border: 1px solid var(--borde); box-shadow: var(--shadow-xl);
+            transform: scale(.7) rotateX(25deg); opacity: 0;
+            transition: transform .45s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+        }
+        .gacha-overlay.show .gacha-card { transform: scale(1) rotateX(0deg); opacity: 1; }
+        .gacha-card.rareza-dinero { border-color: rgba(16,185,129,.4); box-shadow: var(--shadow-xl), 0 0 60px -10px rgba(16,185,129,.35); }
+        .gacha-card.rareza-pf     { border-color: rgba(168,85,247,.4); box-shadow: var(--shadow-xl), 0 0 60px -10px rgba(168,85,247,.35); }
+        .gacha-card.rareza-item   { border-color: rgba(245,197,24,.4); box-shadow: var(--shadow-xl), 0 0 60px -10px rgba(245,197,24,.35); }
+        .gacha-eyebrow { font-family: var(--font-display); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 14px; }
+        .gacha-icon-wrap { width: 88px; height: 88px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 42px; position: relative; }
+        .gacha-icon-wrap::before { content:''; position:absolute; inset:-6px; border-radius:50%; opacity:.5; animation: gachaPulso 1.8s ease-out infinite; }
+        .rareza-dinero .gacha-icon-wrap { background: rgba(16,185,129,.12); }
+        .rareza-dinero .gacha-icon-wrap::before { box-shadow: 0 0 0 2px rgba(16,185,129,.4); }
+        .rareza-pf .gacha-icon-wrap { background: rgba(168,85,247,.12); }
+        .rareza-pf .gacha-icon-wrap::before { box-shadow: 0 0 0 2px rgba(168,85,247,.4); }
+        .rareza-item .gacha-icon-wrap { background: rgba(245,197,24,.12); }
+        .rareza-item .gacha-icon-wrap::before { box-shadow: 0 0 0 2px rgba(245,197,24,.4); }
+        @keyframes gachaPulso { 0%{ transform:scale(1); opacity:.6; } 100%{ transform:scale(1.45); opacity:0; } }
+        .gacha-nombre { font-family: var(--font-display); font-size: 17px; font-weight: 900; color: var(--blanco); margin-bottom: 6px; letter-spacing: .3px; }
+        .gacha-detalle { font-size: 12px; color: var(--txt-secondary); margin-bottom: 22px; }
+        .gacha-cerrar-btn { width: 100%; padding: 12px; border-radius: var(--r-md); font-family: var(--font-display); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; cursor: pointer; background: var(--bg-overlay); color: var(--txt-primary); border: 1px solid var(--borde-hover); transition: all .18s ease; }
+        .gacha-cerrar-btn:hover { background: var(--bg-card); }
+        .gacha-sparkle { position: absolute; font-size: 14px; opacity: 0; animation: sparkleFloat 1.4s ease-out forwards; pointer-events: none; }
+        @keyframes sparkleFloat { 0%{ opacity:0; transform: translateY(10px) scale(.4) rotate(0deg); } 25%{ opacity:1; } 100%{ opacity:0; transform: translateY(-46px) scale(1.1) rotate(60deg); } }
     </style>
 </head>
 <body>
 
 <div id="drawer-backdrop" class="drawer-backdrop" onclick="cerrarDrawer()"></div>
+
+<!-- TOASTS -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- MODAL GENÉRICO: confirmación / información -->
+<div id="gx-overlay" class="gx-overlay">
+    <div class="gx-box">
+        <div class="gx-icon" id="gx-icon">❔</div>
+        <div class="gx-title" id="gx-title">Título</div>
+        <div class="gx-desc" id="gx-desc">Descripción</div>
+        <div class="gx-btns" id="gx-btns">
+            <button class="gx-btn gx-btn-cancelar" id="gx-btn-cancelar">Cancelar</button>
+            <button class="gx-btn gx-btn-confirmar" id="gx-btn-confirmar">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<!-- REVELACIÓN GACHA -->
+<div id="gacha-overlay" class="gacha-overlay">
+    <div class="gacha-card" id="gacha-card">
+        <div class="gacha-eyebrow">Terminal Silph Co. · Acceso Concedido</div>
+        <div class="gacha-icon-wrap" id="gacha-icon-wrap"><span id="gacha-icon">🎁</span></div>
+        <div class="gacha-nombre" id="gacha-nombre">Recompensa</div>
+        <div class="gacha-detalle" id="gacha-detalle">Detalle de la recompensa</div>
+        <button class="gacha-cerrar-btn" onclick="cerrarRevelacionGacha()">Recoger</button>
+    </div>
+</div>
 
 <!-- LOGIN -->
 <div id="login-screen" class="login-screen">
@@ -781,6 +981,7 @@
                 <span class="value" id="usr-vidas-top" style="color:#f87171;">--</span>
             </div>
         </div>
+        <button class="sonido-toggle-btn" id="btn-sonido-toggle" onclick="alternarSonido()" title="Activar/desactivar sonido">🔊</button>
         <button class="topbar-gacha-btn" onclick="reclamarHackeoDiario()">⚡ GACHA</button>
     </header>
 
@@ -1389,6 +1590,141 @@ function escaparHTML(str) {
     if(!str) return '';
     return str.replace(/[&<>'"]/g,tag=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]||tag));
 }
+
+/* ═══════════════════════════════════════
+   MOTOR DE SONIDO (Web Audio API, sin assets externos)
+═══════════════════════════════════════ */
+let sonidoActivo = (localStorage.getItem('silph_sonido_activo') !== 'false');
+let audioCtx = null;
+function obtenerAudioCtx() {
+    if(!audioCtx) { try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e) { return null; } }
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    return audioCtx;
+}
+function tono(freq,duracion,tipo,vol,delay) {
+    const ctx = obtenerAudioCtx(); if(!ctx) return;
+    const t0 = ctx.currentTime + (delay||0);
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.type = tipo||'sine'; osc.frequency.setValueAtTime(freq,t0);
+    gain.gain.setValueAtTime(0,t0);
+    gain.gain.linearRampToValueAtTime(vol||0.05,t0+0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001,t0+(duracion||0.12));
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(t0); osc.stop(t0+(duracion||0.12)+0.02);
+}
+window.reproducirSonido = function(tipo) {
+    if(!sonidoActivo) return;
+    switch(tipo) {
+        case 'click':      tono(720,.05,'sine',.035); break;
+        case 'abrir':       tono(480,.09,'sine',.04); tono(640,.09,'sine',.03,.04); break;
+        case 'cerrar':      tono(420,.08,'sine',.035); break;
+        case 'exito':       tono(523,.09,'sine',.045); tono(784,.13,'sine',.045,.07); break;
+        case 'error':       tono(220,.16,'sawtooth',.04); break;
+        case 'compra':      tono(587,.08,'sine',.045); tono(880,.1,'sine',.04,.06); break;
+        case 'sacrificio':  tono(180,.22,'sawtooth',.045); tono(140,.3,'sine',.04,.1); break;
+        case 'gacha':       tono(392,.08,'sine',.04); tono(523,.08,'sine',.04,.08); tono(659,.16,'sine',.05,.16); break;
+        case 'raro':        tono(523,.1,'sine',.05); tono(659,.1,'sine',.05,.1); tono(784,.1,'sine',.05,.2); tono(1047,.22,'sine',.06,.3); break;
+        default:            tono(600,.06,'sine',.035);
+    }
+};
+window.alternarSonido = function() {
+    sonidoActivo = !sonidoActivo;
+    localStorage.setItem('silph_sonido_activo', sonidoActivo?'true':'false');
+    const btn = document.getElementById('btn-sonido-toggle');
+    if(btn) { btn.textContent = sonidoActivo ? '🔊' : '🔇'; btn.classList.toggle('muted',!sonidoActivo); }
+    if(sonidoActivo) reproducirSonido('click');
+};
+document.addEventListener('DOMContentLoaded',()=>{
+    const btn = document.getElementById('btn-sonido-toggle');
+    if(btn) { btn.textContent = sonidoActivo ? '🔊' : '🔇'; btn.classList.toggle('muted',!sonidoActivo); }
+});
+
+/* ═══════════════════════════════════════
+   NOTIFICACIONES (toasts) — reemplazo de avisos rápidos
+═══════════════════════════════════════ */
+window.mostrarNotificacion = function(texto, tipo, icono, titulo) {
+    tipo = tipo || 'info';
+    icono = icono || ({exito:'✅',error:'⛔',info:'ℹ️',pf:'🔮',sacrificio:'🔥'}[tipo] || '✅');
+    let cont = document.getElementById('toast-container');
+    if(!cont) return;
+    let el = document.createElement('div');
+    el.className = `toast tipo-${tipo}`;
+    el.innerHTML = `<span class="toast-icon">${icono}</span><div>${titulo?`<div class="toast-titulo">${escaparHTML(titulo)}</div>`:''}<div class="toast-texto">${escaparHTML(texto)}</div></div>`;
+    cont.appendChild(el);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+    reproducirSonido(tipo==='error'?'error':(tipo==='exito'?'exito':'click'));
+    setTimeout(()=>{
+        el.classList.remove('show'); el.classList.add('hide');
+        setTimeout(()=>el.remove(),350);
+    },3800);
+};
+
+/* ═══════════════════════════════════════
+   MODAL GENÉRICO: confirmación / información
+   mostrarConfirmacion(...) devuelve una Promise<boolean>
+═══════════════════════════════════════ */
+window.mostrarConfirmacion = function(opts) {
+    opts = opts || {};
+    return new Promise((resolve)=>{
+        let overlay = document.getElementById('gx-overlay');
+        document.getElementById('gx-icon').textContent  = opts.icono || '❔';
+        document.getElementById('gx-title').textContent = opts.titulo || 'Confirmar acción';
+        document.getElementById('gx-desc').textContent  = opts.descripcion || '';
+        let btnConfirmar = document.getElementById('gx-btn-confirmar');
+        let btnCancelar  = document.getElementById('gx-btn-cancelar');
+        btnConfirmar.textContent = opts.textoConfirmar || 'Confirmar';
+        btnCancelar.textContent  = opts.textoCancelar  || 'Cancelar';
+        btnConfirmar.className = 'gx-btn gx-btn-confirmar ' + (opts.tipo==='peligro'?'peligro':(opts.tipo==='sacrificio'?'sacrificio':''));
+        btnCancelar.style.display = opts.soloInfo ? 'none' : '';
+        reproducirSonido('abrir');
+        function cerrar(valor) {
+            overlay.classList.remove('show');
+            btnConfirmar.onclick = null; btnCancelar.onclick = null;
+            resolve(valor);
+        }
+        btnConfirmar.onclick = ()=>{ reproducirSonido(opts.tipo==='peligro'?'error':'exito'); cerrar(true); };
+        btnCancelar.onclick  = ()=>{ reproducirSonido('cerrar'); cerrar(false); };
+        overlay.classList.add('show');
+    });
+};
+window.mostrarInfo = function(opts) {
+    opts = opts || {};
+    opts.soloInfo = true;
+    opts.textoConfirmar = opts.textoConfirmar || 'Entendido';
+    return window.mostrarConfirmacion(opts);
+};
+
+/* ═══════════════════════════════════════
+   REVELACIÓN GACHA — recompensa tipo videojuego
+═══════════════════════════════════════ */
+window.mostrarRevelacionGacha = function(opts) {
+    opts = opts || {};
+    let overlay = document.getElementById('gacha-overlay');
+    let card    = document.getElementById('gacha-card');
+    card.className = 'gacha-card rareza-' + (opts.rareza || 'item');
+    document.getElementById('gacha-icon').textContent    = opts.icono || '🎁';
+    document.getElementById('gacha-nombre').textContent  = opts.nombre || 'Recompensa';
+    document.getElementById('gacha-detalle').textContent = opts.detalle || '';
+    overlay.classList.add('show');
+    reproducirSonido(opts.especial ? 'raro' : 'gacha');
+    if(opts.especial) {
+        const simbolos = ['✨','🌟','⭐','💫'];
+        for(let i=0;i<6;i++) {
+            let s = document.createElement('span');
+            s.className='gacha-sparkle'; s.textContent = simbolos[Math.floor(Math.random()*simbolos.length)];
+            s.style.left = (10+Math.random()*80)+'%';
+            s.style.top  = (60+Math.random()*20)+'%';
+            s.style.animationDelay = (Math.random()*.6)+'s';
+            card.appendChild(s);
+            setTimeout(()=>s.remove(),2200);
+        }
+    }
+};
+window.cerrarRevelacionGacha = function() {
+    document.getElementById('gacha-overlay').classList.remove('show');
+    reproducirSonido('cerrar');
+};
+
 
 /* ════ DRAWER MÓVIL ════ */
 window.abrirDrawer = function() {
