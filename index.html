@@ -739,6 +739,9 @@
         }
         .tienda-view, .evento-view, .perfil-view, .page-section { animation: vistaEntrada .32s cubic-bezier(.16,1,.3,1); }
         @keyframes vistaEntrada { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+        .vista-anim { animation: vistaEntrada .32s cubic-bezier(.16,1,.3,1); }
+        @keyframes tabPop { 0%{ transform: scale(.94); } 60%{ transform: scale(1.04); } 100%{ transform: scale(1); } }
+        .tab-pop { animation: tabPop .28s cubic-bezier(.34,1.56,.64,1); }
 
         /* --- Tarjetas: profundidad y brillo ambiental al pasar el ratón --- */
         .item-card, .tienda-acceso-card, .inicio-stat-card, .card, .arena-combate-card, .intercambio-card, .admin-item-card {
@@ -1602,8 +1605,18 @@ function escaparHTML(str) {
 ═══════════════════════════════════════ */
 let sonidoActivo = (localStorage.getItem('silph_sonido_activo') !== 'false');
 let audioCtx = null;
+let masterGainNode = null;
+let ambienteIniciado = false;
+let ambienteTimers = [];
 function obtenerAudioCtx() {
-    if(!audioCtx) { try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e) { return null; } }
+    if(!audioCtx) {
+        try {
+            audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+            masterGainNode = audioCtx.createGain();
+            masterGainNode.gain.value = 1;
+            masterGainNode.connect(audioCtx.destination);
+        } catch(e) { return null; }
+    }
     if(audioCtx.state==='suspended') audioCtx.resume();
     return audioCtx;
 }
@@ -1613,24 +1626,42 @@ function tono(freq,duracion,tipo,vol,delay) {
     const osc = ctx.createOscillator(), gain = ctx.createGain();
     osc.type = tipo||'sine'; osc.frequency.setValueAtTime(freq,t0);
     gain.gain.setValueAtTime(0,t0);
-    gain.gain.linearRampToValueAtTime(vol||0.05,t0+0.012);
+    gain.gain.linearRampToValueAtTime(vol||0.12,t0+0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001,t0+(duracion||0.12));
-    osc.connect(gain); gain.connect(ctx.destination);
+    osc.connect(gain); gain.connect(masterGainNode||ctx.destination);
     osc.start(t0); osc.stop(t0+(duracion||0.12)+0.02);
+}
+function ruidoBlanco(duracion,vol,delay) {
+    const ctx = obtenerAudioCtx(); if(!ctx) return;
+    const t0 = ctx.currentTime + (delay||0);
+    const buf = ctx.createBuffer(1, ctx.sampleRate*duracion, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for(let i=0;i<data.length;i++) data[i] = (Math.random()*2-1) * (1-i/data.length);
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const gain = ctx.createGain(); gain.gain.setValueAtTime(vol||0.08,t0);
+    gain.gain.exponentialRampToValueAtTime(0.0001,t0+duracion);
+    src.connect(gain); gain.connect(masterGainNode||ctx.destination);
+    src.start(t0);
 }
 window.reproducirSonido = function(tipo) {
     if(!sonidoActivo) return;
     switch(tipo) {
-        case 'click':      tono(720,.05,'sine',.035); break;
-        case 'abrir':       tono(480,.09,'sine',.04); tono(640,.09,'sine',.03,.04); break;
-        case 'cerrar':      tono(420,.08,'sine',.035); break;
-        case 'exito':       tono(523,.09,'sine',.045); tono(784,.13,'sine',.045,.07); break;
-        case 'error':       tono(220,.16,'sawtooth',.04); break;
-        case 'compra':      tono(587,.08,'sine',.045); tono(880,.1,'sine',.04,.06); break;
-        case 'sacrificio':  tono(180,.22,'sawtooth',.045); tono(140,.3,'sine',.04,.1); break;
-        case 'gacha':       tono(392,.08,'sine',.04); tono(523,.08,'sine',.04,.08); tono(659,.16,'sine',.05,.16); break;
-        case 'raro':        tono(523,.1,'sine',.05); tono(659,.1,'sine',.05,.1); tono(784,.1,'sine',.05,.2); tono(1047,.22,'sine',.06,.3); break;
-        default:            tono(600,.06,'sine',.035);
+        case 'click':        tono(700,.06,'sine',.10); break;
+        case 'hover':         tono(950,.035,'sine',.045); break;
+        case 'tab':            tono(500,.05,'triangle',.11); tono(720,.07,'sine',.09,.04); break;
+        case 'abrir':          tono(440,.09,'sine',.12); tono(660,.11,'sine',.09,.05); break;
+        case 'cerrar':         tono(420,.09,'sine',.10); tono(280,.12,'sine',.07,.05); break;
+        case 'exito':          tono(523,.1,'sine',.13); tono(784,.16,'sine',.12,.08); break;
+        case 'error':          tono(200,.18,'sawtooth',.11); tono(150,.22,'sawtooth',.08,.05); break;
+        case 'compra':         tono(587,.09,'sine',.13); tono(880,.13,'sine',.11,.07); tono(1175,.1,'sine',.07,.14); break;
+        case 'perdervida':     tono(330,.16,'sawtooth',.11); tono(220,.28,'sine',.1,.1); ruidoBlanco(.22,.05,.02); break;
+        case 'sacrificio':     tono(180,.26,'sawtooth',.12); tono(140,.34,'sine',.1,.12); ruidoBlanco(.3,.06,.04); break;
+        case 'apuesta':        tono(440,.06,'triangle',.1); tono(550,.08,'triangle',.09,.06); break;
+        case 'trueque':        tono(392,.07,'sine',.1); tono(523,.09,'sine',.09,.06); tono(659,.07,'sine',.08,.12); break;
+        case 'voto':           tono(660,.06,'sine',.09); break;
+        case 'gacha':          tono(392,.09,'sine',.11); tono(523,.09,'sine',.11,.09); tono(659,.18,'sine',.13,.18); break;
+        case 'raro':           tono(523,.12,'sine',.13); tono(659,.12,'sine',.13,.1); tono(784,.12,'sine',.13,.2); tono(1047,.26,'sine',.15,.3); tono(1318,.3,'sine',.1,.38); break;
+        default:               tono(600,.07,'sine',.10);
     }
 };
 window.alternarSonido = function() {
@@ -1638,12 +1669,67 @@ window.alternarSonido = function() {
     localStorage.setItem('silph_sonido_activo', sonidoActivo?'true':'false');
     const btn = document.getElementById('btn-sonido-toggle');
     if(btn) { btn.textContent = sonidoActivo ? '🔊' : '🔇'; btn.classList.toggle('muted',!sonidoActivo); }
-    if(sonidoActivo) reproducirSonido('click');
+    if(sonidoActivo) { reproducirSonido('click'); iniciarAmbiente(); }
+    else { detenerAmbiente(); }
 };
 document.addEventListener('DOMContentLoaded',()=>{
     const btn = document.getElementById('btn-sonido-toggle');
     if(btn) { btn.textContent = sonidoActivo ? '🔊' : '🔇'; btn.classList.toggle('muted',!sonidoActivo); }
 });
+/* Sonido suave de hover delegado a toda la web, sin tocar la lógica de negocio */
+document.addEventListener('mouseover',(e)=>{
+    if(!sonidoActivo) return;
+    let el = e.target.closest('.item-card:not(.agotado), .tienda-acceso-card, .nav-item, .btn-comprar:not(:disabled), .torneos-btn, .mochila-tag');
+    if(el && el !== el.__ultimoHover) { el.__ultimoHover = true; reproducirSonido('hover'); setTimeout(()=>{ if(el) el.__ultimoHover=false; },250); }
+});
+
+/* ═══ AMBIENTE — pad relajado tipo "supermercado chill" en bucle ═══ */
+function iniciarAmbiente() {
+    if(ambienteIniciado || !sonidoActivo) return;
+    const ctx = obtenerAudioCtx(); if(!ctx) return;
+    ambienteIniciado = true;
+    const acordes = [
+        [261.63,329.63,392.00], // C E G
+        [293.66,349.23,440.00], // D F A
+        [246.94,311.13,392.00], // B D# G (sus)
+        [220.00,277.18,329.63]  // A C# E
+    ];
+    let paso = 0;
+    function ciclo() {
+        if(!sonidoActivo) return;
+        const acorde = acordes[paso % acordes.length]; paso++;
+        acorde.forEach((freq,i)=>{
+            const t0 = ctx.currentTime + i*0.18;
+            const osc = ctx.createOscillator(), gain = ctx.createGain();
+            osc.type = 'sine'; osc.frequency.setValueAtTime(freq/2,t0);
+            gain.gain.setValueAtTime(0,t0);
+            gain.gain.linearRampToValueAtTime(0.018,t0+1.4);
+            gain.gain.linearRampToValueAtTime(0,t0+5.2);
+            osc.connect(gain); gain.connect(masterGainNode||ctx.destination);
+            osc.start(t0); osc.stop(t0+5.4);
+        });
+        ambienteTimers.push(setTimeout(ciclo,5600));
+    }
+    ciclo();
+}
+function detenerAmbiente() {
+    ambienteIniciado = false;
+    ambienteTimers.forEach(t=>clearTimeout(t));
+    ambienteTimers = [];
+}
+['click','touchstart','keydown'].forEach(evt=>{
+    document.addEventListener(evt,()=>{ if(sonidoActivo) iniciarAmbiente(); },{ once:true });
+});
+
+/* ═══ DESTELLO DE PANTALLA — feedback visual para acciones importantes ═══ */
+window.destellarPantalla = function(color) {
+    let el = document.createElement('div');
+    let tintas = { rojo:'rgba(239,68,68,.16)', naranja:'rgba(249,115,22,.16)', verde:'rgba(16,185,129,.14)', morado:'rgba(168,85,247,.14)' };
+    el.style.cssText = `position:fixed;inset:0;background:${tintas[color]||tintas.rojo};z-index:6000;pointer-events:none;opacity:0;transition:opacity .15s ease;`;
+    document.body.appendChild(el);
+    requestAnimationFrame(()=>{ el.style.opacity='1'; setTimeout(()=>{ el.style.opacity='0'; setTimeout(()=>el.remove(),250); },120); });
+};
+
 
 /* ═══════════════════════════════════════
    NOTIFICACIONES (toasts) — reemplazo de avisos rápidos
@@ -1734,15 +1820,25 @@ window.cerrarRevelacionGacha = function() {
 
 /* ════ DRAWER MÓVIL ════ */
 window.abrirDrawer = function() {
+    reproducirSonido('abrir');
     document.getElementById('sidebar').classList.add('open');
     document.getElementById('drawer-backdrop').classList.add('active');
     document.body.style.overflow = 'hidden';
 };
 window.cerrarDrawer = function() {
+    if(document.getElementById('sidebar').classList.contains('open')) reproducirSonido('cerrar');
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('drawer-backdrop').classList.remove('active');
     document.body.style.overflow = '';
 };
+
+/* Reinicia una animación CSS forzando reflow, para que cada cambio de vista se vea */
+function reanimarElemento(el) {
+    if(!el) return;
+    el.classList.remove('vista-anim');
+    void el.offsetWidth;
+    el.classList.add('vista-anim');
+}
 
 /* ════ FIREBASE ════ */
 onValue(ref(db,'silph_co_market'), (snapshot) => {
@@ -1787,11 +1883,12 @@ function guardarBD() { set(ref(db,'silph_co_market'),baseDatos); }
 
 /* ════ NAVEGACIÓN ════ */
 window.navegarA = function(seccion) {
+    reproducirSonido('tab');
     document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
     const sec = document.getElementById(`section-${seccion}`);
     const nav = document.getElementById(`nav-${seccion}`);
-    if(sec) sec.classList.add('active');
+    if(sec) { sec.classList.add('active'); reanimarElemento(sec); }
     if(nav) nav.classList.add('active');
     if(seccion==='red-entrenadores') renderizarVisorRivalPublico();
     if(seccion==='eventos')          { renderizarArenaPublica(); renderizarCamaraPublica(); }
@@ -1807,27 +1904,36 @@ window.navegarA = function(seccion) {
 window.navegarAConTab = function(seccion,tab) { navegarA(seccion); if(seccion==='tiendas') cambiarTiendaTab(tab); };
 
 window.cambiarTiendaTab = function(tab) {
-    document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));
+    reproducirSonido('tab');
+    document.querySelectorAll('.tienda-tab').forEach(t=>{ t.classList.remove('active-legal','active-pack','active-illegal'); });
     document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));
-    document.getElementById(`ttab-${tab}`).classList.add(`active-${tab}`);
-    document.getElementById(`tv-${tab}`).classList.add('active');
+    let tabEl = document.getElementById(`ttab-${tab}`);
+    let viewEl = document.getElementById(`tv-${tab}`);
+    tabEl.classList.add(`active-${tab}`);
+    tabEl.classList.add('tab-pop'); setTimeout(()=>tabEl.classList.remove('tab-pop'),300);
+    viewEl.classList.add('active'); reanimarElemento(viewEl);
 };
 
 window.cambiarEventoTab = function(tab) {
+    reproducirSonido('tab');
     document.querySelectorAll('.evento-tab').forEach(t=>t.classList.remove('active-arena','active-camara'));
     document.querySelectorAll('.evento-view').forEach(v=>v.classList.remove('active'));
-    document.getElementById(`etab-${tab}`).classList.add(`active-${tab}`);
-    document.getElementById(`ev-${tab}`).classList.add('active');
+    let tabEl = document.getElementById(`etab-${tab}`);
+    let viewEl = document.getElementById(`ev-${tab}`);
+    tabEl.classList.add(`active-${tab}`);
+    tabEl.classList.add('tab-pop'); setTimeout(()=>tabEl.classList.remove('tab-pop'),300);
+    viewEl.classList.add('active'); reanimarElemento(viewEl);
     if(tab==='camara') renderizarCamaraPublica();
 };
 
 window.cambiarPerfilTab = function(tab) {
+    reproducirSonido('tab');
     document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));
     const btn  = document.getElementById(`ptab-${tab}`);
     const view = document.getElementById(`pv-${tab}`);
-    if(btn)  btn.classList.add('active');
-    if(view) view.classList.add('active');
+    if(btn)  { btn.classList.add('active'); btn.classList.add('tab-pop'); setTimeout(()=>btn.classList.remove('tab-pop'),300); }
+    if(view) { view.classList.add('active'); reanimarElemento(view); }
 };
 
 /* ════ LOGIN ════ */
@@ -2083,8 +2189,8 @@ window.confirmarBaja = function() {
     let motivo   = document.getElementById('baja-motivo').value;
     let lugar    = document.getElementById('baja-lugar').value.trim();
     let epitafio = document.getElementById('baja-epitafio').value.trim();
-    if(!nombre) return alert("El nombre del Pokémon es requerido.");
-    if(!lugar)  return alert("Indica el lugar o rival de la caída.");
+    if(!nombre) { mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀"); return; }
+    if(!lugar)  { mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️"); return; }
     let u = baseDatos.jugadores[userSesion];
     let vidasActuales = (u.vidasActuales!==undefined) ? u.vidasActuales : (u.vidasTotales||20);
     if(vidasActuales>0) vidasActuales--;
@@ -2097,8 +2203,12 @@ window.confirmarBaja = function() {
     inyectarEntradaDiarioAutomatica(`💀 RIP: '${nombreCompleto}' cayó ante ${rutaCompleta}. Últimas palabras: "${epitafio||'...'}"`);
     guardarBD();
     cerrarModalBaja();
-    alert(`💀 ${nombreCompleto} ha sido añadido al cementerio.\n❤️ Vidas restantes: ${vidasActuales}`);
+    reproducirSonido('perdervida');
+    destellarPantalla('rojo');
+    actualizarBarraVidasDesdeDB();
+    mostrarInfo({ icono:'💀', titulo:nombreCompleto, descripcion:`Ha caído ante ${rutaCompleta}.\n❤️ Vidas restantes: ${vidasActuales}`, tipo:'peligro', textoConfirmar:'Descanse en paz' });
 };
+
 
 /* ════ BARRA HP ════ */
 window.actualizarBarraVidas = function() {
@@ -2176,23 +2286,30 @@ window.actualizarPreviewSacrificio = function() {
     btnConf.disabled = false;
 };
 
-window.confirmarSacrificio = function() {
+window.confirmarSacrificio = async function() {
     if(!userSesion||!baseDatos.jugadores[userSesion]) return;
     let nombre = document.getElementById('sac-nombre-poke').value.trim();
     let mote   = document.getElementById('sac-mote-poke').value.trim();
     let cat    = document.getElementById('sac-categoria').value;
-    if(!nombre) return alert("Introduce el nombre del Pokémon.");
-    if(!cat)    return alert("Selecciona la categoría de rareza.");
+    if(!nombre) { mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥"); return; }
+    if(!cat)    { mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥"); return; }
     let u = baseDatos.jugadores[userSesion];
     let vidasAct = (u.vidasActuales!==undefined) ? u.vidasActuales : (u.vidasTotales||20);
     let vidasTot = u.vidasTotales||20;
-    if(vidasAct>=MAX_VIDAS) return alert(`⛔ Ya tienes el máximo de ${MAX_VIDAS} vidas.`);
+    if(vidasAct>=MAX_VIDAS) { mostrarNotificacion(`Ya tienes el máximo de ${MAX_VIDAS} vidas.`,"error","⛔"); return; }
     let datos = SACRIFICIO_VALORES[cat];
-    if(!datos) return alert("Categoría inválida.");
+    if(!datos) { mostrarNotificacion("Categoría inválida.","error","🔥"); return; }
     let vidasGanadas = Math.min(datos.vidas, MAX_VIDAS-vidasAct);
     let nuevas = vidasAct+vidasGanadas;
     let nombreC = mote ? `${nombre} "${mote}"` : nombre;
-    if(!confirm(`🔥 SACRIFICIO POKÉINOMANO\n\nPokémon: ${nombreC}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vidasGanadas} ❤️\nVidas tras el sacrificio: ${nuevas}/${vidasTot}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.\n¿Confirmas?`)) return;
+    let confirmado = await mostrarConfirmacion({
+        icono: '🔥',
+        titulo: 'Sacrificio Pokéinomano',
+        descripcion: `Pokémon: ${nombreC}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vidasGanadas} ❤️\nVidas tras el sacrificio: ${nuevas}/${vidasTot}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,
+        textoConfirmar: 'Ejecutar Sacrificio',
+        tipo: 'sacrificio'
+    });
+    if(!confirmado) return;
     u.vidasActuales = nuevas;
     if(u.lockeStatus==='perdido'&&nuevas>0) u.lockeStatus='jugando';
     if(!u.sacrificios) u.sacrificios=[];
@@ -2202,7 +2319,10 @@ window.confirmarSacrificio = function() {
     inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO POKÉINOMANO: '${nombreC}' [${datos.etiqueta}] ofrecido al Mercader. +${vidasGanadas} ❤️. Vidas: ${nuevas}/${vidasTot}.`);
     guardarBD();
     cerrarModalSacrificio();
-    alert(`🔥 Sacrificio completado.\n${nombreC} descansa en paz.\n❤️ Vidas: +${vidasGanadas} → ${nuevas}`);
+    reproducirSonido('sacrificio');
+    destellarPantalla('naranja');
+    actualizarBarraVidasDesdeDB();
+    mostrarInfo({ icono:'🔥', titulo:'Sacrificio completado', descripcion:`${nombreC} descansa en paz.\n❤️ Vidas: +${vidasGanadas} → ${nuevas}`, textoConfirmar:'Aceptar' });
 };
 
 function renderizarHistorialSacrificios() {
@@ -2236,19 +2356,20 @@ function actualizarEstadisticasSacrificioPanel() {
 
 /* ════ ADMIN — VIDAS ════ */
 window.ajustarVidasEntrenador = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let userId = document.getElementById('adm-vidas-usuario').value;
     let ini    = parseInt(document.getElementById('adm-vidas-iniciales').value)||20;
     let act    = parseInt(document.getElementById('adm-vidas-actuales').value);
-    if(!userId)    return alert("Selecciona un entrenador.");
-    if(isNaN(act)) return alert("Introduce las vidas actuales.");
+    if(!userId)    { mostrarNotificacion("Selecciona un entrenador.","error","❤️"); return; }
+    if(isNaN(act)) { mostrarNotificacion("Introduce las vidas actuales.","error","❤️"); return; }
     act = Math.max(0,Math.min(act,ini));
     baseDatos.jugadores[userId].vidasTotales  = ini;
     baseDatos.jugadores[userId].vidasActuales = act;
     if(act<=0) baseDatos.jugadores[userId].lockeStatus='perdido';
     inyectarEntradaDiarioAutomaticaPara(userId,`[ADMIN] El Mercader ajustó tus vidas → ❤️ ${act}/${ini}`);
     guardarBD();
-    alert(`✅ ${userId.toUpperCase()}: vidas ajustadas a ${act}/${ini}`);
+    reproducirSonido('exito');
+    mostrarNotificacion(`${userId.toUpperCase()}: vidas ajustadas a ${act}/${ini}`,'exito','❤️');
 };
 
 window.cargarVidasEnAdmin = function() {
@@ -2261,27 +2382,27 @@ window.cargarVidasEnAdmin = function() {
 
 /* ════ ARENA ════ */
 window.crearCombateArena = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let jugA  = document.getElementById('adm-arena-jugador-a').value;
     let jugB  = document.getElementById('adm-arena-jugador-b').value;
     let desc  = document.getElementById('adm-arena-descripcion').value.trim();
     let limite= parseInt(document.getElementById('adm-arena-limite').value)||5;
-    if(!jugA||!jugB)  return alert("Selecciona los dos jugadores.");
-    if(jugA===jugB)   return alert("Los dos jugadores deben ser diferentes.");
-    if(!desc)         return alert("Añade una descripción.");
+    if(!jugA||!jugB)  { mostrarNotificacion("Selecciona los dos jugadores.","error","⚔️"); return; }
+    if(jugA===jugB)   { mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","⚔️"); return; }
+    if(!desc)         { mostrarNotificacion("Añade una descripción.","error","⚔️"); return; }
     let id = "arena_"+Date.now();
     if(!baseDatos.arena) baseDatos.arena={};
     baseDatos.arena[id]={id,jugadorA:jugA,jugadorB:jugB,descripcion:desc,limitePf:limite,estado:"abierto",ganador:null,apuestas:{},boteA:0,boteB:0,fechaCreacion:new Date().toLocaleDateString()};
-    guardarBD(); alert(`¡Combate "${desc}" abierto!`);
+    guardarBD(); reproducirSonido('exito'); mostrarNotificacion(`Combate "${desc}" abierto en la Arena.`,'exito','🎰');
 };
 
 window.cerrarApuestasCombate = function(combateId) {
     if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return;
-    if(baseDatos.arena[combateId]) { baseDatos.arena[combateId].estado="cerrado"; guardarBD(); }
+    if(baseDatos.arena[combateId]) { baseDatos.arena[combateId].estado="cerrado"; guardarBD(); reproducirSonido('cerrar'); }
 };
 
 window.resolverCombateArena = function(combateId,ganadorLado) {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let c = baseDatos.arena[combateId];
     if(!c) return;
     c.ganador=ganadorLado; c.estado="resuelto";
@@ -2304,29 +2425,36 @@ window.resolverCombateArena = function(combateId,ganadorLado) {
         perdedores.forEach(g=>{ if(baseDatos.jugadores[g.uid]) { baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+g.cantidad; inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: Nadie apostó al ganador en [${c.descripcion}]. Tus ${g.cantidad} PF devueltos.`); } });
     }
     let nombreG=ganadorLado==='A'?c.jugadorA:c.jugadorB;
-    guardarBD(); alert(`✅ Combate resuelto. Ganador: ${nombreG.toUpperCase()}`);
+    guardarBD(); reproducirSonido('exito'); mostrarNotificacion(`Combate resuelto. Ganador: ${nombreG.toUpperCase()}`,'exito','🏆');
 };
 
-window.apostarEnCombate = function(combateId,lado) {
+window.apostarEnCombate = async function(combateId,lado) {
     if(!userSesion) return;
     let c = baseDatos.arena[combateId];
-    if(!c||c.estado!=="abierto") return alert("Apuestas cerradas.");
-    if(c.jugadorA===userSesion||c.jugadorB===userSesion) return alert("No puedes apostar en tu propio combate.");
-    if(c.apuestas&&c.apuestas[userSesion]) return alert("Ya has apostado.");
+    if(!c||c.estado!=="abierto") { mostrarNotificacion("Las apuestas de este combate están cerradas.","error","🔒"); return; }
+    if(c.jugadorA===userSesion||c.jugadorB===userSesion) { mostrarNotificacion("No puedes apostar en tu propio combate.","error","⚔️"); return; }
+    if(c.apuestas&&c.apuestas[userSesion]) { mostrarNotificacion("Ya has apostado en este combate.","error","🎰"); return; }
     let inputEl  = document.getElementById(`arena-input-${combateId}`);
     let cantidad = parseInt(inputEl?inputEl.value:0)||0;
-    if(cantidad<=0) return alert("Cantidad inválida.");
-    if(cantidad>c.limitePf) return alert(`Máximo: ${c.limitePf} PF.`);
+    if(cantidad<=0) { mostrarNotificacion("Introduce una cantidad válida.","error","🎰"); return; }
+    if(cantidad>c.limitePf) { mostrarNotificacion(`El máximo permitido es ${c.limitePf} PF.`,"error","🎰"); return; }
     let u = baseDatos.jugadores[userSesion];
-    if((u.pf||0)<cantidad) return alert(`PF insuficientes. Tienes ${u.pf||0} PF.`);
+    if((u.pf||0)<cantidad) { mostrarNotificacion(`PF insuficientes. Tienes ${u.pf||0} PF.`,"error","🔮"); return; }
     let nombreJ = lado==='A'?c.jugadorA:c.jugadorB;
-    if(!confirm(`¿Apostar ${cantidad} PF a que ${nombreJ.toUpperCase()} gana "${c.descripcion}"?`)) return;
+    let confirmado = await mostrarConfirmacion({
+        icono: '🎰', titulo: 'Confirmar apuesta',
+        descripcion: `Apostar ${cantidad} PF a que ${nombreJ.toUpperCase()} gana\n"${c.descripcion}"`,
+        textoConfirmar: 'Apostar'
+    });
+    if(!confirmado) return;
     u.pf=(u.pf||0)-cantidad;
     if(!c.apuestas) c.apuestas={};
     c.apuestas[userSesion]={lado,cantidad};
     if(lado==='A') c.boteA=(c.boteA||0)+cantidad; else c.boteB=(c.boteB||0)+cantidad;
     inyectarEntradaDiarioAutomatica(`🎰 APUESTA: Aposté ${cantidad} PF a ${nombreJ.toUpperCase()} en [${c.descripcion}].`);
-    guardarBD(); alert(`¡Apuesta registrada! ${cantidad} PF a ${nombreJ.toUpperCase()}.`);
+    guardarBD();
+    reproducirSonido('apuesta');
+    mostrarNotificacion(`${cantidad} PF a ${nombreJ.toUpperCase()}.`,'exito','🎰','Apuesta registrada');
 };
 
 function renderizarArenaPublica() {
@@ -2375,23 +2503,23 @@ function renderizarArenaPublica() {
 
 // Crear trueque desde admin
 window.crearTruequeCamara = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let jugA    = document.getElementById('adm-camara-jugador-a').value;
     let objetoA = document.getElementById('adm-camara-objeto-a').value.trim();
     let jugB    = document.getElementById('adm-camara-jugador-b').value;
     let objetoB = document.getElementById('adm-camara-objeto-b').value.trim();
     let cat     = document.getElementById('adm-camara-categoria').value;
-    if(!jugA||!jugB)      return alert("Selecciona los dos jugadores.");
-    if(jugA===jugB)       return alert("Los dos jugadores deben ser diferentes.");
-    if(!objetoA||!objetoB) return alert("Indica los objetos de ambos jugadores.");
-    if(!cat)              return alert("Selecciona la categoría del intercambio.");
+    if(!jugA||!jugB)      { mostrarNotificacion("Selecciona los dos jugadores.","error","🏛️"); return; }
+    if(jugA===jugB)       { mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","🏛️"); return; }
+    if(!objetoA||!objetoB) { mostrarNotificacion("Indica los objetos de ambos jugadores.","error","📦"); return; }
+    if(!cat)              { mostrarNotificacion("Selecciona la categoría del intercambio.","error","🏛️"); return; }
     let catData = CAMARA_CATEGORIAS[cat];
-    if(!catData)          return alert("Categoría inválida.");
+    if(!catData)          { mostrarNotificacion("Categoría inválida.","error","🏛️"); return; }
     // Verificar fondos de ambos
     let uA = baseDatos.jugadores[jugA], uB = baseDatos.jugadores[jugB];
-    if(!uA||!uB) return alert("Uno o ambos jugadores no encontrados.");
-    if((uA.pf||0) < catData.coste) return alert(`${jugA.toUpperCase()} no tiene suficientes PF (necesita ${catData.coste} PF, tiene ${uA.pf||0}).`);
-    if((uB.pf||0) < catData.coste) return alert(`${jugB.toUpperCase()} no tiene suficientes PF (necesita ${catData.coste} PF, tiene ${uB.pf||0}).`);
+    if(!uA||!uB) { mostrarNotificacion("Uno o ambos jugadores no encontrados.","error","🏛️"); return; }
+    if((uA.pf||0) < catData.coste) { mostrarNotificacion(`${jugA.toUpperCase()} no tiene suficientes PF (necesita ${catData.coste}, tiene ${uA.pf||0}).`,"error","🔮"); return; }
+    if((uB.pf||0) < catData.coste) { mostrarNotificacion(`${jugB.toUpperCase()} no tiene suficientes PF (necesita ${catData.coste}, tiene ${uB.pf||0}).`,"error","🔮"); return; }
     // Retener PF de ambos (depósito)
     uA.pf = (uA.pf||0) - catData.coste;
     uB.pf = (uB.pf||0) - catData.coste;
@@ -2415,26 +2543,29 @@ window.crearTruequeCamara = function() {
     // Limpiar formulario
     document.getElementById('adm-camara-objeto-a').value = '';
     document.getElementById('adm-camara-objeto-b').value = '';
-    alert(`✅ Trueque publicado en la Cámara.\n${jugA.toUpperCase()} y ${jugB.toUpperCase()} han perdido ${catData.coste} PF cada uno (retenidos hasta resolución).`);
+    reproducirSonido('trueque');
+    mostrarNotificacion(`${jugA.toUpperCase()} y ${jugB.toUpperCase()} han retenido ${catData.coste} PF cada uno.`,'exito','🏛️','Trueque publicado');
 };
 
 // Votar trueque (todos menos los implicados, admin puede votar)
 window.votarTruequeCamara = function(tid, tipo) {
     if(!userSesion) return;
     let t = baseDatos.camara[tid];
-    if(!t||t.estado!=="votacion") return alert("Este trueque ya no está en votación.");
-    if(t.jugadorA===userSesion||t.jugadorB===userSesion) return alert("No puedes votar en tu propio trueque.");
-    if(t.votos&&t.votos[userSesion]) return alert("Ya emitiste tu voto en este trueque.");
+    if(!t||t.estado!=="votacion") { mostrarNotificacion("Este trueque ya no está en votación.","error","🏛️"); return; }
+    if(t.jugadorA===userSesion||t.jugadorB===userSesion) { mostrarNotificacion("No puedes votar en tu propio trueque.","error","🏛️"); return; }
+    if(t.votos&&t.votos[userSesion]) { mostrarNotificacion("Ya emitiste tu voto en este trueque.","error","🏛️"); return; }
     if(!t.votos) t.votos = {};
     t.votos[userSesion] = tipo;
     guardarBD();
+    reproducirSonido('voto');
+    mostrarNotificacion(tipo==='SI'?'Has aprobado el trueque.':'Has rechazado el trueque.','info',tipo==='SI'?'👍':'👎');
 };
 
 // Resolver trueque desde admin
 window.resolverTruequeCamara = function(tid, resultado) {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let t = baseDatos.camara[tid];
-    if(!t) return alert("Trueque no encontrado.");
+    if(!t) { mostrarNotificacion("Trueque no encontrado.","error","🏛️"); return; }
     let uA = baseDatos.jugadores[t.jugadorA];
     let uB = baseDatos.jugadores[t.jugadorB];
     let coste = t.costePorJugador || 0;
@@ -2444,7 +2575,8 @@ window.resolverTruequeCamara = function(tid, resultado) {
         inyectarEntradaDiarioAutomaticaPara(t.jugadorA, `🏛️ CÁMARA ACEPTADA: Trueque '${t.objetoA}' → '${t.objetoB}' completado con ${t.jugadorB.toUpperCase()}. Coste definitivo: ${coste} PF.`);
         inyectarEntradaDiarioAutomaticaPara(t.jugadorB, `🏛️ CÁMARA ACEPTADA: Trueque '${t.objetoB}' → '${t.objetoA}' completado con ${t.jugadorA.toUpperCase()}. Coste definitivo: ${coste} PF.`);
         guardarBD();
-        alert(`✅ Trueque ACEPTADO. Los PF no se devuelven.`);
+        reproducirSonido('exito');
+        mostrarNotificacion('Los PF no se devuelven.','exito','✅','Trueque aceptado');
     } else {
         // Devolver PF a ambos
         if(uA) uA.pf = (uA.pf||0) + coste;
@@ -2453,7 +2585,8 @@ window.resolverTruequeCamara = function(tid, resultado) {
         inyectarEntradaDiarioAutomaticaPara(t.jugadorA, `🏛️ CÁMARA RECHAZADA: El trueque con ${t.jugadorB.toUpperCase()} fue cancelado. Te han devuelto ${coste} PF.`);
         inyectarEntradaDiarioAutomaticaPara(t.jugadorB, `🏛️ CÁMARA RECHAZADA: El trueque con ${t.jugadorA.toUpperCase()} fue cancelado. Te han devuelto ${coste} PF.`);
         guardarBD();
-        alert(`✅ Trueque RECHAZADO. Se han devuelto ${coste} PF a cada jugador.`);
+        reproducirSonido('cerrar');
+        mostrarNotificacion(`Se han devuelto ${coste} PF a cada jugador.`,'info','❌','Trueque rechazado');
     }
 };
 
@@ -2560,17 +2693,34 @@ function renderizarAdminCamara() {
 window.reclamarHackeoDiario = function() {
     let u = baseDatos.jugadores[userSesion];
     let ahora=Date.now(), unDiaMs=24*60*60*1000;
-    if(ahora-(u.ultimoHackeo||0)<unDiaMs) { let rem=unDiaMs-(ahora-u.ultimoHackeo); return alert(`Sistemas protegidos. Reinicio en ${Math.ceil(rem/(1000*60*60))} horas.`); }
+    if(ahora-(u.ultimoHackeo||0)<unDiaMs) {
+        let rem=unDiaMs-(ahora-u.ultimoHackeo);
+        mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(rem/(1000*60*60))} horas.`,"error","⏳");
+        return;
+    }
     u.ultimoHackeo=ahora;
+    const ITEMS_RAROS = ["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"];
     const itemsGen7=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];
     let dineroGanado=Math.floor(Math.random()*9001)+1000, pfGanado=Math.floor(Math.random()*10)+1;
     let item=itemsGen7[Math.floor(Math.random()*itemsGen7.length)];
-    let r=Math.random(), msg="";
-    if(r<0.33) { u.dinero=(u.dinero||0)+dineroGanado; msg=`Hackeo Exitoso: +${dineroGanado.toLocaleString()} P₠ inyectados.`; }
-    else if(r<0.66) { u.pf=(u.pf||0)+pfGanado; msg=`Acceso Concedido: +${pfGanado} PF transferidos.`; }
-    else { if(!u.inventario) u.inventario=[]; u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()}); msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`; }
+    let r=Math.random(), msg="", reveal={};
+    if(r<0.33) {
+        u.dinero=(u.dinero||0)+dineroGanado;
+        msg=`Hackeo Exitoso: +${dineroGanado.toLocaleString()} P₠ inyectados.`;
+        reveal={rareza:'dinero',icono:'💰',nombre:`+${dineroGanado.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dineroGanado>=7000};
+    } else if(r<0.66) {
+        u.pf=(u.pf||0)+pfGanado;
+        msg=`Acceso Concedido: +${pfGanado} PF transferidos.`;
+        reveal={rareza:'pf',icono:'🔮',nombre:`+${pfGanado} PF`,detalle:'Puntos de Favor transferidos',especial:pfGanado>=9};
+    } else {
+        if(!u.inventario) u.inventario=[];
+        u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});
+        msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;
+        reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:ITEMS_RAROS.includes(item.nombre)};
+    }
     inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);
-    guardarBD(); alert(`¡HACKEO EJECUTADO!\n${msg}`);
+    guardarBD();
+    mostrarRevelacionGacha(reveal);
 };
 
 /* ════ RED ENTRENADORES ════ */
@@ -2683,7 +2833,10 @@ window.guardarVidasPerfilGamer = function() {
     u.vidasTotales=ini;
     if(u.vidasActuales===undefined) u.vidasActuales=ini;
     if(u.vidasActuales<=0) u.lockeStatus='perdido';
-    guardarBD(); alert("Contador de vidas sincronizado.");
+    guardarBD();
+    reproducirSonido('exito');
+    actualizarBarraVidasDesdeDB();
+    mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");
 };
 
 window.alterarTorneosPerfil = function(v) {
@@ -2708,10 +2861,11 @@ function renderizarCementerioDOM() {
 
 /* ════ DIARIO ════ */
 window.abrirOverlayDiarioNativo = function() {
+    reproducirSonido('abrir');
     document.getElementById('diario-overlay-sistema').style.display='flex';
     redibujarHistorialDiario();
 };
-window.cerrarOverlayDiarioNativo = function() { document.getElementById('diario-overlay-sistema').style.display='none'; };
+window.cerrarOverlayDiarioNativo = function() { reproducirSonido('cerrar'); document.getElementById('diario-overlay-sistema').style.display='none'; };
 
 function redibujarHistorialDiario() {
     if(!userSesion||!baseDatos.jugadores[userSesion]) return;
@@ -2727,9 +2881,11 @@ function redibujarHistorialDiario() {
 
 window.guardarNuevaEntradaDiario = function() {
     let inp=document.getElementById('diario-input-texto'), contenido=inp.value.trim();
-    if(!contenido) return alert("Texto vacío.");
+    if(!contenido) { mostrarNotificacion("Escribe algo antes de guardar.","error","📖"); return; }
     inyectarEntradaDiarioAutomatica(contenido);
     guardarBD(); inp.value=''; redibujarHistorialDiario();
+    reproducirSonido('exito');
+    mostrarNotificacion("Hito estampado en la bitácora.","exito","📖");
 };
 
 function inyectarEntradaDiarioAutomatica(txt) {
@@ -2761,46 +2917,49 @@ function actualizarBannerAlertasVisuales() {
 
 /* ════ ADMIN ════ */
 window.invocarTerminalMercader = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){alert("Credenciales no detectadas.");return;}
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){ mostrarNotificacion("Credenciales no detectadas.","error","🔒"); return; }
+    reproducirSonido('abrir');
     document.getElementById('pantalla-admin-master').style.display='block';
     redibujarConsolaAdminMaster();
 };
-window.apagarTerminalMercader = function() { document.getElementById('pantalla-admin-master').style.display='none'; };
+window.apagarTerminalMercader = function() { reproducirSonido('cerrar'); document.getElementById('pantalla-admin-master').style.display='none'; };
 
 window.restablecerComprasDiariasDesdeMercader = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let tid=document.getElementById('adm-reset-usuario').value;
-    if(!tid) return alert("Selecciona un entrenador.");
+    if(!tid) { mostrarNotificacion("Selecciona un entrenador.","error","🔄"); return; }
     baseDatos.jugadores[tid].comprasDisponibles=MAX_COMPRAS;
     baseDatos.jugadores[tid].ultimaRecarga=Date.now();
-    guardarBD(); alert("Compras reiniciadas.");
+    guardarBD(); reproducirSonido('exito'); mostrarNotificacion("Compras reiniciadas.","exito","🔄");
 };
 
 window.restablecerGachaDiarioDesdeMercader = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let tid=document.getElementById('adm-reset-gacha-usuario').value;
-    if(!tid||!baseDatos.jugadores[tid]) return alert("Entrenador no encontrado.");
+    if(!tid||!baseDatos.jugadores[tid]) { mostrarNotificacion("Entrenador no encontrado.","error","⚡"); return; }
     baseDatos.jugadores[tid].ultimoHackeo=0;
-    guardarBD(); alert(`Gacha de ${tid.toUpperCase()} reiniciado.`);
+    guardarBD(); reproducirSonido('exito'); mostrarNotificacion(`Gacha de ${tid.toUpperCase()} reiniciado.`,"exito","⚡");
 };
 
 window.emitirOrdenEconomicaGlobal = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     baseDatos.eventoSistema=document.getElementById('adm-evento-economico').value;
-    guardarBD(); alert("Orden de Red distribuida.");
+    guardarBD(); reproducirSonido('exito'); mostrarNotificacion("Orden de Red distribuida.","exito","📢");
 };
 
 window.modificarFondosEntrenador = function(op) {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let uid=document.getElementById('adm-banco-usuario').value, cant=parseInt(document.getElementById('adm-banco-cantidad').value)||0;
-    if(!uid||cant<=0) return alert("Revisa los campos.");
+    if(!uid||cant<=0) { mostrarNotificacion("Revisa los campos.","error","💰"); return; }
     baseDatos.jugadores[uid].dinero+=(op==='SUMAR'?cant:-cant);
     guardarBD(); document.getElementById('adm-banco-cantidad').value='';
+    reproducirSonido('exito'); mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} P₠ para ${uid.toUpperCase()}.`,"exito","💰");
 };
 
 window.conmutarEstadoTienda = function(prop,estado) {
     if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return;
     baseDatos[prop]=estado; guardarBD();
+    reproducirSonido(estado?'exito':'cerrar');
 };
 
 window.ajustarCamposFormularioMercader = function() {
@@ -2813,12 +2972,12 @@ window.ajustarCamposFormularioMercader = function() {
 };
 
 window.inyectarObjetoNuevoMaster = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let t=document.getElementById('ins-tienda').value;
     let nombre=document.getElementById('ins-nombre').value.trim();
     let precio=parseInt(document.getElementById('ins-precio').value)||0;
     let stock=parseInt(document.getElementById('ins-stock').value)||0;
-    if(!nombre) return alert("Falta nombre.");
+    if(!nombre) { mostrarNotificacion("Falta el nombre del producto.","error","📦"); return; }
     let nuevo={id:Date.now(),tienda:t,stock,icon:document.getElementById('ins-icono').value.trim()||'📦',nombre};
     if(t==='legal')   {nuevo.cat=document.getElementById('ins-cat-legal').value;nuevo.precio=precio;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;}
     else if(t==='pack'){nuevo.cat='Pack Especial';nuevo.precio=precio;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;nuevo.desc=document.getElementById('ins-pack-desc').value.trim();nuevo.estrategia=document.getElementById('ins-pack-estrategia').value.trim();}
@@ -2826,6 +2985,7 @@ window.inyectarObjetoNuevoMaster = function() {
     if(!baseDatos.productos) baseDatos.productos=[];
     baseDatos.productos.push(nuevo);
     guardarBD(); document.getElementById('ins-nombre').value=''; document.getElementById('ins-precio').value='';
+    reproducirSonido('exito'); mostrarNotificacion(`${nuevo.icon} ${nombre} publicado.`,"exito","📦");
 };
 
 window.actualizarPropertyProducto = function(id,prop,val) {
@@ -2834,9 +2994,10 @@ window.actualizarPropertyProducto = function(id,prop,val) {
     if(idx!==-1){baseDatos.productos[idx][prop]=parseInt(val)||0;guardarBD();}
 };
 
-window.eliminarProductoMaster = function(id) {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return alert("Acceso denegado.");
-    if(confirm("¿Eliminar?")) {baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id);guardarBD();}
+window.eliminarProductoMaster = async function(id) {
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
+    let confirmado = await mostrarConfirmacion({ icono:'🗑️', titulo:'Eliminar producto', descripcion:'Esta acción no se puede deshacer.', textoConfirmar:'Eliminar', tipo:'peligro' });
+    if(confirmado) { baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id); guardarBD(); reproducirSonido('error'); mostrarNotificacion("Producto eliminado.","info","🗑️"); }
 };
 
 function actualizarSelectorUsuariosBanco() {
@@ -2917,4 +3078,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </body>
-                                                                    </html>
+                            </html>
