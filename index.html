@@ -8,6 +8,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap');
 
         :root {
+            color-scheme: dark;
             --bg-base:        #0d1117;
             --bg-surface:     #111827;
             --bg-elevated:    #161f2e;
@@ -532,6 +533,11 @@
         .graveyard-epitafio { font-style: italic; font-size: 12px; color: var(--txt-secondary); margin-top: 4px; }
 
         .medallas-grid-outer { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-label { font-size: 10px; color: var(--txt-secondary); font-family: var(--font-display); letter-spacing: .5px; text-transform: uppercase; display: block; margin-bottom: 6px; }
+        .form-select { background: var(--bg-card); color: var(--blanco); border: 1px solid var(--borde); padding: 9px 12px; border-radius: var(--r-md); font-family: var(--font-display); font-size: 12px; font-weight: 700; width: 100%; cursor: pointer; -webkit-appearance: none; appearance: none; transition: border-color .18s ease; }
+        .form-select:focus { outline: none; border-color: var(--neon-packs); }
+        .form-input { background: var(--bg-card); color: var(--blanco); border: 1px solid var(--borde); padding: 9px 12px; border-radius: var(--r-md); font-family: var(--font-display); font-size: 13px; transition: border-color .18s ease; }
+        .form-input:focus { outline: none; border-color: var(--neon-packs); }
         .medallas-card { background: var(--bg-elevated); border: 1px solid var(--borde); border-radius: var(--r-lg); padding: 18px; }
         .torneos-display { display: flex; align-items: center; justify-content: center; gap: 16px; }
         .torneos-btn { width: 32px; height: 32px; background: var(--bg-overlay); border: 1px solid var(--borde); border-radius: var(--r-sm); cursor: pointer; color: var(--txt-primary); font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; transition: border-color .15s; }
@@ -784,7 +790,7 @@
 
         /* ═══ TOASTS / NOTIFICACIONES ═══ */
         .toast-container {
-            position: fixed; top: calc(var(--topbar-h) + 14px); right: 18px; z-index: 5000;
+            position: fixed; top: calc(var(--topbar-h) + 14px); right: 18px; z-index: 10500;
             display: flex; flex-direction: column; gap: 10px; max-width: 340px; width: calc(100% - 36px);
             pointer-events: none;
         }
@@ -813,7 +819,7 @@
         /* ═══ MODAL GENÉRICO (confirmación / info) ═══ */
         .gx-overlay {
             display: none; position: fixed; inset: 0; background: rgba(5,5,12,.88); backdrop-filter: blur(10px);
-            z-index: 4500; justify-content: center; align-items: center; padding: 20px;
+            z-index: 10600; justify-content: center; align-items: center; padding: 20px;
             opacity: 0; transition: opacity .22s ease;
         }
         .gx-overlay.show { display: flex; opacity: 1; }
@@ -841,7 +847,7 @@
         /* ═══ REVELACIÓN GACHA ═══ */
         .gacha-overlay {
             display: none; position: fixed; inset: 0; background: rgba(3,4,10,.92); backdrop-filter: blur(14px);
-            z-index: 4800; justify-content: center; align-items: center; padding: 20px;
+            z-index: 10700; justify-content: center; align-items: center; padding: 20px;
             opacity: 0; transition: opacity .25s ease;
         }
         .gacha-overlay.show { display: flex; opacity: 1; }
@@ -953,12 +959,10 @@
             <div class="nav-item" id="nav-perfil" onclick="navegarA('perfil')">
                 <span class="nav-icon">👤</span> Perfil
             </div>
-        </nav>
-        <div class="sidebar-footer">
-            <div class="nav-item nav-item-danger" onclick="cerrarSesionOperador()">
+            <div class="nav-item nav-item-danger" onclick="cerrarSesionOperador()" style="margin-top:6px;">
                 <span class="nav-icon">🔓</span> Cerrar Sesión
             </div>
-        </div>
+        </nav>
     </aside>
 
     <header class="topbar">
@@ -1643,6 +1647,19 @@ function ruidoBlanco(duracion,vol,delay) {
     src.connect(gain); gain.connect(masterGainNode||ctx.destination);
     src.start(t0);
 }
+function tragaperras(intensidad) {
+    /* Pequeña ráfaga de "carrete girando" + resolución, estilo máquina tragaperras */
+    const ctx = obtenerAudioCtx(); if(!ctx) return;
+    let pasos = 9;
+    for(let i=0;i<pasos;i++) {
+        let t = i*0.045;
+        tono(300+Math.random()*260, .04, 'square', .06, t);
+    }
+    let tFinal = pasos*0.045 + 0.05;
+    tono(523,.1,'sine',.12,tFinal);
+    tono(659,.12,'sine',.12,tFinal+.08);
+    tono(784,.18,'sine',(intensidad==='alto')?.16:.11,tFinal+.18);
+}
 window.reproducirSonido = function(tipo) {
     if(!sonidoActivo) return;
     switch(tipo) {
@@ -1654,12 +1671,13 @@ window.reproducirSonido = function(tipo) {
         case 'exito':          tono(523,.1,'sine',.13); tono(784,.16,'sine',.12,.08); break;
         case 'error':          tono(200,.18,'sawtooth',.11); tono(150,.22,'sawtooth',.08,.05); break;
         case 'compra':         tono(587,.09,'sine',.13); tono(880,.13,'sine',.11,.07); tono(1175,.1,'sine',.07,.14); break;
-        case 'perdervida':     tono(330,.16,'sawtooth',.11); tono(220,.28,'sine',.1,.1); ruidoBlanco(.22,.05,.02); break;
-        case 'sacrificio':     tono(180,.26,'sawtooth',.12); tono(140,.34,'sine',.1,.12); ruidoBlanco(.3,.06,.04); break;
-        case 'apuesta':        tono(440,.06,'triangle',.1); tono(550,.08,'triangle',.09,.06); break;
-        case 'trueque':        tono(392,.07,'sine',.1); tono(523,.09,'sine',.09,.06); tono(659,.07,'sine',.08,.12); break;
+        case 'muerte':         tono(300,.14,'sawtooth',.12); tono(190,.22,'sawtooth',.11,.1); tono(110,.34,'sine',.12,.2); ruidoBlanco(.3,.06,.05); break;
+        case 'revivir':        tono(330,.08,'sine',.11); tono(440,.08,'sine',.12,.08); tono(587,.1,'sine',.13,.16); tono(784,.2,'sine',.14,.26); break;
+        case 'escaneo':        tono(900,.04,'square',.07); tono(1100,.04,'square',.06,.06); tono(700,.06,'sine',.08,.13); break;
+        case 'apuesta':        tragaperras('bajo'); break;
+        case 'trueque':        tragaperras('medio'); break;
         case 'voto':           tono(660,.06,'sine',.09); break;
-        case 'gacha':          tono(392,.09,'sine',.11); tono(523,.09,'sine',.11,.09); tono(659,.18,'sine',.13,.18); break;
+        case 'gacha':          tragaperras('medio'); break;
         case 'raro':           tono(523,.12,'sine',.13); tono(659,.12,'sine',.13,.1); tono(784,.12,'sine',.13,.2); tono(1047,.26,'sine',.15,.3); tono(1318,.3,'sine',.1,.38); break;
         default:               tono(600,.07,'sine',.10);
     }
@@ -2203,7 +2221,7 @@ window.confirmarBaja = function() {
     inyectarEntradaDiarioAutomatica(`💀 RIP: '${nombreCompleto}' cayó ante ${rutaCompleta}. Últimas palabras: "${epitafio||'...'}"`);
     guardarBD();
     cerrarModalBaja();
-    reproducirSonido('perdervida');
+    reproducirSonido('muerte');
     destellarPantalla('rojo');
     actualizarBarraVidasDesdeDB();
     mostrarInfo({ icono:'💀', titulo:nombreCompleto, descripcion:`Ha caído ante ${rutaCompleta}.\n❤️ Vidas restantes: ${vidasActuales}`, tipo:'peligro', textoConfirmar:'Descanse en paz' });
@@ -2319,7 +2337,8 @@ window.confirmarSacrificio = async function() {
     inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO POKÉINOMANO: '${nombreC}' [${datos.etiqueta}] ofrecido al Mercader. +${vidasGanadas} ❤️. Vidas: ${nuevas}/${vidasTot}.`);
     guardarBD();
     cerrarModalSacrificio();
-    reproducirSonido('sacrificio');
+    reproducirSonido('muerte');
+    setTimeout(()=>reproducirSonido('revivir'),420);
     destellarPantalla('naranja');
     actualizarBarraVidasDesdeDB();
     mostrarInfo({ icono:'🔥', titulo:'Sacrificio completado', descripcion:`${nombreC} descansa en paz.\n❤️ Vidas: +${vidasGanadas} → ${nuevas}`, textoConfirmar:'Aceptar' });
@@ -2733,6 +2752,7 @@ window.renderizarVisorRivalPublico = function() {
         box.innerHTML='<div style="color:var(--txt-muted);padding:20px;grid-column:span 2;text-align:center;font-family:var(--font-display);font-size:11px;letter-spacing:1px;text-transform:uppercase;">Selecciona un terminal activo.</div>';
         return;
     }
+    reproducirSonido('escaneo');
     let r=baseDatos.jugadores[target];
     let statusTxt=r.lockeStatus==='ganado'?'🏆 GANADO':(r.lockeStatus==='perdido'?'💀 PERDIDO':'⏳ EN CURSO');
     let totalSac=r.sacrificios?r.sacrificios.length:0;
@@ -3078,4 +3098,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </body>
-                            </html>
+                </html>
