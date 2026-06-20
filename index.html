@@ -287,7 +287,7 @@
         .banner-alerta-global.active { display: block; }
         @keyframes pulse-glow { 0%,100%{box-shadow:0 0 0 rgba(245,197,24,0);}50%{box-shadow:0 0 20px rgba(245,197,24,.1);} }
 
-        .page-section { display: none; animation: fadeIn .2s ease; }
+        .page-section { display: none; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);} }
 
@@ -321,7 +321,7 @@
         .tienda-tab.active-pack    { background: rgba(245,158,11,.1); color: var(--neon-packs); border-color: rgba(245,158,11,.3); }
         .tienda-tab.active-illegal { background: rgba(168,85,247,.1); color: var(--neon-ilegal); border-color: rgba(168,85,247,.3); }
 
-        .tienda-view { display: none; animation: fadeIn .2s ease; }
+        .tienda-view { display: none; }
         .tienda-view.active { display: block; }
 
         .tienda-cerrada-box { text-align: center; padding: 80px 20px; background: var(--bg-elevated); border: 1px dashed var(--gris-700); border-radius: var(--r-xl); }
@@ -406,7 +406,7 @@
         .evento-tab.active-arena  { background: rgba(139,92,246,.1); color: var(--neon-arena); border-color: rgba(139,92,246,.3); }
         .evento-tab.active-camara { background: rgba(59,130,246,.1); color: var(--neon-intercambio); border-color: rgba(59,130,246,.3); }
 
-        .evento-view { display: none; animation: fadeIn .2s ease; }
+        .evento-view { display: none; }
         .evento-view.active { display: block; }
 
         .arena-header { background: linear-gradient(135deg, rgba(139,92,246,.08), transparent); border: 1px solid rgba(139,92,246,.2); border-radius: var(--r-xl); padding: 20px 22px; margin-bottom: 18px; position: relative; overflow: hidden; }
@@ -488,7 +488,7 @@
         .perfil-tab:hover { color: var(--blanco); background: var(--bg-overlay); }
         .perfil-tab.active { background: var(--bg-overlay); color: var(--blanco); border-color: var(--borde-hover); }
 
-        .perfil-view { display: none; animation: fadeIn .2s ease; }
+        .perfil-view { display: none; }
         .perfil-view.active { display: block; }
 
         .hp-panel { background: #0a0f1a; border: 1px solid rgba(239,68,68,.12); border-radius: var(--r-lg); padding: 16px 18px; margin-bottom: 18px; }
@@ -743,9 +743,11 @@
         .evento-tab.active-arena, .evento-tab.active-camara, .perfil-tab.active {
             box-shadow: 0 0 14px -4px currentColor;
         }
-        .tienda-view, .evento-view, .perfil-view, .page-section { animation: vistaEntrada .32s cubic-bezier(.16,1,.3,1); }
+        .tienda-view, .evento-view, .perfil-view, .page-section { }
         @keyframes vistaEntrada { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
         .vista-anim { animation: vistaEntrada .32s cubic-bezier(.16,1,.3,1); }
+        .vista-transicion { opacity: 0; transform: translateY(14px) scale(.985); transition: opacity .34s cubic-bezier(.16,1,.3,1), transform .34s cubic-bezier(.16,1,.3,1); }
+        .vista-transicion.vista-visible { opacity: 1; transform: translateY(0) scale(1); }
         @keyframes tabPop { 0%{ transform: scale(.94); } 60%{ transform: scale(1.04); } 100%{ transform: scale(1); } }
         .tab-pop { animation: tabPop .28s cubic-bezier(.34,1.56,.64,1); }
 
@@ -1677,6 +1679,65 @@ function ruidoBlanco(duracion,vol,delay) {
     src.connect(gain); gain.connect(masterGainNode||ctx.destination);
     src.start(t0);
 }
+function puertaCorredera(direccion) {
+    /* Puerta automática corredera tipo centro comercial: barrido de aire filtrado + tope mecánico al final */
+    const ctx = obtenerAudioCtx(); if(!ctx) return;
+    const t0 = ctx.currentTime;
+    const dur = 0.62;
+    const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate*dur), ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for(let i=0;i<data.length;i++) data[i] = (Math.random()*2-1);
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const filtro = ctx.createBiquadFilter(); filtro.type = 'bandpass'; filtro.Q.value = 1.1;
+    if(direccion==='abrir') {
+        filtro.frequency.setValueAtTime(260,t0);
+        filtro.frequency.linearRampToValueAtTime(2000,t0+dur*0.82);
+    } else {
+        filtro.frequency.setValueAtTime(2000,t0);
+        filtro.frequency.linearRampToValueAtTime(260,t0+dur*0.82);
+    }
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0,t0);
+    gain.gain.linearRampToValueAtTime(0.11,t0+0.09);
+    gain.gain.linearRampToValueAtTime(0.0001,t0+dur);
+    src.connect(filtro); filtro.connect(gain); gain.connect(masterGainNode||ctx.destination);
+    src.start(t0); src.stop(t0+dur+0.05);
+    // tope mecánico al llegar al final del recorrido
+    let tTope = dur*0.8;
+    tono(direccion==='abrir'?150:95, .1, 'sine', .12, tTope);
+    tono(direccion==='abrir'?95:55,  .14,'sine', .08, tTope+0.035);
+}
+function monedasSonido() {
+    /* Caja registradora / monedas: 3 clinks ascendentes + campana final tipo "cha-ching" */
+    tono(1200,.07,'triangle',.18,0);
+    tono(1500,.07,'triangle',.17,.08);
+    tono(1800,.08,'triangle',.16,.16);
+    tono(1046,.3,'sine',.2,.24);
+    tono(1568,.34,'sine',.16,.26);
+}
+function usarObjetoSonido() {
+    /* Ding ascendente agradable, tipo "objeto usado" de RPG */
+    tono(660,.07,'triangle',.14,0);
+    tono(990,.08,'triangle',.15,.06);
+    tono(1320,.14,'sine',.13,.13);
+}
+function gameOverSonido() {
+    /* "GAME OVER" clásico: descenso dramático de 4 notas + nota grave final */
+    tono(392,.16,'square',.13,0);
+    tono(370,.16,'square',.13,.18);
+    tono(349,.16,'square',.13,.36);
+    tono(311,.42,'square',.15,.54);
+    tono(155,.5,'sine',.11,.54);
+}
+function curacionPokemonCenterSonido() {
+    /* Arpegio brillante ascendente, como la curación del Centro Pokémon */
+    tono(523,.09,'sine',.12,0);
+    tono(659,.09,'sine',.13,.09);
+    tono(784,.09,'sine',.14,.18);
+    tono(1046,.16,'sine',.16,.27);
+    tono(1318,.24,'sine',.12,.36);
+    tono(1046,.05,'triangle',.06,.27);
+}
 function tragaperras(intensidad) {
     /* Pequeña ráfaga de "carrete girando" + resolución, estilo máquina tragaperras */
     const ctx = obtenerAudioCtx(); if(!ctx) return;
@@ -1701,9 +1762,13 @@ window.reproducirSonido = function(tipo) {
         case 'exito':          tono(523,.1,'sine',.13); tono(784,.16,'sine',.12,.08); break;
         case 'error':          tono(200,.18,'sawtooth',.11); tono(150,.22,'sawtooth',.08,.05); break;
         case 'compra':         tono(587,.09,'sine',.13); tono(880,.13,'sine',.11,.07); tono(1175,.1,'sine',.07,.14); break;
-        case 'muerte':         tono(300,.14,'sawtooth',.12); tono(190,.22,'sawtooth',.11,.1); tono(110,.34,'sine',.12,.2); ruidoBlanco(.3,.06,.05); break;
-        case 'revivir':        tono(330,.08,'sine',.11); tono(440,.08,'sine',.12,.08); tono(587,.1,'sine',.13,.16); tono(784,.2,'sine',.14,.26); break;
+        case 'monedas':         monedasSonido(); break;
+        case 'usar_objeto':     usarObjetoSonido(); break;
+        case 'muerte':         gameOverSonido(); break;
+        case 'revivir':        curacionPokemonCenterSonido(); break;
         case 'escaneo':        tono(900,.04,'square',.07); tono(1100,.04,'square',.06,.06); tono(700,.06,'sine',.08,.13); break;
+        case 'puerta_abrir':    puertaCorredera('abrir'); break;
+        case 'puerta_cerrar':   puertaCorredera('cerrar'); break;
         case 'apuesta':        tragaperras('bajo'); break;
         case 'trueque':        tragaperras('medio'); break;
         case 'voto':           tono(660,.06,'sine',.09); break;
@@ -1782,7 +1847,7 @@ window.destellarPantalla = function(color) {
 /* ═══════════════════════════════════════
    NOTIFICACIONES (toasts) — reemplazo de avisos rápidos
 ═══════════════════════════════════════ */
-window.mostrarNotificacion = function(texto, tipo, icono, titulo) {
+window.mostrarNotificacion = function(texto, tipo, icono, titulo, sinSonido) {
     tipo = tipo || 'info';
     icono = icono || ({exito:'✅',error:'⛔',info:'ℹ️',pf:'🔮',sacrificio:'🔥'}[tipo] || '✅');
     let cont = document.getElementById('toast-container');
@@ -1792,7 +1857,7 @@ window.mostrarNotificacion = function(texto, tipo, icono, titulo) {
     el.innerHTML = `<span class="toast-icon">${icono}</span><div>${titulo?`<div class="toast-titulo">${escaparHTML(titulo)}</div>`:''}<div class="toast-texto">${escaparHTML(texto)}</div></div>`;
     cont.appendChild(el);
     requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
-    reproducirSonido(tipo==='error'?'error':(tipo==='exito'?'exito':'click'));
+    if(!sinSonido) reproducirSonido(tipo==='error'?'error':(tipo==='exito'?'exito':'click'));
     setTimeout(()=>{
         el.classList.remove('show'); el.classList.add('hide');
         setTimeout(()=>el.remove(),350);
@@ -1822,7 +1887,7 @@ window.mostrarConfirmacion = function(opts) {
             btnConfirmar.onclick = null; btnCancelar.onclick = null;
             resolve(valor);
         }
-        btnConfirmar.onclick = ()=>{ reproducirSonido(opts.tipo==='peligro'?'error':'exito'); cerrar(true); };
+        btnConfirmar.onclick = ()=>{ reproducirSonido(opts.sonidoConfirmar || (opts.tipo==='peligro'?'error':'exito')); cerrar(true); };
         btnCancelar.onclick  = ()=>{ reproducirSonido('cerrar'); cerrar(false); };
         overlay.classList.add('show');
     });
@@ -1959,13 +2024,18 @@ window.cerrarDrawer = function() {
     document.body.style.overflow = '';
 };
 
-/* Reinicia una animación CSS forzando reflow, para que cada cambio de vista se vea */
-function reanimarElemento(el) {
+/* Transición fiable de entrada para vistas/pestañas: controlada por JS (no depende
+   del replay de @keyframes al alternar display, que algunos navegadores omiten). */
+function transicionarVista(el) {
     if(!el) return;
-    el.classList.remove('vista-anim');
-    void el.offsetWidth;
-    el.classList.add('vista-anim');
+    el.classList.remove('vista-visible');
+    el.classList.add('vista-transicion');
+    void el.offsetWidth; // fuerza reflow para que el navegador registre el estado inicial
+    requestAnimationFrame(()=>{
+        requestAnimationFrame(()=>{ el.classList.add('vista-visible'); });
+    });
 }
+function reanimarElemento(el) { transicionarVista(el); }
 
 /* ════ FIREBASE ════ */
 onValue(ref(db,'silph_co_market'), (snapshot) => {
@@ -2069,7 +2139,6 @@ window.cambiarPerfilTab = function(tab) {
 window.ingresarAlSistema = function() {
     let id = document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");
     if(!id) { mostrarNotificacion("Introduce un Operador ID para conectarte a la red.","error","🆔"); return; }
-    reproducirSonido('exito');
     userSesion = id;
     sessionStorage.setItem('silph_user_sesion',id);
     if(!baseDatos.jugadores[id]) {
@@ -2085,6 +2154,7 @@ window.ingresarAlSistema = function() {
         if(u.vidasActuales===undefined) u.vidasActuales = 20;
     }
     guardarBD();
+    reproducirSonido('puerta_abrir');
     document.getElementById('login-screen').classList.add('fade-out');
     setTimeout(()=>{
         document.getElementById('login-screen').style.display = 'none';
@@ -2092,6 +2162,9 @@ window.ingresarAlSistema = function() {
         document.getElementById('app-shell').classList.add('fade-in');
     },180);
     const bBall = document.getElementById('btn-master-pokeball');
+    if(bBall) bBall.style.display = (id==="srwiwa") ? "block" : "none";
+    actualizarComprasPorTiempo();
+    cargarDatosPerfilEnDOM();
     refrescarPantallaGamer();
     actualizarBannerAlertasVisuales();
     renderizarArenaPublica();
@@ -2100,10 +2173,12 @@ window.ingresarAlSistema = function() {
 };
 
 window.cerrarSesionOperador = function() {
+    reproducirSonido('puerta_cerrar');
     userSesion = null;
     sessionStorage.removeItem('silph_user_sesion');
     document.getElementById('app-shell').style.display    = 'none';
     document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('login-screen').classList.remove('fade-out');
     document.getElementById('login-nombre').value = '';
     const bBall = document.getElementById('btn-master-pokeball');
     if(bBall) bBall.style.display = "none";
@@ -2274,7 +2349,8 @@ window.comprarObjetoGamer = async function(id) {
         titulo: `¿Adquirir ${p.nombre}?`,
         descripcion: `Coste: ${txtCoste}${(!p.tienda||p.tienda!=='illegal')&&bonoPf>0?`\n+${bonoPf} PF de bonificación`:''}`,
         textoConfirmar: 'Adquirir',
-        tipo: p.tienda==='illegal' ? 'sacrificio' : 'normal'
+        tipo: p.tienda==='illegal' ? 'sacrificio' : 'normal',
+        sonidoConfirmar: 'monedas'
     });
     if(!confirmado) return;
     if(p.tienda==='illegal') {
@@ -2293,8 +2369,7 @@ window.comprarObjetoGamer = async function(id) {
     u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:p.nombre,icon:p.icon,fecha:new Date().toLocaleDateString()});
     guardarBD();
     if(btnEl) { btnEl.classList.add('compra-flash', p.tienda==='illegal'?'tipo-ilegal':''); setTimeout(()=>btnEl.classList.remove('compra-flash','tipo-ilegal'),600); }
-    reproducirSonido('compra');
-    mostrarNotificacion(`Has adquirido ${p.nombre}.`,'exito',p.icon||'✅','Compra realizada');
+    mostrarNotificacion(`Has adquirido ${p.nombre}.`,'exito',p.icon||'✅','Compra realizada',true);
 };
 
 window.consumirObjetoMochilaGamer = function(uid,nombre,icon) {
@@ -2302,7 +2377,7 @@ window.consumirObjetoMochilaGamer = function(uid,nombre,icon) {
     let u = baseDatos.jugadores[userSesion];
     if(!u.inventario) return;
     let idx = u.inventario.findIndex(i=>i.uid===uid);
-    if(idx!==-1) { u.inventario.splice(idx,1); inyectarEntradaDiarioAutomatica(`Utilizó el objeto ${icon} '${nombre}'. Consumido.`); guardarBD(); mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒'); }
+    if(idx!==-1) { u.inventario.splice(idx,1); inyectarEntradaDiarioAutomatica(`Utilizó el objeto ${icon} '${nombre}'. Consumido.`); guardarBD(); reproducirSonido('usar_objeto'); mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true); }
 };
 
 /* ════ MODAL BAJA ════ */
@@ -2441,7 +2516,8 @@ window.confirmarSacrificio = async function() {
         titulo: 'Sacrificio Pokéinomano',
         descripcion: `Pokémon: ${nombreC}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vidasGanadas} ❤️\nVidas tras el sacrificio: ${nuevas}/${vidasTot}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,
         textoConfirmar: 'Ejecutar Sacrificio',
-        tipo: 'sacrificio'
+        tipo: 'sacrificio',
+        sonidoConfirmar: 'revivir'
     });
     if(!confirmado) return;
     u.vidasActuales = nuevas;
@@ -2453,8 +2529,6 @@ window.confirmarSacrificio = async function() {
     inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO POKÉINOMANO: '${nombreC}' [${datos.etiqueta}] ofrecido al Mercader. +${vidasGanadas} ❤️. Vidas: ${nuevas}/${vidasTot}.`);
     guardarBD();
     cerrarModalSacrificio();
-    reproducirSonido('muerte');
-    setTimeout(()=>reproducirSonido('revivir'),420);
     destellarPantalla('naranja');
     actualizarBarraVidasDesdeDB();
     mostrarInfo({ icono:'🔥', titulo:'Sacrificio completado', descripcion:`${nombreC} descansa en paz.\n❤️ Vidas: +${vidasGanadas} → ${nuevas}`, textoConfirmar:'Aceptar' });
@@ -2579,7 +2653,8 @@ window.apostarEnCombate = async function(combateId,lado) {
     let confirmado = await mostrarConfirmacion({
         icono: '🎰', titulo: 'Confirmar apuesta',
         descripcion: `Apostar ${cantidad} PF a que ${nombreJ.toUpperCase()} gana\n"${c.descripcion}"`,
-        textoConfirmar: 'Apostar'
+        textoConfirmar: 'Apostar',
+        sonidoConfirmar: 'apuesta'
     });
     if(!confirmado) return;
     u.pf=(u.pf||0)-cantidad;
@@ -2588,8 +2663,7 @@ window.apostarEnCombate = async function(combateId,lado) {
     if(lado==='A') c.boteA=(c.boteA||0)+cantidad; else c.boteB=(c.boteB||0)+cantidad;
     inyectarEntradaDiarioAutomatica(`🎰 APUESTA: Aposté ${cantidad} PF a ${nombreJ.toUpperCase()} en [${c.descripcion}].`);
     guardarBD();
-    reproducirSonido('apuesta');
-    mostrarNotificacion(`${cantidad} PF a ${nombreJ.toUpperCase()}.`,'exito','🎰','Apuesta registrada');
+    mostrarNotificacion(`${cantidad} PF a ${nombreJ.toUpperCase()}.`,'exito','🎰','Apuesta registrada',true);
 };
 
 function renderizarArenaPublica() {
@@ -3135,7 +3209,7 @@ window.actualizarPropertyProducto = function(id,prop,val) {
 window.eliminarProductoMaster = async function(id) {
     if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let confirmado = await mostrarConfirmacion({ icono:'🗑️', titulo:'Eliminar producto', descripcion:'Esta acción no se puede deshacer.', textoConfirmar:'Eliminar', tipo:'peligro' });
-    if(confirmado) { baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id); guardarBD(); reproducirSonido('error'); mostrarNotificacion("Producto eliminado.","info","🗑️"); }
+    if(confirmado) { baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id); guardarBD(); mostrarNotificacion("Producto eliminado.","info","🗑️",null,true); }
 };
 
 function actualizarSelectorUsuariosBanco() {
@@ -3217,4 +3291,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </body>
-                </html>
+    </html>
