@@ -788,6 +788,36 @@
         .sonido-toggle-btn:hover { border-color: var(--borde-hover); color: var(--blanco); }
         .sonido-toggle-btn.muted { color: var(--txt-muted); opacity: .55; }
 
+        /* ═══ SELECT PERSONALIZADO — sustituye el picker nativo del móvil ═══ */
+        .csel { position: relative; width: 100%; display: block; }
+        .csel-trigger {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            cursor: pointer; user-select: none; width: 100%;
+        }
+        .csel-trigger-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: left; }
+        .csel-trigger-arrow { font-size: 9px; color: var(--txt-muted); flex-shrink: 0; transition: transform .2s cubic-bezier(.4,0,.2,1); }
+        .csel.open .csel-trigger-arrow { transform: rotate(180deg); }
+        .csel-trigger:focus { outline: none; box-shadow: 0 0 0 3px rgba(239,68,68,.12); }
+        .csel-panel {
+            position: absolute; left: 0; right: 0; top: calc(100% + 6px);
+            background: var(--bg-card); border: 1px solid var(--borde-hover); border-radius: var(--r-md);
+            box-shadow: var(--shadow-lg); max-height: 248px; overflow-y: auto; z-index: 9500;
+            opacity: 0; transform: translateY(-6px) scale(.98); pointer-events: none;
+            transition: opacity .16s ease, transform .16s cubic-bezier(.4,0,.2,1);
+            padding: 4px;
+        }
+        .csel.open .csel-panel { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .csel-option {
+            padding: 9px 11px; font-size: 12px; font-family: var(--font-display); font-weight: 600;
+            color: var(--txt-primary); cursor: pointer; border-radius: var(--r-sm);
+            transition: background .12s ease, color .12s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .csel-option:hover, .csel-option.hover { background: var(--bg-overlay); color: var(--blanco); }
+        .csel-option.selected { color: var(--rojo); background: rgba(239,68,68,.08); }
+        .csel-panel-vacio { padding: 10px 11px; font-size: 11px; color: var(--txt-muted); font-family: var(--font-display); }
+        select.csel-native-hidden { position: absolute !important; opacity: 0 !important; pointer-events: none !important; width: 1px !important; height: 1px !important; left: -9999px !important; }
+        .csel:has(#perf-locke-status) { display: inline-block; width: auto; }
+
         /* ═══ TOASTS / NOTIFICACIONES ═══ */
         .toast-container {
             position: fixed; top: calc(var(--topbar-h) + 14px); right: 18px; z-index: 10500;
@@ -1835,6 +1865,85 @@ window.cerrarRevelacionGacha = function() {
     reproducirSonido('cerrar');
 };
 
+/* ═══════════════════════════════════════
+   SELECT PERSONALIZADO — sustituye el picker nativo (Android/iOS)
+   por un desplegable propio con la estética de la web.
+   El <select> original sigue en el DOM (oculto) para no romper
+   ninguna lógica existente que lea/escriba su .value o sus <option>.
+═══════════════════════════════════════ */
+function mejorarSelect(select) {
+    if(select.dataset.cselDone) return;
+    select.dataset.cselDone = '1';
+    let clasesOriginales = select.className;
+    let estiloOriginal   = select.getAttribute('style') || '';
+
+    let wrapper = document.createElement('div');
+    wrapper.className = 'csel';
+
+    let trigger = document.createElement('div');
+    trigger.className = 'csel-trigger ' + clasesOriginales;
+    if(estiloOriginal) trigger.setAttribute('style', estiloOriginal);
+    trigger.tabIndex = 0;
+    trigger.innerHTML = '<span class="csel-trigger-label"></span><span class="csel-trigger-arrow">▾</span>';
+
+    let panel = document.createElement('div');
+    panel.className = 'csel-panel';
+
+    select.parentNode.insertBefore(wrapper, select);
+    wrapper.appendChild(trigger);
+    wrapper.appendChild(panel);
+    wrapper.appendChild(select);
+    select.classList.add('csel-native-hidden');
+
+    function actualizarEtiqueta() {
+        let opt = select.options[select.selectedIndex];
+        trigger.querySelector('.csel-trigger-label').textContent = opt ? opt.textContent : '';
+    }
+    function construirPanel() {
+        panel.innerHTML = '';
+        if(!select.options.length) { panel.innerHTML = '<div class="csel-panel-vacio">Sin opciones disponibles</div>'; return; }
+        Array.from(select.options).forEach((opt,idx)=>{
+            let fila = document.createElement('div');
+            fila.className = 'csel-option' + (idx===select.selectedIndex ? ' selected' : '');
+            fila.textContent = opt.textContent;
+            fila.addEventListener('click',(e)=>{
+                e.stopPropagation();
+                select.value = opt.value;
+                actualizarEtiqueta();
+                cerrarPanel();
+                select.dispatchEvent(new Event('change',{bubbles:true}));
+                reproducirSonido('click');
+            });
+            panel.appendChild(fila);
+        });
+    }
+    function abrirPanel() {
+        document.querySelectorAll('.csel.open').forEach(w=>{ if(w!==wrapper) w.classList.remove('open'); });
+        construirPanel();
+        wrapper.classList.add('open');
+        reproducirSonido('click');
+    }
+    function cerrarPanel() { wrapper.classList.remove('open'); }
+    trigger.addEventListener('click',(e)=>{
+        e.stopPropagation();
+        wrapper.classList.contains('open') ? cerrarPanel() : abrirPanel();
+    });
+    trigger.addEventListener('keydown',(e)=>{
+        if(e.key==='Enter'||e.key===' ') { e.preventDefault(); trigger.click(); }
+        if(e.key==='Escape') cerrarPanel();
+    });
+    actualizarEtiqueta();
+    select.__cselRefrescar = actualizarEtiqueta;
+}
+function mejorarTodosLosSelects(raiz) {
+    (raiz||document).querySelectorAll('select').forEach(mejorarSelect);
+}
+window.refrescarSelectsPersonalizados = function() {
+    document.querySelectorAll('select').forEach(s=>{ if(s.__cselRefrescar) s.__cselRefrescar(); });
+};
+document.addEventListener('click', ()=>{ document.querySelectorAll('.csel.open').forEach(w=>w.classList.remove('open')); });
+document.addEventListener('DOMContentLoaded', ()=>mejorarTodosLosSelects(document));
+
 
 /* ════ DRAWER MÓVIL ════ */
 window.abrirDrawer = function() {
@@ -1889,6 +1998,8 @@ onValue(ref(db,'silph_co_market'), (snapshot) => {
         const bBall = document.getElementById('btn-master-pokeball');
         if(bBall) bBall.style.display = (userSesion.toLowerCase()==="srwiwa") ? "block" : "none";
         if(document.getElementById('pantalla-admin-master').style.display==='block') redibujarConsolaAdminMaster();
+        mejorarTodosLosSelects(document);
+        refrescarSelectsPersonalizados();
     } else {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('app-shell').style.display    = 'none';
@@ -2068,6 +2179,7 @@ function refrescarPantallaGamer() {
             redSel.innerHTML += `<option value="${id}">${id.toUpperCase()}</option>`;
         });
         if(cr) redSel.value = cr;
+        if(redSel.__cselRefrescar) redSel.__cselRefrescar();
     }
     renderInitializeLoaders();
     actualizarInicioStats();
@@ -2197,9 +2309,11 @@ window.consumirObjetoMochilaGamer = function(uid,nombre,icon) {
 window.abrirModalBaja = function() {
     ['baja-nombre','baja-mote','baja-lugar','baja-epitafio'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('baja-motivo').value = 'Ruta';
+    refrescarSelectsPersonalizados();
+    reproducirSonido('abrir');
     document.getElementById('baja-modal-overlay').style.display = 'flex';
 };
-window.cerrarModalBaja = function() { document.getElementById('baja-modal-overlay').style.display='none'; };
+window.cerrarModalBaja = function() { reproducirSonido('cerrar'); document.getElementById('baja-modal-overlay').style.display='none'; };
 
 window.confirmarBaja = function() {
     let nombre   = document.getElementById('baja-nombre').value.trim();
@@ -2277,10 +2391,12 @@ window.abrirModalSacrificio = function() {
     document.getElementById('sac-aviso-limite').style.display = 'none';
     document.getElementById('btn-confirmar-sacrificio').disabled = true;
     if(vidasAct>=MAX_VIDAS) document.getElementById('sac-aviso-limite').style.display='block';
+    refrescarSelectsPersonalizados();
     renderizarHistorialSacrificios();
+    reproducirSonido('abrir');
     document.getElementById('sacrificio-modal-overlay').style.display = 'flex';
 };
-window.cerrarModalSacrificio = function() { document.getElementById('sacrificio-modal-overlay').style.display='none'; };
+window.cerrarModalSacrificio = function() { reproducirSonido('cerrar'); document.getElementById('sacrificio-modal-overlay').style.display='none'; };
 
 window.actualizarPreviewSacrificio = function() {
     let cat    = document.getElementById('sac-categoria').value;
@@ -2794,6 +2910,7 @@ window.renderizarVisorRivalPublico = function() {
     </div>`;
 
     box.innerHTML = htmlPerfil + htmlEquipos;
+    mejorarTodosLosSelects(box);
     renderizarSubRanuraRival(target);
 };
 
@@ -2837,6 +2954,7 @@ function cargarDatosPerfilEnDOM() {
     document.getElementById('perf-num-medallas').value  = u.numMedallas||0;
     document.getElementById('perf-txt-torneos').textContent = u.torneos||0;
     document.getElementById('perf-vidas-iniciales').value   = u.vidasTotales||20;
+    refrescarSelectsPersonalizados();
 }
 
 window.guardarDatosPerfilGamer = function() {
@@ -3045,6 +3163,7 @@ function actualizarSelectorUsuariosBanco() {
     });
     if(sv) sv.onchange=window.cargarVidasEnAdmin;
     if(sv&&sv.value) window.cargarVidasEnAdmin();
+    refrescarSelectsPersonalizados();
 }
 
 function renderizarAdminArena() {
