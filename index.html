@@ -2066,58 +2066,6 @@ window.cerrarDrawer = function() {
     document.body.style.overflow = '';
 };
 
-/* ═══ GESTO TÁCTIL: arrastrar desde el borde izquierdo abre el menú siguiendo al dedo;
-   arrastrar el menú abierto hacia la izquierda lo cierra (solo en móvil) ═══ */
-(function() {
-    const sidebar = document.getElementById('sidebar');
-    const backdrop = document.getElementById('drawer-backdrop');
-    let startX = null, startY = null, dragging = false, ancho = 240, estabaAbiertoAlEmpezar = false;
-
-    document.addEventListener('touchstart', (e)=>{
-        if(window.innerWidth > 900) return;
-        const abierto = sidebar.classList.contains('open');
-        let t = e.touches[0];
-        if(!abierto && t.clientX > 36) return;
-        if(abierto && t.clientX > sidebar.offsetWidth + 50) return;
-        startX = t.clientX; startY = t.clientY;
-        dragging = true;
-        estabaAbiertoAlEmpezar = abierto;
-        ancho = sidebar.offsetWidth || 240;
-        sidebar.style.transition = 'none';
-        backdrop.style.transition = 'none';
-        if(!abierto) { sidebar.classList.add('open'); backdrop.classList.add('active'); document.body.style.overflow='hidden'; }
-    }, { passive: true });
-
-    document.addEventListener('touchmove', (e)=>{
-        if(!dragging) return;
-        let t = e.touches[0];
-        let dx = t.clientX - startX, dy = Math.abs(t.clientY - startY);
-        if(dy > 70 && Math.abs(dx) < 25) { // gesto más vertical que horizontal: cancelar arrastre
-            dragging = false;
-            sidebar.style.transition = ''; backdrop.style.transition = '';
-            sidebar.style.transform = ''; backdrop.style.opacity = '';
-            return;
-        }
-        let pos = estabaAbiertoAlEmpezar ? Math.min(0, dx) : Math.min(0, -ancho + dx);
-        pos = Math.max(-ancho, pos);
-        sidebar.style.transform = `translateX(${pos}px)`;
-        backdrop.style.opacity = String(Math.max(0, Math.min(1, 1 - Math.abs(pos)/ancho)));
-    }, { passive: true });
-
-    document.addEventListener('touchend', (e)=>{
-        if(!dragging) return;
-        dragging = false;
-        let t = e.changedTouches[0];
-        let dx = t.clientX - startX;
-        const seQuedaAbierto = estabaAbiertoAlEmpezar ? !(dx < -ancho*0.3) : (dx > ancho*0.3);
-        sidebar.style.transition = '';
-        backdrop.style.transition = '';
-        if(seQuedaAbierto) abrirDrawer(); else cerrarDrawer();
-        sidebar.style.transform = '';
-        backdrop.style.opacity = '';
-    }, { passive: true });
-})();
-
 /* Transición fiable de entrada para vistas/pestañas: controlada por JS (no depende
    del replay de @keyframes al alternar display, que algunos navegadores omiten). */
 function transicionarVista(el) {
@@ -3389,4 +3337,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </body>
-                                                                                                                                                                                   </html>
+            </html>
