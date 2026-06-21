@@ -258,6 +258,11 @@
         .nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
         .nav-item-danger { color: var(--txt-muted); }
         .nav-item-danger:hover { color: #f87171; background: rgba(239,68,68,.08); }
+        .nav-item-dios { color: var(--neon-packs); border: 1px solid rgba(245,158,11,.2); }
+        .nav-item-dios .nav-icon { color: var(--neon-packs); }
+        .nav-item-dios:hover { background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.4); }
+        .nav-item-dios.active { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.45); box-shadow: 0 0 14px -4px rgba(245,158,11,.5); }
+        .nav-item-dios.active::before { background: var(--neon-packs); box-shadow: 0 0 10px rgba(245,158,11,.6); }
 
         .sidebar-footer { padding: 12px 10px; border-top: 1px solid var(--borde); flex-shrink: 0; }
 
@@ -623,12 +628,14 @@
         .btn-login { width:100%; padding:12px; background: rgba(239,68,68,.1); color: var(--rojo); border: 1px solid rgba(239,68,68,.3); border-radius: var(--r-md); font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; cursor: pointer; transition: all .2s; }
         .btn-login:hover { background: rgba(239,68,68,.2); box-shadow: 0 0 20px rgba(239,68,68,.1); }
 
-        .admin-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-base); z-index: 9999; padding: 22px; overflow-y: auto; }
-        .admin-header { display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--borde); padding-bottom: 14px; margin-bottom: 20px; }
-        .admin-title { font-family: var(--font-display); font-size: 14px; font-weight: 900; color: var(--neon-packs); letter-spacing: .5px; }
-        .btn-cerrar-admin { background: rgba(239,68,68,.1); color: #f87171; border: 1px solid rgba(239,68,68,.25); padding: 8px 14px; cursor: pointer; border-radius: var(--r-md); font-weight: 700; font-family: var(--font-display); font-size: 10px; text-transform: uppercase; letter-spacing: .5px; transition: all .18s; }
-        .btn-cerrar-admin:hover { background: rgba(239,68,68,.25); }
-        .admin-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 18px; }
+        .dios-tabs { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; }
+        .dios-tab { padding: 9px 16px; border-radius: var(--r-md); font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; cursor: pointer; border: 1px solid var(--borde); background: transparent; color: var(--txt-secondary); transition: all .18s ease; }
+        .dios-tab:hover { color: var(--blanco); background: var(--bg-overlay); }
+        .dios-tab.active { background: rgba(245,158,11,.1); color: var(--neon-packs); border-color: rgba(245,158,11,.3); box-shadow: 0 0 14px -4px rgba(245,158,11,.5); }
+        .dios-view { display: none; }
+        .dios-view.active { display: block; }
+        .dios-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 700px) { .dios-grid-2 { grid-template-columns: 1fr; } }
         .admin-panel { background: var(--bg-elevated); border: 1px solid var(--borde); padding: 18px; border-radius: var(--r-lg); height: fit-content; }
         .admin-section-title { color: var(--neon-packs); font-size: 11px; font-family: var(--font-display); font-weight: 700; letter-spacing: .5px; margin: 0 0 10px 0; }
         .admin-input { background: var(--bg-card); color: var(--blanco); border: 1px solid var(--borde); padding: 7px 10px; width:100%; border-radius: var(--r-sm); font-family: var(--font-display); font-size: 11px; transition: border-color .18s; margin-bottom: 8px; }
@@ -661,11 +668,6 @@
         .btn-admin-sm.intercambio  { background:rgba(59,130,246,.08); border-color:rgba(59,130,246,.3); color: var(--neon-intercambio); }
         .checkbox-label { display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12px; color: var(--txt-primary); margin-bottom:8px; }
 
-        .pokeball-trigger { display:none; position:fixed; bottom:24px; right:24px; width:48px; height:48px; background:#fff; border-radius:50%; border:3px solid #111; overflow:hidden; cursor:pointer; box-shadow: var(--shadow-lg); transition:transform .2s, box-shadow .2s; z-index:999; }
-        .pokeball-trigger:hover { transform: scale(1.1) rotate(20deg); }
-        .pokeball-trigger::before { content:''; position:absolute; top:0; left:0; width:100%; height:50%; background: var(--rojo); border-bottom:3px solid #111; }
-        .pokeball-trigger::after { content:''; position:absolute; top:calc(50% - 6px); left:calc(50% - 6px); width:12px; height:12px; background:#fff; border:3px solid #111; border-radius:50%; }
-
         /* ADMIN CÁMARA */
         .admin-camara-card { background: var(--bg-card); border: 1px solid rgba(59,130,246,.15); padding: 11px; border-radius: var(--r-md); margin-bottom: 8px; }
 
@@ -676,7 +678,7 @@
             .topbar { padding-left: 16px; padding-right: 16px; }
             .btn-hamburguesa { display: flex; }
             .main-content { margin-left: 0; padding: 16px; }
-            .admin-grid { grid-template-columns: 1fr; }
+            .dios-grid-2 { grid-template-columns: 1fr; }
             .red-visor-grid { grid-template-columns: 1fr; }
             .inicio-stats-row { grid-template-columns: 1fr 1fr; }
             .tiendas-acceso-grid { grid-template-columns: 1fr 1fr; }
@@ -746,7 +748,7 @@
         .tienda-view, .evento-view, .perfil-view, .page-section { }
         @keyframes vistaEntrada { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
         .vista-anim { animation: vistaEntrada .32s cubic-bezier(.16,1,.3,1); }
-        .vista-transicion { opacity: 0; transform: translateY(14px) scale(.985); transition: opacity .34s cubic-bezier(.16,1,.3,1), transform .34s cubic-bezier(.16,1,.3,1); }
+        .vista-transicion { opacity: 0; transform: translateY(30px) scale(.92); transition: opacity .46s cubic-bezier(.22,1,.36,1), transform .46s cubic-bezier(.34,1.56,.64,1); }
         .vista-transicion.vista-visible { opacity: 1; transform: translateY(0) scale(1); }
         @keyframes tabPop { 0%{ transform: scale(.94); } 60%{ transform: scale(1.04); } 100%{ transform: scale(1); } }
         .tab-pop { animation: tabPop .28s cubic-bezier(.34,1.56,.64,1); }
@@ -768,8 +770,6 @@
         }
 
         /* --- Pokeball admin: pulso sutil para indicar disponibilidad --- */
-        .pokeball-trigger { animation: pokeballIdle 3.2s ease-in-out infinite; }
-        @keyframes pokeballIdle { 0%,100%{ box-shadow: var(--shadow-lg); } 50%{ box-shadow: var(--shadow-lg), 0 0 18px rgba(239,68,68,.25); } }
 
         /* --- Topbar gacha button: shimmer --- */
         .topbar-gacha-btn { position: relative; overflow: hidden; }
@@ -993,6 +993,9 @@
             </div>
             <div class="nav-item nav-item-danger" onclick="cerrarSesionOperador()" style="margin-top:6px;">
                 <span class="nav-icon">🔓</span> Cerrar Sesión
+            </div>
+            <div class="nav-item nav-item-dios" id="nav-admin" onclick="navegarA('admin')" style="display:none; margin-top:6px;">
+                <span class="nav-icon">🧿</span> Modo Dios
             </div>
         </nav>
     </aside>
@@ -1276,6 +1279,195 @@
                 </div>
             </div>
         </section>
+
+        <!-- MODO DIOS (solo visible para el administrador) -->
+        <section id="section-admin" class="page-section">
+            <div class="section-header">
+                <div class="section-title">🧿 Modo Dios</div>
+                <div class="section-subtitle">Panel de control del Mercader</div>
+            </div>
+
+            <div class="dios-tabs">
+                <button class="dios-tab active" id="dtab-reset" onclick="cambiarAdminTab('reset')">🔄 Reseteos</button>
+                <button class="dios-tab" id="dtab-dinero" onclick="cambiarAdminTab('dinero')">💰 Dinero y Vidas</button>
+                <button class="dios-tab" id="dtab-tienda" onclick="cambiarAdminTab('tienda')">🏪 Eventos y Tienda</button>
+                <button class="dios-tab" id="dtab-apuestas" onclick="cambiarAdminTab('apuestas')">🎰 Apuestas y Trueques</button>
+            </div>
+
+            <!-- RESETEOS -->
+            <div id="dv-reset" class="dios-view active">
+                <div class="dios-grid-2">
+                    <div class="admin-panel">
+                        <div class="admin-section-title">🔄 Reiniciar Compras</div>
+                        <select id="adm-reset-usuario" class="admin-select"></select>
+                        <button class="btn-admin packs" onclick="restablecerComprasDiariasDesdeMercader()">🔄 Forzar Reinicio 3/3</button>
+                    </div>
+                    <div class="admin-panel">
+                        <div class="admin-section-title">⚡ Reiniciar Gacha</div>
+                        <select id="adm-reset-gacha-usuario" class="admin-select"></select>
+                        <button class="btn-admin arena" onclick="restablecerGachaDiarioDesdeMercader()">⚡ Reiniciar Gacha</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DINERO Y VIDAS -->
+            <div id="dv-dinero" class="dios-view">
+                <div class="dios-grid-2">
+                    <div class="admin-panel">
+                        <div class="admin-section-title" style="color:var(--neon-legal);">💰 Ajustar Efectivo</div>
+                        <select id="adm-banco-usuario" class="admin-select"></select>
+                        <input type="number" id="adm-banco-cantidad" class="admin-input" placeholder="Cantidad P₠">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                            <button class="btn-admin legal" style="margin-bottom:0;" onclick="modificarFondosEntrenador('SUMAR')">➕ Añadir</button>
+                            <button class="btn-admin danger" style="margin-bottom:0;" onclick="modificarFondosEntrenador('RESTAR')">➖ Quitar</button>
+                        </div>
+                    </div>
+                    <div class="admin-panel">
+                        <div class="admin-section-title" style="color:#f87171;">❤️ Ajustar Vidas</div>
+                        <select id="adm-vidas-usuario" class="admin-select"></select>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+                            <div>
+                                <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Iniciales</label>
+                                <input type="number" id="adm-vidas-iniciales" class="admin-input" style="margin-bottom:0;" min="1" value="20">
+                            </div>
+                            <div>
+                                <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Actuales</label>
+                                <input type="number" id="adm-vidas-actuales" class="admin-input" style="margin-bottom:0;" min="0" value="20">
+                            </div>
+                        </div>
+                        <button class="btn-admin danger" onclick="ajustarVidasEntrenador()">❤️ Aplicar Cambio de Vidas</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVENTOS Y TIENDA -->
+            <div id="dv-tienda" class="dios-view">
+                <div class="dios-grid-2" style="margin-bottom:16px;">
+                    <div class="admin-panel">
+                        <div class="admin-section-title">📢 Evento Económico Global</div>
+                        <select id="adm-evento-economico" class="admin-select">
+                            <option value="normal">🌐 Red Estable (1.0x)</option>
+                            <option value="rebajas">📉 Rebajas (−25%)</option>
+                            <option value="inflacion">📈 Inflación (+50%)</option>
+                            <option value="bonus_pf">🪙 Doble Bono PF</option>
+                        </select>
+                        <button class="btn-admin packs" onclick="emitirOrdenEconomicaGlobal()">📢 Emitir Orden</button>
+                    </div>
+                    <div class="admin-panel">
+                        <div class="admin-section-title">📦 Interruptores de Red</div>
+                        <label class="checkbox-label"><input type="checkbox" id="chk-open-legal" onchange="conmutarEstadoTienda('legalOpen', this.checked)"> 🟢 Tienda Legal</label>
+                        <label class="checkbox-label"><input type="checkbox" id="chk-open-pack" onchange="conmutarEstadoTienda('packOpen', this.checked)"> 🟡 Shop PF Pack</label>
+                        <label class="checkbox-label"><input type="checkbox" id="chk-open-illegal" onchange="conmutarEstadoTienda('illegalOpen', this.checked)"> 🟣 Ilegalidades</label>
+                    </div>
+                </div>
+                <div class="dios-grid-2">
+                    <div class="admin-panel">
+                        <div class="admin-section-title" style="color:var(--neon-legal);">➕ Añadir Producto</div>
+                        <select id="ins-tienda" class="admin-select" onchange="ajustarCamposFormularioMercader()">
+                            <option value="legal">Tienda Legal</option>
+                            <option value="pack">Shop PF Pack</option>
+                            <option value="illegal">Tienda de Ilegalidades</option>
+                        </select>
+                        <div id="form-bloque-legal-cat">
+                            <select id="ins-cat-legal" class="admin-select">
+                                <option value="EV/IV">EV/IV</option>
+                                <option value="Bayas">Bayas</option>
+                                <option value="Poké Balls">Poké Balls</option>
+                                <option value="Objetos de Exploración">Objetos de Exploración</option>
+                                <option value="Objetos de Combate (X)">Objetos de Combate (X)</option>
+                                <option value="Objetos Competitivos">Objetos Competitivos</option>
+                            </select>
+                        </div>
+                        <div id="form-bloque-pack-detalles" style="display:none;">
+                            <input type="text" id="ins-pack-desc" class="admin-input" placeholder="Contenido del Pack" style="font-family:var(--font-body);">
+                            <input type="text" id="ins-pack-estrategia" class="admin-input" placeholder="Enfoque estratégico" style="font-family:var(--font-body);">
+                        </div>
+                        <div id="form-bloque-illegal-detalles" style="display:none;">
+                            <input type="text" id="ins-illegal-desc" class="admin-input" placeholder="Descripción del servicio" style="font-family:var(--font-body);">
+                        </div>
+                        <input type="text" id="ins-icono" value="📦" class="admin-input" style="font-size:16px;">
+                        <div style="margin-bottom:6px;">
+                            <label id="lbl-ins-nombre" style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Nombre</label>
+                            <input type="text" id="ins-nombre" class="admin-input" style="font-family:var(--font-body);">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;">
+                            <div>
+                                <label id="lbl-ins-precio" style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Coste</label>
+                                <input type="number" id="ins-precio" class="admin-input" style="margin-bottom:0;">
+                            </div>
+                            <div id="bloque-ins-pf">
+                                <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Bono PF</label>
+                                <input type="number" id="ins-pf" value="1" class="admin-input" style="margin-bottom:0;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Stock inicial</label>
+                            <input type="number" id="ins-stock" value="10" class="admin-input" style="margin-bottom:0;">
+                        </div>
+                        <button class="btn-admin legal" onclick="inyectarObjetoNuevoMaster()">Publicar en Tienda</button>
+                    </div>
+                    <div class="admin-panel">
+                        <div class="admin-section-title">📦 Almacén Global — Precios y Stocks</div>
+                        <div id="admin-inventario-global" style="max-height:560px;overflow-y:auto;padding-right:4px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- APUESTAS Y TRUEQUES -->
+            <div id="dv-apuestas" class="dios-view">
+                <div class="dios-grid-2">
+                    <div class="admin-panel">
+                        <div class="admin-section-title" style="color:var(--neon-arena);">🎰 Arena de Apuestas</div>
+                        <div style="margin-bottom:6px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Jugador A (Azul)</label>
+                            <select id="adm-arena-jugador-a" class="admin-select" style="color:#60a5fa;"></select>
+                        </div>
+                        <div style="margin-bottom:6px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Jugador B (Rojo)</label>
+                            <select id="adm-arena-jugador-b" class="admin-select" style="color:#f87171;"></select>
+                        </div>
+                        <input type="text" id="adm-arena-descripcion" class="admin-input" placeholder="Descripción del combate" style="font-family:var(--font-body);">
+                        <div style="margin-bottom:8px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Límite PF</label>
+                            <input type="number" id="adm-arena-limite" class="admin-input" value="5" style="color:var(--neon-arena);margin-bottom:0;">
+                        </div>
+                        <button class="btn-admin arena" onclick="crearCombateArena()">🎰 Abrir Combate en la Arena</button>
+                        <div id="adm-arena-combates-activos" style="max-height:280px;overflow-y:auto;"></div>
+                    </div>
+                    <div class="admin-panel">
+                        <div class="admin-section-title" style="color:var(--neon-intercambio);">🏛️ Cámara de Comercio</div>
+                        <div style="margin-bottom:6px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Jugador A (entrega)</label>
+                            <select id="adm-camara-jugador-a" class="admin-select" style="color:#60a5fa;"></select>
+                        </div>
+                        <div style="margin-bottom:6px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Objeto que entrega A</label>
+                            <input type="text" id="adm-camara-objeto-a" class="admin-input" placeholder="Ej: Restos" style="font-family:var(--font-body);">
+                        </div>
+                        <div style="margin-bottom:6px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Jugador B (recibe)</label>
+                            <select id="adm-camara-jugador-b" class="admin-select" style="color:#f87171;"></select>
+                        </div>
+                        <div style="margin-bottom:6px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Objeto que entrega B</label>
+                            <input type="text" id="adm-camara-objeto-b" class="admin-input" placeholder="Ej: Chaleco Asalto" style="font-family:var(--font-body);">
+                        </div>
+                        <div style="margin-bottom:8px;">
+                            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Categoría del Intercambio</label>
+                            <select id="adm-camara-categoria" class="admin-select" style="color:var(--neon-intercambio);">
+                                <option value="comun">🧴 Objetos Comunes (2 PF c/u)</option>
+                                <option value="competitivo">🏆 Objetos Competitivos (5 PF c/u)</option>
+                                <option value="evolucion">🔥 Evoluciones (7 PF c/u)</option>
+                                <option value="megaevolucion">✨ Megaevoluciones (10 PF c/u)</option>
+                                <option value="pokemon">🐉 Pokémon/Fósiles (20 PF c/u)</option>
+                            </select>
+                        </div>
+                        <button class="btn-admin intercambio" onclick="crearTruequeCamara()">🏛️ Publicar Trueque</button>
+                        <div id="adm-camara-trueques-activos" style="max-height:280px;overflow-y:auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 </div>
 
@@ -1389,172 +1581,6 @@
         <div class="sac-footer">
             <button class="btn-sacrificar" id="btn-confirmar-sacrificio" onclick="confirmarSacrificio()" disabled>🔥 Ejecutar Sacrificio</button>
             <button class="btn-sac-cancel" onclick="cerrarModalSacrificio()">Cancelar</button>
-        </div>
-    </div>
-</div>
-
-<!-- POKEBALL ADMIN -->
-<div class="pokeball-trigger" id="btn-master-pokeball" title="Panel Admin" onclick="invocarTerminalMercader()"></div>
-
-<!-- PANEL ADMIN -->
-<div class="admin-screen" id="pantalla-admin-master">
-    <div class="admin-header">
-        <div class="admin-title">🖥️ Terminal de Control Central</div>
-        <button class="btn-cerrar-admin" onclick="apagarTerminalMercader()">✕ Cerrar</button>
-    </div>
-    <div class="admin-grid">
-        <div>
-            <div class="admin-panel">
-                <div class="admin-section-title">📢 Evento Económico Global</div>
-                <select id="adm-evento-economico" class="admin-select">
-                    <option value="normal">🌐 Red Estable (1.0x)</option>
-                    <option value="rebajas">📉 Rebajas (−25%)</option>
-                    <option value="inflacion">📈 Inflación (+50%)</option>
-                    <option value="bonus_pf">🪙 Doble Bono PF</option>
-                </select>
-                <button class="btn-admin packs" onclick="emitirOrdenEconomicaGlobal()">📢 Emitir Orden</button>
-
-                <div class="admin-hr"></div>
-                <div class="admin-section-title">🔄 Reiniciar Compras</div>
-                <select id="adm-reset-usuario" class="admin-select"></select>
-                <button class="btn-admin packs" onclick="restablecerComprasDiariasDesdeMercader()">🔄 Forzar Reinicio 3/3</button>
-
-                <div class="admin-hr"></div>
-                <div class="admin-section-title">⚡ Reiniciar Gacha</div>
-                <select id="adm-reset-gacha-usuario" class="admin-select"></select>
-                <button class="btn-admin arena" onclick="restablecerGachaDiarioDesdeMercader()">⚡ Reiniciar Gacha</button>
-
-                <div class="admin-hr"></div>
-                <div class="admin-section-title" style="color:var(--neon-legal);">💰 Ajustar Efectivo</div>
-                <select id="adm-banco-usuario" class="admin-select"></select>
-                <input type="number" id="adm-banco-cantidad" class="admin-input" placeholder="Cantidad P₠">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-                    <button class="btn-admin legal" style="margin-bottom:0;" onclick="modificarFondosEntrenador('SUMAR')">➕ Añadir</button>
-                    <button class="btn-admin danger" style="margin-bottom:0;" onclick="modificarFondosEntrenador('RESTAR')">➖ Quitar</button>
-                </div>
-
-                <div class="admin-hr"></div>
-                <div class="admin-section-title" style="color:#f87171;">❤️ Ajustar Vidas</div>
-                <select id="adm-vidas-usuario" class="admin-select"></select>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-                    <div>
-                        <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Iniciales</label>
-                        <input type="number" id="adm-vidas-iniciales" class="admin-input" style="margin-bottom:0;" min="1" value="20">
-                    </div>
-                    <div>
-                        <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Actuales</label>
-                        <input type="number" id="adm-vidas-actuales" class="admin-input" style="margin-bottom:0;" min="0" value="20">
-                    </div>
-                </div>
-                <button class="btn-admin danger" onclick="ajustarVidasEntrenador()">❤️ Aplicar Cambio de Vidas</button>
-
-                <div class="admin-hr"></div>
-                <div class="admin-section-title">📦 Interruptores de Red</div>
-                <label class="checkbox-label"><input type="checkbox" id="chk-open-legal" onchange="conmutarEstadoTienda('legalOpen', this.checked)"> 🟢 Tienda Legal</label>
-                <label class="checkbox-label"><input type="checkbox" id="chk-open-pack" onchange="conmutarEstadoTienda('packOpen', this.checked)"> 🟡 Shop PF Pack</label>
-                <label class="checkbox-label"><input type="checkbox" id="chk-open-illegal" onchange="conmutarEstadoTienda('illegalOpen', this.checked)"> 🟣 Ilegalidades</label>
-
-                <div class="admin-hr"></div>
-                <div class="admin-section-title" style="color:var(--neon-legal);">➕ Añadir Producto</div>
-                <select id="ins-tienda" class="admin-select" onchange="ajustarCamposFormularioMercader()">
-                    <option value="legal">Tienda Legal</option>
-                    <option value="pack">Shop PF Pack</option>
-                    <option value="illegal">Tienda de Ilegalidades</option>
-                </select>
-                <div id="form-bloque-legal-cat">
-                    <select id="ins-cat-legal" class="admin-select">
-                        <option value="EV/IV">EV/IV</option>
-                        <option value="Bayas">Bayas</option>
-                        <option value="Poké Balls">Poké Balls</option>
-                        <option value="Objetos de Exploración">Objetos de Exploración</option>
-                        <option value="Objetos de Combate (X)">Objetos de Combate (X)</option>
-                        <option value="Objetos Competitivos">Objetos Competitivos</option>
-                    </select>
-                </div>
-                <div id="form-bloque-pack-detalles" style="display:none;">
-                    <input type="text" id="ins-pack-desc" class="admin-input" placeholder="Contenido del Pack" style="font-family:var(--font-body);">
-                    <input type="text" id="ins-pack-estrategia" class="admin-input" placeholder="Enfoque estratégico" style="font-family:var(--font-body);">
-                </div>
-                <div id="form-bloque-illegal-detalles" style="display:none;">
-                    <input type="text" id="ins-illegal-desc" class="admin-input" placeholder="Descripción del servicio" style="font-family:var(--font-body);">
-                </div>
-                <input type="text" id="ins-icono" value="📦" class="admin-input" style="font-size:16px;">
-                <div style="margin-bottom:6px;">
-                    <label id="lbl-ins-nombre" style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Nombre</label>
-                    <input type="text" id="ins-nombre" class="admin-input" style="font-family:var(--font-body);">
-                </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;">
-                    <div>
-                        <label id="lbl-ins-precio" style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Coste</label>
-                        <input type="number" id="ins-precio" class="admin-input" style="margin-bottom:0;">
-                    </div>
-                    <div id="bloque-ins-pf">
-                        <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Bono PF</label>
-                        <input type="number" id="ins-pf" value="1" class="admin-input" style="margin-bottom:0;">
-                    </div>
-                </div>
-                <div style="margin-bottom:10px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Stock inicial</label>
-                    <input type="number" id="ins-stock" value="10" class="admin-input" style="margin-bottom:0;">
-                </div>
-                <button class="btn-admin legal" onclick="inyectarObjetoNuevoMaster()">Publicar en Tienda</button>
-
-                <div class="admin-hr"></div>
-                <div class="admin-section-title" style="color:var(--neon-arena);">🎰 Arena de Apuestas</div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Jugador A (Azul)</label>
-                    <select id="adm-arena-jugador-a" class="admin-select" style="color:#60a5fa;"></select>
-                </div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Jugador B (Rojo)</label>
-                    <select id="adm-arena-jugador-b" class="admin-select" style="color:#f87171;"></select>
-                </div>
-                <input type="text" id="adm-arena-descripcion" class="admin-input" placeholder="Descripción del combate" style="font-family:var(--font-body);">
-                <div style="margin-bottom:8px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Límite PF</label>
-                    <input type="number" id="adm-arena-limite" class="admin-input" value="5" style="color:var(--neon-arena);margin-bottom:0;">
-                </div>
-                <button class="btn-admin arena" onclick="crearCombateArena()">🎰 Abrir Combate en la Arena</button>
-                <div id="adm-arena-combates-activos" style="max-height:280px;overflow-y:auto;"></div>
-
-                <!-- ═══ NUEVA SECCIÓN: CÁMARA DE COMERCIO ADMIN ═══ -->
-                <div class="admin-hr"></div>
-                <div class="admin-section-title" style="color:var(--neon-intercambio);">🏛️ Cámara de Comercio</div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Jugador A (entrega)</label>
-                    <select id="adm-camara-jugador-a" class="admin-select" style="color:#60a5fa;"></select>
-                </div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Objeto que entrega A</label>
-                    <input type="text" id="adm-camara-objeto-a" class="admin-input" placeholder="Ej: Restos" style="font-family:var(--font-body);">
-                </div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Jugador B (recibe)</label>
-                    <select id="adm-camara-jugador-b" class="admin-select" style="color:#f87171;"></select>
-                </div>
-                <div style="margin-bottom:6px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Objeto que entrega B</label>
-                    <input type="text" id="adm-camara-objeto-b" class="admin-input" placeholder="Ej: Chaleco Asalto" style="font-family:var(--font-body);">
-                </div>
-                <div style="margin-bottom:8px;">
-                    <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;">Categoría del Intercambio</label>
-                    <select id="adm-camara-categoria" class="admin-select" style="color:var(--neon-intercambio);">
-                        <option value="comun">🧴 Objetos Comunes (2 PF c/u)</option>
-                        <option value="competitivo">🏆 Objetos Competitivos (5 PF c/u)</option>
-                        <option value="evolucion">🔥 Evoluciones (7 PF c/u)</option>
-                        <option value="megaevolucion">✨ Megaevoluciones (10 PF c/u)</option>
-                        <option value="pokemon">🐉 Pokémon/Fósiles (20 PF c/u)</option>
-                    </select>
-                </div>
-                <button class="btn-admin intercambio" onclick="crearTruequeCamara()">🏛️ Publicar Trueque</button>
-                <div id="adm-camara-trueques-activos" style="max-height:280px;overflow-y:auto;"></div>
-            </div>
-        </div>
-        <div>
-            <div class="admin-panel">
-                <div class="admin-section-title">📦 Almacén Global — Precios y Stocks</div>
-                <div id="admin-inventario-global" style="max-height:700px;overflow-y:auto;padding-right:4px;"></div>
-            </div>
         </div>
     </div>
 </div>
@@ -1679,33 +1705,15 @@ function ruidoBlanco(duracion,vol,delay) {
     src.connect(gain); gain.connect(masterGainNode||ctx.destination);
     src.start(t0);
 }
-function puertaCorredera(direccion) {
-    /* Puerta automática corredera tipo centro comercial: barrido de aire filtrado + tope mecánico al final */
-    const ctx = obtenerAudioCtx(); if(!ctx) return;
-    const t0 = ctx.currentTime;
-    const dur = 0.62;
-    const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate*dur), ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for(let i=0;i<data.length;i++) data[i] = (Math.random()*2-1);
-    const src = ctx.createBufferSource(); src.buffer = buf;
-    const filtro = ctx.createBiquadFilter(); filtro.type = 'bandpass'; filtro.Q.value = 1.1;
-    if(direccion==='abrir') {
-        filtro.frequency.setValueAtTime(260,t0);
-        filtro.frequency.linearRampToValueAtTime(2000,t0+dur*0.82);
+function dingDongSonido(saliendo) {
+    /* "Ding dong" clásico de sensor de entrada de tienda */
+    if(!saliendo) {
+        tono(784,.38,'sine',.17,0);   // ding
+        tono(587,.55,'sine',.15,.42); // dong
     } else {
-        filtro.frequency.setValueAtTime(2000,t0);
-        filtro.frequency.linearRampToValueAtTime(260,t0+dur*0.82);
+        tono(659,.38,'sine',.17,0);   // ding (un poco más grave al salir)
+        tono(494,.55,'sine',.15,.42); // dong
     }
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0,t0);
-    gain.gain.linearRampToValueAtTime(0.11,t0+0.09);
-    gain.gain.linearRampToValueAtTime(0.0001,t0+dur);
-    src.connect(filtro); filtro.connect(gain); gain.connect(masterGainNode||ctx.destination);
-    src.start(t0); src.stop(t0+dur+0.05);
-    // tope mecánico al llegar al final del recorrido
-    let tTope = dur*0.8;
-    tono(direccion==='abrir'?150:95, .1, 'sine', .12, tTope);
-    tono(direccion==='abrir'?95:55,  .14,'sine', .08, tTope+0.035);
 }
 function monedasSonido() {
     /* Caja registradora / monedas: 3 clinks ascendentes + campana final tipo "cha-ching" */
@@ -1738,6 +1746,26 @@ function curacionPokemonCenterSonido() {
     tono(1318,.24,'sine',.12,.36);
     tono(1046,.05,'triangle',.06,.27);
 }
+function packEpicoSonido() {
+    /* Compra de Pack: fanfarria épica — power chord ascendente + impacto */
+    tono(220,.14,'sawtooth',.12,0);
+    tono(277,.14,'sawtooth',.11,0);
+    tono(330,.18,'sawtooth',.13,.11);
+    tono(440,.18,'sawtooth',.12,.11);
+    tono(440,.32,'sawtooth',.15,.24);
+    tono(554,.34,'sawtooth',.13,.24);
+    tono(660,.4,'sine',.13,.26);
+    ruidoBlanco(.18,.05,.24);
+}
+function hackerSonido() {
+    /* Compra Ilegal: glitch digital + beep final de "acceso concedido" */
+    for(let i=0;i<7;i++) {
+        tono(280+Math.random()*1500, .03, 'square', .08, i*0.035);
+    }
+    tono(660,.04,'square',.09,.27);
+    tono(990,.05,'square',.1,.32);
+    tono(1480,.09,'square',.1,.37);
+}
 function tragaperras(intensidad) {
     /* Pequeña ráfaga de "carrete girando" + resolución, estilo máquina tragaperras */
     const ctx = obtenerAudioCtx(); if(!ctx) return;
@@ -1763,12 +1791,14 @@ window.reproducirSonido = function(tipo) {
         case 'error':          tono(200,.18,'sawtooth',.11); tono(150,.22,'sawtooth',.08,.05); break;
         case 'compra':         tono(587,.09,'sine',.13); tono(880,.13,'sine',.11,.07); tono(1175,.1,'sine',.07,.14); break;
         case 'monedas':         monedasSonido(); break;
+        case 'pack_epico':      packEpicoSonido(); break;
+        case 'hacker':          hackerSonido(); break;
         case 'usar_objeto':     usarObjetoSonido(); break;
         case 'muerte':         gameOverSonido(); break;
         case 'revivir':        curacionPokemonCenterSonido(); break;
         case 'escaneo':        tono(900,.04,'square',.07); tono(1100,.04,'square',.06,.06); tono(700,.06,'sine',.08,.13); break;
-        case 'puerta_abrir':    puertaCorredera('abrir'); break;
-        case 'puerta_cerrar':   puertaCorredera('cerrar'); break;
+        case 'puerta_abrir':    dingDongSonido(false); break;
+        case 'puerta_cerrar':   dingDongSonido(true); break;
         case 'apuesta':        tragaperras('bajo'); break;
         case 'trueque':        tragaperras('medio'); break;
         case 'voto':           tono(660,.06,'sine',.09); break;
@@ -1796,32 +1826,44 @@ document.addEventListener('mouseover',(e)=>{
     if(el && el !== el.__ultimoHover) { el.__ultimoHover = true; reproducirSonido('hover'); setTimeout(()=>{ if(el) el.__ultimoHover=false; },250); }
 });
 
-/* ═══ AMBIENTE — pad relajado tipo "supermercado chill" en bucle ═══ */
+/* ═══ AMBIENTE — frase muy chill tipo "ruta tranquila", pocas notas y mucho aire entre ellas ═══ */
 function iniciarAmbiente() {
     if(ambienteIniciado || !sonidoActivo) return;
     const ctx = obtenerAudioCtx(); if(!ctx) return;
     ambienteIniciado = true;
-    const acordes = [
-        [261.63,329.63,392.00], // C E G
-        [293.66,349.23,440.00], // D F A
-        [246.94,311.13,392.00], // B D# G (sus)
-        [220.00,277.18,329.63]  // A C# E
+    // Frase pausada y cálida (Mi-Sol-La-Sol-Mi), con bastante silencio entre notas
+    const frase = [
+        {f:329.63, t:0.0,  d:1.0},
+        {f:392.00, t:1.3,  d:1.0},
+        {f:440.00, t:2.7,  d:1.2},
+        {f:392.00, t:4.4,  d:1.0},
+        {f:329.63, t:5.7,  d:1.5},
     ];
-    let paso = 0;
+    const padFondo = [196.00, 246.94]; // colchón suave de fondo (G3 + B3)
+    const DURACION_CICLO = 9500; // pausa larga antes de repetir la frase
     function ciclo() {
         if(!sonidoActivo) return;
-        const acorde = acordes[paso % acordes.length]; paso++;
-        acorde.forEach((freq,i)=>{
-            const t0 = ctx.currentTime + i*0.18;
+        const t0base = ctx.currentTime;
+        padFondo.forEach(freq=>{
             const osc = ctx.createOscillator(), gain = ctx.createGain();
-            osc.type = 'sine'; osc.frequency.setValueAtTime(freq/2,t0);
-            gain.gain.setValueAtTime(0,t0);
-            gain.gain.linearRampToValueAtTime(0.018,t0+1.4);
-            gain.gain.linearRampToValueAtTime(0,t0+5.2);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(freq,t0base);
+            gain.gain.setValueAtTime(0,t0base);
+            gain.gain.linearRampToValueAtTime(0.010,t0base+1.4);
+            gain.gain.linearRampToValueAtTime(0,t0base+7.6);
             osc.connect(gain); gain.connect(masterGainNode||ctx.destination);
-            osc.start(t0); osc.stop(t0+5.4);
+            osc.start(t0base); osc.stop(t0base+7.7);
         });
-        ambienteTimers.push(setTimeout(ciclo,5600));
+        frase.forEach(n=>{
+            const t0 = t0base + n.t;
+            const osc = ctx.createOscillator(), gain = ctx.createGain();
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(n.f,t0);
+            gain.gain.setValueAtTime(0,t0);
+            gain.gain.linearRampToValueAtTime(0.018,t0+0.12);
+            gain.gain.exponentialRampToValueAtTime(0.0001,t0+n.d);
+            osc.connect(gain); gain.connect(masterGainNode||ctx.destination);
+            osc.start(t0); osc.stop(t0+n.d+0.05);
+        });
+        ambienteTimers.push(setTimeout(ciclo, DURACION_CICLO));
     }
     ciclo();
 }
@@ -2024,6 +2066,58 @@ window.cerrarDrawer = function() {
     document.body.style.overflow = '';
 };
 
+/* ═══ GESTO TÁCTIL: arrastrar desde el borde izquierdo abre el menú siguiendo al dedo;
+   arrastrar el menú abierto hacia la izquierda lo cierra (solo en móvil) ═══ */
+(function() {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('drawer-backdrop');
+    let startX = null, startY = null, dragging = false, ancho = 240, estabaAbiertoAlEmpezar = false;
+
+    document.addEventListener('touchstart', (e)=>{
+        if(window.innerWidth > 900) return;
+        const abierto = sidebar.classList.contains('open');
+        let t = e.touches[0];
+        if(!abierto && t.clientX > 36) return;
+        if(abierto && t.clientX > sidebar.offsetWidth + 50) return;
+        startX = t.clientX; startY = t.clientY;
+        dragging = true;
+        estabaAbiertoAlEmpezar = abierto;
+        ancho = sidebar.offsetWidth || 240;
+        sidebar.style.transition = 'none';
+        backdrop.style.transition = 'none';
+        if(!abierto) { sidebar.classList.add('open'); backdrop.classList.add('active'); document.body.style.overflow='hidden'; }
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e)=>{
+        if(!dragging) return;
+        let t = e.touches[0];
+        let dx = t.clientX - startX, dy = Math.abs(t.clientY - startY);
+        if(dy > 70 && Math.abs(dx) < 25) { // gesto más vertical que horizontal: cancelar arrastre
+            dragging = false;
+            sidebar.style.transition = ''; backdrop.style.transition = '';
+            sidebar.style.transform = ''; backdrop.style.opacity = '';
+            return;
+        }
+        let pos = estabaAbiertoAlEmpezar ? Math.min(0, dx) : Math.min(0, -ancho + dx);
+        pos = Math.max(-ancho, pos);
+        sidebar.style.transform = `translateX(${pos}px)`;
+        backdrop.style.opacity = String(Math.max(0, Math.min(1, 1 - Math.abs(pos)/ancho)));
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e)=>{
+        if(!dragging) return;
+        dragging = false;
+        let t = e.changedTouches[0];
+        let dx = t.clientX - startX;
+        const seQuedaAbierto = estabaAbiertoAlEmpezar ? !(dx < -ancho*0.3) : (dx > ancho*0.3);
+        sidebar.style.transition = '';
+        backdrop.style.transition = '';
+        if(seQuedaAbierto) abrirDrawer(); else cerrarDrawer();
+        sidebar.style.transform = '';
+        backdrop.style.opacity = '';
+    }, { passive: true });
+})();
+
 /* Transición fiable de entrada para vistas/pestañas: controlada por JS (no depende
    del replay de @keyframes al alternar display, que algunos navegadores omiten). */
 function transicionarVista(el) {
@@ -2065,16 +2159,16 @@ onValue(ref(db,'silph_co_market'), (snapshot) => {
         renderizarCementerioDOM();
         actualizarEstadisticasSacrificioPanel();
         actualizarInicioStats();
-        const bBall = document.getElementById('btn-master-pokeball');
-        if(bBall) bBall.style.display = (userSesion.toLowerCase()==="srwiwa") ? "block" : "none";
-        if(document.getElementById('pantalla-admin-master').style.display==='block') redibujarConsolaAdminMaster();
+        const bAdmin = document.getElementById('nav-admin');
+        if(bAdmin) bAdmin.style.display = (userSesion.toLowerCase()==="srwiwa") ? "flex" : "none";
+        if(document.getElementById('section-admin').classList.contains('active')) redibujarConsolaAdminMaster();
         mejorarTodosLosSelects(document);
         refrescarSelectsPersonalizados();
     } else {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('app-shell').style.display    = 'none';
-        const bBall = document.getElementById('btn-master-pokeball');
-        if(bBall) bBall.style.display = "none";
+        const bAdmin = document.getElementById('nav-admin');
+        if(bAdmin) bAdmin.style.display = "none";
     }
 });
 
@@ -2097,7 +2191,18 @@ window.navegarA = function(seccion) {
         renderizarCementerioDOM();
         actualizarEstadisticasSacrificioPanel();
     }
+    if(seccion==='admin' && userSesion && userSesion.toLowerCase()==='srwiwa') redibujarConsolaAdminMaster();
     cerrarDrawer();
+};
+
+window.cambiarAdminTab = function(tab) {
+    reproducirSonido('tab');
+    document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));
+    const tabEl = document.getElementById(`dtab-${tab}`);
+    const viewEl = document.getElementById(`dv-${tab}`);
+    if(tabEl) { tabEl.classList.add('active'); tabEl.classList.add('tab-pop'); setTimeout(()=>tabEl.classList.remove('tab-pop'),300); }
+    if(viewEl) { viewEl.classList.add('active'); reanimarElemento(viewEl); }
 };
 
 window.navegarAConTab = function(seccion,tab) { navegarA(seccion); if(seccion==='tiendas') cambiarTiendaTab(tab); };
@@ -2161,8 +2266,8 @@ window.ingresarAlSistema = function() {
         document.getElementById('app-shell').style.display    = 'block';
         document.getElementById('app-shell').classList.add('fade-in');
     },180);
-    const bBall = document.getElementById('btn-master-pokeball');
-    if(bBall) bBall.style.display = (id==="srwiwa") ? "block" : "none";
+    const bAdmin = document.getElementById('nav-admin');
+    if(bAdmin) bAdmin.style.display = (id==="srwiwa") ? "flex" : "none";
     actualizarComprasPorTiempo();
     cargarDatosPerfilEnDOM();
     refrescarPantallaGamer();
@@ -2180,8 +2285,8 @@ window.cerrarSesionOperador = function() {
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('login-screen').classList.remove('fade-out');
     document.getElementById('login-nombre').value = '';
-    const bBall = document.getElementById('btn-master-pokeball');
-    if(bBall) bBall.style.display = "none";
+    const bAdmin = document.getElementById('nav-admin');
+    if(bAdmin) bAdmin.style.display = "none";
     cerrarDrawer();
 };
 
@@ -2344,13 +2449,14 @@ window.comprarObjetoGamer = async function(id) {
         if(ev==='bonus_pf') bonoPf = (p.pf||0)*2;
     }
     let txtCoste = p.tienda==='illegal' ? `${p.precioPf} PF` : `${precioFinal} P₠`;
+    let sonidoCompra = p.tienda==='illegal' ? 'hacker' : (p.tienda==='pack' ? 'pack_epico' : 'monedas');
     let confirmado = await mostrarConfirmacion({
         icono: p.icon || '🛒',
         titulo: `¿Adquirir ${p.nombre}?`,
         descripcion: `Coste: ${txtCoste}${(!p.tienda||p.tienda!=='illegal')&&bonoPf>0?`\n+${bonoPf} PF de bonificación`:''}`,
         textoConfirmar: 'Adquirir',
         tipo: p.tienda==='illegal' ? 'sacrificio' : 'normal',
-        sonidoConfirmar: 'monedas'
+        sonidoConfirmar: sonidoCompra
     });
     if(!confirmado) return;
     if(p.tienda==='illegal') {
@@ -3128,14 +3234,6 @@ function actualizarBannerAlertasVisuales() {
 }
 
 /* ════ ADMIN ════ */
-window.invocarTerminalMercader = function() {
-    if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){ mostrarNotificacion("Credenciales no detectadas.","error","🔒"); return; }
-    reproducirSonido('abrir');
-    document.getElementById('pantalla-admin-master').style.display='block';
-    redibujarConsolaAdminMaster();
-};
-window.apagarTerminalMercader = function() { reproducirSonido('cerrar'); document.getElementById('pantalla-admin-master').style.display='none'; };
-
 window.restablecerComprasDiariasDesdeMercader = function() {
     if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
     let tid=document.getElementById('adm-reset-usuario').value;
@@ -3291,4 +3389,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </body>
-    </html>
+                                                                                                                                                                                   </html>
