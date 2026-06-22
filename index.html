@@ -1949,6 +1949,23 @@ window.alternarSonido = function() {
 document.addEventListener('DOMContentLoaded',()=>{
     const btn = document.getElementById('btn-sonido-toggle');
     if(btn) { btn.textContent = sonidoActivo ? '🔊' : '🔇'; btn.classList.toggle('muted',!sonidoActivo); }
+
+    // Init slider de volumen de radio
+    const sliderRadio = document.getElementById('radio-vol-slider');
+    if(sliderRadio) {
+        sliderRadio.value = radioVolumen;
+        const iconoVol = document.getElementById('radio-icono-vol');
+        if(iconoVol) iconoVol.textContent = radioSilenciada ? '🔇' : (radioVolumen < 0.5 ? '🔉' : '🔊');
+    }
+
+    // Abrir el selector de ficheros al hacer clic en la zona de upload
+    const fileInput = document.getElementById('radio-file-input');
+    if(fileInput) {
+        fileInput.addEventListener('change', function() {
+            subirCancionesRadio(this.files);
+            this.value = ''; // reset para poder subir el mismo fichero dos veces
+        });
+    }
 });
 /* Sonido suave de hover delegado a toda la web, sin tocar la lógica de negocio */
 document.addEventListener('mouseover',(e)=>{
