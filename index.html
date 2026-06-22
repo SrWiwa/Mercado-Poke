@@ -1085,6 +1085,18 @@
                     </div>
                 </div>
             </div>
+
+            <!-- RADIO POKEINOMANA -->
+            <div class="card radio-card" style="margin-bottom:14px;">
+                <div class="card-title">📻 Radio Pokeinomana</div>
+                <div class="radio-ecualizador" id="radio-ecualizador"><span></span><span></span><span></span><span></span></div>
+                <div id="radio-now-playing-texto" style="color:var(--txt-secondary);font-size:12px;font-family:var(--font-display);margin-bottom:10px;">📻 Radio Pokeinomana sin canciones todavía.</div>
+                <button id="radio-btn-activar" class="btn-sincronizar" style="width:100%;display:none;" onclick="activarRadioPokeinomana()">▶ Activar Radio</button>
+                <div id="radio-controles" style="display:none;align-items:center;gap:10px;">
+                    <button class="sonido-toggle-btn" onclick="alternarSilencioRadio()"><span id="radio-icono-vol">🔊</span></button>
+                    <input type="range" class="radio-volumen-slider" min="0" max="1" step="0.05" value="0.45" oninput="ajustarVolumenRadio(this.value)" style="flex:1;">
+                </div>
+            </div>
             <div class="card">
                 <div class="card-title">Actividad reciente</div>
                 <div id="inicio-actividad" style="color:var(--txt-muted);font-size:12px;font-family:var(--font-display);">Sin actividad reciente.</div>
@@ -1588,6 +1600,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAgN5I8-o1WpWXfRq96FZXCF8ELmdC-ghw",
@@ -1601,6 +1614,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const storage = getStorage(app);
 
 // ═══ CATEGORÍAS CÁMARA DE COMERCIO ═══
 const CAMARA_CATEGORIAS = {
@@ -1641,7 +1655,7 @@ const baseDatosInicial = [
     { id:310,tienda:'illegal',cat:'Hack de Sistema',nombre:'Resurrección Robada',precioPf:8,stock:1,icon:'🔮',desc:'Robas un Poke muerto de otro.' }
 ];
 
-let baseDatos = { productos:[], jugadores:{}, intercambios:{}, arena:{}, camara:{}, legalOpen:true, packOpen:true, illegalOpen:true, eventoSistema:"normal" };
+let baseDatos = { productos:[], jugadores:{}, intercambios:{}, arena:{}, camara:{}, legalOpen:true, packOpen:true, illegalOpen:true, eventoSistema:"normal", radio:{canciones:{},semillaOrden:0,inicioEpoch:0} };
 let userSesion = sessionStorage.getItem('silph_user_sesion') || null;
 let filtroCategoriaGlobal = "";
 const MAX_COMPRAS = 3;
@@ -1838,6 +1852,204 @@ window.destellarPantalla = function(color) {
     document.body.appendChild(el);
     requestAnimationFrame(()=>{ el.style.opacity='1'; setTimeout(()=>{ el.style.opacity='0'; setTimeout(()=>el.remove(),250); },120); });
 };
+
+/* ═══════════════════════════════════════
+   RADIO POKEINOMANA — mismas canciones, mismo punto, para todos a la vez
+   (orden aleatorio determinista por semilla + sincronía por tiempo transcurrido,
+   sin necesitar un servidor de streaming)
+═══════════════════════════════════════ */
+let radioAudioEl = null;
+let radioActivada = false;
+let radioCancionActualId = null;
+let radioIntervaloSync = null;
+let radioVolumen = parseFloat(localStorage.getItem('silph_radio_volumen'));
+if(isNaN(radioVolumen)) radioVolumen = 0.45;
+let radioSilenciada = (localStorage.getItem('silph_radio_silenciada') === 'true');
+
+function mulberry32(semilla) {
+    return function() {
+        semilla |= 0; semilla = (semilla + 0x6D2B79F5) | 0;
+        let t = Math.imul(semilla ^ (semilla >>> 15), 1 | semilla);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+function ordenAleatorioConSemilla(lista, semilla) {
+    let azar = mulberry32(semilla);
+    let copia = lista.slice();
+    for(let i=copia.length-1;i>0;i--) {
+        let j = Math.floor(azar()*(i+1));
+        [copia[i],copia[j]] = [copia[j],copia[i]];
+    }
+    return copia;
+}
+function obtenerListaCanciones() {
+    if(!baseDatos.radio||!baseDatos.radio.canciones) return [];
+    return Object.keys(baseDatos.radio.canciones).map(id=>({id, ...baseDatos.radio.canciones[id]})).filter(c=>c.url && c.duracion>0);
+}
+function calcularPistaActual() {
+    const canciones = obtenerListaCanciones();
+    if(!canciones.length) return null;
+    const duracionTotal = canciones.reduce((a,c)=>a+c.duracion,0);
+    if(duracionTotal<=0) return null;
+    const semilla = baseDatos.radio.semillaOrden || 1;
+    const inicio  = baseDatos.radio.inicioEpoch || Date.now();
+    let transcurrido = (Date.now() - inicio) / 1000;
+    if(transcurrido < 0) transcurrido = 0;
+    const numPase = Math.floor(transcurrido / duracionTotal);
+    const posicionEnPase = transcurrido % duracionTotal;
+    const orden = ordenAleatorioConSemilla(canciones, semilla + numPase*7919);
+    let acumulado = 0;
+    for(const c of orden) {
+        if(posicionEnPase < acumulado + c.duracion) {
+            return { cancion: c, offset: posicionEnPase - acumulado };
+        }
+        acumulado += c.duracion;
+    }
+    return { cancion: orden[orden.length-1], offset: 0 };
+}
+function actualizarTextoRadioInicio(cancion) {
+    let box = document.getElementById('radio-now-playing-texto');
+    if(box) box.textContent = cancion ? `🎵 Estás escuchando "${cancion.nombre}" en Radio Pokeinomana` : '📻 Radio Pokeinomana sin canciones todavía.';
+}
+function sincronizarRadio() {
+    const pista = calcularPistaActual();
+    let btnActivar = document.getElementById('radio-btn-activar');
+    let controles = document.getElementById('radio-controles');
+    let ecualizador = document.getElementById('radio-ecualizador');
+    if(!pista) {
+        actualizarTextoRadioInicio(null);
+        if(btnActivar) btnActivar.style.display = 'none';
+        if(controles) controles.style.display = 'none';
+        if(ecualizador) ecualizador.classList.remove('sonando');
+        if(radioAudioEl) radioAudioEl.pause();
+        return;
+    }
+    actualizarTextoRadioInicio(pista.cancion);
+    if(!radioActivada) {
+        if(btnActivar) btnActivar.style.display = 'block';
+        if(controles) controles.style.display = 'none';
+        if(ecualizador) ecualizador.classList.remove('sonando');
+        return; // esperando gesto del usuario por las políticas de autoplay
+    }
+    if(btnActivar) btnActivar.style.display = 'none';
+    if(controles) controles.style.display = 'flex';
+    if(ecualizador) ecualizador.classList.add('sonando');
+    if(!radioAudioEl) return;
+    if(radioCancionActualId !== pista.cancion.id) {
+        radioCancionActualId = pista.cancion.id;
+        radioAudioEl.src = pista.cancion.url;
+        radioAudioEl.currentTime = pista.offset;
+        radioAudioEl.play().catch(()=>{});
+    } else if(Math.abs(radioAudioEl.currentTime - pista.offset) > 2.5) {
+        radioAudioEl.currentTime = pista.offset; // corrige deriva
+    }
+}
+window.activarRadioPokeinomana = function() {
+    if(radioActivada) return;
+    radioActivada = true;
+    if(!radioAudioEl) {
+        radioAudioEl = document.getElementById('radio-player');
+        radioAudioEl.volume = radioSilenciada ? 0 : radioVolumen;
+        radioAudioEl.addEventListener('ended', sincronizarRadio);
+    }
+    let btn = document.getElementById('radio-btn-activar');
+    if(btn) btn.style.display = 'none';
+    let ctrl = document.getElementById('radio-controles');
+    if(ctrl) ctrl.style.display = 'flex';
+    reproducirSonido('exito');
+    radioCancionActualId = null;
+    sincronizarRadio();
+    if(!radioIntervaloSync) radioIntervaloSync = setInterval(sincronizarRadio, 4000);
+};
+window.ajustarVolumenRadio = function(valor) {
+    radioVolumen = Math.max(0, Math.min(1, parseFloat(valor)));
+    localStorage.setItem('silph_radio_volumen', String(radioVolumen));
+    if(radioVolumen>0 && radioSilenciada) { radioSilenciada = false; localStorage.setItem('silph_radio_silenciada','false'); }
+    if(radioAudioEl) radioAudioEl.volume = radioSilenciada ? 0 : radioVolumen;
+    let icono = document.getElementById('radio-icono-vol');
+    if(icono) icono.textContent = radioSilenciada||radioVolumen===0 ? '🔇' : (radioVolumen<0.5 ? '🔉' : '🔊');
+};
+window.alternarSilencioRadio = function() {
+    radioSilenciada = !radioSilenciada;
+    localStorage.setItem('silph_radio_silenciada', String(radioSilenciada));
+    if(radioAudioEl) radioAudioEl.volume = radioSilenciada ? 0 : radioVolumen;
+    let icono = document.getElementById('radio-icono-vol');
+    if(icono) icono.textContent = radioSilenciada ? '🔇' : (radioVolumen<0.5 ? '🔉' : '🔊');
+};
+
+/* ═══ ADMIN — gestión de canciones de la Radio ═══ */
+window.subirCancionesRadio = async function(fileList) {
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") { mostrarNotificacion("Acceso denegado.","error","🔒"); return; }
+    let archivos = Array.from(fileList||[]);
+    if(!archivos.length) return;
+    let cajaEstado = document.getElementById('radio-subida-estado');
+    for(const file of archivos) {
+        if(!file.type.startsWith('audio/')) continue;
+        if(cajaEstado) cajaEstado.textContent = `Subiendo "${file.name}"...`;
+        try {
+            const ruta = `radio/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+            const archivoRef = storageRef(storage, ruta);
+            await uploadBytes(archivoRef, file);
+            const url = await getDownloadURL(archivoRef);
+            const duracion = await new Promise((resolve)=>{
+                let probeAudio = new Audio();
+                probeAudio.preload = 'metadata';
+                probeAudio.onloadedmetadata = ()=>resolve(probeAudio.duration||180);
+                probeAudio.onerror = ()=>resolve(180);
+                probeAudio.src = url;
+            });
+            let nuevaId = 'song_'+Date.now()+Math.floor(Math.random()*1000);
+            if(!baseDatos.radio) baseDatos.radio = {canciones:{},semillaOrden:0,inicioEpoch:0};
+            if(!baseDatos.radio.canciones) baseDatos.radio.canciones = {};
+            baseDatos.radio.canciones[nuevaId] = { nombre: file.name.replace(/\.[^/.]+$/,''), url, duracion: Math.round(duracion), ruta };
+            if(!baseDatos.radio.semillaOrden) baseDatos.radio.semillaOrden = Date.now();
+            if(!baseDatos.radio.inicioEpoch)  baseDatos.radio.inicioEpoch  = Date.now();
+            guardarBD();
+        } catch(err) {
+            mostrarNotificacion(`Error al subir "${file.name}".`,"error","⚠️");
+        }
+    }
+    if(cajaEstado) cajaEstado.textContent = '';
+    reproducirSonido('exito');
+    mostrarNotificacion("Canciones añadidas a Radio Pokeinomana.","exito","📻");
+    renderizarListaRadioAdmin();
+};
+window.eliminarCancionRadio = async function(id) {
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return;
+    let confirmado = await mostrarConfirmacion({ icono:'🗑️', titulo:'Eliminar canción', descripcion:'Se borrará también el archivo de Firebase Storage.', textoConfirmar:'Eliminar', tipo:'peligro' });
+    if(!confirmado) return;
+    let cancion = baseDatos.radio.canciones[id];
+    if(cancion && cancion.ruta) { try { await deleteObject(storageRef(storage, cancion.ruta)); } catch(e) {} }
+    delete baseDatos.radio.canciones[id];
+    guardarBD();
+    mostrarNotificacion("Canción eliminada.","info","🗑️");
+    renderizarListaRadioAdmin();
+};
+window.reiniciarOrdenRadio = function() {
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa") return;
+    if(!baseDatos.radio) baseDatos.radio = {canciones:{},semillaOrden:0,inicioEpoch:0};
+    baseDatos.radio.semillaOrden = Date.now();
+    baseDatos.radio.inicioEpoch  = Date.now();
+    guardarBD();
+    reproducirSonido('exito');
+    mostrarNotificacion("Orden de reproducción reiniciado para todos los oyentes.","exito","🔀");
+};
+function renderizarListaRadioAdmin() {
+    let box = document.getElementById('radio-admin-lista');
+    if(!box) return;
+    let canciones = obtenerListaCanciones();
+    if(!canciones.length) { box.innerHTML = '<div style="color:var(--txt-muted);font-size:11px;text-align:center;padding:14px;font-family:var(--font-display);">Sin canciones subidas todavía.</div>'; return; }
+    box.innerHTML = '';
+    canciones.forEach(c=>{
+        let mins = Math.floor(c.duracion/60), secs = String(Math.round(c.duracion%60)).padStart(2,'0');
+        box.innerHTML += `<div class="admin-item-card">
+            <button class="btn-del-item" onclick="eliminarCancionRadio('${c.id}')">✕</button>
+            <div style="color:var(--txt-primary);font-size:12px;font-weight:600;">🎵 ${escaparHTML(c.nombre)}</div>
+            <div style="font-size:10px;color:var(--txt-muted);margin-top:3px;font-family:var(--font-display);">${mins}:${secs}</div>
+        </div>`;
+    });
+}
 
 
 /* ═══════════════════════════════════════
@@ -2044,10 +2256,13 @@ onValue(ref(db,'silph_co_market'), (snapshot) => {
         if(!baseDatos.arena)         baseDatos.arena         = {};
         if(!baseDatos.camara)        baseDatos.camara        = {};
         if(!baseDatos.eventoSistema) baseDatos.eventoSistema = "normal";
+        if(!baseDatos.radio)         baseDatos.radio         = {canciones:{},semillaOrden:0,inicioEpoch:0};
+        if(!baseDatos.radio.canciones) baseDatos.radio.canciones = {};
     } else {
-        baseDatos = {productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal"};
+        baseDatos = {productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0}};
         set(ref(db,'silph_co_market'),baseDatos);
     }
+    sincronizarRadio();
 
     if(userSesion) {
         document.getElementById('login-screen').style.display  = 'none';
