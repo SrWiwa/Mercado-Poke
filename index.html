@@ -1168,18 +1168,20 @@
 
             <!-- RADIO POKEINOMANA -->
             <div class="card radio-card" style="margin-bottom:14px;">
-                <div class="card-title">📻 Radio Pokeinomana</div>
-                <div class="radio-ecualizador" id="radio-ecualizador"><span></span><span></span><span></span><span></span></div>
-                <div id="radio-now-playing-texto" style="color:var(--txt-secondary);font-size:12px;font-family:var(--font-display);margin-bottom:10px;">📻 Radio Pokeinomana sin canciones todavía.</div>
-                <button id="radio-btn-activar" class="btn-sincronizar" style="width:100%;display:none;" onclick="activarRadioPokeinomana()">▶ Activar Radio</button>
-                <div id="radio-controles" style="display:none;align-items:center;gap:10px;">
-                    <button class="sonido-toggle-btn" onclick="alternarSilencioRadio()"><span id="radio-icono-vol">🔊</span></button>
-                    <input type="range" class="radio-volumen-slider" min="0" max="1" step="0.05" value="0.45" oninput="ajustarVolumenRadio(this.value)" style="flex:1;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                    <div class="card-title" style="margin-bottom:0;">📻 Radio Pokeinomana</div>
+                    <div style="display:flex;align-items:center;gap:8px;" id="radio-vol-wrap">
+                        <button class="sonido-toggle-btn" onclick="alternarSilencioRadio()" title="Silenciar radio" style="width:28px;height:28px;font-size:13px;"><span id="radio-icono-vol">🔊</span></button>
+                        <input type="range" class="radio-volumen-slider" id="radio-vol-slider" min="0" max="1" step="0.05" value="0.45" oninput="ajustarVolumenRadio(this.value)" style="width:80px;">
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-title">Actividad reciente</div>
-                <div id="inicio-actividad" style="color:var(--txt-muted);font-size:12px;font-family:var(--font-display);">Sin actividad reciente.</div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                    <div class="radio-ecualizador" id="radio-ecualizador"><span></span><span></span><span></span><span></span></div>
+                    <div id="radio-now-playing-texto" style="color:var(--txt-secondary);font-size:11px;font-family:var(--font-display);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">📻 Radio Pokeinomana sin canciones todavía.</div>
+                </div>
+                <button id="radio-btn-activar" class="btn-sincronizar" style="width:100%;display:none;" onclick="activarRadioPokeinomana()">▶ Activar Radio</button>
+                <!-- controles legacy (ahora ocultos, la lógica sigue funcionando) -->
+                <div id="radio-controles" style="display:none;"></div>
             </div>
         </section>
 
@@ -1384,6 +1386,7 @@
                 <button class="dios-tab" id="dtab-dinero" onclick="cambiarAdminTab('dinero')">💰 Dinero y Vidas</button>
                 <button class="dios-tab" id="dtab-tienda" onclick="cambiarAdminTab('tienda')">🏪 Eventos y Tienda</button>
                 <button class="dios-tab" id="dtab-apuestas" onclick="cambiarAdminTab('apuestas')">🎰 Apuestas y Trueques</button>
+                <button class="dios-tab" id="dtab-radio" onclick="cambiarAdminTab('radio')">📻 Radio</button>
             </div>
 
             <!-- RESETEOS -->
