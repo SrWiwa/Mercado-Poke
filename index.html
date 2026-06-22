@@ -2477,14 +2477,15 @@ window.cambiarEventoTab = function(tab) {
     if(tab==='camara') renderizarCamaraPublica();
 };
 
-window.cambiarPerfilTab = function(tab) {
+window.cambiarAdminTab = function(tab) {
     reproducirSonido('tab');
-    document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));
-    const btn  = document.getElementById(`ptab-${tab}`);
-    const view = document.getElementById(`pv-${tab}`);
-    if(btn)  { btn.classList.add('active'); btn.classList.add('tab-pop'); setTimeout(()=>btn.classList.remove('tab-pop'),300); }
-    if(view) { view.classList.add('active'); reanimarElemento(view); }
+    document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));
+    const tabEl = document.getElementById(`dtab-${tab}`);
+    const viewEl = document.getElementById(`dv-${tab}`);
+    if(tabEl) { tabEl.classList.add('active'); tabEl.classList.add('tab-pop'); setTimeout(()=>tabEl.classList.remove('tab-pop'),300); }
+    if(viewEl) { viewEl.classList.add('active'); reanimarElemento(viewEl); }
+    if(tab === 'radio') renderizarListaRadioAdmin();
 };
 
 /* ════ LOGIN ════ */
