@@ -1372,6 +1372,36 @@
                     </div>
                 </div>
             </div>
+            <!-- RADIO -->
+            <div id="dv-radio" class="dios-view">
+                <div class="dios-grid-2">
+                    <div class="admin-panel">
+                        <div class="admin-section-title" style="color:var(--neon-packs);">📻 Subir Canciones MP3</div>
+                        <label class="radio-upload-zone" for="radio-file-input">
+                            <div style="font-size:28px;margin-bottom:8px;">🎵</div>
+                            <div class="radio-upload-label">Arrastra archivos MP3 o haz clic</div>
+                            <div class="radio-upload-sub">Puedes seleccionar varios archivos a la vez</div>
+                        </label>
+                        <input type="file" id="radio-file-input" accept="audio/mp3,audio/mpeg,audio/*"
+                               multiple style="display:none;"
+                               onchange="subirCancionesRadio(this.files)">
+                        <div id="radio-subida-estado" style="font-size:10px;color:var(--neon-packs);font-family:var(--font-display);min-height:18px;text-align:center;"></div>
+                        <hr class="admin-hr">
+                        <div class="admin-section-title" style="color:var(--neon-packs);margin-top:4px;">🔀 Control de Reproducción</div>
+                        <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:10px;">
+                            Todos los oyentes escuchan la misma canción al mismo tiempo (stream sincronizado por reloj).
+                            Al reiniciar el orden, la playlist se reordena aleatoriamente para todos desde el principio.
+                        </div>
+                        <button class="btn-admin packs" onclick="reiniciarOrdenRadio()">🔀 Reiniciar Orden de Reproducción</button>
+                    </div>
+                    <div class="admin-panel">
+                        <div class="admin-section-title" style="color:var(--neon-packs);">🎵 Canciones en la Radio</div>
+                        <div id="radio-admin-lista" style="max-height:480px;overflow-y:auto;padding-right:4px;">
+                            <div style="color:var(--txt-muted);font-size:11px;text-align:center;padding:20px;font-family:var(--font-display);">Sin canciones todavía.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- MODO DIOS (solo visible para el administrador) -->
