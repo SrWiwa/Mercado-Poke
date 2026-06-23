@@ -92,6 +92,15 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 /* RADIO — CORRECCIÓN 2 */
 .radio-card{position:relative}.radio-ecualizador{display:flex;align-items:flex-end;gap:3px;height:22px;margin-bottom:0}.radio-ecualizador span{display:block;width:4px;background:var(--neon-packs);border-radius:2px 2px 0 0;opacity:0.3;height:6px;transition:height 0.1s ease}.radio-ecualizador.sonando span:nth-child(1){animation:barEq .9s ease-in-out infinite}.radio-ecualizador.sonando span:nth-child(2){animation:barEq .7s ease-in-out infinite .15s}.radio-ecualizador.sonando span:nth-child(3){animation:barEq 1.1s ease-in-out infinite .05s}.radio-ecualizador.sonando span:nth-child(4){animation:barEq .8s ease-in-out infinite .3s}.radio-ecualizador.sonando span{opacity:1}
 @keyframes barEq{0%,100%{height:4px}25%{height:18px}50%{height:10px}75%{height:20px}}
+.radio-estado-badge{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:99px;white-space:nowrap;flex-shrink:0}
+.radio-estado-badge.radio-estado-on{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+.radio-estado-badge.radio-estado-off{background:rgba(148,163,184,.08);color:var(--txt-muted);border:1px solid var(--borde)}
+.radio-now-playing-wrap{flex:1;overflow:hidden;position:relative;height:15px}
+.radio-now-playing-wrap .rnp-static{display:block;font-size:11px;font-family:var(--font-display);color:var(--txt-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.radio-now-playing-track{display:inline-flex;white-space:nowrap;position:absolute;left:0;top:0;will-change:transform}
+.radio-now-playing-track .rnp-item{padding-right:32px;font-size:11px;font-family:var(--font-display);color:var(--txt-secondary)}
+.radio-now-playing-track.marquee{animation-name:radioMarquee;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes radioMarquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .radio-volumen-slider{-webkit-appearance:none;appearance:none;height:4px;border-radius:99px;background:var(--gris-700);outline:none;cursor:pointer;transition:background .2s}.radio-volumen-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:var(--neon-packs);cursor:pointer;box-shadow:0 0 6px rgba(245,158,11,.4)}.radio-volumen-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--neon-packs);cursor:pointer;border:none}.radio-volumen-slider:hover{background:var(--gris-600)}
 .radio-upload-zone{border:2px dashed rgba(245,158,11,.25);border-radius:var(--r-lg);padding:20px;text-align:center;cursor:pointer;transition:all .2s ease;background:rgba(245,158,11,.02);margin-bottom:12px}.radio-upload-zone:hover{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.05)}.radio-upload-label{font-family:var(--font-display);font-size:11px;color:var(--neon-packs);font-weight:700;text-transform:uppercase;letter-spacing:.5px}.radio-upload-sub{font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)}
 .sonido-toggle-btn{width:34px;height:34px;flex-shrink:0;border-radius:var(--r-md);background:var(--bg-elevated);border:1px solid var(--borde);color:var(--txt-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s ease}.sonido-toggle-btn:hover{border-color:var(--borde-hover);color:var(--blanco)}.sonido-toggle-btn.muted{color:var(--txt-muted);opacity:.55}
@@ -214,16 +223,15 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
           <div class="card-title" style="margin-bottom:0">📻 Radio Pokeinomana</div>
           <div style="display:flex;align-items:center;gap:8px" id="radio-vol-wrap">
+            <span id="radio-estado-badge" class="radio-estado-badge radio-estado-off">⏸ Apagada</span>
             <button class="sonido-toggle-btn" onclick="alternarSilencioRadio()" style="width:28px;height:28px;font-size:13px"><span id="radio-icono-vol">🔊</span></button>
             <input type="range" class="radio-volumen-slider" id="radio-vol-slider" min="0" max="1" step="0.05" value="0.45" oninput="ajustarVolumenRadio(this.value)" style="width:80px">
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
           <div class="radio-ecualizador" id="radio-ecualizador"><span></span><span></span><span></span><span></span></div>
-          <div id="radio-now-playing-texto" style="color:var(--txt-secondary);font-size:11px;font-family:var(--font-display);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">📻 Radio Pokeinomana sin canciones todavía.</div>
+          <div class="radio-now-playing-wrap" id="radio-now-playing-wrap"><span class="rnp-item rnp-static">📻 Radio Pokeinomana sin canciones todavía.</span></div>
         </div>
-        <button id="radio-btn-activar" class="btn-sincronizar" style="width:100%;display:none" onclick="activarRadioPokeinomana()">▶ Activar Radio</button>
-        <div id="radio-controles" style="display:none"></div>
       </div>
       <div class="card"><div class="card-title">Actividad reciente</div><div id="inicio-actividad" style="color:var(--txt-muted);font-size:12px;font-family:var(--font-display)">Sin actividad reciente.</div></div>
     </section>
@@ -459,6 +467,10 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
             <input type="file" id="radio-file-input" accept="audio/mp3,audio/mpeg,audio/*" multiple style="display:none">
             <div id="radio-subida-estado" style="font-size:10px;color:var(--neon-packs);font-family:var(--font-display);min-height:18px;text-align:center"></div>
             <hr class="admin-hr">
+            <div class="admin-section-title" style="color:var(--neon-packs);margin-top:4px">📡 Emisión en Directo</div>
+            <label class="checkbox-label"><input type="checkbox" id="chk-radio-activada" onchange="conmutarRadioGlobal(this.checked)"> 📡 Radio activada para todos los oyentes</label>
+            <div style="font-size:10px;color:var(--txt-secondary);margin-bottom:10px">Al activarla, sonará automáticamente en todos los perfiles y dispositivos conectados, en tiempo real y sin que nadie tenga que darle a play. Al desactivarla, se detiene para todos a la vez.</div>
+            <hr class="admin-hr">
             <div class="admin-section-title" style="color:var(--neon-packs);margin-top:4px">🔀 Control de Reproducción</div>
             <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:10px">Todos los oyentes escuchan la misma canción al mismo tiempo. Al reiniciar, la playlist se reordena aleatoriamente para todos.</div>
             <button class="btn-admin packs" onclick="reiniciarOrdenRadio()">🔀 Reiniciar Orden de Reproducción</button>
@@ -596,7 +608,7 @@ const baseDatosInicial=[
     {id:309,tienda:'illegal',cat:'Hack de Sistema',nombre:'Alteración De Personalidad',precioPf:2,stock:1,icon:'🎭',desc:'Cambia la naturaleza.'},
     {id:310,tienda:'illegal',cat:'Hack de Sistema',nombre:'Resurrección Robada',precioPf:8,stock:1,icon:'🔮',desc:'Robas un Poke muerto de otro.'}
 ];
-let baseDatos={productos:[],jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0}};
+let baseDatos={productos:[],jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false}};
 let userSesion=sessionStorage.getItem('silph_user_sesion')||null;
 let filtroCategoriaGlobal="";
 const MAX_COMPRAS=3,MAX_VIDAS=20,MS_EN_6_HORAS=6*60*60*1000;
@@ -621,7 +633,7 @@ window.reproducirSonido=function(tipo){if(!sonidoActivo)return;switch(tipo){case
 window.alternarSonido=function(){sonidoActivo=!sonidoActivo;localStorage.setItem('silph_sonido_activo',sonidoActivo?'true':'false');const btn=document.getElementById('btn-sonido-toggle');if(btn){btn.textContent=sonidoActivo?'🔊':'🔇';btn.classList.toggle('muted',!sonidoActivo);}if(sonidoActivo)reproducirSonido('click');};
 
 /* ═══ RADIO ═══ */
-let radioAudioEl=null,radioActivada=false,radioCancionActualId=null,radioIntervaloSync=null;
+let radioAudioEl=null,radioCancionActualId=null,radioIntervaloSync=null,radioInteraccionPendiente=false;
 let radioVolumen=parseFloat(localStorage.getItem('silph_radio_volumen'));
 if(isNaN(radioVolumen))radioVolumen=0.45;
 let radioSilenciada=(localStorage.getItem('silph_radio_silenciada')==='true');
@@ -629,7 +641,51 @@ function mulberry32(s){return function(){s|=0;s=(s+0x6D2B79F5)|0;let t=Math.imul
 function ordenAleatorioConSemilla(lista,sem){let r=mulberry32(sem),c=lista.slice();for(let i=c.length-1;i>0;i--){let j=Math.floor(r()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}
 function obtenerListaCanciones(){if(!baseDatos.radio||!baseDatos.radio.canciones)return[];return Object.keys(baseDatos.radio.canciones).map(id=>({id,...baseDatos.radio.canciones[id]})).filter(c=>c.url&&c.duracion>0);}
 function calcularPistaActual(){const canciones=obtenerListaCanciones();if(!canciones.length)return null;const dur=canciones.reduce((a,c)=>a+c.duracion,0);if(dur<=0)return null;const sem=baseDatos.radio.semillaOrden||1,ini=baseDatos.radio.inicioEpoch||Date.now();let t=Math.max(0,(Date.now()-ini)/1000);const np=Math.floor(t/dur),pos=t%dur;const orden=ordenAleatorioConSemilla(canciones,sem+np*7919);let ac=0;for(const c of orden){if(pos<ac+c.duracion)return{cancion:c,offset:pos-ac};ac+=c.duracion;}return{cancion:orden[orden.length-1],offset:0};}
-function actualizarTextoRadioInicio(c){let b=document.getElementById('radio-now-playing-texto');if(b)b.textContent=c?`🎵 Estás escuchando "${c.nombre}" en Radio Pokeinomana`:'📻 Radio Pokeinomana sin canciones todavía.';}
+function actualizarTextoRadioInicio(c){
+    const wrap=document.getElementById('radio-now-playing-wrap');
+    if(!wrap)return;
+    const texto=c?`🎵 Estás escuchando "${c.nombre}" en Radio Pokeinomana`:'📻 Radio Pokeinomana sin canciones todavía.';
+    wrap.innerHTML=`<span class="rnp-item rnp-static">${escaparHTML(texto)}</span>`;
+    requestAnimationFrame(()=>{
+        const item=wrap.querySelector('.rnp-item');
+        if(!item)return;
+        if(item.scrollWidth>wrap.clientWidth+2){
+            const dur=Math.max(7,item.scrollWidth/26);
+            wrap.innerHTML=`<div class="radio-now-playing-track marquee" style="animation-duration:${dur}s"><span class="rnp-item">${escaparHTML(texto)}</span><span class="rnp-item">${escaparHTML(texto)}</span></div>`;
+        }
+    });
+}
+function actualizarEstadoBadgeRadio(activa,sinCanciones){
+    const b=document.getElementById('radio-estado-badge');
+    if(!b)return;
+    if(sinCanciones){b.textContent='📻 Sin canciones';b.className='radio-estado-badge radio-estado-off';return;}
+    if(activa){b.textContent='🔴 En vivo';b.className='radio-estado-badge radio-estado-on';}
+    else{b.textContent='⏸ Apagada';b.className='radio-estado-badge radio-estado-off';}
+}
+function inicializarAudioRadio(){
+    if(radioAudioEl)return;
+    radioAudioEl=document.getElementById('radio-player');
+    if(!radioAudioEl)return;
+    radioAudioEl.volume=radioSilenciada?0:radioVolumen;
+    radioAudioEl.addEventListener('ended',function(){radioCancionActualId=null;sincronizarRadio();});
+    radioAudioEl.addEventListener('playing',function(){const ec=document.getElementById('radio-ecualizador');if(ec)ec.classList.add('sonando');});
+    radioAudioEl.addEventListener('pause',function(){const ec=document.getElementById('radio-ecualizador');if(ec)ec.classList.remove('sonando');});
+}
+function dispararReintentoRadioTrasInteraccion(){
+    if(radioInteraccionPendiente)return;
+    radioInteraccionPendiente=true;
+    const reintentar=()=>{
+        radioInteraccionPendiente=false;
+        document.removeEventListener('click',reintentar);
+        document.removeEventListener('touchstart',reintentar);
+        document.removeEventListener('keydown',reintentar);
+        radioCancionActualId=null;
+        sincronizarRadio();
+    };
+    document.addEventListener('click',reintentar,{once:true});
+    document.addEventListener('touchstart',reintentar,{once:true});
+    document.addEventListener('keydown',reintentar,{once:true});
+}
 function reproducirAudioDesdeOffset(url, offset) {
     if (!radioAudioEl) return;
     // Limpiar listeners anteriores para no acumularlos
@@ -647,12 +703,9 @@ function reproducirAudioDesdeOffset(url, offset) {
         try { radioAudioEl.currentTime = offsetReal; } catch(e) {}
         const promesa = radioAudioEl.play();
         if (promesa !== undefined) {
-            promesa.catch(err => {
-                // Autoplay bloqueado: mostrar botón de activar
-                const btn = document.getElementById('radio-btn-activar');
-                if (btn) btn.style.display = 'block';
-                const ec = document.getElementById('radio-ecualizador');
-                if (ec) ec.classList.remove('sonando');
+            promesa.catch(() => {
+                // Autoplay bloqueado por el navegador: reintentar en la próxima interacción del usuario
+                dispararReintentoRadioTrasInteraccion();
             });
         }
     };
@@ -661,14 +714,55 @@ function reproducirAudioDesdeOffset(url, offset) {
     };
 }
 
-function sincronizarRadio(){const pista=calcularPistaActual();let btn=document.getElementById('radio-btn-activar'),ec=document.getElementById('radio-ecualizador');if(!pista){actualizarTextoRadioInicio(null);if(btn)btn.style.display='none';if(ec)ec.classList.remove('sonando');if(radioAudioEl)radioAudioEl.pause();return;}actualizarTextoRadioInicio(pista.cancion);if(!radioActivada){if(btn)btn.style.display='block';if(ec)ec.classList.remove('sonando');return;}if(btn)btn.style.display='none';if(ec)ec.classList.add('sonando');if(!radioAudioEl)return;if(radioCancionActualId!==pista.cancion.id){radioCancionActualId=pista.cancion.id;reproducirAudioDesdeOffset(pista.cancion.url,pista.offset);}else if(!radioAudioEl.paused&&Math.abs(radioAudioEl.currentTime-pista.offset)>4){try{radioAudioEl.currentTime=pista.offset;}catch(e){}}else if(radioAudioEl.paused&&radioAudioEl.src){radioAudioEl.play().catch(()=>{});}}
-window.activarRadioPokeinomana=function(){if(radioActivada)return;radioActivada=true;if(!radioAudioEl){radioAudioEl=document.getElementById('radio-player');radioAudioEl.volume=radioSilenciada?0:radioVolumen;radioAudioEl.addEventListener('ended',function(){radioCancionActualId=null;sincronizarRadio();});}let btn=document.getElementById('radio-btn-activar');if(btn)btn.style.display='none';reproducirSonido('exito');radioCancionActualId=null; // fuerza carga inmediata
-sincronizarRadio();if(!radioIntervaloSync)radioIntervaloSync=setInterval(sincronizarRadio,5000);};
+function sincronizarRadio(){
+    inicializarAudioRadio();
+    const pista=calcularPistaActual();
+    const ec=document.getElementById('radio-ecualizador');
+    if(!pista){
+        actualizarTextoRadioInicio(null);
+        if(ec)ec.classList.remove('sonando');
+        if(radioAudioEl)radioAudioEl.pause();
+        actualizarEstadoBadgeRadio(false,true);
+        return;
+    }
+    actualizarTextoRadioInicio(pista.cancion);
+    const activadaGlobal=!!(baseDatos.radio&&baseDatos.radio.activada);
+    if(!activadaGlobal){
+        if(ec)ec.classList.remove('sonando');
+        if(radioAudioEl)radioAudioEl.pause();
+        radioCancionActualId=null;
+        actualizarEstadoBadgeRadio(false,false);
+        return;
+    }
+    actualizarEstadoBadgeRadio(true,false);
+    if(!radioAudioEl)return;
+    if(radioCancionActualId!==pista.cancion.id){
+        radioCancionActualId=pista.cancion.id;
+        reproducirAudioDesdeOffset(pista.cancion.url,pista.offset);
+    }else if(radioAudioEl.paused&&radioAudioEl.src){
+        const p=radioAudioEl.play();
+        if(p!==undefined)p.catch(()=>{dispararReintentoRadioTrasInteraccion();});
+    }else if(!radioAudioEl.paused&&Math.abs(radioAudioEl.currentTime-pista.offset)>4){
+        try{radioAudioEl.currentTime=pista.offset;}catch(e){}
+    }
+}
+window.conmutarRadioGlobal=function(estado){
+    if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}
+    if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};
+    baseDatos.radio.activada=estado;
+    if(estado){
+        if(!baseDatos.radio.semillaOrden)baseDatos.radio.semillaOrden=Date.now();
+        if(!baseDatos.radio.inicioEpoch)baseDatos.radio.inicioEpoch=Date.now();
+    }
+    guardarBD();
+    reproducirSonido(estado?'exito':'cerrar');
+    mostrarNotificacion(estado?"Radio activada para todos los oyentes.":"Radio desactivada para todos.","exito","📡");
+};
 window.ajustarVolumenRadio=function(v){radioVolumen=Math.max(0,Math.min(1,parseFloat(v)));localStorage.setItem('silph_radio_volumen',String(radioVolumen));if(radioVolumen>0&&radioSilenciada){radioSilenciada=false;localStorage.setItem('silph_radio_silenciada','false');}if(radioAudioEl)radioAudioEl.volume=radioSilenciada?0:radioVolumen;let ic=document.getElementById('radio-icono-vol');if(ic)ic.textContent=radioSilenciada||radioVolumen===0?'🔇':(radioVolumen<0.5?'🔉':'🔊');};
 window.alternarSilencioRadio=function(){radioSilenciada=!radioSilenciada;localStorage.setItem('silph_radio_silenciada',String(radioSilenciada));if(radioAudioEl)radioAudioEl.volume=radioSilenciada?0:radioVolumen;let ic=document.getElementById('radio-icono-vol');if(ic)ic.textContent=radioSilenciada?'🔇':(radioVolumen<0.5?'🔉':'🔊');};
-window.subirCancionesRadio=async function(fileList){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let archivos=Array.from(fileList||[]);if(!archivos.length)return;let cajaEstado=document.getElementById('radio-subida-estado');for(const file of archivos){if(!file.type.startsWith('audio/'))continue;if(cajaEstado)cajaEstado.textContent=`Subiendo "${file.name}"...`;try{const ruta=`radio/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`,ar=storageRef(storage,ruta);await uploadBytes(ar,file);const url=await getDownloadURL(ar);const dur=await new Promise(res=>{let a=new Audio();a.preload='metadata';a.onloadedmetadata=()=>res(a.duration||180);a.onerror=()=>res(180);a.src=url;});let nid='song_'+Date.now()+Math.floor(Math.random()*1000);if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};baseDatos.radio.canciones[nid]={nombre:file.name.replace(/\.[^/.]+$/,''),url,duracion:Math.round(dur),ruta};if(!baseDatos.radio.semillaOrden)baseDatos.radio.semillaOrden=Date.now();if(!baseDatos.radio.inicioEpoch)baseDatos.radio.inicioEpoch=Date.now();guardarBD();}catch(err){mostrarNotificacion(`Error al subir "${file.name}".`,"error","⚠️");}}if(cajaEstado)cajaEstado.textContent='';reproducirSonido('exito');mostrarNotificacion("Canciones añadidas a Radio Pokeinomana.","exito","📻");renderizarListaRadioAdmin();};
+window.subirCancionesRadio=async function(fileList){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let archivos=Array.from(fileList||[]);if(!archivos.length)return;let cajaEstado=document.getElementById('radio-subida-estado');for(const file of archivos){if(!file.type.startsWith('audio/'))continue;if(cajaEstado)cajaEstado.textContent=`Subiendo "${file.name}"...`;try{const ruta=`radio/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`,ar=storageRef(storage,ruta);await uploadBytes(ar,file);const url=await getDownloadURL(ar);const dur=await new Promise(res=>{let a=new Audio();a.preload='metadata';a.onloadedmetadata=()=>res(a.duration||180);a.onerror=()=>res(180);a.src=url;});let nid='song_'+Date.now()+Math.floor(Math.random()*1000);if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};baseDatos.radio.canciones[nid]={nombre:file.name.replace(/\.[^/.]+$/,''),url,duracion:Math.round(dur),ruta};if(!baseDatos.radio.semillaOrden)baseDatos.radio.semillaOrden=Date.now();if(!baseDatos.radio.inicioEpoch)baseDatos.radio.inicioEpoch=Date.now();guardarBD();}catch(err){mostrarNotificacion(`Error al subir "${file.name}".`,"error","⚠️");}}if(cajaEstado)cajaEstado.textContent='';reproducirSonido('exito');mostrarNotificacion("Canciones añadidas a Radio Pokeinomana.","exito","📻");renderizarListaRadioAdmin();};
 window.eliminarCancionRadio=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar canción',descripcion:'Se borrará también el archivo de Firebase Storage.',textoConfirmar:'Eliminar',tipo:'peligro'});if(!cf)return;let c=baseDatos.radio.canciones[id];if(c&&c.ruta){try{await deleteObject(storageRef(storage,c.ruta));}catch(e){}}delete baseDatos.radio.canciones[id];guardarBD();mostrarNotificacion("Canción eliminada.","info","🗑️");renderizarListaRadioAdmin();};
-window.reiniciarOrdenRadio=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0};baseDatos.radio.semillaOrden=Date.now();baseDatos.radio.inicioEpoch=Date.now();guardarBD();reproducirSonido('exito');mostrarNotificacion("Orden reiniciado para todos los oyentes.","exito","🔀");};
+window.reiniciarOrdenRadio=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};baseDatos.radio.semillaOrden=Date.now();baseDatos.radio.inicioEpoch=Date.now();guardarBD();reproducirSonido('exito');mostrarNotificacion("Orden reiniciado para todos los oyentes.","exito","🔀");};
 function renderizarListaRadioAdmin(){let box=document.getElementById('radio-admin-lista');if(!box)return;let canciones=obtenerListaCanciones();if(!canciones.length){box.innerHTML='<div style="color:var(--txt-muted);font-size:11px;text-align:center;padding:14px;font-family:var(--font-display)">Sin canciones subidas todavía.</div>';return;}box.innerHTML='';canciones.forEach(c=>{let m=Math.floor(c.duracion/60),s=String(Math.round(c.duracion%60)).padStart(2,'0');box.innerHTML+=`<div class="admin-item-card"><button class="btn-del-item" onclick="eliminarCancionRadio('${c.id}')">✕</button><div style="color:var(--txt-primary);font-size:12px;font-weight:600">🎵 ${escaparHTML(c.nombre)}</div><div style="font-size:10px;color:var(--txt-muted);margin-top:3px;font-family:var(--font-display)">${m}:${s}</div></div>`;});}
 
 /* ═══ NOTIFICACIONES ═══ */
@@ -689,6 +783,8 @@ document.addEventListener('click',()=>document.querySelectorAll('.csel.open').fo
 document.addEventListener('DOMContentLoaded',()=>{
     const btn=document.getElementById('btn-sonido-toggle');
     if(btn){btn.textContent=sonidoActivo?'🔊':'🔇';btn.classList.toggle('muted',!sonidoActivo);}
+    inicializarAudioRadio();
+    if(!radioIntervaloSync)radioIntervaloSync=setInterval(sincronizarRadio,5000);
     const sl=document.getElementById('radio-vol-slider');
     if(sl){sl.value=radioVolumen;let ic=document.getElementById('radio-icono-vol');if(ic)ic.textContent=radioSilenciada?'🔇':(radioVolumen<0.5?'🔉':'🔊');}
     const fi=document.getElementById('radio-file-input');
@@ -708,8 +804,8 @@ function reanimarElemento(el){transicionarVista(el);}
 /* ═══ FIREBASE ═══ */
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};}
-    else{baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0}};set(ref(db,'silph_co_market'),baseDatos);}
+    if(data){baseDatos=data;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;}
+    else{baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false}};set(ref(db,'silph_co_market'),baseDatos);}
     sincronizarRadio();
     if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();actualizarInicioStats();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
@@ -811,7 +907,7 @@ window.actualizarPropertyProducto=function(id,prop,val){if(!userSesion||userSesi
 window.eliminarProductoMaster=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar producto',descripcion:'Esta acción no se puede deshacer.',textoConfirmar:'Eliminar',tipo:'peligro'});if(cf){baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id);guardarBD();mostrarNotificacion("Producto eliminado.","info","🗑️",null,true);}};
 function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();refrescarSelectsPersonalizados();}
 function renderizarAdminArena(){let box=document.getElementById('adm-arena-combates-activos');if(!box)return;box.innerHTML='';if(!baseDatos.arena||!Object.keys(baseDatos.arena).length){box.innerHTML='<div style="color:var(--txt-muted);font-size:10px;text-align:center;padding:10px;font-family:var(--font-display)">No hay combates activos.</div>';return;}Object.values(baseDatos.arena).forEach(c=>{if(c.estado==='resuelto')return;box.innerHTML+=`<div class="admin-arena-card"><div style="font-size:11px;color:var(--neon-arena);font-weight:700;margin-bottom:5px;font-family:var(--font-display)">${escaparHTML(c.descripcion)}</div><div style="font-size:10px;color:var(--txt-secondary);margin-bottom:7px"><span style="color:#60a5fa">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171">${escaparHTML(c.jugadorB.toUpperCase())}</span> — ${c.estado.toUpperCase()} — Bote: ${(c.boteA||0)+(c.boteB||0)} PF</div><div class="admin-btns-row">${c.estado==='abierto'?`<button class="btn-admin-sm packs" onclick="cerrarApuestasCombate('${c.id}')">🔒 Cerrar</button>`:''}<button class="btn-admin-sm legal" onclick="resolverCombateArena('${c.id}','A')">🏆 Gana ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-admin-sm danger" onclick="resolverCombateArena('${c.id}','B')">🏆 Gana ${escaparHTML(c.jugadorB.toUpperCase())}</button></div></div>`;});}
-function redibujarConsolaAdminMaster(){document.getElementById('chk-open-legal').checked=baseDatos.legalOpen!==false;document.getElementById('chk-open-pack').checked=baseDatos.packOpen!==false;document.getElementById('chk-open-illegal').checked=baseDatos.illegalOpen!==false;if(baseDatos.eventoSistema)document.getElementById('adm-evento-economico').value=baseDatos.eventoSistema;actualizarSelectorUsuariosBanco();renderizarAdminArena();renderizarAdminCamara();let al=document.getElementById('admin-inventario-global');if(!al)return;al.innerHTML='';baseDatos.productos.forEach(p=>{let esI=p.tienda==='illegal';al.innerHTML+=`<div class="admin-item-card"><button class="btn-del-item" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary);font-size:12px;font-weight:600;margin-bottom:6px">${p.icon} ${p.nombre} <span style="color:var(--txt-muted);font-size:10px">[${p.tienda.toUpperCase()}]</span></div><div class="admin-item-row"><div class="admin-field"><label>Coste</label><input type="number" value="${esI?p.precioPf:p.precio}" class="admin-input" style="margin-bottom:0;width:80px" oninput="actualizarPropertyProducto(${p.id},'${esI?'precioPf':'precio'}',this.value)"></div><div class="admin-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input" style="margin-bottom:0;width:70px" oninput="actualizarPropertyProducto(${p.id},'stock',this.value)"></div></div></div>`;});renderizarListaRadioAdmin();}
+function redibujarConsolaAdminMaster(){document.getElementById('chk-open-legal').checked=baseDatos.legalOpen!==false;document.getElementById('chk-open-pack').checked=baseDatos.packOpen!==false;document.getElementById('chk-open-illegal').checked=baseDatos.illegalOpen!==false;let chkRadio=document.getElementById('chk-radio-activada');if(chkRadio)chkRadio.checked=!!(baseDatos.radio&&baseDatos.radio.activada);if(baseDatos.eventoSistema)document.getElementById('adm-evento-economico').value=baseDatos.eventoSistema;actualizarSelectorUsuariosBanco();renderizarAdminArena();renderizarAdminCamara();let al=document.getElementById('admin-inventario-global');if(!al)return;al.innerHTML='';baseDatos.productos.forEach(p=>{let esI=p.tienda==='illegal';al.innerHTML+=`<div class="admin-item-card"><button class="btn-del-item" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary);font-size:12px;font-weight:600;margin-bottom:6px">${p.icon} ${p.nombre} <span style="color:var(--txt-muted);font-size:10px">[${p.tienda.toUpperCase()}]</span></div><div class="admin-item-row"><div class="admin-field"><label>Coste</label><input type="number" value="${esI?p.precioPf:p.precio}" class="admin-input" style="margin-bottom:0;width:80px" oninput="actualizarPropertyProducto(${p.id},'${esI?'precioPf':'precio'}',this.value)"></div><div class="admin-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input" style="margin-bottom:0;width:70px" oninput="actualizarPropertyProducto(${p.id},'stock',this.value)"></div></div></div>`;});renderizarListaRadioAdmin();}
 </script>
 </body>
-    </html>
+  </html>
