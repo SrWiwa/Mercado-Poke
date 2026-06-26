@@ -127,8 +127,8 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 @media(max-width:900px){.sidebar{transform:translateX(-240px);width:240px;box-shadow:none}.sidebar.open{transform:translateX(0);box-shadow:var(--shadow-xl)}.sidebar-close-btn{display:flex}.topbar{padding-left:16px;padding-right:16px}.btn-hamburguesa{display:flex}.main-content{margin-left:0;padding:16px}.dios-grid-2{grid-template-columns:1fr}.red-visor-grid{grid-template-columns:1fr}.inicio-stats-row{grid-template-columns:1fr 1fr}.tiendas-acceso-grid{grid-template-columns:1fr 1fr}.medallas-grid-outer{grid-template-columns:1fr}}
 @media(max-width:700px){.dios-grid-2{grid-template-columns:1fr}}
-@media(max-width:600px){.inicio-stats-row{grid-template-columns:1fr}.tiendas-acceso-grid{grid-template-columns:1fr}.items-grid{grid-template-columns:1fr 1fr}.arena-vs-row{gap:5px}.arena-apostar-row{flex-direction:column}.arena-input-apuesta{width:100%}.topbar-stat-divider{display:none}.topbar-resources{gap:8px}.topbar-stat .value{font-size:13px}.sac-tabla{grid-template-columns:1fr 1fr}.modal-box{padding:18px}.toast-container{right:8px;left:8px;max-width:none;width:auto}}
-@media(max-width:380px){.items-grid{grid-template-columns:1fr}.tienda-tabs{gap:5px}.tienda-tab{padding:7px 10px;font-size:9px}}
+@media(max-width:600px){.inicio-stats-row{grid-template-columns:1fr}.tiendas-acceso-grid{grid-template-columns:1fr}.items-grid{grid-template-columns:1fr 1fr}.arena-vs-row{gap:5px}.arena-apostar-row{flex-direction:column}.arena-input-apuesta{width:100%}.topbar-stat-divider{display:none}.topbar-resources{gap:8px}.topbar-stat .value{font-size:13px}.sac-tabla{grid-template-columns:1fr 1fr}.modal-box{padding:18px}.toast-container{right:8px;left:8px;max-width:none;width:auto}:root{--topbar-h:100px}.topbar{flex-wrap:wrap;align-content:center;row-gap:8px;padding:10px 12px}.topbar-left{order:1}.topbar-radio-mini{order:2}#btn-sonido-toggle{order:3}.topbar-gacha-btn{order:4;margin-left:auto;padding:7px 10px;font-size:9px}.topbar-resources{order:5;flex-basis:100%;justify-content:space-between}}
+@media(max-width:380px){.items-grid{grid-template-columns:1fr}.tienda-tabs{gap:5px}.tienda-tab{padding:7px 10px;font-size:9px}.topbar-resources{gap:5px}.topbar-stat{font-size:9px}.topbar-stat .value{font-size:12px}.topbar-gacha-btn{padding:6px 8px;font-size:8px}}
 
 /* ═══ CALCULADORA DE EFECTIVIDAD DE TIPOS ═══ */
 .tpk-widget, .tpk-widget *, .tpk-widget *::before, .tpk-widget *::after{box-sizing:border-box}
@@ -724,7 +724,7 @@ window.reproducirSonido=function(tipo){if(!sonidoActivo)return;switch(tipo){case
 window.alternarSonido=function(){sonidoActivo=!sonidoActivo;localStorage.setItem('silph_sonido_activo',sonidoActivo?'true':'false');const btn=document.getElementById('btn-sonido-toggle');if(btn){btn.textContent=sonidoActivo?'🔊':'🔇';btn.classList.toggle('muted',!sonidoActivo);}if(sonidoActivo)reproducirSonido('click');};
 
 /* ═══ RADIO ═══ */
-let radioAudioEl=null,radioCancionActualId=null,radioIntervaloSync=null,radioInteraccionPendiente=false;
+let radioAudioEl=null,radioCancionActualId=null,radioUltimoAnunciadoId=null,radioIntervaloSync=null,radioInteraccionPendiente=false;
 let radioVolumen=parseFloat(localStorage.getItem('silph_radio_volumen'));
 if(isNaN(radioVolumen))radioVolumen=0.45;
 let radioSilenciada=(localStorage.getItem('silph_radio_silenciada')==='true');
@@ -749,6 +749,11 @@ function mostrarToastRadioCancion(nombre){
         }
     });
     setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');setTimeout(()=>el.remove(),350);},6000);
+}
+function anunciarCancionRadioSiEsNueva(cancion){
+    if(!cancion||radioUltimoAnunciadoId===cancion.id)return;
+    radioUltimoAnunciadoId=cancion.id;
+    mostrarToastRadioCancion(cancion.nombre);
 }
 function actualizarEstadoBadgeRadio(activa,sinCanciones){
     const b=document.getElementById('radio-estado-badge');
@@ -781,7 +786,7 @@ function dispararReintentoRadioTrasInteraccion(){
     document.addEventListener('touchstart',reintentar,{once:true});
     document.addEventListener('keydown',reintentar,{once:true});
 }
-function reproducirAudioDesdeOffset(url, offset) {
+function reproducirAudioDesdeOffset(url, offset, cancion) {
     if (!radioAudioEl) return;
     // Limpiar listeners anteriores para no acumularlos
     radioAudioEl.oncanplay = null;
@@ -798,14 +803,18 @@ function reproducirAudioDesdeOffset(url, offset) {
         try { radioAudioEl.currentTime = offsetReal; } catch(e) {}
         const promesa = radioAudioEl.play();
         if (promesa !== undefined) {
-            promesa.catch(() => {
+            promesa.then(() => {
+                anunciarCancionRadioSiEsNueva(cancion);
+            }).catch(() => {
                 // Autoplay bloqueado por el navegador: reintentar en la próxima interacción del usuario
                 dispararReintentoRadioTrasInteraccion();
             });
+        } else {
+            anunciarCancionRadioSiEsNueva(cancion);
         }
     };
     radioAudioEl.onerror = function() {
-        radioCancionActualId = null; // forzar reintento en próxima sync
+        radioCancionActualId = null; // forzar reintento en próxima sync (sin volver a anunciar la misma canción)
     };
 }
 
@@ -831,11 +840,10 @@ function sincronizarRadio(){
     if(!radioAudioEl)return;
     if(radioCancionActualId!==pista.cancion.id){
         radioCancionActualId=pista.cancion.id;
-        reproducirAudioDesdeOffset(pista.cancion.url,pista.offset);
-        mostrarToastRadioCancion(pista.cancion.nombre);
+        reproducirAudioDesdeOffset(pista.cancion.url,pista.offset,pista.cancion);
     }else if(radioAudioEl.paused&&radioAudioEl.src){
         const p=radioAudioEl.play();
-        if(p!==undefined)p.catch(()=>{dispararReintentoRadioTrasInteraccion();});
+        if(p!==undefined)p.then(()=>{anunciarCancionRadioSiEsNueva(pista.cancion);}).catch(()=>{dispararReintentoRadioTrasInteraccion();});
     }else if(!radioAudioEl.paused&&Math.abs(radioAudioEl.currentTime-pista.offset)>4){
         try{radioAudioEl.currentTime=pista.offset;}catch(e){}
     }
