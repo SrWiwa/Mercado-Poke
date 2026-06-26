@@ -53,6 +53,23 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .mochila-bar{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.mochila-label{font-size:10px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;flex-shrink:0}.mochila-items-wrap{display:flex;gap:7px;flex-wrap:wrap;flex:1}.mochila-tag{background:var(--bg-overlay);border:1px solid var(--borde);border-radius:99px;padding:5px 10px;font-size:11px;display:flex;align-items:center;gap:7px;transition:border-color .15s}.mochila-tag:hover{border-color:var(--borde-hover)}
 .mochila-tag-pack{border-radius:var(--r-md);align-items:flex-start;padding:7px 10px}
 .mochila-tag-desc{font-size:9.5px;color:var(--txt-muted);font-style:italic;font-family:var(--font-body);max-width:240px;line-height:1.3}.btn-usar{background:rgba(16,185,129,.1);color:var(--neon-legal);border:1px solid rgba(16,185,129,.25);padding:2px 8px;border-radius:99px;font-size:9px;font-weight:700;font-family:var(--font-display);cursor:pointer;letter-spacing:.3px;transition:all .15s}.btn-usar:hover{background:var(--neon-legal);color:#000}
+
+/* ═══ ACTIVIDAD RECIENTE GLOBAL ═══ */
+.actividad-en-vivo{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;color:var(--neon-legal);flex-shrink:0}
+.actividad-en-vivo-dot{width:6px;height:6px;border-radius:50%;background:var(--neon-legal);box-shadow:0 0 6px var(--neon-legal);animation:actividadPulso 1.6s ease-in-out infinite}
+@keyframes actividadPulso{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+.actividad-feed{display:flex;flex-direction:column;gap:8px;max-height:560px;overflow-y:auto;padding-right:3px}
+.actividad-fila{display:flex;gap:10px;background:var(--bg-elevated);border:1px solid var(--borde);border-left:3px solid var(--borde);border-radius:var(--r-md);padding:10px 12px;transition:border-color .15s ease,transform .15s ease}
+.actividad-fila:hover{border-color:var(--borde-hover);transform:translateX(2px)}
+.actividad-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:11px;font-weight:900;border:1.5px solid;flex-shrink:0;letter-spacing:.2px}
+.actividad-cuerpo{min-width:0;flex:1}
+.actividad-cabecera{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:3px}
+.actividad-jugador{font-family:var(--font-display);font-size:11px;font-weight:800;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actividad-tiempo{font-size:9px;color:var(--txt-muted);font-family:var(--font-display);white-space:nowrap;flex-shrink:0}
+.actividad-texto{font-size:12px;color:var(--txt-secondary);line-height:1.45;word-break:break-word}
+.actividad-empty{text-align:center;padding:40px 20px;color:var(--txt-muted);font-size:12px;font-family:var(--font-display)}
+.actividad-feed::-webkit-scrollbar{width:6px}
+.actividad-feed::-webkit-scrollbar-thumb{background:var(--borde-hover);border-radius:99px}
 .red-select-wrap{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:18px}.red-select-label{font-size:10px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;display:block}
 #red-select-jugador{background:var(--bg-card);color:var(--neon-legal);border:1px solid rgba(16,185,129,.3);padding:10px 14px;border-radius:var(--r-md);font-family:var(--font-display);font-size:12px;font-weight:700;width:100%;max-width:360px;cursor:pointer;-webkit-appearance:none;appearance:none}#red-select-jugador:focus{outline:none}
 .red-visor-grid{display:grid;grid-template-columns:250px 1fr;gap:14px}.rival-perfil-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px;height:fit-content}.rival-nombre{font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--blanco);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}.rival-stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--borde);font-size:12px}.rival-stat-row:last-child{border-bottom:none}.rival-stat-label{color:var(--txt-secondary)}.rival-stat-value{font-weight:700;font-family:var(--font-display);font-size:12px}
@@ -278,8 +295,11 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
     <section id="section-inicio" class="page-section active">
       <div class="section-header"><div class="section-title">Inicio</div><div class="section-subtitle">Bienvenido a la Red de Intercambio Comercial</div></div>
       <div class="card">
-        <div class="card-title">📰 Actividad Reciente de la Red</div>
-        <div id="inicio-actividad" style="color:var(--txt-muted);font-size:12px;font-family:var(--font-display)">Sin actividad reciente.</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div class="card-title" style="margin-bottom:0">📰 Actividad Reciente de la Red</div>
+          <span class="actividad-en-vivo"><span class="actividad-en-vivo-dot"></span>EN VIVO</span>
+        </div>
+        <div id="inicio-actividad" class="actividad-feed"><div class="actividad-empty">Sin actividad reciente.</div></div>
       </div>
     </section>
     <!-- TIENDAS -->
@@ -1086,16 +1106,44 @@ window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySele
 window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;sessionStorage.setItem('silph_user_sesion',id);if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],showdownEquipos:Array(10).fill("Sin datos"),vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();};
 window.cerrarSesionOperador=function(){reproducirSonido('puerta_cerrar');userSesion=null;sessionStorage.removeItem('silph_user_sesion');document.getElementById('app-shell').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('login-screen').classList.remove('fade-out');document.getElementById('login-nombre').value='';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";cerrarDrawer();};
 function actualizarComprasPorTiempo(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ahora=Date.now(),tr=ahora-u.ultimaRecarga;if(tr>=MS_EN_6_HORAS){let cg=Math.floor(tr/MS_EN_6_HORAS);u.comprasDisponibles=Math.min(MAX_COMPRAS,u.comprasDisponibles+cg);u.ultimaRecarga=u.ultimaRecarga+(cg*MS_EN_6_HORAS);guardarBD();}}
+const ACTIVIDAD_PALETA=['#10b981','#f59e0b','#a855f7','#3b82f6','#f97316','#ec4899','#06b6d4','#84cc16','#ef4444','#8b5cf6','#14b8a6','#eab308'];
+function colorParaJugador(id){
+    let s=(id||'?').toUpperCase(),h=0;
+    for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}
+    return ACTIVIDAD_PALETA[h%ACTIVIDAD_PALETA.length];
+}
+function formatoTiempoRelativoActividad(ts){
+    const m=/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})$/.exec(ts||'');
+    if(!m)return ts||'';
+    const d=new Date(+m[3],+m[2]-1,+m[1],+m[4],+m[5],+m[6]);
+    const diff=Math.max(0,Math.floor((Date.now()-d.getTime())/1000));
+    if(diff<60)return 'justo ahora';
+    if(diff<3600)return `hace ${Math.floor(diff/60)} min`;
+    if(diff<86400)return `hace ${Math.floor(diff/3600)} h`;
+    if(diff<172800)return 'ayer';
+    return `${m[1]}/${m[2]}`;
+}
 function renderizarActividadGlobalInicio(){
     let ab=document.getElementById('inicio-actividad');
     if(!ab)return;
     let feed=baseDatos.actividadGlobal||[];
     let rec=feed.slice(-15).reverse();
     if(!rec.length){
-        ab.innerHTML='<span style="color:var(--txt-muted);font-size:12px;font-family:var(--font-display)">Sin actividad reciente.</span>';
+        ab.innerHTML='<div class="actividad-empty">Sin actividad reciente.</div>';
         return;
     }
-    ab.innerHTML=rec.map(l=>`<div style="padding:8px 0;border-bottom:1px solid var(--borde)"><div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:2px">📅 ${escaparHTML(l.timestamp)} · <span style="color:var(--neon-packs);font-weight:700">${escaparHTML((l.jugador||'?').toUpperCase())}</span></div><div style="font-size:12px;color:var(--txt-secondary)">${escaparHTML(l.texto)}</div></div>`).join('');
+    ab.innerHTML=rec.map(l=>{
+        const jugador=(l.jugador||'?').toUpperCase();
+        const color=colorParaJugador(l.jugador);
+        const inicial=jugador.slice(0,2);
+        return `<div class="actividad-fila" style="border-left-color:${color}">
+            <div class="actividad-avatar" style="background:${color}22;color:${color};border-color:${color}66">${escaparHTML(inicial)}</div>
+            <div class="actividad-cuerpo">
+                <div class="actividad-cabecera"><span class="actividad-jugador" style="color:${color}">${escaparHTML(jugador)}</span><span class="actividad-tiempo">${escaparHTML(formatoTiempoRelativoActividad(l.timestamp))}</span></div>
+                <div class="actividad-texto">${escaparHTML(l.texto)}</div>
+            </div>
+        </div>`;
+    }).join('');
 }
 function refrescarPantallaGamer(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];document.getElementById('usr-dinero').textContent=u.dinero;document.getElementById('usr-pf').textContent=u.pf;document.getElementById('usr-compras').textContent=`${u.comprasDisponibles}/${MAX_COMPRAS}`;let va=u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;let tv=document.getElementById('usr-vidas-top');if(tv)tv.textContent=`${va}/${vt}`;let ib=document.getElementById('lista-inventario');ib.innerHTML='';let items=u.inventario?u.inventario.filter(i=>i.uid!=="init"):[];if(!items.length){ib.innerHTML='<span style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display)">Vacía</span>';}else{items.forEach(i=>{let descHtml=i.desc?`<div class="mochila-tag-desc">🎁 ${escaparHTML(i.desc)}</div>`:'';ib.innerHTML+=`<div class="mochila-tag${i.desc?' mochila-tag-pack':''}" title="Adquirido: ${escaparHTML(i.fecha)}${i.desc?' — Contiene: '+escaparHTML(i.desc):''}"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span>${escaparHTML(i.icon)||'📦'} ${escaparHTML(i.nombre)}</span>${descHtml}</div><button class="btn-usar" onclick="consumirObjetoMochilaGamer('${i.uid}','${escaparHTML(i.nombre)}','${escaparHTML(i.icon)||'📦'}')">Usar</button></div>`;});}let rs=document.getElementById('red-select-jugador');if(rs){let cr=rs.value;rs.innerHTML='<option value="">-- SELECCIONAR RIVAL --</option>';Object.keys(baseDatos.jugadores).forEach(id=>{rs.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;});if(cr)rs.value=cr;if(rs.__cselRefrescar)rs.__cselRefrescar();}renderInitializeLoaders();renderizarActividadGlobalInicio();}
 
