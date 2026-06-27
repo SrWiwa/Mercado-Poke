@@ -298,6 +298,7 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span> Eventos</div>
       <div class="nav-section-label">Personal</div>
       <div class="nav-item" id="nav-perfil" onclick="navegarA('perfil')"><span class="nav-icon">👤</span> Perfil</div>
+      <div class="nav-item" id="nav-hall-of-fame" onclick="navegarA('hall-of-fame')"><span class="nav-icon">✨</span> Hall of Fame</div>
       <div class="nav-item nav-item-danger" onclick="cerrarSesionOperador()" style="margin-top:6px"><span class="nav-icon">🔓</span> Cerrar Sesión</div>
       <div class="nav-item nav-item-dios" id="nav-admin" onclick="navegarA('admin')" style="display:none;margin-top:6px"><span class="nav-icon">🧿</span> Modo Dios</div>
     </nav>
@@ -528,26 +529,62 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
             <div class="torneos-subtexto">Campeonatos conquistados en la liga</div>
           </div>
         </div>
-        <!-- HALL OF FAME -->
-        <div id="hof-block" style="margin-top:18px;display:none">
-          <div style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--neon-packs);margin-bottom:12px;text-align:center">✨ Hall of Fame ✨</div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-            <div class="medallas-card" style="text-align:center;padding:14px 10px;border-color:rgba(245,158,11,.25)">
-              <div style="font-size:28px;margin-bottom:6px">🎖️</div>
-              <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--neon-packs);margin-bottom:6px">Campeón Torneos</div>
-              <div id="hof-torneos" style="font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco)">—</div>
+        <!-- MEJOR POKEMON DEL LOCKE -->
+        <div class="card" style="margin-top:18px">
+          <div class="card-title">⭐ Mi Mejor Pokémon del Locke</div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:14px">El compañero que más te marcó en esta run. Aparecerá en el Hall of Fame.</div>
+          <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+            <div id="mipoke-img-wrap" style="flex-shrink:0;width:96px;height:96px;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;overflow:hidden">
+              <img id="mipoke-img" src="" alt="" style="width:96px;height:96px;image-rendering:pixelated;display:none">
+              <span id="mipoke-img-placeholder" style="font-size:36px;opacity:.3">❓</span>
             </div>
-            <div class="medallas-card" style="text-align:center;padding:14px 10px;border-color:rgba(239,68,68,.2)">
-              <div style="font-size:28px;margin-bottom:6px">❤️</div>
-              <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#f87171;margin-bottom:6px">Campeón Por Vidas</div>
-              <div id="hof-vidas" style="font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco)">—</div>
-            </div>
-            <div class="medallas-card" style="text-align:center;padding:14px 10px;border-color:rgba(245,197,24,.25);background:linear-gradient(135deg,rgba(245,197,24,.04),transparent)">
-              <div style="font-size:28px;margin-bottom:6px">👑</div>
-              <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--amarillo);margin-bottom:6px">Campeón Finalísima</div>
-              <div id="hof-finalísima" style="font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco)">—</div>
+            <div style="flex:1;min-width:180px">
+              <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Buscar Pokémon</label>
+              <div style="position:relative;margin-bottom:8px">
+                <input id="mipoke-search" class="admin-input" placeholder="Escribe el nombre en inglés..." style="font-family:var(--font-body);margin-bottom:0;width:100%" oninput="mipokeAutocompletar()" autocomplete="off" spellcheck="false">
+                <div id="mipoke-sugerencias" style="position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:180px;overflow-y:auto;display:none"></div>
+              </div>
+              <input id="mipoke-nombre" type="hidden" value="">
+              <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Mote (opcional)</label>
+              <input id="mipoke-mote" class="admin-input" placeholder="Ej: Infernal, El Elegido..." style="font-family:var(--font-body);margin-bottom:8px">
+              <button class="btn-admin packs" style="width:100%" onclick="guardarMejorPokemon()">⭐ Guardar en el Hall of Fame</button>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+    <!-- HALL OF FAME -->
+    <section id="section-hall-of-fame" class="page-section">
+      <div class="section-header"><div class="section-title">✨ Hall of Fame</div><div class="section-subtitle">Los mejores de la Red Comercial</div></div>
+
+      <!-- CAMPEONES -->
+      <div class="card" style="margin-bottom:22px">
+        <div class="card-title" style="color:var(--amarillo)">🏆 Campeones del Locke</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="hof-campeones-grid">
+          <div class="medallas-card" style="text-align:center;padding:18px 12px;border-color:rgba(245,158,11,.25)">
+            <div style="font-size:36px;margin-bottom:8px">🎖️</div>
+            <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--neon-packs);margin-bottom:8px">Campeón Torneos</div>
+            <div id="hof-torneos" style="font-family:var(--font-display);font-size:15px;font-weight:900;color:var(--blanco)">—</div>
+          </div>
+          <div class="medallas-card" style="text-align:center;padding:18px 12px;border-color:rgba(239,68,68,.2)">
+            <div style="font-size:36px;margin-bottom:8px">❤️</div>
+            <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#f87171;margin-bottom:8px">Campeón Por Vidas</div>
+            <div id="hof-vidas" style="font-family:var(--font-display);font-size:15px;font-weight:900;color:var(--blanco)">—</div>
+          </div>
+          <div class="medallas-card" style="text-align:center;padding:18px 12px;border-color:rgba(245,197,24,.3);background:linear-gradient(135deg,rgba(245,197,24,.05),transparent)">
+            <div style="font-size:36px;margin-bottom:8px">👑</div>
+            <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--amarillo);margin-bottom:8px">Campeón Finalísima</div>
+            <div id="hof-finalísima" style="font-family:var(--font-display);font-size:15px;font-weight:900;color:var(--blanco)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEJORES POKÉMON -->
+      <div class="card">
+        <div class="card-title" style="color:var(--neon-packs)">⭐ Mejores Pokémon del Locke</div>
+        <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:16px">El compañero más memorable de cada entrenador en su run.</div>
+        <div id="hof-pokemon-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+          <div style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display);text-align:center;padding:30px;grid-column:1/-1">Todavía no hay entrenadores en el Hall of Fame.</div>
         </div>
       </div>
     </section>
@@ -1430,8 +1467,154 @@ function renderizarListaRadioAdmin(){let box=document.getElementById('radio-admi
   document.addEventListener('DOMContentLoaded', function(){
     var inp = document.getElementById('pgl-input');
     if(inp) inp.addEventListener('keydown', function(e){ if(e.key==='Enter') window.pglConsultar(); });
+    // Cerrar sugerencias mipoke al clickar fuera
+    document.addEventListener('click', function(e){
+      if(!e.target.closest('#mipoke-search') && !e.target.closest('#mipoke-sugerencias')){
+        var s = document.getElementById('mipoke-sugerencias');
+        if(s) s.style.display='none';
+      }
+    });
+    // Enter en buscador mipoke selecciona el primer resultado
+    var msin = document.getElementById('mipoke-search');
+    if(msin) msin.addEventListener('keydown', function(e){
+      if(e.key==='Enter'){
+        var s = document.getElementById('mipoke-sugerencias');
+        if(s && s.firstChild) s.firstChild.click();
+      }
+    });
   });
 })();
+
+
+
+/* ═══ HALL OF FAME — MEJOR POKÉMON ═══ */
+/* ── MEJOR POKÉMON: nombres para autocompletar ── */
+var _mipokeNombres = [];
+(function(){
+  fetch('https://pokeapi.co/api/v2/pokemon?limit=2000&offset=0')
+    .then(function(r){return r.json();})
+    .then(function(d){ _mipokeNombres = d.results.map(function(p){return p.name;}); })
+    .catch(function(){});
+})();
+
+window.mipokeAutocompletar = function(){
+  var val = (document.getElementById('mipoke-search').value||'').trim().toLowerCase().replace(/\s+/g,'-');
+  var sug = document.getElementById('mipoke-sugerencias');
+  if(val.length < 2){ sug.style.display='none'; return; }
+  var matches = _mipokeNombres.filter(function(n){ return n.indexOf(val)!==-1; }).slice(0,8);
+  if(!matches.length){ sug.style.display='none'; return; }
+  sug.innerHTML = matches.map(function(m){
+    var label = m.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+    return '<div onclick="mipokeSeleccionar(\''+m+'\',\''+label+'\')" '
+      +'style="padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)" '
+      +'onmouseover="this.style.background=\'var(--bg-overlay)\'" onmouseout="this.style.background=\'\'">'+label+'</div>';
+  }).join('');
+  sug.style.display = 'block';
+};
+
+window.mipokeSeleccionar = function(apiName, label){
+  document.getElementById('mipoke-search').value = label;
+  document.getElementById('mipoke-nombre').value  = apiName;
+  document.getElementById('mipoke-sugerencias').style.display = 'none';
+  // Cargar imagen desde PokeAPI
+  var img = document.getElementById('mipoke-img');
+  var ph  = document.getElementById('mipoke-img-placeholder');
+  img.style.display = 'none'; ph.style.display = '';
+  fetch('https://pokeapi.co/api/v2/pokemon/'+apiName)
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var sprite = (d.sprites&&d.sprites.other&&d.sprites.other['official-artwork']&&d.sprites.other['official-artwork'].front_default)
+        || d.sprites.front_default || '';
+      if(sprite){ img.src=sprite; img.style.display='block'; ph.style.display='none'; }
+    }).catch(function(){});
+};
+
+window.guardarMejorPokemon = function(){
+  if(!userSesion||!baseDatos.jugadores[userSesion])return;
+  var apiName = document.getElementById('mipoke-nombre').value.trim();
+  var label   = document.getElementById('mipoke-search').value.trim();
+  if(!apiName){mostrarNotificacion('Selecciona un Pokémon de la lista.','error','⭐');return;}
+  var mote = document.getElementById('mipoke-mote').value.trim();
+  var img  = document.getElementById('mipoke-img');
+  var sprite = img.src||'';
+  baseDatos.jugadores[userSesion].mejorPokemon = {nombre:label, apiName:apiName, mote:mote, sprite:sprite};
+  guardarBD();
+  renderizarHofPokemon();
+  mostrarNotificacion('⭐ '+label+' en el Hall of Fame.','exito','⭐','Guardado');
+};
+
+function cargarMejorPokemonEnPerfil(){
+  if(!userSesion||!baseDatos.jugadores[userSesion])return;
+  var mp = baseDatos.jugadores[userSesion].mejorPokemon||{};
+  var elS = document.getElementById('mipoke-search');
+  var elN = document.getElementById('mipoke-nombre');
+  var elM = document.getElementById('mipoke-mote');
+  if(elS) elS.value = mp.nombre||'';
+  if(elN) elN.value = mp.apiName||'';
+  if(elM) elM.value = mp.mote||'';
+  var img = document.getElementById('mipoke-img');
+  var ph  = document.getElementById('mipoke-img-placeholder');
+  if(img && mp.sprite){ img.src=mp.sprite; img.style.display='block'; if(ph)ph.style.display='none'; }
+  else if(img){ img.style.display='none'; if(ph)ph.style.display=''; }
+}
+
+function renderizarHofPokemon(){
+  var grid = document.getElementById('hof-pokemon-grid');
+  if(!grid) return;
+  var jugadores = baseDatos.jugadores||{};
+  var entradas = [];
+  Object.keys(jugadores).forEach(function(id){
+    var u = jugadores[id];
+    if(u.mejorPokemon && u.mejorPokemon.nombre) entradas.push({id:id, mp:u.mejorPokemon});
+  });
+  if(!entradas.length){
+    grid.innerHTML='<div style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display);text-align:center;padding:30px;grid-column:1/-1">Todavía no hay entrenadores en el Hall of Fame.</div>';
+    return;
+  }
+  var color = window.colorParaJugador || function(){ return 'var(--neon-packs)'; };
+  grid.innerHTML = entradas.map(function(e){
+    var mp = e.mp;
+    var c  = color(e.id);
+    var imgHtml = mp.sprite
+      ? '<img src="'+mp.sprite+'" alt="'+escaparHTML(mp.nombre)+'" style="width:80px;height:80px;image-rendering:pixelated;display:block;margin:0 auto 6px">'
+      : '<div style="width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:36px;opacity:.3;margin:0 auto 6px">❓</div>';
+    var moteHtml = mp.mote ? '<div style="color:'+c+';font-size:10px;font-family:var(--font-display);font-weight:700;margin-top:2px">&ldquo;'+escaparHTML(mp.mote)+'&rdquo;</div>' : '';
+    return '<div class="medallas-card" style="border-top:3px solid '+c+';padding:14px;border-radius:var(--r-lg);text-align:center">'
+      +'<div style="font-size:9px;font-family:var(--font-display);font-weight:700;color:'+c+';text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">'+escaparHTML(e.id.toUpperCase())+'</div>'
+      +imgHtml
+      +'<div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:var(--blanco)">'+escaparHTML(mp.nombre)+'</div>'
+      +moteHtml
+      +'</div>';
+  }).join('');
+}
+
+/* ── renderizarHallOfFame actualizado para incluir Pokémon ── */
+function renderizarHallOfFame(){
+  var c = (baseDatos && baseDatos.campeones) || {};
+  var t  = c.torneos    || '';
+  var v  = c.vidas      || '';
+  var f  = c['finalísima'] || c.finalísima || '';
+
+  var elT = document.getElementById('hof-torneos');
+  var elV = document.getElementById('hof-vidas');
+  var elF = document.getElementById('hof-finalísima');
+  if(elT) elT.textContent = t ? t.toUpperCase() : '—';
+  if(elV) elV.textContent = v ? v.toUpperCase() : '—';
+  if(elF) elF.textContent = f ? f.toUpperCase() : '—';
+
+  // Selectores admin
+  var sT = document.getElementById('adm-campeon-torneos');
+  var sV = document.getElementById('adm-campeon-vidas');
+  var sF = document.getElementById('adm-campeon-finalísima');
+  if(sT && t) sT.value = t;
+  if(sV && v) sV.value = v;
+  if(sF && f) sF.value = f;
+
+  renderizarHofPokemon();
+}
+
+
+
 
 
 /* ═══ CAMPEONES / HALL OF FAME ═══ */
@@ -1448,52 +1631,9 @@ window.guardarCampeones = function(){
   mostrarNotificacion('Hall of Fame actualizado.','exito','🏆');
 };
 
-function renderizarHallOfFame(){
-  var c = (baseDatos && baseDatos.campeones) || {};
-  var t  = c.torneos    || '';
-  var v  = c.vidas      || '';
-  var f  = c.finalísima || '';
 
-  // Bloque en perfil
-  var blk = document.getElementById('hof-block');
-  if(blk) blk.style.display = (t||v||f) ? 'block' : 'none';
 
-  var elT = document.getElementById('hof-torneos');
-  var elV = document.getElementById('hof-vidas');
-  var elF = document.getElementById('hof-finalísima');
-  if(elT) elT.textContent = t ? t.toUpperCase() : '—';
-  if(elV) elV.textContent = v ? v.toUpperCase() : '—';
-  if(elF) elF.textContent = f ? f.toUpperCase() : '—';
 
-  // Selectores admin (si están cargados)
-  var sT = document.getElementById('adm-campeon-torneos');
-  var sV = document.getElementById('adm-campeon-vidas');
-  var sF = document.getElementById('adm-campeon-finalísima');
-  if(sT && t) sT.value = t;
-  if(sV && v) sV.value = v;
-  if(sF && f) sF.value = f;
-}
-
-function poblarSelectoresCampeones(){
-  var ids = Object.keys((baseDatos && baseDatos.jugadores) || {});
-  var c   = (baseDatos && baseDatos.campeones) || {};
-  ['adm-campeon-torneos','adm-campeon-vidas','adm-campeon-finalísima'].forEach(function(sid, i){
-    var el = document.getElementById(sid);
-    if(!el) return;
-    var val = [c.torneos, c.vidas, c.finalísima][i] || '';
-    el.innerHTML = '<option value="">— Sin campeón —</option>' +
-      ids.map(function(id){ return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>'; }).join('');
-  });
-}
-
-// Enganchar en cambiarAdminTab
-(function(){
-  var _orig = window.cambiarAdminTab;
-  window.cambiarAdminTab = function(tab){
-    _orig(tab);
-    if(tab === 'campeones') poblarSelectoresCampeones();
-  };
-})();
 
 /* ═══ NOTIFICACIONES ═══ */
 window.mostrarNotificacion=function(texto,tipo,icono,titulo,sinSonido){tipo=tipo||'info';icono=icono||({exito:'✅',error:'⛔',info:'ℹ️',pf:'🔮',sacrificio:'🔥'}[tipo]||'✅');let cont=document.getElementById('toast-container');if(!cont)return;let el=document.createElement('div');el.className=`toast tipo-${tipo}`;el.innerHTML=`<span class="toast-icon">${icono}</span><div>${titulo?`<div class="toast-titulo">${escaparHTML(titulo)}</div>`:''}<div class="toast-texto">${escaparHTML(texto)}</div></div>`;cont.appendChild(el);requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));if(!sinSonido)reproducirSonido(tipo==='error'?'error':(tipo==='exito'?'exito':'click'));setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');setTimeout(()=>el.remove(),350);},3800);};
@@ -1543,7 +1683,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
 function guardarBD(){set(ref(db,'silph_co_market'),baseDatos);}
 
 /* ═══ NAVEGACIÓN ═══ */
-window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();cerrarDrawer();};
+window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();}if(s==='perfil'){cargarMejorPokemonEnPerfil();}cerrarDrawer();};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();};
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
 window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);};
@@ -1634,7 +1774,7 @@ function inyectarEntradaDiarioAutomatica(txt){if(!userSesion||!baseDatos.jugador
 function inyectarEntradaDiarioAutomaticaPara(uid,txt){if(!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid],d=new Date();let ts=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;if(!u.diarioLogs)u.diarioLogs=[];u.diarioLogs.push({timestamp:ts,text:txt,texto:txt});registrarActividadGlobal(uid,txt,ts);}
 
 /* ═══ PERFIL ═══ */
-function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();renderizarHallOfFame();}
+function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();cargarMejorPokemonEnPerfil();}
 function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}">${icon}</div>`;}box.innerHTML=html;}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
