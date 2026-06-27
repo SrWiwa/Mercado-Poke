@@ -703,31 +703,23 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
           <div style="display:flex;flex-direction:column;gap:14px">
             <div>
               <label style="font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">🎖️ Campeón Torneos</label>
-              <div style="display:flex;gap:8px">
-                <select id="adm-campeon-torneos" class="admin-select" style="margin-bottom:0;flex:1"><option value="">— Sin campeón —</option></select>
-                <button class="btn-admin packs" style="flex-shrink:0;white-space:nowrap" onclick="guardarCampeones()">Guardar</button>
-              </div>
+              <select id="adm-campeon-torneos" class="admin-select" style="margin-bottom:0"><option value="">— Sin campeón —</option></select>
               <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)">Ganador del mayor número de torneos.</div>
             </div>
             <hr class="admin-hr" style="margin:2px 0">
             <div>
               <label style="font-size:9px;color:#f87171;font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">❤️ Campeón Por Vidas</label>
-              <div style="display:flex;gap:8px">
-                <select id="adm-campeon-vidas" class="admin-select" style="margin-bottom:0;flex:1"><option value="">— Sin campeón —</option></select>
-                <button class="btn-admin danger" style="flex-shrink:0;white-space:nowrap" onclick="guardarCampeones()">Guardar</button>
-              </div>
+              <select id="adm-campeon-vidas" class="admin-select" style="margin-bottom:0"><option value="">— Sin campeón —</option></select>
               <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)">Entrenador con más vidas al final del Nuzlocke.</div>
             </div>
             <hr class="admin-hr" style="margin:2px 0">
             <div>
               <label style="font-size:9px;color:var(--amarillo);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">👑 Campeón Finalísima</label>
-              <div style="display:flex;gap:8px">
-                <select id="adm-campeon-finalísima" class="admin-select" style="margin-bottom:0;flex:1"><option value="">— Sin campeón —</option></select>
-                <button class="btn-admin" style="flex-shrink:0;white-space:nowrap;background:rgba(245,197,24,.1);color:var(--amarillo);border-color:rgba(245,197,24,.3)" onclick="guardarCampeones()">Guardar</button>
-              </div>
+              <select id="adm-campeon-finalísima" class="admin-select" style="margin-bottom:0"><option value="">— Sin campeón —</option></select>
               <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)">Vencedor absoluto de la Finalísima.</div>
             </div>
           </div>
+          <button class="btn-admin packs" style="width:100%;margin-top:6px" onclick="guardarCampeones()">💾 Guardar Campeones</button>
           <div id="adm-campeones-estado" style="margin-top:14px;font-size:10px;font-family:var(--font-display);color:var(--neon-legal);min-height:16px;text-align:center"></div>
         </div>
       </div>
