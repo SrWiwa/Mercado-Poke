@@ -244,6 +244,11 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .tpk-chart-legend span{display:inline-flex;align-items:center;gap:5px}
 .tpk-legend-dot{width:10px;height:10px;border-radius:3px;display:inline-block;border:1px solid var(--borde)}
 @media(max-width:760px){.calculadora-layout>.tpk-widget{flex:1 1 100%;max-width:none}.tpk-chart-card{flex:1 1 100%}.tpk-chart-table th,.tpk-chart-table td{width:26px;min-width:26px;height:26px;font-size:11px}}
+.nl-radio-label{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r-md);border:1px solid var(--borde);cursor:pointer;font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--txt-secondary);transition:all .15s}
+.nl-radio-label:has(input:checked){border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.08);color:var(--blanco)}
+.nl-radio-label input{accent-color:#f87171}
+body.tema-shinylocke{--neon-packs:#c084fc;--neon-legal:#a78bfa;--neon-ilegal:#e879f9}
+body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97316}
 </style>
 </head>
 <body>
@@ -557,6 +562,19 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
     <section id="section-hall-of-fame" class="page-section">
       <div class="section-header"><div class="section-title">✨ Hall of Fame</div><div class="section-subtitle">Los mejores de la Red Comercial</div></div>
 
+      <!-- BANNER LOCKE ACTIVO -->
+      <div id="hof-locke-banner" style="display:none;margin-bottom:22px">
+        <div style="border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--hof-color,var(--borde));background:linear-gradient(135deg,var(--hof-bg,rgba(99,102,241,.06)),transparent);padding:20px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <div id="hof-locke-icon" style="font-size:52px;flex-shrink:0;line-height:1">🎮</div>
+          <div style="flex:1;min-width:160px">
+            <div style="font-size:9px;font-family:var(--font-display);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--hof-color,var(--neon-packs));margin-bottom:4px">Locke Activo</div>
+            <div id="hof-locke-nombre" style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--blanco);line-height:1.1;margin-bottom:4px">—</div>
+            <div id="hof-locke-juego" style="font-size:12px;color:var(--txt-secondary);font-family:var(--font-display)">—</div>
+          </div>
+          <div id="hof-locke-num" style="font-family:var(--font-display);font-size:11px;color:var(--txt-muted);text-align:right;flex-shrink:0">Locke #1</div>
+        </div>
+      </div>
+
       <!-- CAMPEONES -->
       <div class="card" style="margin-bottom:22px">
         <div class="card-title" style="color:var(--amarillo)">🏆 Campeones del Locke</div>
@@ -580,12 +598,22 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
       </div>
 
       <!-- MEJORES POKÉMON -->
-      <div class="card">
+      <div class="card" style="margin-bottom:22px">
         <div class="card-title" style="color:var(--neon-packs)">⭐ Mejores Pokémon del Locke</div>
         <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:16px">El compañero más memorable de cada entrenador en su run.</div>
         <div id="hof-pokemon-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
           <div style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display);text-align:center;padding:30px;grid-column:1/-1">Todavía no hay entrenadores en el Hall of Fame.</div>
         </div>
+      </div>
+
+      <!-- HISTORIAL DE LOCKES -->
+      <div id="hof-historial-wrap" style="display:none">
+        <div style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-muted);margin-bottom:14px;display:flex;align-items:center;gap:8px">
+          <span style="flex:1;height:1px;background:var(--borde);display:block"></span>
+          📜 Historial de Lockes
+          <span style="flex:1;height:1px;background:var(--borde);display:block"></span>
+        </div>
+        <div id="hof-historial-list" style="display:flex;flex-direction:column;gap:18px"></div>
       </div>
     </section>
     <!-- MODO DIOS -->
@@ -598,6 +626,7 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
         <button class="dios-tab" id="dtab-apuestas" onclick="cambiarAdminTab('apuestas')">🎰 Apuestas y Trueques</button>
         <button class="dios-tab" id="dtab-radio" onclick="cambiarAdminTab('radio')">📻 Radio</button>
         <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
+        <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#f87171;border-color:rgba(239,68,68,.3)">🔄 Nuevo Locke</button>
       </div>
       <!-- RESETEOS -->
       <div id="dv-reset" class="dios-view active">
@@ -758,6 +787,52 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
           </div>
           <button class="btn-admin packs" style="width:100%;margin-top:6px" onclick="guardarCampeones()">💾 Guardar Campeones</button>
           <div id="adm-campeones-estado" style="margin-top:14px;font-size:10px;font-family:var(--font-display);color:var(--neon-legal);min-height:16px;text-align:center"></div>
+        </div>
+      </div>
+
+      <!-- NUEVO LOCKE -->
+      <div id="dv-nuevolocke" class="dios-view">
+        <div class="card" style="max-width:560px;border-color:rgba(239,68,68,.25)">
+          <div class="card-title" style="color:#f87171">🔄 Iniciar Nuevo Locke</div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:20px">Resetea <strong style="color:var(--blanco)">todo</strong>: dinero, PF, vidas, mochila, muertes, sacrificios y bitácora de todos los jugadores. Elige el tipo de locke, el juego y las vidas iniciales antes de confirmar.</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+            <div>
+              <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">Tipo de Locke</label>
+              <div style="display:flex;flex-direction:column;gap:6px" id="nl-tipo-list">
+                <label class="nl-radio-label" data-val="Nuzlocke"><input type="radio" name="nl-tipo" value="Nuzlocke" checked> ☠️ Nuzlocke</label>
+                <label class="nl-radio-label" data-val="Shinylocke"><input type="radio" name="nl-tipo" value="Shinylocke"> ✨ Shinylocke</label>
+                <label class="nl-radio-label" data-val="DualLinks"><input type="radio" name="nl-tipo" value="DualLinks"> ⚡ DualLinks</label>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">Vidas iniciales por jugador</label>
+              <div style="display:flex;align-items:center;gap:10px">
+                <button class="torneos-btn" onclick="var v=document.getElementById('nl-vidas-val');v.textContent=Math.max(1,parseInt(v.textContent)-1)">−</button>
+                <span id="nl-vidas-val" style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--blanco);min-width:32px;text-align:center">5</span>
+                <button class="torneos-btn" onclick="var v=document.getElementById('nl-vidas-val');v.textContent=Math.min(20,parseInt(v.textContent)+1)">+</button>
+              </div>
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);margin-top:4px">Máx. 20 vidas</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px">
+            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">Juego</label>
+            <div style="position:relative">
+              <input id="nl-juego-search" class="admin-input" style="margin-bottom:0;font-family:var(--font-body)" placeholder="Buscar juego Pokémon (GBA–3DS)..." oninput="nlFiltrarJuegos()" autocomplete="off">
+              <div id="nl-juego-lista" style="position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:220px;overflow-y:auto;display:none"></div>
+            </div>
+            <div id="nl-juego-sel" style="margin-top:8px;display:none">
+              <span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">Seleccionado: </span>
+              <span id="nl-juego-sel-txt" style="font-size:11px;font-family:var(--font-display);font-weight:700;color:var(--blanco)"></span>
+            </div>
+          </div>
+
+          <div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:var(--r-md);padding:12px;margin-bottom:16px;font-size:11px;color:#f87171;font-family:var(--font-display)">
+            ⚠️ Esta acción es <strong>irreversible</strong>. Todos los datos de los jugadores se borrarán. Los campeones y el Hall of Fame se conservan.
+          </div>
+
+          <button class="btn-admin danger" style="width:100%;font-size:13px;padding:12px" onclick="confirmarNuevoLocke()">🔄 INICIAR NUEVO LOCKE</button>
         </div>
       </div>
     </section>
@@ -1611,12 +1686,262 @@ function renderizarHallOfFame(){
   if(sF && f) sF.value = f;
 
   renderizarHofPokemon();
+  renderizarBannerLocke();
+  renderizarHistorialLockes();
 }
 
 
 
 
 
+
+/* ═══ LOCKE ACTIVO + NUEVO LOCKE ═══ */
+var NL_JUEGOS = [
+  // GBA
+  {n:'Pokémon Rojo Fuego',       gen:'GBA',  icon:'🔥', color:'#ef4444'},
+  {n:'Pokémon Verde Hoja',       gen:'GBA',  icon:'🌿', color:'#22c55e'},
+  {n:'Pokémon Rubí',             gen:'GBA',  icon:'💎', color:'#e11d48'},
+  {n:'Pokémon Zafiro',           gen:'GBA',  icon:'💠', color:'#3b82f6'},
+  {n:'Pokémon Rubí Omega',       gen:'GBA',  icon:'♦️', color:'#dc2626'},
+  {n:'Pokémon Zafiro Alfa',      gen:'GBA',  icon:'🔹', color:'#2563eb'},
+  {n:'Pokémon Esmeralda',        gen:'GBA',  icon:'💚', color:'#16a34a'},
+  // NDS
+  {n:'Pokémon Diamante',         gen:'NDS',  icon:'💎', color:'#818cf8'},
+  {n:'Pokémon Perla',            gen:'NDS',  icon:'🩷', color:'#f9a8d4'},
+  {n:'Pokémon Platino',          gen:'NDS',  icon:'⚙️', color:'#94a3b8'},
+  {n:'Pokémon Oro HeartGold',    gen:'NDS',  icon:'🌟', color:'#f59e0b'},
+  {n:'Pokémon Plata SoulSilver', gen:'NDS',  icon:'🌙', color:'#cbd5e1'},
+  {n:'Pokémon Negro',            gen:'NDS',  icon:'🖤', color:'#374151'},
+  {n:'Pokémon Blanco',           gen:'NDS',  icon:'🤍', color:'#e2e8f0'},
+  {n:'Pokémon Negro 2',          gen:'NDS',  icon:'🌀', color:'#4b5563'},
+  {n:'Pokémon Blanco 2',         gen:'NDS',  icon:'❄️', color:'#bae6fd'},
+  // 3DS
+  {n:'Pokémon X',                gen:'3DS',  icon:'❌', color:'#3b82f6'},
+  {n:'Pokémon Y',                gen:'3DS',  icon:'✳️', color:'#ec4899'},
+  {n:'Pokémon Sol',              gen:'3DS',  icon:'☀️', color:'#f59e0b'},
+  {n:'Pokémon Luna',             gen:'3DS',  icon:'🌙', color:'#6366f1'},
+  {n:'Pokémon Ultra Sol',        gen:'3DS',  icon:'🌞', color:'#ea580c'},
+  {n:'Pokémon Ultra Luna',       gen:'3DS',  icon:'🌛', color:'#7c3aed'},
+];
+
+var NL_TIPOS = {
+  'Nuzlocke':   {icon:'☠️', color:'#ef4444', bg:'rgba(239,68,68,.06)',   tema:'nuzlocke'},
+  'Shinylocke': {icon:'✨', color:'#c084fc', bg:'rgba(192,132,252,.06)', tema:'shinylocke'},
+  'DualLinks':  {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks'},
+};
+
+var _nlJuegoSel = null;
+
+window.nlFiltrarJuegos = function(){
+  var val = (document.getElementById('nl-juego-search').value||'').toLowerCase();
+  var lista = document.getElementById('nl-juego-lista');
+  var matches = val.length < 1
+    ? NL_JUEGOS
+    : NL_JUEGOS.filter(function(j){ return j.n.toLowerCase().indexOf(val)!==-1 || j.gen.toLowerCase().indexOf(val)!==-1; });
+  if(!matches.length){ lista.style.display='none'; return; }
+  lista.innerHTML = matches.map(function(j){
+    return '<div onclick="nlSelJuego(\''+j.n+'\')" style="padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body);display:flex;align-items:center;gap:8px" onmouseover="this.style.background=\'var(--bg-overlay)\'" onmouseout="this.style.background=\'\'">'
+      +'<span>'+j.icon+'</span><span style="flex:1">'+j.n+'</span><span style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display)">'+j.gen+'</span></div>';
+  }).join('');
+  lista.style.display = 'block';
+};
+
+window.nlSelJuego = function(nombre){
+  _nlJuegoSel = NL_JUEGOS.find(function(j){ return j.n===nombre; });
+  document.getElementById('nl-juego-search').value = nombre;
+  document.getElementById('nl-juego-lista').style.display = 'none';
+  var sel = document.getElementById('nl-juego-sel');
+  var txt = document.getElementById('nl-juego-sel-txt');
+  if(sel) sel.style.display = 'block';
+  if(txt && _nlJuegoSel) txt.textContent = _nlJuegoSel.icon+' '+_nlJuegoSel.n+' ('+_nlJuegoSel.gen+')';
+};
+
+// Cerrar lista al clickar fuera
+document.addEventListener('click', function(e){
+  if(!e.target.closest('#nl-juego-search') && !e.target.closest('#nl-juego-lista')){
+    var l=document.getElementById('nl-juego-lista'); if(l) l.style.display='none';
+  }
+});
+document.addEventListener('DOMContentLoaded', function(){
+  var ns=document.getElementById('nl-juego-search');
+  if(ns) ns.addEventListener('focus', function(){ if(!ns.value) window.nlFiltrarJuegos(); });
+});
+
+window.confirmarNuevoLocke = function(){
+  var tipoEl = document.querySelector('input[name="nl-tipo"]:checked');
+  var tipo = tipoEl ? tipoEl.value : 'Nuzlocke';
+  if(!_nlJuegoSel){ mostrarNotificacion('Elige un juego primero.','error','🎮'); return; }
+  var vidasIni = parseInt(document.getElementById('nl-vidas-val').textContent)||5;
+  mostrarConfirmacion({
+    icono:'🔄',
+    titulo:'¿Iniciar Nuevo Locke?',
+    descripcion:NL_TIPOS[tipo].icon+' '+tipo+' · '+_nlJuegoSel.icon+' '+_nlJuegoSel.n+'\n❤️ Vidas iniciales: '+vidasIni+'\n\n⚠️ Se borrarán TODOS los datos de los jugadores.',
+    textoConfirmar:'REINICIAR TODO',
+    tipo:'sacrificio'
+  }).then(function(ok){
+    if(!ok) return;
+    ejecutarNuevoLocke(tipo, _nlJuegoSel, vidasIni);
+  });
+};
+
+function ejecutarNuevoLocke(tipo, juego, vidasIni){
+  // ── ARCHIVAR el locke actual ANTES de borrar ──
+  var numActual = (baseDatos.lockeActivo && baseDatos.lockeActivo.num) || 0;
+  if(numActual > 0){
+    if(!baseDatos.historialLockes) baseDatos.historialLockes = {};
+    var entrada = {
+      num:      numActual,
+      tipo:     baseDatos.lockeActivo.tipo || '?',
+      juego:    baseDatos.lockeActivo.juego || '?',
+      juegoIcon:baseDatos.lockeActivo.juegoIcon || '🎮',
+      juegoGen: baseDatos.lockeActivo.juegoGen || '',
+      campeones: JSON.parse(JSON.stringify(baseDatos.campeones || {})),
+      pokemon:   {}
+    };
+    // Archivar mejorPokemon de cada jugador
+    Object.keys(baseDatos.jugadores || {}).forEach(function(id){
+      var mp = baseDatos.jugadores[id].mejorPokemon;
+      if(mp && mp.nombre) entrada.pokemon[id] = JSON.parse(JSON.stringify(mp));
+    });
+    baseDatos.historialLockes['locke'+numActual] = entrada;
+  }
+
+  // Resetear todos los jugadores
+  Object.keys(baseDatos.jugadores||{}).forEach(function(id){
+    var u = baseDatos.jugadores[id];
+    u.dinero       = 0;
+    u.pf           = 0;
+    u.vidasActuales= vidasIni;
+    u.vidasTotales = vidasIni;
+    u.inventario   = [];
+    u.muertes      = [];
+    u.sacrificios  = 0;
+    u.diario       = [];
+    u.comprasHoy   = {};
+    u.mejorPokemon = null;
+    // NO tocar: insignias, torneos
+  });
+  // Guardar info del locke activo
+  if(!baseDatos.lockeActivo) baseDatos.lockeActivo = {};
+  baseDatos.lockeActivo.tipo   = tipo;
+  baseDatos.lockeActivo.juego  = juego.n;
+  baseDatos.lockeActivo.juegoIcon = juego.icon;
+  baseDatos.lockeActivo.juegoColor= juego.color;
+  baseDatos.lockeActivo.juegoGen  = juego.gen;
+  baseDatos.lockeActivo.num    = numActual + 1;
+  // Limpiar campeones del locke anterior
+  baseDatos.campeones = {};
+
+  guardarBD();
+  aplicarTemaLocke();
+  renderizarBannerLocke();
+  renderizarHallOfFame();
+  mostrarNotificacion('¡Nuevo Locke iniciado! '+NL_TIPOS[tipo].icon+' '+tipo+' · '+juego.icon+' '+juego.n,'exito','🔄');
+  // Volver al tab reset
+  setTimeout(function(){ cambiarAdminTab('reset'); }, 800);
+}
+
+function aplicarTemaLocke(){
+  var la = baseDatos && baseDatos.lockeActivo;
+  document.body.classList.remove('tema-nuzlocke','tema-shinylocke','tema-duallinks');
+  if(la && la.tipo && NL_TIPOS[la.tipo]){
+    document.body.classList.add('tema-'+NL_TIPOS[la.tipo].tema);
+  }
+}
+
+function renderizarBannerLocke(){
+  var la = baseDatos && baseDatos.lockeActivo;
+  var banner = document.getElementById('hof-locke-banner');
+  if(!banner) return;
+  if(!la || !la.tipo){ banner.style.display='none'; return; }
+  var cfg = NL_TIPOS[la.tipo] || NL_TIPOS['Nuzlocke'];
+  banner.style.display = 'block';
+  banner.style.setProperty('--hof-color', cfg.color);
+  banner.style.setProperty('--hof-bg', cfg.bg);
+  // Actualizar subtítulo de la sección
+  var sub = banner.closest('.page-section');
+  if(sub){
+    var subEl = sub.querySelector('.section-subtitle');
+    if(subEl) subEl.textContent = cfg.icon+' '+la.tipo+' · '+la.juegoIcon+' '+la.juego;
+  }
+  var elIcon  = document.getElementById('hof-locke-icon');
+  var elNombre= document.getElementById('hof-locke-nombre');
+  var elJuego = document.getElementById('hof-locke-juego');
+  var elNum   = document.getElementById('hof-locke-num');
+  if(elIcon)   elIcon.textContent  = cfg.icon+' '+la.juegoIcon;
+  if(elNombre) elNombre.textContent= la.tipo;
+  if(elNombre) elNombre.style.color= cfg.color;
+  if(elJuego)  elJuego.textContent = la.juegoIcon+' '+la.juego+' ('+la.juegoGen+')';
+  if(elNum)    elNum.textContent   = 'Locke #'+(la.num||1);
+}
+
+
+function renderizarHistorialLockes(){
+  var wrap = document.getElementById('hof-historial-wrap');
+  var list = document.getElementById('hof-historial-list');
+  if(!wrap || !list) return;
+  var hist = baseDatos && baseDatos.historialLockes;
+  if(!hist || !Object.keys(hist).length){ wrap.style.display='none'; return; }
+  wrap.style.display = 'block';
+
+  // Ordenar por num descendente (más reciente primero)
+  var entradas = Object.values(hist).sort(function(a,b){ return b.num - a.num; });
+  var color = window.colorParaJugador || function(){ return 'var(--neon-packs)'; };
+
+  list.innerHTML = entradas.map(function(e){
+    var cfg = NL_TIPOS[e.tipo] || {icon:'🎮', color:'var(--neon-packs)', bg:'rgba(99,102,241,.06)'};
+    // Campeones
+    var c = e.campeones || {};
+    var campHTML = [
+      {lbl:'Campeón Torneos', ico:'🎖️', val:c.torneos,     col:'var(--neon-packs)'},
+      {lbl:'Campeón Por Vidas',ico:'❤️', val:c.vidas,      col:'#f87171'},
+      {lbl:'Campeón Finalísima',ico:'👑',val:c['finalísima']||c.finalísima, col:'var(--amarillo)'}
+    ].filter(function(x){ return x.val; }).map(function(x){
+      return '<div style="text-align:center;padding:8px 6px">'
+        +'<div style="font-size:18px">'+x.ico+'</div>'
+        +'<div style="font-size:8px;color:'+x.col+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin:2px 0">'+x.lbl+'</div>'
+        +'<div style="font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--blanco)">'+escaparHTML(x.val.toUpperCase())+'</div>'
+        +'</div>';
+    }).join('');
+    if(!campHTML) campHTML = '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px">Sin campeones registrados</div>';
+
+    // Pokémon
+    var pokes = e.pokemon || {};
+    var pokesKeys = Object.keys(pokes);
+    var pokesHTML = pokesKeys.length ? pokesKeys.map(function(id){
+      var mp = pokes[id];
+      var c2 = color(id);
+      var imgH = mp.sprite
+        ? '<img src="'+mp.sprite+'" alt="" style="width:52px;height:52px;image-rendering:pixelated;display:block;margin:0 auto">'
+        : '<div style="font-size:28px;text-align:center;opacity:.3">❓</div>';
+      var moteH = mp.mote ? '<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700">&ldquo;'+escaparHTML(mp.mote)+'&rdquo;</div>' : '';
+      return '<div style="text-align:center;padding:6px 4px">'
+        +imgH
+        +'<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:2px">'+escaparHTML(id.toUpperCase())+'</div>'
+        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:900;color:var(--blanco)">'+escaparHTML(mp.nombre)+'</div>'
+        +moteH
+        +'</div>';
+    }).join('') : '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px">Sin Pokémon registrados</div>';
+
+    return '<div style="border:1px solid '+cfg.color.replace('var(--neon-packs)','rgba(99,102,241,.3)')+';border-radius:var(--r-xl);overflow:hidden;background:'+cfg.bg+'">'
+      // Cabecera del locke archivado
+      +'<div style="padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)">'
+        +'<span style="font-size:26px">'+cfg.icon+' '+escaparHTML(e.juegoIcon)+'</span>'
+        +'<div style="flex:1">'
+          +'<div style="font-family:var(--font-display);font-size:13px;font-weight:900;color:'+cfg.color+'">'+escaparHTML(e.tipo)+'</div>'
+          +'<div style="font-size:11px;color:var(--txt-secondary);font-family:var(--font-display)">'+escaparHTML(e.juegoIcon+' '+e.juego)+' <span style="color:var(--txt-muted);font-size:9px">('+escaparHTML(e.juegoGen)+')</span></div>'
+        +'</div>'
+        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted)">Locke #'+e.num+'</div>'
+      +'</div>'
+      // Campeones
+      +'<div style="padding:10px 16px 4px;font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px">🏆 Campeones</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:0;padding:0 10px 8px">'+campHTML+'</div>'
+      // Pokémon
+      +'<div style="padding:4px 16px 4px;font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px;border-top:1px solid rgba(255,255,255,.05)">⭐ Mejores Pokémon</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 12px 12px">'+pokesHTML+'</div>'
+      +'</div>';
+  }).join('');
+}
 /* ═══ CAMPEONES / HALL OF FAME ═══ */
 window.guardarCampeones = function(){
   if(!baseDatos.campeones) baseDatos.campeones = {};
@@ -1683,7 +2008,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
 function guardarBD(){set(ref(db,'silph_co_market'),baseDatos);}
 
 /* ═══ NAVEGACIÓN ═══ */
-window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();}if(s==='perfil'){cargarMejorPokemonEnPerfil();}cerrarDrawer();};
+window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='perfil'){cargarMejorPokemonEnPerfil();}cerrarDrawer();};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();};
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
 window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);};
@@ -1774,7 +2099,7 @@ function inyectarEntradaDiarioAutomatica(txt){if(!userSesion||!baseDatos.jugador
 function inyectarEntradaDiarioAutomaticaPara(uid,txt){if(!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid],d=new Date();let ts=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;if(!u.diarioLogs)u.diarioLogs=[];u.diarioLogs.push({timestamp:ts,text:txt,texto:txt});registrarActividadGlobal(uid,txt,ts);}
 
 /* ═══ PERFIL ═══ */
-function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();cargarMejorPokemonEnPerfil();}
+function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();cargarMejorPokemonEnPerfil();aplicarTemaLocke();renderizarBannerLocke();}
 function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}">${icon}</div>`;}box.innerHTML=html;}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
@@ -1825,4 +2150,4 @@ function renderizarAdminArena(){let box=document.getElementById('adm-arena-comba
 function redibujarConsolaAdminMaster(){document.getElementById('chk-open-legal').checked=baseDatos.legalOpen!==false;document.getElementById('chk-open-pack').checked=baseDatos.packOpen!==false;document.getElementById('chk-open-illegal').checked=baseDatos.illegalOpen!==false;let chkRadio=document.getElementById('chk-radio-activada');if(chkRadio)chkRadio.checked=!!(baseDatos.radio&&baseDatos.radio.activada);if(baseDatos.eventoSistema)document.getElementById('adm-evento-economico').value=baseDatos.eventoSistema;actualizarSelectorUsuariosBanco();renderizarAdminArena();renderizarAdminCamara();let al=document.getElementById('admin-inventario-global');if(!al)return;al.innerHTML='';baseDatos.productos.forEach(p=>{let esI=p.tienda==='illegal';al.innerHTML+=`<div class="admin-item-card"><button class="btn-del-item" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary);font-size:12px;font-weight:600;margin-bottom:6px">${p.icon} ${p.nombre} <span style="color:var(--txt-muted);font-size:10px">[${p.tienda.toUpperCase()}]</span></div><div class="admin-item-row"><div class="admin-field"><label>Coste</label><input type="number" value="${esI?p.precioPf:p.precio}" class="admin-input" style="margin-bottom:0;width:80px" oninput="actualizarPropertyProducto(${p.id},'${esI?'precioPf':'precio'}',this.value)"></div><div class="admin-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input" style="margin-bottom:0;width:70px" oninput="actualizarPropertyProducto(${p.id},'stock',this.value)"></div></div></div>`;});renderizarListaRadioAdmin();}
 </script>
 </body>
-</html>
+                </html>
