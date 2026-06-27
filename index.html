@@ -72,7 +72,16 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .actividad-feed::-webkit-scrollbar-thumb{background:var(--borde-hover);border-radius:99px}
 .red-select-wrap{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:18px}.red-select-label{font-size:10px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;display:block}
 #red-select-jugador{background:var(--bg-card);color:var(--neon-legal);border:1px solid rgba(16,185,129,.3);padding:10px 14px;border-radius:var(--r-md);font-family:var(--font-display);font-size:12px;font-weight:700;width:100%;max-width:360px;cursor:pointer;-webkit-appearance:none;appearance:none}#red-select-jugador:focus{outline:none}
-.red-visor-grid{display:grid;grid-template-columns:250px 1fr;gap:14px}.rival-perfil-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px;height:fit-content}.rival-nombre{font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--blanco);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}.rival-stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--borde);font-size:12px}.rival-stat-row:last-child{border-bottom:none}.rival-stat-label{color:var(--txt-secondary)}.rival-stat-value{font-weight:700;font-family:var(--font-display);font-size:12px}
+.red-visor-grid{display:grid;grid-template-columns:250px 1fr;gap:14px}
+.red-visor-grid.red-visor-vacio{display:block}
+.red-roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.red-roster-card{display:flex;align-items:center;gap:12px;background:var(--bg-elevated);border:1px solid var(--borde);border-left:3px solid var(--borde);border-radius:var(--r-lg);padding:14px;cursor:pointer;transition:transform .15s ease,border-color .15s ease}
+.red-roster-card:hover{transform:translateY(-2px);border-color:var(--borde-hover)}
+.red-roster-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:900;font-size:13px;border:1.5px solid;flex-shrink:0}
+.red-roster-info{min-width:0}
+.red-roster-nombre{font-family:var(--font-display);font-weight:800;font-size:12px;letter-spacing:.3px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.red-roster-meta{font-size:10px;color:var(--txt-muted);font-family:var(--font-display)}
+.red-empty-state{text-align:center;padding:60px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated);font-family:var(--font-display);font-size:12px;letter-spacing:.5px}.rival-perfil-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px;height:fit-content}.rival-nombre{font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--blanco);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}.rival-stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--borde);font-size:12px}.rival-stat-row:last-child{border-bottom:none}.rival-stat-label{color:var(--txt-secondary)}.rival-stat-value{font-weight:700;font-family:var(--font-display);font-size:12px}
 .rival-equipo-area{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px}.rival-pokes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;margin-bottom:14px}.rival-poke-card{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);padding:8px 6px;text-align:center;transition:border-color .15s,transform .15s}.rival-poke-card:hover{border-color:var(--borde-hover);transform:translateY(-1px)}.rival-poke-card img{max-width:40px;max-height:40px;object-fit:contain;margin-bottom:4px}.rival-poke-name{font-size:9px;font-weight:700;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.3px;color:var(--txt-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rival-cementerio-section{border-top:1px solid var(--borde);padding-top:14px;margin-top:14px}.rival-cem-label{font-family:var(--font-display);font-size:10px;font-weight:700;color:#f87171;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}.rival-dead-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:7px}.rival-dead-card{background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:var(--r-md);padding:9px 10px}.rival-dead-name{color:#f87171;font-weight:700;font-size:12px;font-family:var(--font-display)}.rival-dead-meta{font-size:10px;color:var(--txt-muted);margin-top:2px}.rival-dead-epitafio{font-style:italic;font-size:11px;color:var(--txt-secondary);margin-top:5px;border-top:1px solid rgba(239,68,68,.1);padding-top:4px}
 .eventos-tabs{display:flex;gap:8px;margin-bottom:22px}.evento-tab{padding:9px 18px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-secondary);transition:all .2s cubic-bezier(.4,0,.2,1)}.evento-tab:hover{color:var(--blanco);background:var(--bg-overlay)}.evento-tab.active-arena{background:rgba(139,92,246,.1);color:var(--neon-arena);border-color:rgba(139,92,246,.3);box-shadow:0 0 14px -4px currentColor}.evento-tab.active-camara{background:rgba(59,130,246,.1);color:var(--neon-intercambio);border-color:rgba(59,130,246,.3);box-shadow:0 0 14px -4px currentColor}
@@ -97,6 +106,12 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .sac-stats-mini{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.sac-chip{background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.12);border-radius:99px;padding:4px 12px;font-size:10px;color:var(--txt-secondary);font-family:var(--font-display)}.sac-chip span{color:var(--neon-sacrificio);font-weight:700}
 .cementerio-wrap{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px 18px;margin-top:4px}.cementerio-title{font-family:var(--font-display);font-size:11px;color:#f87171;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}.graveyard-item{background:rgba(239,68,68,.03);border:1px solid rgba(239,68,68,.1);border-left:3px solid rgba(239,68,68,.3);padding:10px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:8px}.graveyard-name{color:#f87171;font-weight:700;font-size:13px;font-family:var(--font-display)}.graveyard-meta{font-size:11px;color:var(--txt-muted)}.graveyard-epitafio{font-style:italic;font-size:12px;color:var(--txt-secondary);margin-top:4px}
 .medallas-grid-outer{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-label{font-size:10px;color:var(--txt-secondary);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px}.form-select{background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:9px 12px;border-radius:var(--r-md);font-family:var(--font-display);font-size:12px;font-weight:700;width:100%;cursor:pointer;-webkit-appearance:none;appearance:none;transition:border-color .18s ease}.form-select:focus{outline:none;border-color:var(--neon-packs)}.form-input{background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:9px 12px;border-radius:var(--r-md);font-family:var(--font-display);font-size:13px;transition:border-color .18s ease}.form-input:focus{outline:none;border-color:var(--neon-packs)}.medallas-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px}.torneos-display{display:flex;align-items:center;justify-content:center;gap:16px}.torneos-btn{width:32px;height:32px;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);cursor:pointer;color:var(--txt-primary);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:border-color .15s}.torneos-btn:hover{border-color:var(--borde-hover)}.torneos-numero{font-family:var(--font-display);font-size:36px;font-weight:900;color:var(--neon-packs);min-width:50px;text-align:center}
+.torneos-trofeo{font-size:54px;margin:4px 0 10px;filter:drop-shadow(0 0 18px rgba(245,197,24,.35))}
+.torneos-subtexto{font-size:10px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;margin-top:10px}
+.medallas-controles-row{display:flex;gap:10px;align-items:flex-end;margin-top:14px}
+.medallas-insignias-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
+.medalla-insignia{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:50%;background:var(--bg-overlay);border:2px solid var(--borde);opacity:.35;filter:grayscale(1);transition:all .25s ease}
+.medalla-insignia.ganada{opacity:1;filter:none;background:radial-gradient(circle,rgba(245,197,24,.18),transparent);border-color:var(--amarillo);box-shadow:0 0 14px rgba(245,197,24,.3)}
 .diario-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,5,12,.9);backdrop-filter:blur(12px);z-index:2000;justify-content:center;align-items:center;padding:20px}.diario-modal{background:var(--bg-elevated);border:1px solid var(--borde);box-shadow:var(--shadow-xl);width:100%;max-width:640px;height:82vh;border-radius:var(--r-2xl);display:flex;flex-direction:column;overflow:hidden;animation:pop-in .3s cubic-bezier(.16,1,.3,1)}
 @keyframes pop-in{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
 .diario-header{background:var(--bg-overlay);padding:14px 18px;border-bottom:1px solid var(--borde);display:flex;justify-content:space-between;align-items:center}.diario-logs{flex:1;padding:16px 18px;overflow-y:auto;background:var(--bg-base);display:flex;flex-direction:column;gap:8px}.diario-entry{background:var(--bg-surface);border:1px solid var(--borde);border-left:3px solid var(--amarillo-dim);padding:9px 13px;border-radius:0 var(--r-sm) var(--r-sm) 0;transition:border-left-color .15s}.diario-entry:hover{border-left-color:var(--amarillo)}.diario-entry-ts{font-family:var(--font-display);font-size:9px;color:var(--txt-muted);margin-bottom:3px}.diario-entry-txt{font-size:13px;color:var(--txt-primary);white-space:pre-wrap}.diario-footer{padding:12px 16px;background:var(--bg-elevated);border-top:1px solid var(--borde)}.diario-textarea{width:100%;background:var(--bg-base);color:var(--blanco);border:1px solid var(--borde);border-radius:var(--r-md);padding:9px 12px;font-size:13px;font-family:var(--font-body);resize:vertical}.diario-textarea:focus{outline:none;border-color:var(--amarillo-dim)}.btn-guardar-diario{margin-top:8px;background:rgba(245,158,11,.08);color:var(--neon-packs);border:1px solid rgba(245,158,11,.25);padding:9px 18px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s}.btn-guardar-diario:hover{background:rgba(245,158,11,.18)}
@@ -207,6 +222,28 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .tpk-result[data-tier="nulo"] .tpk-result-icon{color:#ef4444;opacity:.8}
 @media (prefers-reduced-motion:no-preference){.tpk-result{animation:tpkPop .28s ease}}
 @keyframes tpkPop{0%{transform:scale(.97);opacity:.6}100%{transform:scale(1);opacity:1}}
+.calculadora-layout{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.calculadora-layout>.tpk-widget{flex:0 1 400px}
+.tpk-chart-card{flex:1 1 460px;min-width:300px}
+.tpk-chart-wrap{overflow-x:auto;border-radius:var(--r-md);border:1px solid var(--borde)}
+.tpk-chart-table{border-collapse:collapse;font-family:var(--font-display);font-size:11px;width:100%}
+.tpk-chart-table th,.tpk-chart-table td{width:30px;min-width:30px;height:28px;text-align:center;border:1px solid var(--borde);padding:0;font-size:13px}
+.tpk-chart-table thead,.tpk-chart-table tr:first-child{background:var(--bg-elevated)}
+.tpk-chart-table tr:first-child th{position:sticky;top:0;background:var(--bg-elevated);z-index:2}
+.tpk-chart-table tr th:first-child{position:sticky;left:0;background:var(--bg-elevated);z-index:1}
+.tpk-chart-table tr:first-child th:first-child{z-index:3}
+.tpk-chart-corner{background:var(--bg-card)!important}
+.tpk-chart-table td{cursor:pointer;font-weight:700;color:var(--txt-secondary);transition:filter .1s}
+.tpk-chart-table td:hover{filter:brightness(1.3)}
+.tpk-c0{background:rgba(0,0,0,.55);color:#ef4444!important}
+.tpk-c05{background:rgba(255,255,255,.025);color:var(--txt-muted)!important}
+.tpk-c1{background:transparent}
+.tpk-c2{background:rgba(16,185,129,.16);color:#10b981!important}
+.tpk-resaltada{background:rgba(245,197,24,.22)!important;filter:none!important}
+.tpk-chart-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:10px;color:var(--txt-muted);font-family:var(--font-display)}
+.tpk-chart-legend span{display:inline-flex;align-items:center;gap:5px}
+.tpk-legend-dot{width:10px;height:10px;border-radius:3px;display:inline-block;border:1px solid var(--borde)}
+@media(max-width:760px){.calculadora-layout>.tpk-widget{flex:1 1 100%;max-width:none}.tpk-chart-card{flex:1 1 100%}.tpk-chart-table th,.tpk-chart-table td{width:26px;min-width:26px;height:26px;font-size:11px}}
 </style>
 </head>
 <body>
@@ -336,6 +373,7 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
     <!-- CALCULADORA DE TIPOS -->
     <section id="section-calculadora" class="page-section">
       <div class="section-header"><div class="section-title">Calculadora de Tipos</div><div class="section-subtitle">Comprueba la efectividad de cualquier movimiento contra cualquier Pokémon</div></div>
+      <div class="calculadora-layout">
       <div class="tpk-widget" id="tpk-widget">
         <div class="tpk-head">
           <span class="tpk-eyebrow">Mercado-Poke · Motor de Tipos</span>
@@ -375,6 +413,18 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
             <div class="tpk-result-breakdown" id="tpk-result-breakdown"></div>
           </div>
         </div>
+      </div>
+      <div class="card tpk-chart-card">
+        <div class="card-title">📊 Tabla de Tipos Completa</div>
+        <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:12px">Filas = movimiento atacante · Columnas = tipo defensor. Pasa el ratón para resaltar, o haz clic en una celda para cargarla arriba.</div>
+        <div class="tpk-chart-wrap"><table class="tpk-chart-table" id="tpk-chart-table"></table></div>
+        <div class="tpk-chart-legend">
+          <span><span class="tpk-legend-dot tpk-c2"></span> Súper eficaz (×2)</span>
+          <span><span class="tpk-legend-dot tpk-c1"></span> Normal (×1)</span>
+          <span><span class="tpk-legend-dot tpk-c05"></span> Poco eficaz (×½)</span>
+          <span><span class="tpk-legend-dot tpk-c0"></span> Sin efecto (×0)</span>
+        </div>
+      </div>
       </div>
     </section>
     <!-- EVENTOS -->
@@ -446,17 +496,22 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
       <div id="pv-progreso" class="perfil-view">
         <div class="medallas-grid-outer">
           <div class="medallas-card">
-            <div class="card-title">Sistema de Logros</div>
-            <div style="margin-bottom:12px"><label class="form-label">Tipo de Sistema</label><select id="perf-tipo-medallas" onchange="guardarDatosPerfilGamer()" class="form-select"><option value="medallas">Medallas de Gimnasio</option><option value="kahunas">Pruebas / Kahunas</option></select></div>
-            <div><label class="form-label">Derrotados</label><input type="number" id="perf-num-medallas" min="0" max="8" value="0" oninput="guardarDatosPerfilGamer()" class="form-input" style="width:80px"></div>
+            <div class="card-title">🎖️ Sistema de Logros</div>
+            <div id="medallas-insignias-grid" class="medallas-insignias-grid"></div>
+            <div class="medallas-controles-row">
+              <div style="flex:1"><label class="form-label">Tipo de Sistema</label><select id="perf-tipo-medallas" onchange="guardarDatosPerfilGamer();renderizarInsigniasPerfil();" class="form-select"><option value="medallas">Medallas de Gimnasio</option><option value="kahunas">Pruebas / Kahunas</option></select></div>
+              <div><label class="form-label">Derrotados</label><input type="number" id="perf-num-medallas" min="0" max="8" value="0" oninput="guardarDatosPerfilGamer();renderizarInsigniasPerfil();" class="form-input" style="width:80px"></div>
+            </div>
           </div>
-          <div class="medallas-card">
+          <div class="medallas-card" style="text-align:center">
             <div class="card-title">🏆 Torneos Ganados</div>
+            <div class="torneos-trofeo">🏆</div>
             <div class="torneos-display">
               <button class="torneos-btn" onclick="alterarTorneosPerfil(-1)">−</button>
               <span id="perf-txt-torneos" class="torneos-numero">0</span>
               <button class="torneos-btn" onclick="alterarTorneosPerfil(1)">+</button>
             </div>
+            <div class="torneos-subtexto">Campeonatos conquistados en la liga</div>
           </div>
         </div>
       </div>
@@ -1042,6 +1097,59 @@ function renderizarListaRadioAdmin(){let box=document.getElementById('radio-admi
 
     [selAtk, selDef1, selDef2].forEach(function(sel){ sel.addEventListener('change', calcularTipos); });
     calcularTipos();
+    construirTablaTipos();
+  }
+
+  function construirTablaTipos(){
+    var tabla = document.getElementById('tpk-chart-table');
+    if (!tabla || tabla.dataset.tpkInit) return;
+    tabla.dataset.tpkInit = '1';
+
+    var thead = '<tr><th class="tpk-chart-corner"></th>' + TYPES.map(function(t){
+      return '<th title="Defensor: ' + t.label + '">' + t.icon + '</th>';
+    }).join('') + '</tr>';
+
+    var rows = TYPES.map(function(atk){
+      var celdas = TYPES.map(function(def){
+        var m = getMultiplier(atk.id, def.id);
+        var cls = m === 0 ? 'tpk-c0' : m === 0.5 ? 'tpk-c05' : m === 2 ? 'tpk-c2' : 'tpk-c1';
+        var txt = m === 0 ? '0' : m === 0.5 ? '½' : m === 2 ? '2' : '';
+        return '<td class="' + cls + '" data-atk="' + atk.id + '" data-def="' + def.id + '">' + txt + '</td>';
+      }).join('');
+      return '<tr><th title="Atacante: ' + atk.label + '">' + atk.icon + '</th>' + celdas + '</tr>';
+    }).join('');
+
+    tabla.innerHTML = thead + rows;
+
+    // Resaltar fila/columna al pasar el ratón
+    tabla.addEventListener('mouseover', function(e){
+      var celda = e.target.closest('td');
+      if (!celda) return;
+      var atk = celda.getAttribute('data-atk'), def = celda.getAttribute('data-def');
+      tabla.querySelectorAll('td[data-atk="' + atk + '"], td[data-def="' + def + '"]').forEach(function(c){ c.classList.add('tpk-resaltada'); });
+      tabla.querySelectorAll('tr').forEach(function(tr, i){
+        if (i > 0 && TYPES[i-1].id === atk) tr.querySelector('th').classList.add('tpk-resaltada');
+      });
+      tabla.querySelectorAll('th').forEach(function(th, i){
+        if (i > 0 && TYPES[i-1].id === def) th.classList.add('tpk-resaltada');
+      });
+    });
+    tabla.addEventListener('mouseout', function(){
+      tabla.querySelectorAll('.tpk-resaltada').forEach(function(c){ c.classList.remove('tpk-resaltada'); });
+    });
+    // Clic en una celda: cargarla directamente en la calculadora de arriba
+    tabla.addEventListener('click', function(e){
+      var celda = e.target.closest('td');
+      if (!celda) return;
+      var selAtk = document.getElementById('tpk-atk'), selDef1 = document.getElementById('tpk-def1'), selDef2 = document.getElementById('tpk-def2');
+      if (!selAtk || !selDef1 || !selDef2) return;
+      selAtk.value = celda.getAttribute('data-atk');
+      selDef1.value = celda.getAttribute('data-def');
+      selDef2.value = '';
+      [selAtk, selDef1, selDef2].forEach(function(s){ s.dispatchEvent(new Event('change')); });
+      var widget = document.getElementById('tpk-widget');
+      if (widget) widget.scrollIntoView({behavior:'smooth', block:'center'});
+    });
   }
   document.addEventListener('DOMContentLoaded', inicializarCalculadoraTipos);
   if (document.readyState === 'complete' || document.readyState === 'interactive') inicializarCalculadoraTipos();
@@ -1186,7 +1294,8 @@ function inyectarEntradaDiarioAutomatica(txt){if(!userSesion||!baseDatos.jugador
 function inyectarEntradaDiarioAutomaticaPara(uid,txt){if(!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid],d=new Date();let ts=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;if(!u.diarioLogs)u.diarioLogs=[];u.diarioLogs.push({timestamp:ts,text:txt,texto:txt});registrarActividadGlobal(uid,txt,ts);}
 
 /* ═══ PERFIL ═══ */
-function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();}
+function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();}
+function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}">${icon}</div>`;}box.innerHTML=html;}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
 window.alterarTorneosPerfil=function(v){let u=baseDatos.jugadores[userSesion];u.torneos=Math.max(0,(u.torneos||0)+v);document.getElementById('perf-txt-torneos').textContent=u.torneos;guardarBD();};
@@ -1199,7 +1308,8 @@ function actualizarBannerAlertasVisuales(){let b=document.getElementById('alerta
 window.reclamarHackeoDiario=function(){let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);guardarBD();mostrarRevelacionGacha(reveal);};
 
 /* ═══ RED ENTRENADORES ═══ */
-window.renderizarVisorRivalPublico=function(){let sel=document.getElementById('red-select-jugador'),target=sel?sel.value:'',box=document.getElementById('red-visor-dinamico');if(!box)return;box.innerHTML='';if(!target||!baseDatos.jugadores[target]){box.innerHTML='<div style="color:var(--txt-muted);padding:20px;grid-column:span 2;text-align:center;font-family:var(--font-display);font-size:11px;letter-spacing:1px;text-transform:uppercase">Selecciona un terminal activo.</div>';return;}reproducirSonido('escaneo');let r=baseDatos.jugadores[target],stxt=r.lockeStatus==='ganado'?'🏆 GANADO':(r.lockeStatus==='perdido'?'💀 PERDIDO':'⏳ EN CURSO'),ts=r.sacrificios?r.sacrificios.length:0;let hP=`<div class="rival-perfil-card"><div class="rival-nombre">${escaparHTML(target.toUpperCase())}</div><div class="rival-stat-row"><span class="rival-stat-label">Reputación</span><span class="rival-stat-value" style="color:var(--neon-ilegal)">${r.pf||0} PF</span></div><div class="rival-stat-row"><span class="rival-stat-label">Vidas</span><span class="rival-stat-value" style="color:#f87171">❤️ ${r.vidasActuales||0}/${r.vidasTotales||20}</span></div><div class="rival-stat-row"><span class="rival-stat-label">Desafío</span><span class="rival-stat-value">${stxt}</span></div><div class="rival-stat-row"><span class="rival-stat-label">Medallas</span><span class="rival-stat-value" style="color:var(--neon-legal)">${r.numMedallas||0}/8</span></div><div class="rival-stat-row"><span class="rival-stat-label">Torneos</span><span class="rival-stat-value">${r.torneos||0}</span></div><div class="rival-stat-row"><span class="rival-stat-label">🔥 Sacrificados</span><span class="rival-stat-value" style="color:var(--neon-sacrificio)">${ts}</span></div></div>`;let dH='';if(r.cementerio&&r.cementerio.length>0){dH=`<div class="rival-cementerio-section"><div class="rival-cem-label">💀 Cementerio</div><div class="rival-dead-grid">`;r.cementerio.forEach(b=>{dH+=`<div class="rival-dead-card"><div class="rival-dead-name">💀 ${escaparHTML(b.nombre)}</div><div class="rival-dead-meta">Caído en: ${escaparHTML(b.ruta)}</div><div class="rival-dead-meta">Fecha: ${escaparHTML(b.fecha)}</div><div class="rival-dead-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`;});dH+=`</div></div>`;}let sH='';if(r.sacrificios&&r.sacrificios.length>0){sH=`<div style="margin-top:14px;border-top:1px solid rgba(249,115,22,.15);padding-top:12px"><div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--neon-sacrificio);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">🔥 Sacrificios</div>`;[...r.sacrificios].reverse().slice(0,5).forEach(s=>{sH+=`<div style="background:rgba(249,115,22,.03);border:1px solid rgba(249,115,22,.1);border-left:3px solid var(--neon-sacrificio);padding:7px 10px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:5px;font-size:11px"><span style="color:var(--neon-sacrificio);font-weight:700">${escaparHTML(s.nombre)}</span> <span style="color:var(--txt-muted)">[${escaparHTML(s.categoria)}]</span> <span style="color:var(--neon-sacrificio);font-weight:700;float:right">+${s.vidasObtenidas}❤️</span></div>`;});sH+=`</div>`;}let slotSel=`<select id="red-visor-slot-team" onchange="renderizarSubRanuraRival('${target}')" style="background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:5px 8px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;-webkit-appearance:none;appearance:none;cursor:pointer">`;for(let i=1;i<=10;i++)slotSel+=`<option value="${i}">Equipo ${i}</option>`;slotSel+=`</select>`;let hE=`<div class="rival-equipo-area"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--txt-primary);letter-spacing:.5px;text-transform:uppercase">Equipo Showdown</div><div style="width:120px">${slotSel}</div></div><div id="red-visor-pokes-area"></div>${dH}${sH}</div>`;box.innerHTML=hP+hE;mejorarTodosLosSelects(box);renderizarSubRanuraRival(target);};
+window.seleccionarRivalDesdeTarjeta=function(id){const sel=document.getElementById('red-select-jugador');if(sel){sel.value=id;if(sel.__cselRefrescar)sel.__cselRefrescar();}renderizarVisorRivalPublico();};
+window.renderizarVisorRivalPublico=function(){let sel=document.getElementById('red-select-jugador'),target=sel?sel.value:'',box=document.getElementById('red-visor-dinamico');if(!box)return;box.innerHTML='';if(!target||!baseDatos.jugadores[target]){box.className='red-visor-grid red-visor-vacio';let ids=Object.keys(baseDatos.jugadores).filter(id=>id!==userSesion&&baseDatos.jugadores[id]);if(!ids.length){box.innerHTML='<div class="red-empty-state">📡 Todavía no hay otros entrenadores registrados en la red.</div>';return;}box.innerHTML='<div class="red-roster-grid">'+ids.map(id=>{let r=baseDatos.jugadores[id],color=colorParaJugador(id);return `<div class="red-roster-card" style="border-left-color:${color}" onclick="seleccionarRivalDesdeTarjeta('${id}')"><div class="red-roster-avatar" style="background:${color}22;color:${color};border-color:${color}66">${escaparHTML(id.slice(0,2).toUpperCase())}</div><div class="red-roster-info"><div class="red-roster-nombre" style="color:${color}">${escaparHTML(id.toUpperCase())}</div><div class="red-roster-meta">🏅 ${r.numMedallas||0}/8 · ❤️ ${r.vidasActuales??r.vidasTotales??20} · 🔮 ${r.pf||0} PF</div></div></div>`;}).join('')+'</div>';return;}box.className='red-visor-grid';reproducirSonido('escaneo');let r=baseDatos.jugadores[target],stxt=r.lockeStatus==='ganado'?'🏆 GANADO':(r.lockeStatus==='perdido'?'💀 PERDIDO':'⏳ EN CURSO'),ts=r.sacrificios?r.sacrificios.length:0;let hP=`<div class="rival-perfil-card"><div class="rival-nombre">${escaparHTML(target.toUpperCase())}</div><div class="rival-stat-row"><span class="rival-stat-label">Reputación</span><span class="rival-stat-value" style="color:var(--neon-ilegal)">${r.pf||0} PF</span></div><div class="rival-stat-row"><span class="rival-stat-label">Vidas</span><span class="rival-stat-value" style="color:#f87171">❤️ ${r.vidasActuales||0}/${r.vidasTotales||20}</span></div><div class="rival-stat-row"><span class="rival-stat-label">Desafío</span><span class="rival-stat-value">${stxt}</span></div><div class="rival-stat-row"><span class="rival-stat-label">Medallas</span><span class="rival-stat-value" style="color:var(--neon-legal)">${r.numMedallas||0}/8</span></div><div class="rival-stat-row"><span class="rival-stat-label">Torneos</span><span class="rival-stat-value">${r.torneos||0}</span></div><div class="rival-stat-row"><span class="rival-stat-label">🔥 Sacrificados</span><span class="rival-stat-value" style="color:var(--neon-sacrificio)">${ts}</span></div></div>`;let dH='';if(r.cementerio&&r.cementerio.length>0){dH=`<div class="rival-cementerio-section"><div class="rival-cem-label">💀 Cementerio</div><div class="rival-dead-grid">`;r.cementerio.forEach(b=>{dH+=`<div class="rival-dead-card"><div class="rival-dead-name">💀 ${escaparHTML(b.nombre)}</div><div class="rival-dead-meta">Caído en: ${escaparHTML(b.ruta)}</div><div class="rival-dead-meta">Fecha: ${escaparHTML(b.fecha)}</div><div class="rival-dead-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`;});dH+=`</div></div>`;}let sH='';if(r.sacrificios&&r.sacrificios.length>0){sH=`<div style="margin-top:14px;border-top:1px solid rgba(249,115,22,.15);padding-top:12px"><div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--neon-sacrificio);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">🔥 Sacrificios</div>`;[...r.sacrificios].reverse().slice(0,5).forEach(s=>{sH+=`<div style="background:rgba(249,115,22,.03);border:1px solid rgba(249,115,22,.1);border-left:3px solid var(--neon-sacrificio);padding:7px 10px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:5px;font-size:11px"><span style="color:var(--neon-sacrificio);font-weight:700">${escaparHTML(s.nombre)}</span> <span style="color:var(--txt-muted)">[${escaparHTML(s.categoria)}]</span> <span style="color:var(--neon-sacrificio);font-weight:700;float:right">+${s.vidasObtenidas}❤️</span></div>`;});sH+=`</div>`;}let slotSel=`<select id="red-visor-slot-team" onchange="renderizarSubRanuraRival('${target}')" style="background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:5px 8px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;-webkit-appearance:none;appearance:none;cursor:pointer">`;for(let i=1;i<=10;i++)slotSel+=`<option value="${i}">Equipo ${i}</option>`;slotSel+=`</select>`;let hE=`<div class="rival-equipo-area"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--txt-primary);letter-spacing:.5px;text-transform:uppercase">Equipo Showdown</div><div style="width:120px">${slotSel}</div></div><div id="red-visor-pokes-area"></div>${dH}${sH}</div>`;box.innerHTML=hP+hE;mejorarTodosLosSelects(box);renderizarSubRanuraRival(target);};
 window.renderizarSubRanuraRival=function(tu){let si=parseInt(document.getElementById('red-visor-slot-team').value)-1,r=baseDatos.jugadores[tu],area=document.getElementById('red-visor-pokes-area');if(!area)return;let raw=(r.showdownEquipos&&r.showdownEquipos[si])?r.showdownEquipos[si]:"Sin datos";area.innerHTML=renderShowdownMini(raw);};
 function limpiarNombreURL(l){return l.split('@')[0].trim().replace(/\(.*?\)/g,'').trim().toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9\-]/g,'');}
 function renderShowdownMini(raw){if(!raw||raw==="Sin datos"||!raw.trim())return'<span style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display)">Sin datos de equipo.</span>';let pokes=raw.split(/\n\s*\n/),html='<div class="rival-pokes-grid">';pokes.forEach(bloque=>{let ls=bloque.split('\n').map(l=>l.trim()).filter(l=>l.length>0);if(!ls.length)return;let nom=ls[0].split('@')[0].trim(),api=limpiarNombreURL(ls[0]);let url=`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${api}.gif`;html+=`<div class="rival-poke-card"><img src="${url}" onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png';this.onerror=null"><div class="rival-poke-name">${escaparHTML(nom.split('(')[0].trim())}</div></div>`;});html+='</div>';return html;}
