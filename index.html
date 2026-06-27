@@ -1171,273 +1171,202 @@ function renderizarListaRadioAdmin(){let box=document.getElementById('radio-admi
 
 /* ═══ CONSULTOR TIPOS POR GENERACIÓN ═══ */
 (function(){
-  // TYPE COLORS (subset, matching existing tpk palette)
+  // Traducción de nombre de tipo EN -> ES
+  var TIPO_ES = {
+    normal:'Normal',fire:'Fuego',water:'Agua',grass:'Planta',electric:'Eléctrico',
+    ice:'Hielo',fighting:'Lucha',poison:'Veneno',ground:'Tierra',flying:'Volador',
+    psychic:'Psíquico',bug:'Bicho',rock:'Roca',ghost:'Fantasma',dragon:'Dragón',
+    dark:'Siniestro',steel:'Acero',fairy:'Hada'
+  };
+
+  // Colores por tipo ES
   var TYPE_COL = {
-    Normal:'#A8A878',Fuego:'#F08030',Agua:'#6890F0',Planta:'#78C850',Eléctrico:'#F8D030',
+    Normal:'#A8A878',Fuego:'#F08030',Agua:'#6890F0',Planta:'#78C850','Eléctrico':'#F8D030',
     Hielo:'#98D8D8',Lucha:'#C03028',Veneno:'#A040A0',Tierra:'#E0C068',Volador:'#A890F0',
-    Psíquico:'#F85888',Bicho:'#A8B820',Roca:'#B8A038',Fantasma:'#705898',Dragón:'#7038F8',
+    'Psíquico':'#F85888',Bicho:'#A8B820',Roca:'#B8A038',Fantasma:'#705898','Dragón':'#7038F8',
     Siniestro:'#705848',Acero:'#B8B8D0',Hada:'#EE99AC'
   };
 
-  // GENS array: display labels
-  var GENS = ['Gen I','Gen II','Gen III','Gen IV','Gen V','Gen VI','Gen VII','Gen VIII','Gen IX'];
+  // Generaciones a consultar con sus endpoints
+  var GENS = [
+    {label:'Gen I',   gen:1},
+    {label:'Gen II',  gen:2},
+    {label:'Gen III', gen:3},
+    {label:'Gen IV',  gen:4},
+    {label:'Gen V',   gen:5},
+    {label:'Gen VI',  gen:6},
+    {label:'Gen VII', gen:7},
+    {label:'Gen VIII',gen:8},
+    {label:'Gen IX',  gen:9},
+  ];
 
-  // Pokemon type data: key = name lowercase no-accent, value = array of [tipo1, tipo2|null] per gen (index 0=GenI...8=GenIX)
-  // null entry means "didn't exist yet"
-  // Most pokemon keep the same types; only notable changers or ambiguous ones are listed explicitly.
-  // Format: [G1, G2, G3, G4, G5, G6, G7, G8, G9]  — each entry: [T1] or [T1, T2] or null
-  var POKE_DB = {
-    // ─── CAMBIARON DE TIPO ───
-    "snubbull":       [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"]],
-    "granbull":       [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"]],
-    "clefairy":       [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Hada"],["Hada"],["Hada"],["Hada"]],
-    "clefable":       [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Hada"],["Hada"],["Hada"],["Hada"]],
-    "cleffa":         [null,["Normal"],["Normal"],["Normal"],["Normal"],["Hada"],["Hada"],["Hada"],["Hada"]],
-    "jigglypuff":     [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"]],
-    "wigglytuff":     [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"]],
-    "igglybuff":      [null,["Normal"],["Normal"],["Normal"],["Normal"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"]],
-    "togepi":         [null,["Normal"],["Normal"],["Normal"],["Normal"],["Hada"],["Hada"],["Hada"],["Hada"]],
-    "togetic":        [null,["Normal","Volador"],["Normal","Volador"],["Normal","Volador"],["Normal","Volador"],["Hada","Volador"],["Hada","Volador"],["Hada","Volador"],["Hada","Volador"]],
-    "togekiss":       [null,null,null,["Normal","Volador"],["Normal","Volador"],["Hada","Volador"],["Hada","Volador"],["Hada","Volador"],["Hada","Volador"]],
-    "mr. mime":       [["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"]],
-    "mr. mime galar": [null,null,null,null,null,null,null,["Hielo","Psíquico"],["Hielo","Psíquico"]],
-    "marill":         [null,["Agua"],["Agua"],["Agua"],["Agua"],["Agua","Hada"],["Agua","Hada"],["Agua","Hada"],["Agua","Hada"]],
-    "azumarill":      [null,["Agua"],["Agua"],["Agua"],["Agua"],["Agua","Hada"],["Agua","Hada"],["Agua","Hada"],["Agua","Hada"]],
-    "azurill":        [null,null,["Normal"],["Normal"],["Normal"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"],["Normal","Hada"]],
-    "mawile":         [null,null,["Acero"],["Acero"],["Acero"],["Acero","Hada"],["Acero","Hada"],["Acero","Hada"],["Acero","Hada"]],
-    "ralts":          [null,null,["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"]],
-    "kirlia":         [null,null,["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"]],
-    "gardevoir":      [null,null,["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"]],
-    "gallade":        [null,null,null,["Psíquico","Lucha"],["Psíquico","Lucha"],["Psíquico","Lucha"],["Psíquico","Lucha"],["Psíquico","Lucha"],["Psíquico","Lucha"]],
-    "snorunt":        [null,null,["Hielo"],["Hielo"],["Hielo"],["Hielo"],["Hielo"],["Hielo"],["Hielo"]],
-    "glalie":         [null,null,["Hielo"],["Hielo"],["Hielo"],["Hielo"],["Hielo"],["Hielo"],["Hielo"]],
-    "froslass":       [null,null,null,["Hielo","Fantasma"],["Hielo","Fantasma"],["Hielo","Fantasma"],["Hielo","Fantasma"],["Hielo","Fantasma"],["Hielo","Fantasma"]],
-    "mime jr.":       [null,null,null,["Psíquico"],["Psíquico"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"]],
-    "sylveon":        [null,null,null,null,null,["Hada"],["Hada"],["Hada"],["Hada"]],
-    "xerneas":        [null,null,null,null,null,["Hada"],["Hada"],["Hada"],["Hada"]],
-    "whimsicott":     [null,null,null,null,["Planta"],["Planta","Hada"],["Planta","Hada"],["Planta","Hada"],["Planta","Hada"]],
-    "cottonee":       [null,null,null,null,["Planta"],["Planta","Hada"],["Planta","Hada"],["Planta","Hada"],["Planta","Hada"]],
-    "flabébé":        [null,null,null,null,null,["Hada"],["Hada"],["Hada"],["Hada"]],
-    "floette":        [null,null,null,null,null,["Hada"],["Hada"],["Hada"],["Hada"]],
-    "florges":        [null,null,null,null,null,["Hada"],["Hada"],["Hada"],["Hada"]],
-    "dedenne":        [null,null,null,null,null,["Eléctrico","Hada"],["Eléctrico","Hada"],["Eléctrico","Hada"],["Eléctrico","Hada"]],
-    "carbink":        [null,null,null,null,null,["Roca","Hada"],["Roca","Hada"],["Roca","Hada"],["Roca","Hada"]],
-    "diancie":        [null,null,null,null,null,["Roca","Hada"],["Roca","Hada"],["Roca","Hada"],["Roca","Hada"]],
-    "klefki":         [null,null,null,null,null,["Acero","Hada"],["Acero","Hada"],["Acero","Hada"],["Acero","Hada"]],
-    "mimikyu":        [null,null,null,null,null,null,["Fantasma","Hada"],["Fantasma","Hada"],["Fantasma","Hada"]],
-    "tapu koko":      [null,null,null,null,null,null,["Eléctrico","Hada"],["Eléctrico","Hada"],["Eléctrico","Hada"]],
-    "tapu lele":      [null,null,null,null,null,null,["Psíquico","Hada"],["Psíquico","Hada"],["Psíquico","Hada"]],
-    "tapu bulu":      [null,null,null,null,null,null,["Planta","Hada"],["Planta","Hada"],["Planta","Hada"]],
-    "tapu fini":      [null,null,null,null,null,null,["Agua","Hada"],["Agua","Hada"],["Agua","Hada"]],
-    // ─── POKÉMON CLÁSICOS (mismos tipos siempre) ───
-    "bulbasaur":  [["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"]],
-    "ivysaur":    [["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"]],
-    "venusaur":   [["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"],["Planta","Veneno"]],
-    "charmander": [["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "charmeleon": [["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "charizard":  [["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"]],
-    "squirtle":   [["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"]],
-    "wartortle":  [["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"]],
-    "blastoise":  [["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"]],
-    "pikachu":    [["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"]],
-    "raichu":     [["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"]],
-    "raichu alola":[null,null,null,null,null,null,["Eléctrico","Psíquico"],["Eléctrico","Psíquico"],["Eléctrico","Psíquico"]],
-    "mewtwo":     [["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"]],
-    "mew":        [["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"]],
-    "gengar":     [["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"]],
-    "haunter":    [["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"]],
-    "gastly":     [["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"],["Fantasma","Veneno"]],
-    "snorlax":    [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"]],
-    "eevee":      [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"]],
-    "vaporeon":   [["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"],["Agua"]],
-    "jolteon":    [["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"],["Eléctrico"]],
-    "flareon":    [["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "espeon":     [null,["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"],["Psíquico"]],
-    "umbreon":    [null,["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"]],
-    "leafeon":    [null,null,null,["Planta"],["Planta"],["Planta"],["Planta"],["Planta"],["Planta"]],
-    "glaceon":    [null,null,null,["Hielo"],["Hielo"],["Hielo"],["Hielo"],["Hielo"],["Hielo"]],
-    "lugia":      [null,["Psíquico","Volador"],["Psíquico","Volador"],["Psíquico","Volador"],["Psíquico","Volador"],["Psíquico","Volador"],["Psíquico","Volador"],["Psíquico","Volador"],["Psíquico","Volador"]],
-    "ho-oh":      [null,["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"],["Fuego","Volador"]],
-    "celebi":     [null,["Psíquico","Planta"],["Psíquico","Planta"],["Psíquico","Planta"],["Psíquico","Planta"],["Psíquico","Planta"],["Psíquico","Planta"],["Psíquico","Planta"],["Psíquico","Planta"]],
-    "lucario":    [null,null,null,["Lucha","Acero"],["Lucha","Acero"],["Lucha","Acero"],["Lucha","Acero"],["Lucha","Acero"],["Lucha","Acero"]],
-    "garchomp":   [null,null,null,["Dragón","Tierra"],["Dragón","Tierra"],["Dragón","Tierra"],["Dragón","Tierra"],["Dragón","Tierra"],["Dragón","Tierra"]],
-    "dialga":     [null,null,null,["Acero","Dragón"],["Acero","Dragón"],["Acero","Dragón"],["Acero","Dragón"],["Acero","Dragón"],["Acero","Dragón"]],
-    "palkia":     [null,null,null,["Agua","Dragón"],["Agua","Dragón"],["Agua","Dragón"],["Agua","Dragón"],["Agua","Dragón"],["Agua","Dragón"]],
-    "giratina":   [null,null,null,["Fantasma","Dragón"],["Fantasma","Dragón"],["Fantasma","Dragón"],["Fantasma","Dragón"],["Fantasma","Dragón"],["Fantasma","Dragón"]],
-    "arceus":     [null,null,null,["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"]],
-    "zoroark":    [null,null,null,null,["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"]],
-    "zorua":      [null,null,null,null,["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"],["Siniestro"]],
-    "reshiram":   [null,null,null,null,["Dragón","Fuego"],["Dragón","Fuego"],["Dragón","Fuego"],["Dragón","Fuego"],["Dragón","Fuego"]],
-    "zekrom":     [null,null,null,null,["Dragón","Eléctrico"],["Dragón","Eléctrico"],["Dragón","Eléctrico"],["Dragón","Eléctrico"],["Dragón","Eléctrico"]],
-    "kyurem":     [null,null,null,null,["Dragón","Hielo"],["Dragón","Hielo"],["Dragón","Hielo"],["Dragón","Hielo"],["Dragón","Hielo"]],
-    "greninja":   [null,null,null,null,null,["Agua","Siniestro"],["Agua","Siniestro"],["Agua","Siniestro"],["Agua","Siniestro"]],
-    "noivern":    [null,null,null,null,null,["Volador","Dragón"],["Volador","Dragón"],["Volador","Dragón"],["Volador","Dragón"]],
-    "zygarde":    [null,null,null,null,null,["Dragón","Tierra"],["Dragón","Tierra"],["Dragón","Tierra"],["Dragón","Tierra"]],
-    "yveltal":    [null,null,null,null,null,["Siniestro","Volador"],["Siniestro","Volador"],["Siniestro","Volador"],["Siniestro","Volador"]],
-    "incineroar": [null,null,null,null,null,null,["Fuego","Siniestro"],["Fuego","Siniestro"],["Fuego","Siniestro"]],
-    "primarina":  [null,null,null,null,null,null,["Agua","Hada"],["Agua","Hada"],["Agua","Hada"]],
-    "decidueye":  [null,null,null,null,null,null,["Planta","Fantasma"],["Planta","Fantasma"],["Planta","Fantasma"]],
-    "lunala":     [null,null,null,null,null,null,["Psíquico","Fantasma"],["Psíquico","Fantasma"],["Psíquico","Fantasma"]],
-    "solgaleo":   [null,null,null,null,null,null,["Psíquico","Acero"],["Psíquico","Acero"],["Psíquico","Acero"]],
-    "necrozma":   [null,null,null,null,null,null,["Psíquico"],["Psíquico"],["Psíquico"]],
-    "zacian":     [null,null,null,null,null,null,null,["Hada"],["Hada"]],
-    "zamazenta":  [null,null,null,null,null,null,null,["Lucha"],["Lucha"]],
-    "eternatus":  [null,null,null,null,null,null,null,["Veneno","Dragón"],["Veneno","Dragón"]],
-    "koraidon":   [null,null,null,null,null,null,null,null,["Lucha","Dragón"]],
-    "miraidon":   [null,null,null,null,null,null,null,null,["Eléctrico","Dragón"]],
-    "sprigatito": [null,null,null,null,null,null,null,null,["Planta"]],
-    "meowscarada":[null,null,null,null,null,null,null,null,["Planta","Siniestro"]],
-    "fuecoco":    [null,null,null,null,null,null,null,null,["Fuego"]],
-    "skeledirge": [null,null,null,null,null,null,null,null,["Fuego","Fantasma"]],
-    "quaxly":     [null,null,null,null,null,null,null,null,["Agua"]],
-    "quaquaval":  [null,null,null,null,null,null,null,null,["Agua","Lucha"]],
-    // más amplio
-    "magnemite":  [["Eléctrico"],["Eléctrico"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"]],
-    "magneton":   [["Eléctrico"],["Eléctrico"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"]],
-    "magnezone":  [null,null,null,["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"],["Eléctrico","Acero"]],
-    "geodude":    [["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"]],
-    "geodude alola":[null,null,null,null,null,null,["Roca","Eléctrico"],["Roca","Eléctrico"],["Roca","Eléctrico"]],
-    "golem":      [["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"],["Roca","Tierra"]],
-    "golem alola":[null,null,null,null,null,null,["Roca","Eléctrico"],["Roca","Eléctrico"],["Roca","Eléctrico"]],
-    "ninetales":  [["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "ninetales alola":[null,null,null,null,null,null,["Hielo","Hada"],["Hielo","Hada"],["Hielo","Hada"]],
-    "vulpix":     [["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "vulpix alola":[null,null,null,null,null,null,["Hielo"],["Hielo"],["Hielo"]],
-    "meowth":     [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"]],
-    "meowth alola":[null,null,null,null,null,null,["Siniestro"],["Siniestro"],["Siniestro"]],
-    "meowth galar":[null,null,null,null,null,null,null,["Acero"],["Acero"]],
-    "persian":    [["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"]],
-    "persian alola":[null,null,null,null,null,null,["Siniestro"],["Siniestro"],["Siniestro"]],
-    "ponyta":     [["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "ponyta galar":[null,null,null,null,null,null,null,["Psíquico"],["Psíquico"]],
-    "rapidash":   [["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "rapidash galar":[null,null,null,null,null,null,null,["Psíquico","Hada"],["Psíquico","Hada"]],
-    "slowpoke":   [["Agua","Psíquico"],["Agua","Psíquico"],["Agua","Psíquico"],["Agua","Psíquico"],["Agua","Psíquico"],["Agua","Psíquico"],["Agua","Psíquico"],["Agua","Psíquico"],["Agua","Psíquico"]],
-    "slowpoke galar":[null,null,null,null,null,null,null,["Psíquico"],["Psíquico"]],
-    "farfetch'd": [["Normal","Volador"],["Normal","Volador"],["Normal","Volador"],["Normal","Volador"],["Normal","Volador"],["Normal","Volador"],["Normal","Volador"],["Normal","Volador"],["Normal","Volador"]],
-    "farfetch'd galar":[null,null,null,null,null,null,null,["Lucha"],["Lucha"]],
-    "weezing":    [["Veneno"],["Veneno"],["Veneno"],["Veneno"],["Veneno"],["Veneno"],["Veneno"],["Veneno"],["Veneno"]],
-    "weezing galar":[null,null,null,null,null,null,null,["Veneno","Hada"],["Veneno","Hada"]],
-    "mr. mime galar":[null,null,null,null,null,null,null,["Hielo","Psíquico"],["Hielo","Psíquico"]],
-    "corsola":    [null,["Agua","Roca"],["Agua","Roca"],["Agua","Roca"],["Agua","Roca"],["Agua","Roca"],["Agua","Roca"],["Agua","Roca"],["Agua","Roca"]],
-    "corsola galar":[null,null,null,null,null,null,null,["Fantasma"],["Fantasma"]],
-    "zigzagoon":  [null,null,["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"]],
-    "zigzagoon galar":[null,null,null,null,null,null,null,["Siniestro","Normal"],["Siniestro","Normal"]],
-    "linoone":    [null,null,["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"],["Normal"]],
-    "linoone galar":[null,null,null,null,null,null,null,["Siniestro","Normal"],["Siniestro","Normal"]],
-    "yamask":     [null,null,null,null,["Fantasma"],["Fantasma"],["Fantasma"],["Fantasma"],["Fantasma"]],
-    "yamask galar":[null,null,null,null,null,null,null,["Tierra","Fantasma"],["Tierra","Fantasma"]],
-    "darumaka":   [null,null,null,null,["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "darumaka galar":[null,null,null,null,null,null,null,["Hielo"],["Hielo"]],
-    "darmanitan":[null,null,null,null,["Fuego"],["Fuego"],["Fuego"],["Fuego"],["Fuego"]],
-    "darmanitan galar":[null,null,null,null,null,null,null,["Hielo"],["Hielo"]],
-    "stunfisk":   [null,null,null,null,["Tierra","Eléctrico"],["Tierra","Eléctrico"],["Tierra","Eléctrico"],["Tierra","Eléctrico"],["Tierra","Eléctrico"]],
-    "stunfisk galar":[null,null,null,null,null,null,null,["Tierra","Acero"],["Tierra","Acero"]],
-  };
-
-  // Normalizar texto para búsqueda
-  function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/['']/g,''); }
-
-  // Todos los nombres del DB
-  var TODOS = Object.keys(POKE_DB);
-
-  // Tag de tipo con color
   function typeTag(t){
-    var c = TYPE_COL[t] || '#888';
-    // calcular contraste
+    var c = TYPE_COL[t] || '#666';
     var r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);
-    var lum=0.299*r+0.587*g+0.114*b;
-    var txt=lum>145?'#111':'#fff';
-    return '<span style="background:'+c+';color:'+txt+';padding:2px 9px;border-radius:99px;font-size:10px;font-family:var(--font-display);font-weight:700;letter-spacing:.3px;display:inline-block;margin:1px">'+t+'</span>';
+    var txt = (0.299*r+0.587*g+0.114*b)>145 ? '#111' : '#fff';
+    return '<span style="background:'+c+';color:'+txt+';padding:2px 10px;border-radius:99px;font-size:10px;font-family:var(--font-display);font-weight:700;letter-spacing:.3px;display:inline-block;margin:1px 2px">'+t+'</span>';
   }
 
-  function renderResultado(key){
-    var data = POKE_DB[key];
-    var nombre = key.charAt(0).toUpperCase()+key.slice(1);
-    // detect if types ever change
-    var firstTypes = null;
-    var cambia = false;
-    for(var i=0;i<data.length;i++){
-      if(data[i]!==null){
-        if(firstTypes===null){ firstTypes=data[i].join('/'); }
-        else if(data[i].join('/')!==firstTypes){ cambia=true; break; }
-      }
-    }
-
-    var filas = '';
-    var prevTipo = '__NONE__';
-    for(var g=0;g<GENS.length;g++){
-      var tipos = data[g];
-      if(tipos===null) continue; // no existe en esta gen
-      var tipoStr = tipos.join('/');
-      var esCambio = tipoStr !== prevTipo && prevTipo !== '__NONE__';
-      var genLabel = GENS[g];
-      var tags = tipos.map(typeTag).join(' ');
-      var cambioMark = esCambio ? '<span style="color:var(--neon-packs);font-size:9px;font-family:var(--font-display);margin-left:6px;vertical-align:middle">▲ CAMBIO</span>' : '';
-      var rowBg = esCambio ? 'background:rgba(245,158,11,.06);border-left:3px solid var(--neon-packs)' : 'border-left:3px solid transparent';
-      filas += '<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-bottom:1px solid var(--borde);'+rowBg+'">'
-             + '<span style="min-width:48px;font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-secondary)">'+genLabel+'</span>'
-             + '<div style="flex:1">'+tags+'</div>'
-             + cambioMark
-             + '</div>';
-      prevTipo = tipoStr;
-    }
-
-    var resumen = cambia
-      ? '<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r-md);padding:8px 12px;margin-bottom:12px;font-size:11px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700">⚠️ Este Pokémon cambió de tipo entre generaciones</div>'
-      : '<div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:var(--r-md);padding:8px 12px;margin-bottom:12px;font-size:11px;color:var(--neon-legal);font-family:var(--font-display);font-weight:700">✅ Tipos consistentes en todas las generaciones</div>';
-
-    document.getElementById('pgl-resultado').innerHTML =
-      '<div style="margin-bottom:10px;font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco);text-transform:uppercase;letter-spacing:.5px">'+nombre+'</div>'
-      + resumen
-      + '<div style="border:1px solid var(--borde);border-radius:var(--r-md);overflow:hidden">'+filas+'</div>';
+  function setResultado(html){
+    document.getElementById('pgl-resultado').innerHTML = html;
   }
+
+  function loading(msg){
+    setResultado('<div style="color:var(--txt-secondary);font-size:12px;font-family:var(--font-display);animation:pulse 1s infinite">⏳ '+msg+'</div>');
+  }
+
+  function error(msg){
+    setResultado('<div style="color:#f87171;font-size:12px;font-family:var(--font-display)">⛔ '+msg+'</div>');
+  }
+
+  // Fetch with cache
+  var _cache = {};
+  function apiFetch(url){
+    if(_cache[url]) return Promise.resolve(_cache[url]);
+    return fetch(url).then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    }).then(function(d){ _cache[url]=d; return d; });
+  }
+
+  // Normalizar nombre para URL: quitar acentos, espacios->guion
+  function toApiName(s){
+    return s.trim().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/['']/g,'')
+      .replace(/\s+/g,'-')
+      .replace(/[^a-z0-9\-\.]/g,'');
+  }
+
+  // Obtener tipos de un pokemon en una gen concreta desde PokeAPI
+  // Usamos el endpoint pokemon-species para saber en qué gen apareció,
+  // y el pokemon endpoint para los tipos actuales. Para cambios históricos
+  // usamos la historia en past_types del pokemon endpoint.
+  function consultarPokemon(nameRaw){
+    var apiName = toApiName(nameRaw);
+    if(!apiName){ error('Nombre inválido.'); return; }
+
+    loading('Buscando ' + nameRaw + '...');
+
+    // 1) Buscar datos del pokémon (tipos actuales + past_types)
+    apiFetch('https://pokeapi.co/api/v2/pokemon/' + apiName)
+    .then(function(pokeData){
+      // Nombre bonito
+      var displayName = pokeData.name.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+
+      // Tipos actuales
+      var currentTypes = pokeData.types.map(function(t){ return TIPO_ES[t.type.name] || t.type.name; });
+
+      // past_types: array de {generation:{url}, types:[...]}
+      // generation url contiene /generation-N/ al final
+      var pastTypes = pokeData.past_types || []; // [{generation:{url}, types:[]}]
+
+      // 2) Saber en qué gen apareció usando species
+      apiFetch(pokeData.species.url)
+      .then(function(speciesData){
+        // generation url ej: https://pokeapi.co/api/v2/generation/1/
+        var genUrl = speciesData.generation.url;
+        var genMatch = genUrl.match(/\/generation\/(\d+)\//);
+        var introGen = genMatch ? parseInt(genMatch[1]) : 1;
+
+        // Construir mapa genNum -> tipos
+        // past_types tiene los tipos que tenía HASTA esa gen (inclusive)
+        // Ordenar past_types por generación descendente
+        var pastSorted = pastTypes.map(function(pt){
+          var m = pt.generation.url.match(/\/generation\/(\d+)\//);
+          return { gen: m ? parseInt(m[1]) : 0, types: pt.types.map(function(t){ return TIPO_ES[t.type.name]||t.type.name; }) };
+        }).sort(function(a,b){ return a.gen - b.gen; });
+
+        // Para cada gen (1..9), determinar los tipos
+        function getTypesForGen(g){
+          if(g < introGen) return null;
+          // buscar el past_types más antiguo que cubra esta gen
+          for(var i=0; i<pastSorted.length; i++){
+            if(g <= pastSorted[i].gen) return pastSorted[i].types;
+          }
+          return currentTypes;
+        }
+
+        // Renderizar tabla
+        var filas = '';
+        var prevKey = '__NONE__';
+        var hasCambio = false;
+        for(var g=0; g<GENS.length; g++){
+          var genNum = GENS[g].gen;
+          var tipos = getTypesForGen(genNum);
+          if(tipos === null) continue;
+          var tipoKey = tipos.join('/');
+          var esCambio = prevKey !== '__NONE__' && tipoKey !== prevKey;
+          if(esCambio) hasCambio = true;
+          var tags = tipos.map(typeTag).join('');
+          var cambioMark = esCambio ? '<span style="color:var(--neon-packs);font-size:9px;font-family:var(--font-display);margin-left:8px;vertical-align:middle;font-weight:700">▲ CAMBIO</span>' : '';
+          var rowStyle = esCambio
+            ? 'background:rgba(245,158,11,.06);border-left:3px solid var(--neon-packs)'
+            : 'border-left:3px solid transparent';
+          filas += '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--borde);'+rowStyle+'">'
+                 + '<span style="min-width:54px;font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-secondary)">'+GENS[g].label+'</span>'
+                 + '<div style="flex:1">'+tags+'</div>'
+                 + cambioMark
+                 + '</div>';
+          prevKey = tipoKey;
+        }
+
+        var banner = hasCambio
+          ? '<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:var(--r-md);padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700">⚠️ Este Pokémon cambió de tipo entre generaciones</div>'
+          : '<div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);border-radius:var(--r-md);padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--neon-legal);font-family:var(--font-display);font-weight:700">✅ Tipos consistentes en todas las generaciones</div>';
+
+        setResultado(
+          '<div style="font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--blanco);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">'+displayName+'</div>'
+          + banner
+          + '<div style="border:1px solid var(--borde);border-radius:var(--r-md);overflow:hidden">'+filas+'</div>'
+        );
+      });
+    })
+    .catch(function(e){
+      error('Pokémon no encontrado. Prueba con el nombre en inglés (ej: "snubbull", "clefairy", "charizard").');
+    });
+  }
+
+  // Autocomplete con PokeAPI name list (cargamos los primeros 2000)
+  var _allNames = [];
+  function cargarNombres(){
+    apiFetch('https://pokeapi.co/api/v2/pokemon?limit=2000&offset=0').then(function(d){
+      _allNames = d.results.map(function(p){ return p.name; });
+    }).catch(function(){});
+  }
+  cargarNombres();
+
+  window.pglBuscar = function(){
+    var val = document.getElementById('pgl-input').value.trim().toLowerCase().replace(/\s+/g,'-');
+    var sug = document.getElementById('pgl-sugerencias');
+    if(val.length < 2){ sug.style.display='none'; return; }
+    var matches = _allNames.filter(function(n){ return n.indexOf(val) !== -1; }).slice(0,8);
+    if(!matches.length){ sug.style.display='none'; return; }
+    sug.innerHTML = matches.map(function(m){
+      var label = m.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+      return '<div onclick="document.getElementById(\'pgl-input\').value=\''+label+'\';document.getElementById(\'pgl-sugerencias\').style.display=\'none\';window.pglConsultar()" '
+           + 'style="padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)" '
+           + 'onmouseover="this.style.background=\'var(--bg-overlay)\'" onmouseout="this.style.background=\'\'">'+label+'</div>';
+    }).join('');
+    sug.style.display = 'block';
+  };
 
   window.pglConsultar = function(){
     var val = document.getElementById('pgl-input').value.trim();
-    if(!val){ document.getElementById('pgl-resultado').innerHTML='<div style="color:var(--txt-muted);font-size:12px">Introduce un nombre de Pokémon.</div>'; return; }
-    var key = norm(val).replace(/\s+/g,' ');
-    // busca match exacto primero
-    var found = TODOS.find(function(k){ return norm(k)===key; });
-    if(!found){
-      // busca match parcial
-      found = TODOS.find(function(k){ return norm(k).indexOf(key)===0; });
-    }
-    if(!found){
-      found = TODOS.find(function(k){ return norm(k).indexOf(key)!==-1; });
-    }
-    if(!found){
-      document.getElementById('pgl-resultado').innerHTML='<div style="color:#f87171;font-size:12px;font-family:var(--font-display)">Pokémon no encontrado en la base de datos. Prueba con el nombre en español.</div>';
-      return;
-    }
-    document.getElementById('pgl-input').value = found.charAt(0).toUpperCase()+found.slice(1);
     document.getElementById('pgl-sugerencias').style.display='none';
-    renderResultado(found);
+    if(!val){ error('Escribe el nombre de un Pokémon.'); return; }
+    consultarPokemon(val);
   };
 
-  window.pglBuscar = function(){
-    var val = norm(document.getElementById('pgl-input').value.trim());
-    var sug = document.getElementById('pgl-sugerencias');
-    if(!val || val.length<2){ sug.style.display='none'; return; }
-    var matches = TODOS.filter(function(k){ return norm(k).indexOf(val)!==-1; }).slice(0,8);
-    if(!matches.length){ sug.style.display='none'; return; }
-    sug.innerHTML = matches.map(function(m){
-      return '<div onclick="document.getElementById(\'pgl-input\').value=\''+m.charAt(0).toUpperCase()+m.slice(1)+'\';document.getElementById(\'pgl-sugerencias\').style.display=\'none\';pglConsultar()" style="padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)" onmouseover="this.style.background=\'var(--bg-overlay)\'" onmouseout="this.style.background=\'\'">'+m.charAt(0).toUpperCase()+m.slice(1)+'</div>';
-    }).join('');
-    sug.style.display='block';
-  };
-
-  // Cerrar sugerencias al clickar fuera
   document.addEventListener('click', function(e){
-    if(!e.target.closest('#pge-gen-lookup') && !e.target.closest('#pgl-input') && !e.target.closest('#pgl-sugerencias')){
-      var s=document.getElementById('pgl-sugerencias');
-      if(s)s.style.display='none';
+    if(!e.target.closest('#poke-gen-lookup')){
+      var s = document.getElementById('pgl-sugerencias');
+      if(s) s.style.display = 'none';
     }
   });
 
-  // Enter en el input
   document.addEventListener('DOMContentLoaded', function(){
-    var inp=document.getElementById('pgl-input');
+    var inp = document.getElementById('pgl-input');
     if(inp) inp.addEventListener('keydown', function(e){ if(e.key==='Enter') window.pglConsultar(); });
   });
 })();
