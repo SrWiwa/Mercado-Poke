@@ -528,6 +528,27 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
             <div class="torneos-subtexto">Campeonatos conquistados en la liga</div>
           </div>
         </div>
+        <!-- HALL OF FAME -->
+        <div id="hof-block" style="margin-top:18px;display:none">
+          <div style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--neon-packs);margin-bottom:12px;text-align:center">✨ Hall of Fame ✨</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div class="medallas-card" style="text-align:center;padding:14px 10px;border-color:rgba(245,158,11,.25)">
+              <div style="font-size:28px;margin-bottom:6px">🎖️</div>
+              <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--neon-packs);margin-bottom:6px">Campeón Torneos</div>
+              <div id="hof-torneos" style="font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco)">—</div>
+            </div>
+            <div class="medallas-card" style="text-align:center;padding:14px 10px;border-color:rgba(239,68,68,.2)">
+              <div style="font-size:28px;margin-bottom:6px">❤️</div>
+              <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#f87171;margin-bottom:6px">Campeón Por Vidas</div>
+              <div id="hof-vidas" style="font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco)">—</div>
+            </div>
+            <div class="medallas-card" style="text-align:center;padding:14px 10px;border-color:rgba(245,197,24,.25);background:linear-gradient(135deg,rgba(245,197,24,.04),transparent)">
+              <div style="font-size:28px;margin-bottom:6px">👑</div>
+              <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--amarillo);margin-bottom:6px">Campeón Finalísima</div>
+              <div id="hof-finalísima" style="font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco)">—</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <!-- MODO DIOS -->
@@ -539,6 +560,7 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
         <button class="dios-tab" id="dtab-tienda" onclick="cambiarAdminTab('tienda')">🏪 Eventos y Tienda</button>
         <button class="dios-tab" id="dtab-apuestas" onclick="cambiarAdminTab('apuestas')">🎰 Apuestas y Trueques</button>
         <button class="dios-tab" id="dtab-radio" onclick="cambiarAdminTab('radio')">📻 Radio</button>
+        <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
       </div>
       <!-- RESETEOS -->
       <div id="dv-reset" class="dios-view active">
@@ -671,6 +693,42 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
             <div class="admin-section-title" style="color:var(--neon-packs)">🎵 Canciones en la Radio</div>
             <div id="radio-admin-lista" style="max-height:480px;overflow-y:auto;padding-right:4px"><div style="color:var(--txt-muted);font-size:11px;text-align:center;padding:20px;font-family:var(--font-display)">Sin canciones todavía.</div></div>
           </div>
+        </div>
+      </div>
+      <!-- CAMPEONES ADMIN -->
+      <div id="dv-campeones" class="dios-view">
+        <div class="card" style="max-width:520px">
+          <div class="card-title" style="color:var(--neon-packs)">🏆 Hall of Fame — Campeones</div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:18px">Asigna el campeón de cada modalidad. Se mostrará públicamente en el apartado Torneos y Medallas de todos los jugadores.</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <label style="font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">🎖️ Campeón Torneos</label>
+              <div style="display:flex;gap:8px">
+                <select id="adm-campeon-torneos" class="admin-select" style="margin-bottom:0;flex:1"><option value="">— Sin campeón —</option></select>
+                <button class="btn-admin packs" style="flex-shrink:0;white-space:nowrap" onclick="guardarCampeones()">Guardar</button>
+              </div>
+              <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)">Ganador del mayor número de torneos.</div>
+            </div>
+            <hr class="admin-hr" style="margin:2px 0">
+            <div>
+              <label style="font-size:9px;color:#f87171;font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">❤️ Campeón Por Vidas</label>
+              <div style="display:flex;gap:8px">
+                <select id="adm-campeon-vidas" class="admin-select" style="margin-bottom:0;flex:1"><option value="">— Sin campeón —</option></select>
+                <button class="btn-admin danger" style="flex-shrink:0;white-space:nowrap" onclick="guardarCampeones()">Guardar</button>
+              </div>
+              <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)">Entrenador con más vidas al final del Nuzlocke.</div>
+            </div>
+            <hr class="admin-hr" style="margin:2px 0">
+            <div>
+              <label style="font-size:9px;color:var(--amarillo);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">👑 Campeón Finalísima</label>
+              <div style="display:flex;gap:8px">
+                <select id="adm-campeon-finalísima" class="admin-select" style="margin-bottom:0;flex:1"><option value="">— Sin campeón —</option></select>
+                <button class="btn-admin" style="flex-shrink:0;white-space:nowrap;background:rgba(245,197,24,.1);color:var(--amarillo);border-color:rgba(245,197,24,.3)" onclick="guardarCampeones()">Guardar</button>
+              </div>
+              <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)">Vencedor absoluto de la Finalísima.</div>
+            </div>
+          </div>
+          <div id="adm-campeones-estado" style="margin-top:14px;font-size:10px;font-family:var(--font-display);color:var(--neon-legal);min-height:16px;text-align:center"></div>
         </div>
       </div>
     </section>
@@ -1383,6 +1441,68 @@ function renderizarListaRadioAdmin(){let box=document.getElementById('radio-admi
   });
 })();
 
+
+/* ═══ CAMPEONES / HALL OF FAME ═══ */
+window.guardarCampeones = function(){
+  if(!baseDatos.campeones) baseDatos.campeones = {};
+  baseDatos.campeones.torneos   = document.getElementById('adm-campeon-torneos').value;
+  baseDatos.campeones.vidas     = document.getElementById('adm-campeon-vidas').value;
+  var sf = document.getElementById('adm-campeon-finalísima');
+  baseDatos.campeones.finalísima = sf ? sf.value : '';
+  guardarBD();
+  renderizarHallOfFame();
+  var est = document.getElementById('adm-campeones-estado');
+  if(est){ est.textContent = '✅ Campeones guardados correctamente'; setTimeout(()=>{ est.textContent=''; }, 2500); }
+  mostrarNotificacion('Hall of Fame actualizado.','exito','🏆');
+};
+
+function renderizarHallOfFame(){
+  var c = (baseDatos && baseDatos.campeones) || {};
+  var t  = c.torneos    || '';
+  var v  = c.vidas      || '';
+  var f  = c.finalísima || '';
+
+  // Bloque en perfil
+  var blk = document.getElementById('hof-block');
+  if(blk) blk.style.display = (t||v||f) ? 'block' : 'none';
+
+  var elT = document.getElementById('hof-torneos');
+  var elV = document.getElementById('hof-vidas');
+  var elF = document.getElementById('hof-finalísima');
+  if(elT) elT.textContent = t ? t.toUpperCase() : '—';
+  if(elV) elV.textContent = v ? v.toUpperCase() : '—';
+  if(elF) elF.textContent = f ? f.toUpperCase() : '—';
+
+  // Selectores admin (si están cargados)
+  var sT = document.getElementById('adm-campeon-torneos');
+  var sV = document.getElementById('adm-campeon-vidas');
+  var sF = document.getElementById('adm-campeon-finalísima');
+  if(sT && t) sT.value = t;
+  if(sV && v) sV.value = v;
+  if(sF && f) sF.value = f;
+}
+
+function poblarSelectoresCampeones(){
+  var ids = Object.keys((baseDatos && baseDatos.jugadores) || {});
+  var c   = (baseDatos && baseDatos.campeones) || {};
+  ['adm-campeon-torneos','adm-campeon-vidas','adm-campeon-finalísima'].forEach(function(sid, i){
+    var el = document.getElementById(sid);
+    if(!el) return;
+    var val = [c.torneos, c.vidas, c.finalísima][i] || '';
+    el.innerHTML = '<option value="">— Sin campeón —</option>' +
+      ids.map(function(id){ return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>'; }).join('');
+  });
+}
+
+// Enganchar en cambiarAdminTab
+(function(){
+  var _orig = window.cambiarAdminTab;
+  window.cambiarAdminTab = function(tab){
+    _orig(tab);
+    if(tab === 'campeones') poblarSelectoresCampeones();
+  };
+})();
+
 /* ═══ NOTIFICACIONES ═══ */
 window.mostrarNotificacion=function(texto,tipo,icono,titulo,sinSonido){tipo=tipo||'info';icono=icono||({exito:'✅',error:'⛔',info:'ℹ️',pf:'🔮',sacrificio:'🔥'}[tipo]||'✅');let cont=document.getElementById('toast-container');if(!cont)return;let el=document.createElement('div');el.className=`toast tipo-${tipo}`;el.innerHTML=`<span class="toast-icon">${icono}</span><div>${titulo?`<div class="toast-titulo">${escaparHTML(titulo)}</div>`:''}<div class="toast-texto">${escaparHTML(texto)}</div></div>`;cont.appendChild(el);requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));if(!sinSonido)reproducirSonido(tipo==='error'?'error':(tipo==='exito'?'exito':'click'));setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');setTimeout(()=>el.remove(),350);},3800);};
 window.mostrarConfirmacion=function(opts){opts=opts||{};return new Promise(resolve=>{let overlay=document.getElementById('gx-overlay');document.getElementById('gx-icon').textContent=opts.icono||'❔';document.getElementById('gx-title').textContent=opts.titulo||'Confirmar acción';document.getElementById('gx-desc').textContent=opts.descripcion||'';let bc=document.getElementById('gx-btn-confirmar'),bcan=document.getElementById('gx-btn-cancelar');bc.textContent=opts.textoConfirmar||'Confirmar';bcan.textContent=opts.textoCancelar||'Cancelar';bc.className='gx-btn gx-btn-confirmar '+(opts.tipo==='peligro'?'peligro':(opts.tipo==='sacrificio'?'sacrificio':''));bcan.style.display=opts.soloInfo?'none':'';reproducirSonido('abrir');function cerrar(v){overlay.classList.remove('show');bc.onclick=null;bcan.onclick=null;resolve(v);}bc.onclick=()=>{reproducirSonido(opts.sonidoConfirmar||(opts.tipo==='peligro'?'error':'exito'));cerrar(true);};bcan.onclick=()=>{reproducirSonido('cerrar');cerrar(false);};overlay.classList.add('show');});};
@@ -1522,7 +1642,7 @@ function inyectarEntradaDiarioAutomatica(txt){if(!userSesion||!baseDatos.jugador
 function inyectarEntradaDiarioAutomaticaPara(uid,txt){if(!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid],d=new Date();let ts=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;if(!u.diarioLogs)u.diarioLogs=[];u.diarioLogs.push({timestamp:ts,text:txt,texto:txt});registrarActividadGlobal(uid,txt,ts);}
 
 /* ═══ PERFIL ═══ */
-function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();}
+function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();renderizarHallOfFame();}
 function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}">${icon}</div>`;}box.innerHTML=html;}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
@@ -1568,7 +1688,7 @@ window.ajustarCamposFormularioMercader=function(){let t=document.getElementById(
 window.inyectarObjetoNuevoMaster=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('ins-tienda').value,n=document.getElementById('ins-nombre').value.trim(),p=parseInt(document.getElementById('ins-precio').value)||0,s=parseInt(document.getElementById('ins-stock').value)||0;if(!n){mostrarNotificacion("Falta el nombre del producto.","error","📦");return;}let nuevo={id:Date.now(),tienda:t,stock:s,icon:document.getElementById('ins-icono').value.trim()||'📦',nombre:n};if(t==='legal'){nuevo.cat=document.getElementById('ins-cat-legal').value;nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;}else if(t==='pack'){nuevo.cat='Pack Especial';nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;nuevo.desc=document.getElementById('ins-pack-desc').value.trim();nuevo.estrategia=document.getElementById('ins-pack-estrategia').value.trim();}else if(t==='illegal'){nuevo.cat='Hack de Sistema';nuevo.precioPf=p;nuevo.desc=document.getElementById('ins-illegal-desc').value.trim();nuevo.beneficio=document.getElementById('ins-illegal-beneficio').value.trim();nuevo.castigo=document.getElementById('ins-illegal-castigo').value.trim();}if(!baseDatos.productos)baseDatos.productos=[];baseDatos.productos.push(nuevo);guardarBD();document.getElementById('ins-nombre').value='';document.getElementById('ins-precio').value='';document.getElementById('ins-illegal-beneficio').value='';document.getElementById('ins-illegal-castigo').value='';document.getElementById('ins-illegal-desc').value='';reproducirSonido('exito');mostrarNotificacion(`${nuevo.icon} ${n} publicado.`,"exito","📦");};
 window.actualizarPropertyProducto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=parseInt(val)||0;guardarBD();}};
 window.eliminarProductoMaster=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar producto',descripcion:'Esta acción no se puede deshacer.',textoConfirmar:'Eliminar',tipo:'peligro'});if(cf){baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id);guardarBD();mostrarNotificacion("Producto eliminado.","info","🗑️",null,true);}};
-function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();refrescarSelectsPersonalizados();}
+function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-vidas','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.vidas,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});refrescarSelectsPersonalizados();}
 function renderizarAdminArena(){let box=document.getElementById('adm-arena-combates-activos');if(!box)return;box.innerHTML='';if(!baseDatos.arena||!Object.keys(baseDatos.arena).length){box.innerHTML='<div style="color:var(--txt-muted);font-size:10px;text-align:center;padding:10px;font-family:var(--font-display)">No hay combates activos.</div>';return;}Object.values(baseDatos.arena).forEach(c=>{if(c.estado==='resuelto')return;box.innerHTML+=`<div class="admin-arena-card"><div style="font-size:11px;color:var(--neon-arena);font-weight:700;margin-bottom:5px;font-family:var(--font-display)">${escaparHTML(c.descripcion)}</div><div style="font-size:10px;color:var(--txt-secondary);margin-bottom:7px"><span style="color:#60a5fa">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171">${escaparHTML(c.jugadorB.toUpperCase())}</span> — ${c.estado.toUpperCase()} — Bote: ${(c.boteA||0)+(c.boteB||0)} PF</div><div class="admin-btns-row">${c.estado==='abierto'?`<button class="btn-admin-sm packs" onclick="cerrarApuestasCombate('${c.id}')">🔒 Cerrar</button>`:''}<button class="btn-admin-sm legal" onclick="resolverCombateArena('${c.id}','A')">🏆 Gana ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-admin-sm danger" onclick="resolverCombateArena('${c.id}','B')">🏆 Gana ${escaparHTML(c.jugadorB.toUpperCase())}</button></div></div>`;});}
 function redibujarConsolaAdminMaster(){document.getElementById('chk-open-legal').checked=baseDatos.legalOpen!==false;document.getElementById('chk-open-pack').checked=baseDatos.packOpen!==false;document.getElementById('chk-open-illegal').checked=baseDatos.illegalOpen!==false;let chkRadio=document.getElementById('chk-radio-activada');if(chkRadio)chkRadio.checked=!!(baseDatos.radio&&baseDatos.radio.activada);if(baseDatos.eventoSistema)document.getElementById('adm-evento-economico').value=baseDatos.eventoSistema;actualizarSelectorUsuariosBanco();renderizarAdminArena();renderizarAdminCamara();let al=document.getElementById('admin-inventario-global');if(!al)return;al.innerHTML='';baseDatos.productos.forEach(p=>{let esI=p.tienda==='illegal';al.innerHTML+=`<div class="admin-item-card"><button class="btn-del-item" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary);font-size:12px;font-weight:600;margin-bottom:6px">${p.icon} ${p.nombre} <span style="color:var(--txt-muted);font-size:10px">[${p.tienda.toUpperCase()}]</span></div><div class="admin-item-row"><div class="admin-field"><label>Coste</label><input type="number" value="${esI?p.precioPf:p.precio}" class="admin-input" style="margin-bottom:0;width:80px" oninput="actualizarPropertyProducto(${p.id},'${esI?'precioPf':'precio'}',this.value)"></div><div class="admin-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input" style="margin-bottom:0;width:70px" oninput="actualizarPropertyProducto(${p.id},'stock',this.value)"></div></div></div>`;});renderizarListaRadioAdmin();}
 </script>
