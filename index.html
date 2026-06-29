@@ -249,6 +249,25 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .nl-radio-label input{accent-color:#f87171}
 body.tema-shinylocke{--neon-packs:#c084fc;--neon-legal:#a78bfa;--neon-ilegal:#e879f9}
 body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97316}
+/* Generador de tiendas - layout responsive */
+.gen-label{font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px}
+.gen-selects-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;min-width:0}
+.gen-field-full{min-width:0}
+.gen-field-half{min-width:0}
+.gen-btns-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.gen-btn{padding:10px 6px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.gen-btn-legal{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--neon-legal)}
+.gen-btn-legal:hover{background:rgba(16,185,129,.18)}
+.gen-btn-pack{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);color:var(--neon-packs)}
+.gen-btn-pack:hover{background:rgba(245,158,11,.18)}
+.gen-btn-ambas{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:var(--neon-packs);box-shadow:0 0 12px -4px rgba(245,158,11,.3)}
+.gen-btn-ambas:hover{background:rgba(245,158,11,.22)}
+@media(max-width:600px){
+  .gen-selects-grid{grid-template-columns:1fr 1fr}
+  .gen-field-full{grid-column:1/-1}
+  .gen-btns-grid{grid-template-columns:1fr}
+  .gen-btn{padding:12px}
+}
 </style>
 </head>
 <body>
@@ -592,8 +611,8 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
           </div>
           <div class="medallas-card" style="text-align:center;padding:18px 12px;border-color:rgba(239,68,68,.2)">
             <div style="font-size:36px;margin-bottom:8px">❤️</div>
-            <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#f87171;margin-bottom:8px">Campeón Por Vidas</div>
-            <div id="hof-vidas" style="font-family:var(--font-display);font-size:15px;font-weight:900;color:var(--blanco)">—</div>
+            <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#f87171;margin-bottom:8px">Campeones Por Vidas</div>
+            <div id="hof-vidas" style="font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco);display:flex;flex-direction:column;gap:4px;align-items:center">—</div>
           </div>
           <div class="medallas-card" style="text-align:center;padding:18px 12px;border-color:rgba(245,197,24,.3);background:linear-gradient(135deg,rgba(245,197,24,.05),transparent)">
             <div style="font-size:36px;margin-bottom:8px">👑</div>
@@ -676,10 +695,10 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:14px;min-width:0">
-            <div>
-              <label style="font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px">⚔️ Progreso actual</label>
-              <select id="gen-gimnasio" class="admin-select" style="margin-bottom:0;border-color:rgba(245,158,11,.3)">
+          <div class="gen-selects-grid" style="margin-bottom:14px">
+            <div class="gen-field-full">
+              <label class="gen-label">⚔️ Progreso actual</label>
+              <select id="gen-gimnasio" class="admin-select" style="margin-bottom:0;border-color:rgba(245,158,11,.3);width:100%">
                 <option value="0">🏅 Gimnasio 1 — Muy básica</option>
                 <option value="1">🥈 Gimnasio 2 — Básica</option>
                 <option value="2">🥉 Gimnasio 3 — Media baja</option>
@@ -691,9 +710,9 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
                 <option value="8">👑 Liga Pokémon — Endgame</option>
               </select>
             </div>
-            <div>
-              <label style="font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px">🕹️ Generación</label>
-              <select id="gen-generacion" class="admin-select" style="margin-bottom:0;border-color:rgba(245,158,11,.3)">
+            <div class="gen-field-half">
+              <label class="gen-label">🕹️ Generación</label>
+              <select id="gen-generacion" class="admin-select" style="margin-bottom:0;border-color:rgba(245,158,11,.3);width:100%">
                 <option value="1">Gen 1 (GB)</option>
                 <option value="2">Gen 2 (GBC)</option>
                 <option value="3">Gen 3 (GBA)</option>
@@ -705,9 +724,9 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
                 <option value="9">Gen 9 (Switch)</option>
               </select>
             </div>
-            <div>
-              <label style="font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px">📦 Artículos</label>
-              <select id="gen-cantidad" class="admin-select" style="margin-bottom:0;border-color:rgba(245,158,11,.3)">
+            <div class="gen-field-half">
+              <label class="gen-label">📦 Artículos</label>
+              <select id="gen-cantidad" class="admin-select" style="margin-bottom:0;border-color:rgba(245,158,11,.3);width:100%">
                 <option value="6">6</option>
                 <option value="8" selected>8</option>
                 <option value="10">10</option>
@@ -716,10 +735,10 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
-            <button onclick="generarTiendasAutomaticas('legal')" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--neon-legal);padding:10px 6px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(16,185,129,.18)'" onmouseout="this.style.background='rgba(16,185,129,.08)'">🟢 Tienda Legal</button>
-            <button onclick="generarTiendasAutomaticas('pack')" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);color:var(--neon-packs);padding:10px 6px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;transition:all .15s" onmouseover="this.style.background='rgba(245,158,11,.18)'" onmouseout="this.style.background='rgba(245,158,11,.08)'">🟡 PF Pack</button>
-            <button onclick="generarTiendasAutomaticas('ambas')" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:var(--neon-packs);padding:10px 6px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;transition:all .15s;box-shadow:0 0 12px -4px rgba(245,158,11,.3)" onmouseover="this.style.background='rgba(245,158,11,.22)'" onmouseout="this.style.background='rgba(245,158,11,.12)'">⚡ Generar Ambas</button>
+          <div class="gen-btns-grid" style="margin-bottom:10px">
+            <button onclick="generarTiendasAutomaticas('legal')" class="gen-btn gen-btn-legal">🟢 Legal</button>
+            <button onclick="generarTiendasAutomaticas('pack')" class="gen-btn gen-btn-pack">🟡 Pack</button>
+            <button onclick="generarTiendasAutomaticas('ambas')" class="gen-btn gen-btn-ambas">⚡ Ambas</button>
           </div>
 
           <div id="gen-estado" style="font-size:10px;font-family:var(--font-display);color:var(--neon-legal);min-height:14px;text-align:center"></div>
@@ -839,9 +858,10 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
             </div>
             <hr class="admin-hr" style="margin:2px 0">
             <div>
-              <label style="font-size:9px;color:#f87171;font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">❤️ Campeón Por Vidas</label>
-              <select id="adm-campeon-vidas" class="admin-select" style="margin-bottom:0"><option value="">— Sin campeón —</option></select>
-              <div style="font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)">Entrenador con más vidas al final del Nuzlocke.</div>
+              <label style="font-size:9px;color:#f87171;font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">❤️ Campeones Por Vidas</label>
+              <div id="adm-campeon-vidas-lista" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
+              <button onclick="agregarGanadorVidas()" style="width:100%;background:rgba(248,113,113,.07);border:1px dashed rgba(248,113,113,.3);color:#f87171;padding:7px;border-radius:var(--r-md);font-family:var(--font-display);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer">+ Añadir ganador</button>
+              <div style="font-size:10px;color:var(--txt-muted);margin-top:6px;font-family:var(--font-display)">Pueden ser varios empates. Uno por línea.</div>
             </div>
             <hr class="admin-hr" style="margin:2px 0">
             <div>
@@ -1747,7 +1767,16 @@ function renderizarHallOfFame(){
   var elV = document.getElementById('hof-vidas');
   var elF = document.getElementById('hof-finalísima');
   if(elT) elT.textContent = t ? t.toUpperCase() : '—';
-  if(elV) elV.textContent = v ? v.toUpperCase() : '—';
+  if(elV){
+    if(!v || (Array.isArray(v) && !v.length)){
+      elV.textContent = '—';
+    } else {
+      var vidasArr = Array.isArray(v) ? v : [v];
+      elV.innerHTML = vidasArr.map(function(n){
+        return '<span style="display:block">'+n.toUpperCase()+'</span>';
+      }).join('');
+    }
+  }
   if(elF) elF.textContent = f ? f.toUpperCase() : '—';
 
   // Selectores admin
@@ -2442,7 +2471,7 @@ function renderizarHistorialLockes(){
     var c = e.campeones || {};
     var campHTML = [
       {lbl:'Campeón Torneos', ico:'🎖️', val:c.torneos,     col:'var(--neon-packs)'},
-      {lbl:'Campeón Por Vidas',ico:'❤️', val:c.vidas,      col:'#f87171'},
+      {lbl:'Campeón Por Vidas',ico:'❤️', val:Array.isArray(c.vidas)?c.vidas.join(', '):c.vidas,      col:'#f87171'},
       {lbl:'Campeón Finalísima',ico:'👑',val:c['finalísima']||c.finalísima, col:'var(--amarillo)'}
     ].filter(function(x){ return x.val; }).map(function(x){
       return '<div style="text-align:center;padding:8px 6px">'
@@ -2490,11 +2519,44 @@ function renderizarHistorialLockes(){
       +'</div>';
   }).join('');
 }
+
+/* ── Campeones Por Vidas — selección dinámica ── */
+window.agregarGanadorVidas = function(){
+  agregarGanadorVidasConValor('');
+};
+
+function agregarGanadorVidasConValor(val){
+  var lista = document.getElementById('adm-campeon-vidas-lista');
+  if(!lista) return;
+  var ids = Object.keys(baseDatos.jugadores||{});
+  var idx = lista.children.length;
+  var div = document.createElement('div');
+  div.style.cssText = 'display:flex;gap:6px;align-items:center';
+  var sel = document.createElement('select');
+  sel.className = 'admin-select adm-vidas-select';
+  sel.style.cssText = 'margin-bottom:0;flex:1;border-color:rgba(248,113,113,.3)';
+  sel.innerHTML = '<option value="">— Sin ganador —</option>' +
+    ids.map(function(id){
+      return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';
+    }).join('');
+  var btn = document.createElement('button');
+  btn.textContent = '✕';
+  btn.style.cssText = 'background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);color:#f87171;padding:6px 10px;border-radius:var(--r-sm);cursor:pointer;font-family:var(--font-display);font-size:10px;flex-shrink:0';
+  btn.onclick = function(){ div.remove(); };
+  div.appendChild(sel);
+  div.appendChild(btn);
+  lista.appendChild(div);
+}
 /* ═══ CAMPEONES / HALL OF FAME ═══ */
 window.guardarCampeones = function(){
   if(!baseDatos.campeones) baseDatos.campeones = {};
   baseDatos.campeones.torneos   = document.getElementById('adm-campeon-torneos').value;
-  baseDatos.campeones.vidas     = document.getElementById('adm-campeon-vidas').value;
+  // Campeones por vidas: recoger todos los selects añadidos
+  var vidasGanadores = [];
+  document.querySelectorAll('.adm-vidas-select').forEach(function(sel){
+    if(sel.value) vidasGanadores.push(sel.value);
+  });
+  baseDatos.campeones.vidas = vidasGanadores;
   var sf = document.getElementById('adm-campeon-finalísima');
   baseDatos.campeones.finalísima = sf ? sf.value : '';
   guardarBD();
@@ -2786,7 +2848,15 @@ window.ajustarCamposFormularioMercader=function(){let t=document.getElementById(
 window.inyectarObjetoNuevoMaster=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('ins-tienda').value,n=document.getElementById('ins-nombre').value.trim(),p=parseInt(document.getElementById('ins-precio').value)||0,s=parseInt(document.getElementById('ins-stock').value)||0;if(!n){mostrarNotificacion("Falta el nombre del producto.","error","📦");return;}let nuevo={id:Date.now(),tienda:t,stock:s,icon:document.getElementById('ins-icono').value.trim()||'📦',nombre:n};if(t==='legal'){nuevo.cat=document.getElementById('ins-cat-legal').value;nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;}else if(t==='pack'){nuevo.cat='Pack Especial';nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;nuevo.desc=document.getElementById('ins-pack-desc').value.trim();nuevo.estrategia=document.getElementById('ins-pack-estrategia').value.trim();}else if(t==='illegal'){nuevo.cat='Hack de Sistema';nuevo.precioPf=p;nuevo.desc=document.getElementById('ins-illegal-desc').value.trim();nuevo.beneficio=document.getElementById('ins-illegal-beneficio').value.trim();nuevo.castigo=document.getElementById('ins-illegal-castigo').value.trim();}if(!baseDatos.productos)baseDatos.productos=[];baseDatos.productos.push(nuevo);guardarBD();document.getElementById('ins-nombre').value='';document.getElementById('ins-precio').value='';document.getElementById('ins-illegal-beneficio').value='';document.getElementById('ins-illegal-castigo').value='';document.getElementById('ins-illegal-desc').value='';reproducirSonido('exito');mostrarNotificacion(`${nuevo.icon} ${n} publicado.`,"exito","📦");};
 window.actualizarPropertyProducto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=parseInt(val)||0;guardarBD();}};
 window.eliminarProductoMaster=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar producto',descripcion:'Esta acción no se puede deshacer.',textoConfirmar:'Eliminar',tipo:'peligro'});if(cf){baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id);guardarBD();mostrarNotificacion("Producto eliminado.","info","🗑️",null,true);}};
-function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-vidas','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.vidas,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});refrescarSelectsPersonalizados();}
+function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});
+  // Poblar lista dinámica de campeones por vidas
+  var vidasLista=document.getElementById('adm-campeon-vidas-lista');
+  if(vidasLista){
+    var vidasActual=Array.isArray(c.vidas)?c.vidas:(c.vidas?[c.vidas]:[]);
+    if(!vidasActual.length) vidasActual=[''];
+    vidasLista.innerHTML='';
+    vidasActual.forEach(function(val){ agregarGanadorVidasConValor(val); });
+  }refrescarSelectsPersonalizados();}
 function renderizarAdminArena(){let box=document.getElementById('adm-arena-combates-activos');if(!box)return;box.innerHTML='';if(!baseDatos.arena||!Object.keys(baseDatos.arena).length){box.innerHTML='<div style="color:var(--txt-muted);font-size:10px;text-align:center;padding:10px;font-family:var(--font-display)">No hay combates activos.</div>';return;}Object.values(baseDatos.arena).forEach(c=>{if(c.estado==='resuelto')return;box.innerHTML+=`<div class="admin-arena-card"><div style="font-size:11px;color:var(--neon-arena);font-weight:700;margin-bottom:5px;font-family:var(--font-display)">${escaparHTML(c.descripcion)}</div><div style="font-size:10px;color:var(--txt-secondary);margin-bottom:7px"><span style="color:#60a5fa">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171">${escaparHTML(c.jugadorB.toUpperCase())}</span> — ${c.estado.toUpperCase()} — Bote: ${(c.boteA||0)+(c.boteB||0)} PF</div><div class="admin-btns-row">${c.estado==='abierto'?`<button class="btn-admin-sm packs" onclick="cerrarApuestasCombate('${c.id}')">🔒 Cerrar</button>`:''}<button class="btn-admin-sm legal" onclick="resolverCombateArena('${c.id}','A')">🏆 Gana ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-admin-sm danger" onclick="resolverCombateArena('${c.id}','B')">🏆 Gana ${escaparHTML(c.jugadorB.toUpperCase())}</button></div></div>`;});}
 function redibujarConsolaAdminMaster(){document.getElementById('chk-open-legal').checked=baseDatos.legalOpen!==false;document.getElementById('chk-open-pack').checked=baseDatos.packOpen!==false;document.getElementById('chk-open-illegal').checked=baseDatos.illegalOpen!==false;let chkRadio=document.getElementById('chk-radio-activada');if(chkRadio)chkRadio.checked=!!(baseDatos.radio&&baseDatos.radio.activada);if(baseDatos.eventoSistema)document.getElementById('adm-evento-economico').value=baseDatos.eventoSistema;actualizarSelectorUsuariosBanco();renderizarAdminArena();renderizarAdminCamara();let al=document.getElementById('admin-inventario-global');if(!al)return;al.innerHTML='';baseDatos.productos.forEach(p=>{let esI=p.tienda==='illegal';al.innerHTML+=`<div class="admin-item-card"><button class="btn-del-item" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary);font-size:12px;font-weight:600;margin-bottom:6px">${p.icon} ${p.nombre} <span style="color:var(--txt-muted);font-size:10px">[${p.tienda.toUpperCase()}]</span></div><div class="admin-item-row"><div class="admin-field"><label>Coste</label><input type="number" value="${esI?p.precioPf:p.precio}" class="admin-input" style="margin-bottom:0;width:80px" oninput="actualizarPropertyProducto(${p.id},'${esI?'precioPf':'precio'}',this.value)"></div><div class="admin-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input" style="margin-bottom:0;width:70px" oninput="actualizarPropertyProducto(${p.id},'stock',this.value)"></div></div></div>`;});renderizarListaRadioAdmin();}
 </script>
