@@ -899,6 +899,16 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             </div>
             <button class="btn-admin danger" onclick="ajustarVidasEntrenador()">❤️ Aplicar Cambio de Vidas</button>
           </div>
+          <div class="admin-panel">
+            <div class="admin-section-title" style="color:var(--neon-packs)">🏷️ Título Manual</div>
+            <select id="adm-titulo-usuario" class="admin-select" onchange="cargarTituloManualEnAdmin()"></select>
+            <input type="text" id="adm-titulo-texto" class="admin-input" placeholder="Texto del título (ej: El Inmortal)" maxlength="28">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <button class="btn-admin packs" style="margin-bottom:0" onclick="asignarTituloManual()">🏷️ Asignar</button>
+              <button class="btn-admin danger" style="margin-bottom:0" onclick="quitarTituloManual()">🗑️ Quitar</button>
+            </div>
+            <div style="font-size:10px;color:var(--txt-muted);margin-top:6px;font-family:var(--font-display)">El título se activará automáticamente al asignarlo.</div>
+          </div>
         </div>
       </div>
       <!-- EVENTOS Y TIENDA -->
@@ -3519,7 +3529,7 @@ window.renderizarTitulosYTemas = function(){
 
   var listaEl = document.getElementById('titulos-lista');
   if(listaEl){
-    listaEl.innerHTML = TITULOS_CONFIG.map(function(t){
+    var html = TITULOS_CONFIG.map(function(t){
       var tiene = desbloqueados.indexOf(t.id) !== -1;
       var esActivo = u.tituloActivo === t.id;
       var cls = 'titulo-chip' + (tiene ? ' desbloqueado' : '') + (esActivo ? ' activo' : '');
@@ -3530,6 +3540,13 @@ window.renderizarTitulosYTemas = function(){
         : '';
       return '<div class="'+cls+'" title="'+escaparHTML(t.desc)+'">'+t.icon+' '+escaparHTML(t.nombre)+lock+btn+'</div>';
     }).join('');
+    if(u.tituloManual){
+      var esActivoM = u.tituloActivo === 'manual';
+      var clsM = 'titulo-chip desbloqueado' + (esActivoM ? ' activo' : '');
+      var btnTxtM = esActivoM ? '✓ Activo' : 'Usar';
+      html += '<div class="'+clsM+'" title="Título especial otorgado por el Mercader">🏷️ '+escaparHTML(u.tituloManual)+'<button onclick="seleccionarTitulo(\'manual\')">'+btnTxtM+'</button></div>';
+    }
+    listaEl.innerHTML = html;
   }
 
   var temasEl = document.getElementById('temas-lista');
@@ -3551,8 +3568,14 @@ window.renderizarTitulosYTemas = function(){
 
   var display = document.getElementById('perfil-titulo-activo');
   if(display){
-    var cfgActivo = u.tituloActivo ? TITULOS_CONFIG.find(function(t){ return t.id === u.tituloActivo; }) : null;
-    if(cfgActivo && desbloqueados.indexOf(u.tituloActivo) !== -1){
+    var cfgActivo = null;
+    if(u.tituloActivo === 'manual' && u.tituloManual){
+      cfgActivo = { icon: '🏷️', nombre: u.tituloManual };
+    } else if(u.tituloActivo){
+      var c2 = TITULOS_CONFIG.find(function(t){ return t.id === u.tituloActivo; });
+      if(c2 && desbloqueados.indexOf(u.tituloActivo) !== -1) cfgActivo = c2;
+    }
+    if(cfgActivo){
       display.textContent = cfgActivo.icon + ' ' + cfgActivo.nombre;
       display.style.display = 'block';
     } else {
@@ -3669,6 +3692,9 @@ function renderizarAdminCamara(){let box=document.getElementById('adm-camara-tru
 window.restablecerComprasDiariasDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-usuario').value;if(!t){mostrarNotificacion("Selecciona un entrenador.","error","🔄");return;}baseDatos.jugadores[t].comprasDisponibles=MAX_COMPRAS;baseDatos.jugadores[t].comprasHoy={};baseDatos.jugadores[t].ultimaRecarga=Date.now();guardarBD();reproducirSonido('exito');mostrarNotificacion("Compras reiniciadas.","exito","🔄");};
 window.restablecerGachaDiarioDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-gacha-usuario').value;if(!t||!baseDatos.jugadores[t]){mostrarNotificacion("Entrenador no encontrado.","error","⚡");return;}baseDatos.jugadores[t].ultimoHackeo=0;guardarBD();reproducirSonido('exito');mostrarNotificacion(`Gacha de ${t.toUpperCase()} reiniciado.`,"exito","⚡");};
 window.emitirOrdenEconomicaGlobal=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}baseDatos.eventoSistema=document.getElementById('adm-evento-economico').value;guardarBD();reproducirSonido('exito');mostrarNotificacion("Orden de Red distribuida.","exito","📢");};
+window.cargarTituloManualEnAdmin=function(){let uid=document.getElementById('adm-titulo-usuario').value,inp=document.getElementById('adm-titulo-texto');if(!uid||!inp)return;let u=baseDatos.jugadores[uid];inp.value=(u&&u.tituloManual)?u.tituloManual:'';};
+window.asignarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value,txt=document.getElementById('adm-titulo-texto').value.trim();if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}if(!txt){mostrarNotificacion("Escribe el texto del título.","error","🏷️");return;}let u=baseDatos.jugadores[uid];u.tituloManual=txt;u.tituloActivo='manual';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader te otorgó el título 🏷️ "${txt}".`);guardarBD();reproducirSonido('exito');mostrarNotificacion(`Título "${txt}" otorgado a ${uid.toUpperCase()}.`,"exito","🏷️");if(userSesion===uid)renderizarTitulosYTemas();};
+window.quitarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value;if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}let u=baseDatos.jugadores[uid];if(!u.tituloManual){mostrarNotificacion("Este entrenador no tiene título manual.","error","🏷️");return;}delete u.tituloManual;if(u.tituloActivo==='manual')u.tituloActivo=null;guardarBD();document.getElementById('adm-titulo-texto').value='';reproducirSonido('click');mostrarNotificacion(`Título manual eliminado de ${uid.toUpperCase()}.`,"info","🗑️");if(userSesion===uid)renderizarTitulosYTemas();};
 window.ajustarVidasEntrenador=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-vidas-usuario').value,ini=parseInt(document.getElementById('adm-vidas-iniciales').value)||20,act=parseInt(document.getElementById('adm-vidas-actuales').value);if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","❤️");return;}if(isNaN(act)){mostrarNotificacion("Introduce las vidas actuales.","error","❤️");return;}act=Math.max(0,Math.min(act,ini));baseDatos.jugadores[uid].vidasTotales=ini;baseDatos.jugadores[uid].vidasActuales=act;if(act<=0)baseDatos.jugadores[uid].lockeStatus='perdido';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader ajustó tus vidas → ❤️ ${act}/${ini}`);guardarBD();reproducirSonido('exito');mostrarNotificacion(`${uid.toUpperCase()}: vidas ajustadas a ${act}/${ini}`,'exito','❤️');};
 window.cargarVidasEnAdmin=function(){let uid=document.getElementById('adm-vidas-usuario').value;if(!uid||!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid];document.getElementById('adm-vidas-iniciales').value=u.vidasTotales||20;document.getElementById('adm-vidas-actuales').value=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);};
 window.modificarFondosEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-banco-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","💰");return;}baseDatos.jugadores[uid].dinero+=(op==='SUMAR'?cant:-cant);guardarBD();document.getElementById('adm-banco-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} P₠ para ${uid.toUpperCase()}.`,"exito","💰");};
@@ -3680,7 +3706,7 @@ window.actualizarPropertyProducto=function(id,prop,val){if(!userSesion||userSesi
 window.actualizarPropertyProductoTexto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=val;guardarBD();}};
 window.eliminarTodosLosProductosDeTienda=async function(tienda){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let cf=await mostrarConfirmacion({icono:'🗑️',titulo:`¿Vaciar ${tienda==='legal'?'Tienda Legal':tienda==='pack'?'Shop PF Pack':'Ilegalidades'}?`,descripcion:'Se eliminarán todos los productos publicados en esta tienda. Esta acción no se puede deshacer.',textoConfirmar:'Vaciar tienda',tipo:'sacrificio'});if(!cf)return;baseDatos.productos=baseDatos.productos.filter(p=>p.tienda!==tienda);guardarBD();redibujarConsolaAdminMaster();mostrarNotificacion('Tienda vaciada.','exito','🗑️');};
 window.eliminarProductoMaster=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar producto',descripcion:'Esta acción no se puede deshacer.',textoConfirmar:'Eliminar',tipo:'peligro'});if(cf){baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id);guardarBD();mostrarNotificacion("Producto eliminado.","info","🗑️",null,true);}};
-function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b'),sp=document.getElementById('adm-pf-usuario');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB,sp].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(sp)sp.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});
+function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b'),sp=document.getElementById('adm-pf-usuario'),st=document.getElementById('adm-titulo-usuario');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB,sp,st].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(sp)sp.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(st)st.innerHTML+=`<option value="${id}">${id.toUpperCase()}${u.tituloManual?' (🏷️ '+u.tituloManual+')':''}</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();if(st&&st.value)window.cargarTituloManualEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});
   // Poblar lista dinámica de campeones por vidas
   var vidasLista=document.getElementById('adm-campeon-vidas-lista');
   if(vidasLista){
