@@ -251,6 +251,8 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .nl-radio-label{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r-md);border:1px solid var(--borde);cursor:pointer;font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--txt-secondary);transition:all .15s}
 .nl-radio-label:has(input:checked){border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.08);color:var(--blanco)}
 .nl-radio-label input{accent-color:#f87171}
+body.tema-egglocke{--neon-packs:#fbbf24;--neon-legal:#fde68a;--neon-ilegal:#f59e0b}
+body.tema-randomlocke{--neon-packs:#34d399;--neon-legal:#6ee7b7;--neon-ilegal:#10b981}
 body.tema-shinylocke{--neon-packs:#c084fc;--neon-legal:#a78bfa;--neon-ilegal:#e879f9}
 body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97316}
 /* Generador de tiendas - layout responsive */
@@ -352,6 +354,8 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
 
 
 /* ── TEMAS DE LOCKE ── */
+body.tema-egglocke    .hero-strip{--hero-color:#fbbf24;--hero-glow:rgba(251,191,36,.09)}
+body.tema-randomlocke .hero-strip{--hero-color:#34d399;--hero-glow:rgba(52,211,153,.09)}
 body.tema-shinylocke .hero-strip{--hero-color:#c084fc;--hero-glow:rgba(192,132,252,.09)}
 body.tema-duallinks  .hero-strip{--hero-color:#facc15;--hero-glow:rgba(250,204,21,.09)}
 body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgba(245,158,11,.07)}
@@ -1073,7 +1077,8 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             <div style="margin-bottom:16px">
               <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Tipo de Locke</div>
               <div style="display:flex;flex-direction:column;gap:6px" id="nl-tipo-list">
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Nuzlocke" checked> ☠️ Nuzlocke</label>
+                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="EggLocke" checked> 🥚 EggLocke</label>
+                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Randomlocke"> 🎲 Randomlocke</label>
                 <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Shinylocke"> ✨ Shinylocke</label>
                 <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="DualLinks"> ⚡ DualLinks</label>
               </div>
@@ -2552,9 +2557,10 @@ var NL_JUEGOS = [
 ];
 
 var NL_TIPOS = {
-  'Nuzlocke':   {icon:'☠️', color:'#ef4444', bg:'rgba(239,68,68,.06)',   tema:'nuzlocke'},
-  'Shinylocke': {icon:'✨', color:'#c084fc', bg:'rgba(192,132,252,.06)', tema:'shinylocke'},
-  'DualLinks':  {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks'},
+  'EggLocke':    {icon:'🥚', color:'#fbbf24', bg:'rgba(251,191,36,.06)',  tema:'egglocke'},
+  'Randomlocke': {icon:'🎲', color:'#34d399', bg:'rgba(52,211,153,.06)', tema:'randomlocke'},
+  'Shinylocke':  {icon:'✨', color:'#c084fc', bg:'rgba(192,132,252,.06)', tema:'shinylocke'},
+  'DualLinks':   {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks'},
 };
 
 var _nlJuegoSel = null;
@@ -2602,7 +2608,7 @@ window.nlPaso = function(n){
 
 window.confirmarNuevoLocke = function(){
   var tipoEl = document.querySelector('input[name="nl-tipo"]:checked');
-  var tipo = tipoEl ? tipoEl.value : 'Nuzlocke';
+  var tipo = tipoEl ? tipoEl.value : 'EggLocke';
   if(!_nlJuegoSel){ mostrarNotificacion('Elige un juego primero.','error','🎮'); return; }
   var vidasIni = parseInt(document.getElementById('nl-vidas-val').textContent)||5;
   ejecutarNuevoLocke(tipo, _nlJuegoSel, vidasIni);
@@ -2674,7 +2680,7 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni){
 
 function aplicarTemaLocke(){
   var la = baseDatos && baseDatos.lockeActivo;
-  document.body.classList.remove('tema-nuzlocke','tema-shinylocke','tema-duallinks');
+  document.body.classList.remove('tema-egglocke','tema-randomlocke','tema-shinylocke','tema-duallinks');
   if(la && la.tipo && NL_TIPOS[la.tipo]){
     document.body.classList.add('tema-'+NL_TIPOS[la.tipo].tema);
   }
@@ -2685,7 +2691,7 @@ function renderizarBannerLocke(){
   var banner = document.getElementById('hof-locke-banner');
   if(!banner) return;
   if(!la || !la.tipo){ banner.style.display='none'; return; }
-  var cfg = NL_TIPOS[la.tipo] || NL_TIPOS['Nuzlocke'];
+  var cfg = NL_TIPOS[la.tipo] || NL_TIPOS['EggLocke'];
   banner.style.display = 'block';
   banner.style.setProperty('--hof-color', cfg.color);
   banner.style.setProperty('--hof-bg', cfg.bg);
