@@ -304,14 +304,7 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
 @media(max-width:700px){.hero-gym-progress{order:3;width:100%;justify-content:center;margin-top:4px}.hero-gym-seg{width:12px}}
 
 /* ── CRÉDITOS COMO CORAZONES ── */
-.creditos-hearts{display:inline-flex;align-items:center;gap:2px;font-size:13px;line-height:1}
-.creditos-hearts .heart{display:inline-block;transition:transform .2s,opacity .2s,filter .2s;color:#f87171}
-.creditos-hearts .heart.empty{opacity:.22;filter:grayscale(1)}
-.creditos-hearts .heart.breaking{animation:heartBreak .3s ease}
-@keyframes heartBreak{0%{transform:scale(1.4)}50%{transform:scale(.75)}100%{transform:scale(1)}}
-.creditos-illegal-mini{font-family:var(--font-display);font-size:9px;font-weight:700;color:var(--neon-ilegal);margin-left:5px;padding-left:5px;border-left:1px solid var(--borde);white-space:nowrap}
-.creditos-illegal-mini.usado{color:var(--txt-muted);opacity:.5}
-.creditos-reset-hint{font-size:8px;font-family:var(--font-display);color:var(--txt-muted);display:block;line-height:1.2;margin-top:1px}
+/* (sistema de corazones revertido — se mantiene contador numérico original) */
 
 /* ── STOCK CON URGENCIA ── */
 .stock-badge-v2{font-family:var(--font-display);font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;letter-spacing:.3px;display:inline-block}
@@ -356,7 +349,7 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97
 .actividad-fila.nueva-entrada-anim{animation:feedSlideIn .3s ease}
 
 /* ── TOPBAR URGENCIA CRÉDITOS ── */
-.creditos-hearts.sin-creditos .heart.empty{animation:urgentPulse 1.2s ease-in-out infinite}
+
 
 /* ── TEMAS DE LOCKE ── */
 body.tema-shinylocke .hero-strip{--hero-color:#c084fc;--hero-glow:rgba(192,132,252,.09)}
@@ -445,14 +438,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="topbar-stat-divider"></div>
       <div class="topbar-stat"><span>🔮</span><span class="value pf" id="usr-pf">0</span><span style="font-size:9px;color:var(--txt-muted)">PF</span></div>
       <div class="topbar-stat-divider"></div>
-      <div class="topbar-stat" style="flex-direction:column;align-items:flex-start;gap:0">
-        <div style="display:flex;align-items:center;gap:4px">
-          <span style="font-size:11px">🛒</span>
-          <span id="usr-compras-hearts" class="creditos-hearts"><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span></span>
-          <span id="usr-creditos-ilegal" class="creditos-illegal-mini">🟣1/1</span>
-        </div>
-        <span id="usr-reset-hint" class="creditos-reset-hint"></span>
-      </div>
+      <div class="topbar-stat"><span>🛒</span><span class="value compras" id="usr-compras">3/3</span></div>
       <div class="topbar-stat-divider"></div>
       <div class="topbar-stat"><span>❤️</span><span class="value" id="usr-vidas-top" style="color:#f87171">--</span></div>
     </div>
@@ -517,11 +503,21 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div id="tv-legal" class="tienda-view active legal-zone">
         <select id="filtro-categoria-legal" class="filtro-categoria" onchange="aplicarFiltroCategoriaLegal()">
           <option value="">✨ Todas las Categorías</option>
-          <option value="EV/IV">EV/IV</option><option value="Bayas">Bayas</option>
-          <option value="Poké Balls">Poké Balls</option>
-          <option value="Objetos de Exploración">Objetos de Exploración</option>
-          <option value="Objetos de Combate (X)">Objetos de Combate (X)</option>
-          <option value="Objetos Competitivos">Objetos Competitivos</option>
+          <option value="Poké Balls">🔴 Poké Balls</option>
+          <option value="Medicine">💊 Curaciones</option>
+          <option value="Vitamins">💪 Vitaminas</option>
+          <option value="Battle Items">⚔️ Objetos de Combate</option>
+          <option value="Repels">🌿 Repelentes</option>
+          <option value="Field Items">🗺️ Objetos de Exploración</option>
+          <option value="Berries">🍓 Bayas</option>
+          <option value="Held Items">🎽 Objetos Equipables</option>
+          <option value="Competitive">🏆 Objetos Competitivos</option>
+          <option value="Plates">🪬 Placas</option>
+          <option value="Evolution">💎 Objeto Evolutivo</option>
+          <option value="Mega Stones">🔷 Megapiedras</option>
+          <option value="TMs">📀 Mts</option>
+          <option value="Special">✨ Especiales</option>
+          <option value="Mints">🌿 Mentas</option>
         </select>
         <div id="contenedor-legal-view"></div>
       </div>
@@ -908,7 +904,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
           <div class="admin-panel">
             <div class="admin-section-title" style="color:var(--neon-legal)">➕ Añadir Producto</div>
             <select id="ins-tienda" class="admin-select" onchange="ajustarCamposFormularioMercader()"><option value="legal">Tienda Legal</option><option value="pack">Shop PF Pack</option><option value="illegal">Tienda de Ilegalidades</option></select>
-            <div id="form-bloque-legal-cat"><select id="ins-cat-legal" class="admin-select"><option value="EV/IV">EV/IV</option><option value="Bayas">Bayas</option><option value="Poké Balls">Poké Balls</option><option value="Objetos de Exploración">Objetos de Exploración</option><option value="Objetos de Combate (X)">Objetos de Combate (X)</option><option value="Objetos Competitivos">Objetos Competitivos</option></select></div>
+            <div id="form-bloque-legal-cat"><select id="ins-cat-legal" class="admin-select"><option value="Poké Balls">🔴 Poké Balls</option><option value="Medicine">💊 Curaciones</option><option value="Vitamins">💪 Vitaminas</option><option value="Battle Items">⚔️ Objetos de Combate</option><option value="Repels">🌿 Repelentes</option><option value="Field Items">🗺️ Objetos de Exploración</option><option value="Berries">🍓 Bayas</option><option value="Held Items">🎽 Objetos Equipables</option><option value="Competitive">🏆 Objetos Competitivos</option><option value="Plates">🪬 Placas</option><option value="Evolution">💎 Objeto Evolutivo</option><option value="Mega Stones">🔷 Megapiedras</option><option value="TMs">📀 Mts</option><option value="Special">✨ Especiales</option><option value="Mints">🌿 Mentas</option></select></div>
             <div id="form-bloque-pack-detalles" style="display:none"><input type="text" id="ins-pack-desc" class="admin-input" placeholder="Contenido del Pack" style="font-family:var(--font-body)"><input type="text" id="ins-pack-estrategia" class="admin-input" placeholder="Enfoque estratégico" style="font-family:var(--font-body)"></div>
             <div id="form-bloque-illegal-detalles" style="display:none">
               <input type="text" id="ins-illegal-desc" class="admin-input" placeholder="Descripción del servicio" style="font-family:var(--font-body)">
@@ -932,7 +928,24 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             <div style="margin-bottom:10px"><label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px">Stock inicial</label><input type="number" id="ins-stock" value="10" class="admin-input" style="margin-bottom:0"></div>
             <button class="btn-admin legal" onclick="inyectarObjetoNuevoMaster()">Publicar en Tienda</button>
           </div>
-          <div class="admin-panel"><div class="admin-section-title">📦 Almacén Global — Precios y Stocks</div><div id="admin-inventario-global" style="max-height:560px;overflow-y:auto;padding-right:4px"></div></div>
+          <div class="admin-panel">
+            <div class="admin-section-title">📦 Editor de Tiendas — Almacén Global</div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+              <input type="text" id="editor-buscar" class="admin-input" placeholder="🔍 Buscar producto..." style="margin-bottom:0;flex:1;min-width:120px" oninput="renderizarInventarioGlobalAdmin()">
+              <select id="editor-filtro-tienda" class="admin-select" style="margin-bottom:0;width:auto" onchange="renderizarInventarioGlobalAdmin()">
+                <option value="">Todas las tiendas</option>
+                <option value="legal">🟢 Legal</option>
+                <option value="pack">🟡 Pack</option>
+                <option value="illegal">🟣 Ilegal</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:6px;margin-bottom:10px">
+              <button class="btn-admin-sm danger" style="flex:1" onclick="eliminarTodosLosProductosDeTienda('legal')">🗑️ Vaciar Legal</button>
+              <button class="btn-admin-sm danger" style="flex:1" onclick="eliminarTodosLosProductosDeTienda('pack')">🗑️ Vaciar Pack</button>
+              <button class="btn-admin-sm danger" style="flex:1" onclick="eliminarTodosLosProductosDeTienda('illegal')">🗑️ Vaciar Ilegal</button>
+            </div>
+            <div id="admin-inventario-global" style="max-height:560px;overflow-y:auto;padding-right:4px"></div>
+          </div>
         </div>
       </div>
       <!-- APUESTAS Y TRUEQUES -->
@@ -1995,8 +2008,6 @@ var DB_ITEMS = [
   {n:'Super Potion',     i:'🧴',cat:'Medicine',   tier:1,gen:1,precio:700,  pf:1,rareza:2},
   {n:'Hyper Potion',     i:'💉',cat:'Medicine',   tier:2,gen:1,precio:1200, pf:1,rareza:2},
   {n:'Max Potion',       i:'💊',cat:'Medicine',   tier:4,gen:1,precio:2500, pf:2,rareza:3},
-  {n:'Revive',           i:'💫',cat:'Medicine',   tier:3,gen:1,precio:1500, pf:2,rareza:3},
-  {n:'Max Revive',       i:'🌟',cat:'Medicine',   tier:6,gen:1,precio:4000, pf:3,rareza:4},
   {n:'Fresh Water',      i:'💧',cat:'Medicine',   tier:1,gen:1,precio:400,  pf:1,rareza:1},
   {n:'Soda Pop',         i:'🥤',cat:'Medicine',   tier:1,gen:1,precio:600,  pf:1,rareza:1},
   {n:'Lemonade',         i:'🍋',cat:'Medicine',   tier:2,gen:1,precio:700,  pf:1,rareza:2},
@@ -2206,6 +2217,84 @@ var DB_ITEMS = [
   {n:'Relaxed Mint',     i:'🌿',cat:'Mints',      tier:5,gen:8,precio:3000, pf:2,rareza:3},
   {n:'Brave Mint',       i:'🌿',cat:'Mints',      tier:5,gen:8,precio:3000, pf:2,rareza:3},
   {n:'Lax Mint',         i:'🌿',cat:'Mints',      tier:5,gen:8,precio:3000, pf:2,rareza:3},
+
+  // ══ MEGA STONES (Gen 6) ══════════════════════
+  {n:'Venusaurite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Charizardite X',   i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Charizardite Y',   i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Blastoisinite',    i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Beedrillite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Pidgeotite',       i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Alakazite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Slowbronite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Gengarite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Kangaskhanite',    i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Pinsirite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Gyaradosite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Aerodactylite',    i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Mewtwonite X',     i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+  {n:'Mewtwonite Y',     i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+  {n:'Ampharosite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Scizorite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Heracronite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Houndoominite',    i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Tyranitarite',     i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+  {n:'Scaliscalite',     i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Blazikenite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Gardevoirite',     i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Mawilite',         i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Aggronite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Medichamite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Manectite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Sharpedonite',     i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Cameruptite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Altarianite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Banettite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Absolite',         i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Glalitite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Salamencite',      i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+  {n:'Metagrossite',     i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+  {n:'Latiasite',        i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+  {n:'Latiosite',        i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+  {n:'Lopunnite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Garchompite',      i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+  {n:'Lucarionite',      i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Abomasite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Galladite',        i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Audinite',         i:'🔷',cat:'Mega Stones', tier:7,gen:6,precio:0,    pf:4,rareza:5},
+  {n:'Diancite',         i:'🔷',cat:'Mega Stones', tier:8,gen:6,precio:0,    pf:5,rareza:5},
+
+  // ══ TMs — MOVIMIENTOS (Mts) ══════════════════
+  {n:'TM Earthquake',    i:'📀',cat:'TMs',         tier:5,gen:1,precio:0,    pf:3,rareza:4},
+  {n:'TM Thunderbolt',   i:'📀',cat:'TMs',         tier:5,gen:1,precio:0,    pf:3,rareza:4},
+  {n:'TM Ice Beam',      i:'📀',cat:'TMs',         tier:5,gen:1,precio:0,    pf:3,rareza:4},
+  {n:'TM Flamethrower',  i:'📀',cat:'TMs',         tier:5,gen:1,precio:0,    pf:3,rareza:4},
+  {n:'TM Surf',          i:'📀',cat:'TMs',         tier:3,gen:1,precio:0,    pf:2,rareza:3},
+  {n:'TM Protect',       i:'📀',cat:'TMs',         tier:3,gen:2,precio:0,    pf:2,rareza:3},
+  {n:'TM Substitute',    i:'📀',cat:'TMs',         tier:4,gen:3,precio:0,    pf:2,rareza:3},
+  {n:'TM Toxic',         i:'📀',cat:'TMs',         tier:3,gen:1,precio:0,    pf:2,rareza:3},
+  {n:'TM Stealth Rock',  i:'📀',cat:'TMs',         tier:5,gen:4,precio:0,    pf:3,rareza:4},
+  {n:'TM Swords Dance',  i:'📀',cat:'TMs',         tier:4,gen:1,precio:0,    pf:2,rareza:3},
+  {n:'TM Dragon Claw',   i:'📀',cat:'TMs',         tier:5,gen:3,precio:0,    pf:3,rareza:4},
+  {n:'TM Calm Mind',     i:'📀',cat:'TMs',         tier:5,gen:3,precio:0,    pf:3,rareza:4},
+  {n:'TM Brick Break',   i:'📀',cat:'TMs',         tier:3,gen:3,precio:0,    pf:2,rareza:3},
+  {n:'TM Shadow Ball',   i:'📀',cat:'TMs',         tier:4,gen:3,precio:0,    pf:2,rareza:3},
+  {n:'TM Will-O-Wisp',   i:'📀',cat:'TMs',         tier:4,gen:3,precio:0,    pf:2,rareza:3},
+  {n:'TM Roost',         i:'📀',cat:'TMs',         tier:4,gen:4,precio:0,    pf:2,rareza:3},
+  {n:'TM Recover',       i:'📀',cat:'TMs',         tier:5,gen:1,precio:0,    pf:3,rareza:4},
+  {n:'TM Hidden Power',  i:'📀',cat:'TMs',         tier:3,gen:2,precio:0,    pf:2,rareza:3},
+  {n:'TM Aerial Ace',    i:'📀',cat:'TMs',         tier:2,gen:3,precio:0,    pf:1,rareza:2},
+  {n:'TM Rock Slide',    i:'📀',cat:'TMs',         tier:4,gen:2,precio:0,    pf:2,rareza:3},
+  {n:'TM Iron Tail',     i:'📀',cat:'TMs',         tier:3,gen:2,precio:0,    pf:2,rareza:3},
+  {n:'TM Energy Ball',   i:'📀',cat:'TMs',         tier:4,gen:4,precio:0,    pf:2,rareza:3},
+  {n:'TM Focus Blast',   i:'📀',cat:'TMs',         tier:5,gen:4,precio:0,    pf:3,rareza:4},
+  {n:'TM Bulk Up',       i:'📀',cat:'TMs',         tier:4,gen:3,precio:0,    pf:2,rareza:3},
+  {n:'TM Dragon Pulse',  i:'📀',cat:'TMs',         tier:5,gen:4,precio:0,    pf:3,rareza:4},
+  {n:'TM Sludge Bomb',   i:'📀',cat:'TMs',         tier:4,gen:3,precio:0,    pf:2,rareza:3},
+  {n:'TM U-turn',        i:'📀',cat:'TMs',         tier:4,gen:4,precio:0,    pf:2,rareza:3},
+  {n:'TM Knock Off',     i:'📀',cat:'TMs',         tier:5,gen:6,precio:0,    pf:3,rareza:4},
+  {n:'TM Taunt',         i:'📀',cat:'TMs',         tier:3,gen:3,precio:0,    pf:2,rareza:3},
+  {n:'TM Stone Edge',    i:'📀',cat:'TMs',         tier:5,gen:4,precio:0,    pf:3,rareza:4},
 ];
 
 // ══════════════════════════════════════════════════════════════════
@@ -2245,9 +2334,6 @@ var DB_PACKS = [
   {n:'Evolution Pack',   i:'💎',tier:3,gen:1,precio:35000, pf:5,rareza:3,
    desc:'Fire Stone, Water Stone, Thunder Stone, Leaf Stone, PP Up x2',
    estrategia:'Evoluciona a tu equipo entero de una sola vez.'},
-  {n:'Revive Pack',      i:'💫',tier:3,gen:1,precio:25000, pf:5,rareza:3,
-   desc:'Revive x3, Hyper Potion x3, Full Heal x3',
-   estrategia:'Gestión de emergencias en pleno combate.'},
   {n:'Vitamin Pack',     i:'💪',tier:3,gen:1,precio:160000,pf:5,rareza:3,
    desc:'HP Up, Protein, Iron, Calcium, Carbos, Zinc',
    estrategia:'Las seis vitaminas de una vez. Prepara los EVs completos.'},
@@ -2275,15 +2361,15 @@ var DB_PACKS = [
    desc:'Draco Plate, Flame Plate, Splash Plate, Zap Plate',
    estrategia:'Potencia el tipo que necesitas para cada batalla.'},
   {n:'Champion Pack',    i:'🌟',tier:7,gen:4,precio:145000,pf:12,rareza:4,
-   desc:'Choice Scarf, PP Max x4, Full Restore x3, Max Revive x2',
+   desc:'Choice Scarf, PP Max x4, Full Restore x3, Max Elixir x2',
    estrategia:'Preparación total de campeón. Lo mejor del juego.'},
 
   // ── Liga Pokémon: Endgame ────────────────────────────────────────
   {n:'League Pack',      i:'👑',tier:8,gen:4,precio:250000,pf:18,rareza:5,
-   desc:'Assault Vest, Max Elixir x4, Max Revive x4, PP Max x4',
+   desc:'Assault Vest, Max Elixir x4, Full Restore x4, PP Max x4',
    estrategia:'Solo para los mejores entrenadores de la Liga.'},
   {n:'Master Ball Pack', i:'🟣',tier:8,gen:1,precio:500000,pf:20,rareza:5,
-   desc:'Master Ball, PP Max x6, Full Restore x5, Max Revive x5',
+   desc:'Master Ball, PP Max x6, Full Restore x5, Max Elixir x5',
    estrategia:'El pack definitivo. Solo existe uno. Irrepetible.'},
   {n:'Ability Pack',     i:'🏅',tier:8,gen:5,precio:350000,pf:20,rareza:5,
    desc:'Ability Patch, Ability Capsule x3, Adamant Mint, Timid Mint, Modest Mint',
@@ -2902,17 +2988,8 @@ function refrescarPantallaGamer(){if(!userSesion||!baseDatos.jugadores[userSesio
   const _usados=_cHoy._global||0;
   const _ilUsados=_cHoy._illegal||0;
   const _restGlob=Math.max(0,MAX_COMPRAS-_usados);
-  let _heartsBox=document.getElementById('usr-compras-hearts');
-  if(_heartsBox){
-    let _heartsHtml='';
-    for(let h=0;h<MAX_COMPRAS;h++){_heartsHtml+=`<span class="heart${h<_restGlob?'':' empty'}">♥</span>`;}
-    _heartsBox.innerHTML=_heartsHtml;
-    _heartsBox.classList.toggle('sin-creditos',_restGlob===0);
-  }
-  let _ilBox=document.getElementById('usr-creditos-ilegal');
-  if(_ilBox){_ilBox.textContent=_ilUsados>=1?'🟣0/1':'🟣1/1';_ilBox.classList.toggle('usado',_ilUsados>=1);}
-  let _resetHint=document.getElementById('usr-reset-hint');
-  if(_resetHint){_resetHint.textContent=(_restGlob===0&&_ilUsados>=1)?'Reset a medianoche':'';}
+  const _ilStr=_ilUsados>=1?' · 🟣0/1':' · 🟣1/1';
+  document.getElementById('usr-compras').textContent=`${_restGlob}/${MAX_COMPRAS}${_ilStr}`;
   actualizarHeroStrip();
   let va=u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;
   let tv=document.getElementById('usr-vidas-top');if(tv)tv.textContent=`${va}/${vt}`;let ib=document.getElementById('lista-inventario');ib.innerHTML='';let items=u.inventario?u.inventario.filter(i=>i.uid!=="init"):[];if(!items.length){ib.innerHTML='<span style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display)">Vacía</span>';}else{items.forEach(i=>{let descHtml=i.desc?`<div class="mochila-tag-desc">🎁 ${escaparHTML(i.desc)}</div>`:'';ib.innerHTML+=`<div class="mochila-tag${i.desc?' mochila-tag-pack':''}" title="Adquirido: ${escaparHTML(i.fecha)}${i.desc?' — Contiene: '+escaparHTML(i.desc):''}"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span>${escaparHTML(i.icon)||'📦'} ${escaparHTML(i.nombre)}</span>${descHtml}</div><button class="btn-usar" onclick="consumirObjetoMochilaGamer('${i.uid}','${escaparHTML(i.nombre)}','${escaparHTML(i.icon)||'📦'}')">Usar</button></div>`;});}let rs=document.getElementById('red-select-jugador');if(rs){let cr=rs.value;rs.innerHTML='<option value="">-- SELECCIONAR RIVAL --</option>';Object.keys(baseDatos.jugadores).forEach(id=>{rs.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;});if(cr)rs.value=cr;if(rs.__cselRefrescar)rs.__cselRefrescar();}renderInitializeLoaders();renderizarActividadGlobalInicio();}
@@ -3126,6 +3203,8 @@ window.conmutarEstadoTienda=function(prop,estado){if(!userSesion||userSesion.toL
 window.ajustarCamposFormularioMercader=function(){let t=document.getElementById('ins-tienda').value;document.getElementById('form-bloque-legal-cat').style.display=t==='legal'?'block':'none';document.getElementById('form-bloque-pack-detalles').style.display=t==='pack'?'block':'none';document.getElementById('form-bloque-illegal-detalles').style.display=t==='illegal'?'block':'none';document.getElementById('bloque-ins-pf').style.display=t!=='illegal'?'block':'none';document.getElementById('lbl-ins-precio').textContent=t==='illegal'?'Coste (PF):':'Coste (P₠):';};
 window.inyectarObjetoNuevoMaster=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('ins-tienda').value,n=document.getElementById('ins-nombre').value.trim(),p=parseInt(document.getElementById('ins-precio').value)||0,s=parseInt(document.getElementById('ins-stock').value)||0;if(!n){mostrarNotificacion("Falta el nombre del producto.","error","📦");return;}let nuevo={id:Date.now(),tienda:t,stock:s,icon:document.getElementById('ins-icono').value.trim()||'📦',nombre:n};if(t==='legal'){nuevo.cat=document.getElementById('ins-cat-legal').value;nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;}else if(t==='pack'){nuevo.cat='Pack Especial';nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;nuevo.desc=document.getElementById('ins-pack-desc').value.trim();nuevo.estrategia=document.getElementById('ins-pack-estrategia').value.trim();}else if(t==='illegal'){nuevo.cat='Hack de Sistema';nuevo.precioPf=p;nuevo.desc=document.getElementById('ins-illegal-desc').value.trim();nuevo.beneficio=document.getElementById('ins-illegal-beneficio').value.trim();nuevo.castigo=document.getElementById('ins-illegal-castigo').value.trim();}if(!baseDatos.productos)baseDatos.productos=[];baseDatos.productos.push(nuevo);guardarBD();document.getElementById('ins-nombre').value='';document.getElementById('ins-precio').value='';document.getElementById('ins-illegal-beneficio').value='';document.getElementById('ins-illegal-castigo').value='';document.getElementById('ins-illegal-desc').value='';reproducirSonido('exito');mostrarNotificacion(`${nuevo.icon} ${n} publicado.`,"exito","📦");};
 window.actualizarPropertyProducto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=parseInt(val)||0;guardarBD();}};
+window.actualizarPropertyProductoTexto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=val;guardarBD();}};
+window.eliminarTodosLosProductosDeTienda=async function(tienda){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let cf=await mostrarConfirmacion({icono:'🗑️',titulo:`¿Vaciar ${tienda==='legal'?'Tienda Legal':tienda==='pack'?'Shop PF Pack':'Ilegalidades'}?`,descripcion:'Se eliminarán todos los productos publicados en esta tienda. Esta acción no se puede deshacer.',textoConfirmar:'Vaciar tienda',tipo:'sacrificio'});if(!cf)return;baseDatos.productos=baseDatos.productos.filter(p=>p.tienda!==tienda);guardarBD();redibujarConsolaAdminMaster();mostrarNotificacion('Tienda vaciada.','exito','🗑️');};
 window.eliminarProductoMaster=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar producto',descripcion:'Esta acción no se puede deshacer.',textoConfirmar:'Eliminar',tipo:'peligro'});if(cf){baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id);guardarBD();mostrarNotificacion("Producto eliminado.","info","🗑️",null,true);}};
 function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b'),sp=document.getElementById('adm-pf-usuario');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB,sp].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(sp)sp.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});
   // Poblar lista dinámica de campeones por vidas
@@ -3137,7 +3216,58 @@ function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-b
     vidasActual.forEach(function(val){ agregarGanadorVidasConValor(val); });
   }refrescarSelectsPersonalizados();}
 function renderizarAdminArena(){let box=document.getElementById('adm-arena-combates-activos');if(!box)return;box.innerHTML='';if(!baseDatos.arena||!Object.keys(baseDatos.arena).length){box.innerHTML='<div style="color:var(--txt-muted);font-size:10px;text-align:center;padding:10px;font-family:var(--font-display)">No hay combates activos.</div>';return;}Object.values(baseDatos.arena).forEach(c=>{if(c.estado==='resuelto')return;if((c.tipo||'duelo')==='encuesta'){let total=0;c.opciones.forEach((_,i)=>{total+=(c.botes&&c.botes[i])||0;});let detalle=c.opciones.map((op,i)=>`${escaparHTML(op)}: ${(c.botes&&c.botes[i])||0} PF`).join(' · ');let botonesOpcion=c.opciones.map((op,i)=>`<button class="btn-admin-sm legal" onclick="resolverEncuestaArena('${c.id}','${i}')">🏆 ${escaparHTML(op.toUpperCase())}</button>`).join('');box.innerHTML+=`<div class="admin-arena-card"><div style="font-size:11px;color:var(--neon-arena);font-weight:700;margin-bottom:5px;font-family:var(--font-display)">🗳️ ${escaparHTML(c.descripcion)}</div><div style="font-size:10px;color:var(--txt-secondary);margin-bottom:5px">${c.estado.toUpperCase()} — Bote total: ${total} PF</div><div style="font-size:10px;color:var(--txt-muted);margin-bottom:7px">${detalle}</div><div class="admin-btns-row">${c.estado==='abierto'?`<button class="btn-admin-sm packs" onclick="cerrarApuestasCombate('${c.id}')">🔒 Cerrar</button>`:''}${botonesOpcion}</div></div>`;return;}box.innerHTML+=`<div class="admin-arena-card"><div style="font-size:11px;color:var(--neon-arena);font-weight:700;margin-bottom:5px;font-family:var(--font-display)">${escaparHTML(c.descripcion)}</div><div style="font-size:10px;color:var(--txt-secondary);margin-bottom:7px"><span style="color:#60a5fa">${escaparHTML(c.jugadorA.toUpperCase())}</span> vs <span style="color:#f87171">${escaparHTML(c.jugadorB.toUpperCase())}</span> — ${c.estado.toUpperCase()} — Bote: ${(c.boteA||0)+(c.boteB||0)} PF</div><div class="admin-btns-row">${c.estado==='abierto'?`<button class="btn-admin-sm packs" onclick="cerrarApuestasCombate('${c.id}')">🔒 Cerrar</button>`:''}<button class="btn-admin-sm legal" onclick="resolverCombateArena('${c.id}','A')">🏆 Gana ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-admin-sm danger" onclick="resolverCombateArena('${c.id}','B')">🏆 Gana ${escaparHTML(c.jugadorB.toUpperCase())}</button></div></div>`;});}
-function redibujarConsolaAdminMaster(){document.getElementById('chk-open-legal').checked=baseDatos.legalOpen!==false;document.getElementById('chk-open-pack').checked=baseDatos.packOpen!==false;document.getElementById('chk-open-illegal').checked=baseDatos.illegalOpen!==false;let chkRadio=document.getElementById('chk-radio-activada');if(chkRadio)chkRadio.checked=!!(baseDatos.radio&&baseDatos.radio.activada);if(baseDatos.eventoSistema)document.getElementById('adm-evento-economico').value=baseDatos.eventoSistema;actualizarSelectorUsuariosBanco();renderizarAdminArena();renderizarAdminCamara();let al=document.getElementById('admin-inventario-global');if(!al)return;al.innerHTML='';baseDatos.productos.forEach(p=>{let esI=p.tienda==='illegal';al.innerHTML+=`<div class="admin-item-card"><button class="btn-del-item" onclick="eliminarProductoMaster(${p.id})">✕</button><div style="color:var(--txt-primary);font-size:12px;font-weight:600;margin-bottom:6px">${p.icon} ${p.nombre} <span style="color:var(--txt-muted);font-size:10px">[${p.tienda.toUpperCase()}]</span></div><div class="admin-item-row"><div class="admin-field"><label>Coste</label><input type="number" value="${esI?p.precioPf:p.precio}" class="admin-input" style="margin-bottom:0;width:80px" oninput="actualizarPropertyProducto(${p.id},'${esI?'precioPf':'precio'}',this.value)"></div><div class="admin-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input" style="margin-bottom:0;width:70px" oninput="actualizarPropertyProducto(${p.id},'stock',this.value)"></div></div></div>`;});renderizarListaRadioAdmin();}
+function redibujarConsolaAdminMaster(){document.getElementById('chk-open-legal').checked=baseDatos.legalOpen!==false;document.getElementById('chk-open-pack').checked=baseDatos.packOpen!==false;document.getElementById('chk-open-illegal').checked=baseDatos.illegalOpen!==false;let chkRadio=document.getElementById('chk-radio-activada');if(chkRadio)chkRadio.checked=!!(baseDatos.radio&&baseDatos.radio.activada);if(baseDatos.eventoSistema)document.getElementById('adm-evento-economico').value=baseDatos.eventoSistema;actualizarSelectorUsuariosBanco();renderizarAdminArena();renderizarAdminCamara();renderizarInventarioGlobalAdmin();renderizarListaRadioAdmin();}
+
+window.renderizarInventarioGlobalAdmin=function(){
+  let al=document.getElementById('admin-inventario-global');
+  if(!al)return;
+  let busq=(document.getElementById('editor-buscar')?.value||'').toLowerCase().trim();
+  let filtroTienda=document.getElementById('editor-filtro-tienda')?.value||'';
+  let lista=(baseDatos.productos||[]).filter(p=>{
+    if(filtroTienda && p.tienda!==filtroTienda) return false;
+    if(busq && !p.nombre.toLowerCase().includes(busq)) return false;
+    return true;
+  });
+  if(!lista.length){al.innerHTML='<div style="color:var(--txt-muted);font-size:11px;text-align:center;padding:24px;font-family:var(--font-display)">Sin productos que coincidan.</div>';return;}
+  al.innerHTML='';
+  lista.forEach(p=>{
+    let esI=p.tienda==='illegal', esPack=p.tienda==='pack';
+    let tiendaColor=esI?'var(--neon-ilegal)':(esPack?'var(--neon-packs)':'var(--neon-legal)');
+    let tiendaLabel=esI?'ILEGAL':(esPack?'PACK':'LEGAL');
+    let card=document.createElement('div');
+    card.className='admin-item-card';
+    card.style.cssText='position:relative;border-left:3px solid '+tiendaColor;
+    let html=`<button class="btn-del-item" onclick="eliminarProductoMaster(${p.id})">✕</button>`;
+    html+=`<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+      <span style="font-family:var(--font-display);font-size:8px;font-weight:700;color:${tiendaColor};background:${tiendaColor}18;padding:2px 6px;border-radius:99px;letter-spacing:.5px">${tiendaLabel}</span>
+      <span style="color:var(--txt-muted);font-size:9px;font-family:var(--font-display)">${p.qty&&p.qty>1?'x'+p.qty+' ':''}${p.cat||''}</span>
+    </div>`;
+    // Icono + nombre editable
+    html+=`<div style="display:flex;gap:6px;margin-bottom:8px">
+      <input type="text" value="${escaparHTML(p.icon||'📦')}" class="admin-input" style="margin-bottom:0;width:46px;text-align:center;font-size:16px;padding:6px 4px" oninput="actualizarPropertyProductoTexto(${p.id},'icon',this.value)">
+      <input type="text" value="${escaparHTML(p.nombre)}" class="admin-input" style="margin-bottom:0;flex:1;font-weight:700;color:var(--txt-primary)" oninput="actualizarPropertyProductoTexto(${p.id},'nombre',this.value)">
+    </div>`;
+    // Precio + Stock
+    html+=`<div class="admin-item-row" style="margin-bottom:8px">
+      <div class="admin-field"><label>${esI?'PF':'Coste P₠'}</label><input type="number" value="${esI?(p.precioPf||0):(p.precio||0)}" class="admin-input" style="margin-bottom:0;width:90px" oninput="actualizarPropertyProducto(${p.id},'${esI?'precioPf':'precio'}',this.value)"></div>
+      <div class="admin-field"><label>Stock</label><input type="number" value="${p.stock}" class="admin-input" style="margin-bottom:0;width:70px" oninput="actualizarPropertyProducto(${p.id},'stock',this.value)"></div>
+      ${!esI?`<div class="admin-field"><label>Bono PF</label><input type="number" value="${p.pf||0}" class="admin-input" style="margin-bottom:0;width:70px" oninput="actualizarPropertyProducto(${p.id},'pf',this.value)"></div>`:''}
+    </div>`;
+    // Contenido del pack / descripción
+    if(esPack){
+      html+=`<div style="margin-bottom:6px"><label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:2px">Contenido del pack</label><input type="text" value="${escaparHTML(p.desc||'')}" class="admin-input" style="margin-bottom:0;font-size:11px" oninput="actualizarPropertyProductoTexto(${p.id},'desc',this.value)"></div>`;
+      html+=`<div><label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:2px">Estrategia</label><input type="text" value="${escaparHTML(p.estrategia||'')}" class="admin-input" style="margin-bottom:0;font-size:11px" oninput="actualizarPropertyProductoTexto(${p.id},'estrategia',this.value)"></div>`;
+    } else if(esI){
+      html+=`<div style="margin-bottom:6px"><label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:2px">Descripción</label><input type="text" value="${escaparHTML(p.desc||'')}" class="admin-input" style="margin-bottom:0;font-size:11px" oninput="actualizarPropertyProductoTexto(${p.id},'desc',this.value)"></div>`;
+      html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div><label style="font-size:9px;color:var(--neon-ilegal);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:2px">✅ Beneficio</label><input type="text" value="${escaparHTML(p.beneficio||'')}" class="admin-input" style="margin-bottom:0;font-size:11px" oninput="actualizarPropertyProductoTexto(${p.id},'beneficio',this.value)"></div>
+        <div><label style="font-size:9px;color:#f87171;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:2px">⚠️ Castigo</label><input type="text" value="${escaparHTML(p.castigo||'')}" class="admin-input" style="margin-bottom:0;font-size:11px" oninput="actualizarPropertyProductoTexto(${p.id},'castigo',this.value)"></div>
+      </div>`;
+    }
+    card.innerHTML=html;
+    al.appendChild(card);
+  });
+}
 </script>
 </body>
 </html>
