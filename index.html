@@ -274,10 +274,30 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .tracker-progreso-fill{height:100%;background:var(--neon-legal);transition:width .3s ease}
 .tracker-progreso-fill.perdido{background:var(--neon-ilegal)}
 @media (max-width:600px){.tracker-row{flex-wrap:wrap}.tracker-row .tracker-actions{width:100%;justify-content:stretch}.tracker-row .tracker-actions button{flex:1}}
+.titulo-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;border:1px solid var(--borde);background:var(--bg-overlay);color:var(--neon-packs);cursor:default}
+.titulo-badge.desbloqueado{border-color:rgba(var(--neon-packs-rgb,99,102,241),.4);background:rgba(var(--neon-packs-rgb,99,102,241),.08)}
+.titulo-activo-display{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--neon-packs);letter-spacing:.3px;margin-top:2px}
+.titulos-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.titulo-chip{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:var(--r-md);border:1px solid var(--borde);background:var(--bg-card);font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted);transition:all .15s;position:relative}
+.titulo-chip.desbloqueado{color:var(--txt-primary);border-color:var(--borde-hover)}
+.titulo-chip.activo{border-color:var(--neon-packs);background:rgba(99,102,241,.08);color:var(--neon-packs)}
+.titulo-chip button{margin-left:auto;padding:2px 8px;font-size:9px;font-family:var(--font-display);font-weight:700;border-radius:var(--r-sm);border:1px solid var(--borde-hover);background:transparent;color:var(--txt-secondary);cursor:pointer}
+.titulo-chip.activo button{border-color:var(--neon-packs);color:var(--neon-packs)}
+.titulo-chip .titulo-lock{font-size:10px;opacity:.4}
+.temas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:10px}
+.tema-chip{padding:8px 12px;border-radius:var(--r-md);border:1px solid var(--borde);background:var(--bg-card);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px}
+.tema-chip.bloqueado{opacity:.45;cursor:not-allowed}
+.tema-chip.activo{border-color:var(--neon-packs);background:rgba(99,102,241,.08)}
+.tema-chip .tema-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.tema-chip .tema-nombre{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-primary)}
+.tema-chip .tema-lock{font-size:10px;margin-left:auto;color:var(--txt-muted)}
 body.tema-egglocke{--neon-packs:#fbbf24;--neon-legal:#fde68a;--neon-ilegal:#f59e0b}
 body.tema-randomlocke{--neon-packs:#34d399;--neon-legal:#6ee7b7;--neon-ilegal:#10b981}
 body.tema-shinylocke{--neon-packs:#c084fc;--neon-legal:#a78bfa;--neon-ilegal:#e879f9}
 body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97316}
+body.tema-plasma{--neon-packs:#f43f5e;--neon-legal:#fb7185;--neon-ilegal:#e11d48}
+body.tema-rocket{--neon-packs:#eab308;--neon-legal:#facc15;--neon-ilegal:#ca8a04}
+body.tema-campeon{--neon-packs:#f59e0b;--neon-legal:#fcd34d;--neon-ilegal:#d97706}
 /* Generador de tiendas - layout responsive */
 .gen-label{font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px}
 .gen-selects-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;min-width:0}
@@ -381,6 +401,9 @@ body.tema-egglocke    .hero-strip{--hero-color:#fbbf24;--hero-glow:rgba(251,191,
 body.tema-randomlocke .hero-strip{--hero-color:#34d399;--hero-glow:rgba(52,211,153,.09)}
 body.tema-shinylocke .hero-strip{--hero-color:#c084fc;--hero-glow:rgba(192,132,252,.09)}
 body.tema-duallinks  .hero-strip{--hero-color:#facc15;--hero-glow:rgba(250,204,21,.09)}
+body.tema-plasma     .hero-strip{--hero-color:#f43f5e;--hero-glow:rgba(244,63,94,.09)}
+body.tema-rocket     .hero-strip{--hero-color:#eab308;--hero-glow:rgba(234,179,8,.09)}
+body.tema-campeon    .hero-strip{--hero-color:#f59e0b;--hero-glow:rgba(245,158,11,.12)}
 body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgba(245,158,11,.07)}
 @keyframes lockeFadeTransition{0%{opacity:1}45%{opacity:0}55%{opacity:0}100%{opacity:1}}
 .locke-transitioning{animation:lockeFadeTransition .6s ease}
@@ -663,7 +686,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <section id="section-perfil" class="page-section">
       <div class="section-header">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-          <div><div class="section-title" id="perfil-nombre-display">---</div><div class="section-subtitle">Ficha de Entrenador</div></div>
+          <div><div class="section-title" id="perfil-nombre-display">---</div><div class="section-subtitle">Ficha de Entrenador</div><div class="titulo-activo-display" id="perfil-titulo-activo" style="display:none"></div></div>
           <div style="display:flex;align-items:center;gap:8px">
             <label style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px">Estado Locke:</label>
             <select id="perf-locke-status" onchange="guardarDatosPerfilGamer()" style="background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:6px 10px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;-webkit-appearance:none;appearance:none;cursor:pointer">
@@ -741,6 +764,21 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             </div>
           </div>
         </div>
+
+        <!-- TÍTULOS / RANGOS -->
+        <div class="card" style="margin-top:18px">
+          <div class="card-title">🏷️ Títulos y Rangos</div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:12px">Se desbloquean automáticamente al cumplir condiciones. Elige cuál mostrar bajo tu nombre.</div>
+          <div id="titulos-lista" class="titulos-grid"></div>
+        </div>
+
+        <!-- TEMAS DESBLOQUEABLES -->
+        <div class="card" style="margin-top:14px;margin-bottom:4px">
+          <div class="card-title">🎨 Temas Visuales</div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:4px">Los temas se compran en la Tienda. El tema del locke se aplica por defecto.</div>
+          <div id="temas-lista" class="temas-grid"></div>
+        </div>
+
       </div>
       <!-- TRACKER DE ENCUENTROS -->
       <div id="pv-tracker" class="perfil-view">
@@ -2786,11 +2824,7 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas){
 }
 
 function aplicarTemaLocke(){
-  var la = baseDatos && baseDatos.lockeActivo;
-  document.body.classList.remove('tema-egglocke','tema-randomlocke','tema-shinylocke','tema-duallinks');
-  if(la && la.tipo && NL_TIPOS[la.tipo]){
-    document.body.classList.add('tema-'+NL_TIPOS[la.tipo].tema);
-  }
+  aplicarTemaPersonal();
 }
 
 function renderizarBannerLocke(){
@@ -3023,7 +3057,7 @@ window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelec
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
 window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');sec.classList.add(`zona-${tab}`);}};
 window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.evento-tab').forEach(t=>t.classList.remove('active-arena','active-camara'));document.querySelectorAll('.evento-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`etab-${tab}`),ve=document.getElementById(`ev-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);if(tab==='camara')renderizarCamaraPublica();};
-window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='tracker')renderizarTracker();};
+window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='tracker')renderizarTracker();if(tab==='progreso')renderizarTitulosYTemas();};
 
 /* ═══ LOGIN ═══ */
 window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;sessionStorage.setItem('silph_user_sesion',id);if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[])};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.tracker)u.tracker=crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[]);}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();};
@@ -3195,6 +3229,7 @@ window.comprarObjetoGamer=async function(id){
   p.stock--;
   if(!u.inventario)u.inventario=[];
   u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:p.nombre,icon:p.icon,desc:p.desc||'',beneficio:p.beneficio||'',castigo:p.castigo||'',tienda:tienda,fecha:new Date().toLocaleDateString()});
+  _checkCompraTemaTienda(p.nombre);
   guardarBD();
   if(be){
     let flashClass=tienda==='illegal'?'flash-ilegal':(tienda==='pack'?'flash-pack':'flash-legal');
@@ -3233,7 +3268,7 @@ window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!bas
 /* ═══ MODAL BAJA ═══ */
 window.abrirModalBaja=function(){['baja-nombre','baja-mote','baja-lugar','baja-epitafio'].forEach(id=>document.getElementById(id).value='');document.getElementById('baja-motivo').value='Ruta';refrescarSelectsPersonalizados();reproducirSonido('abrir');document.getElementById('baja-modal-overlay').style.display='flex';};
 window.cerrarModalBaja=function(){reproducirSonido('cerrar');document.getElementById('baja-modal-overlay').style.display='none';};
-window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').value.trim(),m=document.getElementById('baja-mote').value.trim(),mot=document.getElementById('baja-motivo').value,l=document.getElementById('baja-lugar').value.trim(),e=document.getElementById('baja-epitafio').value.trim();if(!n){mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀");return;}if(!l){mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>0)va--;u.vidasActuales=va;if(va<=0)u.lockeStatus='perdido';let nc=m?`${n} "${m}"`:n,rc=`[${mot}] ${l}`;if(!u.cementerio)u.cementerio=[];u.cementerio.push({nombre:nc,ruta:rc,epitafio:e||"Sin últimas palabras.",fecha:new Date().toLocaleDateString()});inyectarEntradaDiarioAutomatica(`💀 RIP: '${nc}' cayó ante ${rc}. Últimas palabras: "${e||'...'}"`);guardarBD();cerrarModalBaja();reproducirSonido('muerte');destellarPantalla('rojo');actualizarBarraVidasDesdeDB();let _barraV=document.querySelector('.hp-barra-contenedor');if(_barraV){_barraV.classList.add('shake-vidas');setTimeout(()=>_barraV.classList.remove('shake-vidas'),350);}mostrarInfo({icono:'💀',titulo:nc,descripcion:`Ha caído ante ${rc}.\n❤️ Vidas restantes: ${va}`,tipo:'peligro',textoConfirmar:'Descanse en paz'});};
+window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').value.trim(),m=document.getElementById('baja-mote').value.trim(),mot=document.getElementById('baja-motivo').value,l=document.getElementById('baja-lugar').value.trim(),e=document.getElementById('baja-epitafio').value.trim();if(!n){mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀");return;}if(!l){mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>0)va--;u.vidasActuales=va;if(va<=0)u.lockeStatus='perdido';let nc=m?`${n} "${m}"`:n,rc=`[${mot}] ${l}`;if(!u.cementerio)u.cementerio=[];u.cementerio.push({nombre:nc,ruta:rc,epitafio:e||"Sin últimas palabras.",fecha:new Date().toLocaleDateString()});inyectarEntradaDiarioAutomatica(`💀 RIP: '${nc}' cayó ante ${rc}. Últimas palabras: "${e||'...'}"`);guardarBD();cerrarModalBaja();reproducirSonido('muerte');destellarPantalla('rojo');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();let _barraV=document.querySelector('.hp-barra-contenedor');if(_barraV){_barraV.classList.add('shake-vidas');setTimeout(()=>_barraV.classList.remove('shake-vidas'),350);}mostrarInfo({icono:'💀',titulo:nc,descripcion:`Ha caído ante ${rc}.\n❤️ Vidas restantes: ${va}`,tipo:'peligro',textoConfirmar:'Descanse en paz'});};
 
 /* ═══ HP BAR ═══ */
 window.actualizarBarraVidas=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20,act=(u.vidasActuales!==undefined)?u.vidasActuales:ini;_renderBarra(act,ini);};
@@ -3244,7 +3279,7 @@ function _renderBarra(act,ini){let f=document.getElementById('perf-vida-barra-fi
 window.abrirModalSacrificio=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);document.getElementById('sac-nombre-poke').value='';document.getElementById('sac-mote-poke').value='';document.getElementById('sac-categoria').value='';document.getElementById('sac-preview-vidas-box').classList.add('hidden');document.getElementById('sac-aviso-limite').style.display='none';document.getElementById('btn-confirmar-sacrificio').disabled=true;if(va>=MAX_VIDAS)document.getElementById('sac-aviso-limite').style.display='block';refrescarSelectsPersonalizados();renderizarHistorialSacrificios();reproducirSonido('abrir');document.getElementById('sacrificio-modal-overlay').style.display='flex';};
 window.cerrarModalSacrificio=function(){reproducirSonido('cerrar');document.getElementById('sacrificio-modal-overlay').style.display='none';};
 window.actualizarPreviewSacrificio=function(){let cat=document.getElementById('sac-categoria').value,n=document.getElementById('sac-nombre-poke').value.trim(),pb=document.getElementById('sac-preview-vidas-box'),bc=document.getElementById('btn-confirmar-sacrificio'),av=document.getElementById('sac-aviso-limite');if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>=MAX_VIDAS){av.style.display='block';pb.classList.add('hidden');bc.disabled=true;return;}av.style.display='none';if(!cat||!n){pb.classList.add('hidden');bc.disabled=true;return;}let datos=SACRIFICIO_VALORES[cat];if(!datos)return;let vr=Math.min(datos.vidas,MAX_VIDAS-va),ex=vr<datos.vidas?` (cap: máx. ${MAX_VIDAS})`:'';document.getElementById('sac-preview-nombre-txt').textContent=`${escaparHTML(n)} · ${datos.etiqueta}${ex}`;document.getElementById('sac-preview-numero-txt').textContent=`+${vr} ❤️`;pb.classList.remove('hidden');bc.disabled=false;};
-window.confirmarSacrificio=async function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let n=document.getElementById('sac-nombre-poke').value.trim(),m=document.getElementById('sac-mote-poke').value.trim(),cat=document.getElementById('sac-categoria').value;if(!n){mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥");return;}if(!cat){mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;if(va>=MAX_VIDAS){mostrarNotificacion(`Ya tienes el máximo de ${MAX_VIDAS} vidas.`,"error","⛔");return;}let datos=SACRIFICIO_VALORES[cat];if(!datos){mostrarNotificacion("Categoría inválida.","error","🔥");return;}let vg=Math.min(datos.vidas,MAX_VIDAS-va),nv=va+vg,nc=m?`${n} "${m}"`:n;let cf=await mostrarConfirmacion({icono:'🔥',titulo:'Sacrificio Pokéinomano',descripcion:`Pokémon: ${nc}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vg} ❤️\nVidas tras el sacrificio: ${nv}/${vt}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,textoConfirmar:'Ejecutar Sacrificio',tipo:'sacrificio',sonidoConfirmar:'revivir'});if(!cf)return;u.vidasActuales=nv;if(u.lockeStatus==='perdido'&&nv>0)u.lockeStatus='jugando';if(!u.sacrificios)u.sacrificios=[];let dobj=new Date(),ts=`${String(dobj.getDate()).padStart(2,'0')}/${String(dobj.getMonth()+1).padStart(2,'0')}/${dobj.getFullYear()} ${String(dobj.getHours()).padStart(2,'0')}:${String(dobj.getMinutes()).padStart(2,'0')}`;u.sacrificios.push({nombre:nc,categoria:datos.etiqueta,vidasObtenidas:vg,vidasTras:nv,timestamp:ts});inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO: '${nc}' [${datos.etiqueta}] ofrecido al Mercader. +${vg} ❤️. Vidas: ${nv}/${vt}.`);guardarBD();cerrarModalSacrificio();destellarPantalla('naranja');actualizarBarraVidasDesdeDB();mostrarInfo({icono:'🔥',titulo:'Sacrificio completado',descripcion:`${nc} descansa en paz.\n❤️ Vidas: +${vg} → ${nv}`,textoConfirmar:'Aceptar'});};
+window.confirmarSacrificio=async function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let n=document.getElementById('sac-nombre-poke').value.trim(),m=document.getElementById('sac-mote-poke').value.trim(),cat=document.getElementById('sac-categoria').value;if(!n){mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥");return;}if(!cat){mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;if(va>=MAX_VIDAS){mostrarNotificacion(`Ya tienes el máximo de ${MAX_VIDAS} vidas.`,"error","⛔");return;}let datos=SACRIFICIO_VALORES[cat];if(!datos){mostrarNotificacion("Categoría inválida.","error","🔥");return;}let vg=Math.min(datos.vidas,MAX_VIDAS-va),nv=va+vg,nc=m?`${n} "${m}"`:n;let cf=await mostrarConfirmacion({icono:'🔥',titulo:'Sacrificio Pokéinomano',descripcion:`Pokémon: ${nc}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vg} ❤️\nVidas tras el sacrificio: ${nv}/${vt}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,textoConfirmar:'Ejecutar Sacrificio',tipo:'sacrificio',sonidoConfirmar:'revivir'});if(!cf)return;u.vidasActuales=nv;if(u.lockeStatus==='perdido'&&nv>0)u.lockeStatus='jugando';if(!u.sacrificios)u.sacrificios=[];let dobj=new Date(),ts=`${String(dobj.getDate()).padStart(2,'0')}/${String(dobj.getMonth()+1).padStart(2,'0')}/${dobj.getFullYear()} ${String(dobj.getHours()).padStart(2,'0')}:${String(dobj.getMinutes()).padStart(2,'0')}`;u.sacrificios.push({nombre:nc,categoria:datos.etiqueta,vidasObtenidas:vg,vidasTras:nv,timestamp:ts});inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO: '${nc}' [${datos.etiqueta}] ofrecido al Mercader. +${vg} ❤️. Vidas: ${nv}/${vt}.`);guardarBD();cerrarModalSacrificio();destellarPantalla('naranja');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();mostrarInfo({icono:'🔥',titulo:'Sacrificio completado',descripcion:`${nc} descansa en paz.\n❤️ Vidas: +${vg} → ${nv}`,textoConfirmar:'Aceptar'});};
 function renderizarHistorialSacrificios(){let box=document.getElementById('sac-historial-lista');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];box.innerHTML='';if(!u.sacrificios||!u.sacrificios.length){box.innerHTML='<div style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display);padding:10px 0;font-style:italic">Ningún compañero sacrificado aún.</div>';return;}[...u.sacrificios].reverse().slice(0,8).forEach(s=>{box.innerHTML+=`<div class="sac-entry"><div class="sac-entry-ts">🕐 ${escaparHTML(s.timestamp)}</div><div style="display:flex;justify-content:space-between;align-items:center"><div><span style="color:var(--neon-sacrificio);font-weight:700;font-family:var(--font-display);font-size:11px">🔥 ${escaparHTML(s.nombre)}</span> <span style="color:var(--txt-muted);font-size:10px">· ${escaparHTML(s.categoria)}</span></div><div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:var(--neon-sacrificio)">+${s.vidasObtenidas}❤️</div></div><div style="font-size:10px;color:var(--txt-muted);margin-top:2px">Vidas tras el canje: ${s.vidasTras}</div></div>`;});}
 function actualizarEstadisticasSacrificioPanel(){let box=document.getElementById('sac-stats-mini-panel');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],t=u.sacrificios?u.sacrificios.length:0,v=u.sacrificios?u.sacrificios.reduce((a,s)=>a+(s.vidasObtenidas||0),0):0;box.innerHTML=`<div class="sac-chip">Sacrificios: <span>${t}</span></div><div class="sac-chip">Vidas recuperadas: <span>${v} ❤️</span></div>`;let btn=document.getElementById('btn-trigger-sacrificio');if(btn){let va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);btn.disabled=(va>=MAX_VIDAS);btn.title=va>=MAX_VIDAS?'Ya tienes el máximo de 20 vidas':'Sacrificar un Pokémon para recuperar vidas';}}
 
@@ -3262,7 +3297,7 @@ function inyectarEntradaDiarioAutomatica(txt){if(!userSesion||!baseDatos.jugador
 function inyectarEntradaDiarioAutomaticaPara(uid,txt){if(!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid],d=new Date();let ts=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;if(!u.diarioLogs)u.diarioLogs=[];u.diarioLogs.push({timestamp:ts,text:txt,texto:txt});registrarActividadGlobal(uid,txt,ts);}
 
 /* ═══ PERFIL ═══ */
-function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();cargarMejorPokemonEnPerfil();aplicarTemaLocke();renderizarBannerLocke();actualizarBadgeGimnasio();if(document.getElementById('pv-tracker')&&document.getElementById('pv-tracker').classList.contains('active'))renderizarTracker();}
+function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];let n=document.getElementById('perfil-nombre-display');if(n)n.textContent=userSesion.toUpperCase();document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();cargarMejorPokemonEnPerfil();aplicarTemaLocke();renderizarBannerLocke();actualizarBadgeGimnasio();renderizarTitulosYTemas();if(document.getElementById('pv-tracker')&&document.getElementById('pv-tracker').classList.contains('active'))renderizarTracker();}
 
 /* ═══════════ TRACKER DE ENCUENTROS ═══════════ */
 /* Estructura por jugador: baseDatos.jugadores[uid].tracker = [{orden, ruta, estado:'pendiente'|'atrapado'|'perdido', pokemon, mote}] */
@@ -3411,6 +3446,183 @@ document.addEventListener('click', function(e){
     document.querySelectorAll('[id^="tracker-sug-"]').forEach(function(s){ s.style.display='none'; });
   }
 });
+
+/* ═══════════ TÍTULOS / RANGOS ═══════════ */
+
+var TITULOS_CONFIG = [
+  {
+    id: 'ganalockes',
+    icon: '🏆',
+    nombre: 'Ganalockes',
+    desc: 'Gana al menos un Locke',
+    condicion: function(u){ return u.lockeStatus === 'ganado'; }
+  },
+  {
+    id: 'lloron',
+    icon: '😭',
+    nombre: 'Llorón',
+    desc: '5 o más muertes en el Locke',
+    condicion: function(u){ return (u.cementerio||[]).length >= 5; }
+  },
+  {
+    id: 'wipeador',
+    icon: '💥',
+    nombre: 'Wipeador',
+    desc: '10 o más muertes en el Locke',
+    condicion: function(u){ return (u.cementerio||[]).length >= 10; }
+  },
+  {
+    id: 'juicioso',
+    icon: '🧘',
+    nombre: 'Juicioso',
+    desc: '3 o más torneos ganados',
+    condicion: function(u){ return (u.torneos||0) >= 3; }
+  },
+  {
+    id: 'pokeinomano',
+    icon: '🔥',
+    nombre: 'Pokéinomano',
+    desc: '3 o más sacrificios realizados',
+    condicion: function(u){ return (u.sacrificios||[]).length >= 3; }
+  }
+];
+
+var TEMAS_DESBLOQUEABLES = [
+  { id:'locke',    nombre:'Tema del Locke',  dot:'#6366f1', desc:'Automático según el Locke activo', gratis:true },
+  { id:'plasma',   nombre:'Plasma',          dot:'#f43f5e', desc:'Comprar en tienda' },
+  { id:'rocket',   nombre:'Rocket',          dot:'#eab308', desc:'Comprar en tienda' },
+  { id:'campeon',  nombre:'Campeón',         dot:'#f59e0b', desc:'Comprar en tienda' },
+];
+
+function calcularTitulosDesbloqueados(u){
+  if(!u) return [];
+  return TITULOS_CONFIG.filter(function(t){ return t.condicion(u); }).map(function(t){ return t.id; });
+}
+
+window.renderizarTitulosYTemas = function(){
+  if(!userSesion || !baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+
+  var desbloqueados = calcularTitulosDesbloqueados(u);
+  if(!u.titulosDesbloqueados) u.titulosDesbloqueados = [];
+  var nuevos = desbloqueados.filter(function(id){ return u.titulosDesbloqueados.indexOf(id) === -1; });
+  if(nuevos.length){
+    u.titulosDesbloqueados = desbloqueados;
+    nuevos.forEach(function(id){
+      var cfg = TITULOS_CONFIG.find(function(t){ return t.id === id; });
+      if(cfg) mostrarNotificacion('¡Título desbloqueado: '+cfg.icon+' '+cfg.nombre+'!','exito','🏷️');
+    });
+    guardarBD();
+  } else {
+    u.titulosDesbloqueados = desbloqueados;
+  }
+
+  var listaEl = document.getElementById('titulos-lista');
+  if(listaEl){
+    listaEl.innerHTML = TITULOS_CONFIG.map(function(t){
+      var tiene = desbloqueados.indexOf(t.id) !== -1;
+      var esActivo = u.tituloActivo === t.id;
+      var cls = 'titulo-chip' + (tiene ? ' desbloqueado' : '') + (esActivo ? ' activo' : '');
+      var btnTxt = esActivo ? '✓ Activo' : 'Usar';
+      var lock = tiene ? '' : '<span class="titulo-lock">🔒</span>';
+      var btn = tiene
+        ? '<button onclick="seleccionarTitulo(\''+t.id+'\')">'+btnTxt+'</button>'
+        : '';
+      return '<div class="'+cls+'" title="'+escaparHTML(t.desc)+'">'+t.icon+' '+escaparHTML(t.nombre)+lock+btn+'</div>';
+    }).join('');
+  }
+
+  var temasEl = document.getElementById('temas-lista');
+  var temasDesbloqueados = u.temasDesbloqueados || [];
+  if(temasEl){
+    temasEl.innerHTML = TEMAS_DESBLOQUEABLES.map(function(t){
+      var tiene = t.gratis || temasDesbloqueados.indexOf(t.id) !== -1;
+      var esActivo = (u.temaActivo||'locke') === t.id;
+      var cls = 'tema-chip' + (tiene ? '' : ' bloqueado') + (esActivo ? ' activo' : '');
+      var lock = tiene ? '' : '<span class="tema-lock">🔒</span>';
+      var onclick = tiene ? 'onclick="seleccionarTema(\''+t.id+'\')"' : '';
+      return '<div class="'+cls+'" '+onclick+'>'
+        + '<span class="tema-dot" style="background:'+t.dot+'"></span>'
+        + '<span class="tema-nombre">'+escaparHTML(t.nombre)+'</span>'
+        + lock
+        + '</div>';
+    }).join('');
+  }
+
+  var display = document.getElementById('perfil-titulo-activo');
+  if(display){
+    var cfgActivo = u.tituloActivo ? TITULOS_CONFIG.find(function(t){ return t.id === u.tituloActivo; }) : null;
+    if(cfgActivo && desbloqueados.indexOf(u.tituloActivo) !== -1){
+      display.textContent = cfgActivo.icon + ' ' + cfgActivo.nombre;
+      display.style.display = 'block';
+    } else {
+      display.style.display = 'none';
+    }
+  }
+};
+
+window.seleccionarTitulo = function(id){
+  if(!userSesion || !baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  u.tituloActivo = (u.tituloActivo === id) ? null : id;
+  guardarBD();
+  renderizarTitulosYTemas();
+};
+
+window.seleccionarTema = function(id){
+  if(!userSesion || !baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  var temasDesbloqueados = u.temasDesbloqueados || [];
+  var cfg = TEMAS_DESBLOQUEABLES.find(function(t){ return t.id === id; });
+  if(!cfg) return;
+  if(!cfg.gratis && temasDesbloqueados.indexOf(id) === -1){
+    mostrarNotificacion('Tema no desbloqueado. Cómpralo en la tienda.','error','🎨');
+    return;
+  }
+  u.temaActivo = id;
+  guardarBD();
+  aplicarTemaPersonal();
+  renderizarTitulosYTemas();
+  mostrarNotificacion('Tema '+cfg.nombre+' activado.','exito','🎨');
+};
+
+/* ═══════════ SISTEMA DE TEMAS PERSONAL ═══════════ */
+
+var _TODOS_TEMAS = ['tema-egglocke','tema-randomlocke','tema-shinylocke','tema-duallinks','tema-plasma','tema-rocket','tema-campeon'];
+
+function aplicarTemaPersonal(){
+  var u = userSesion && baseDatos.jugadores && baseDatos.jugadores[userSesion];
+  var temaPersonal = u && u.temaActivo && u.temaActivo !== 'locke' ? u.temaActivo : null;
+  _TODOS_TEMAS.forEach(function(c){ document.body.classList.remove(c); });
+  if(temaPersonal){
+    document.body.classList.add('tema-'+temaPersonal);
+  } else {
+    var la = baseDatos && baseDatos.lockeActivo;
+    if(la && la.tipo && NL_TIPOS[la.tipo]){
+      document.body.classList.add('tema-'+NL_TIPOS[la.tipo].tema);
+    }
+  }
+}
+
+/* ═══════════ HOOK EN COMPRA: detectar temas ═══════════ */
+
+var _NOMBRES_TEMAS_TIENDA = {
+  'Tema Plasma':   'plasma',
+  'Tema Rocket':   'rocket',
+  'Tema Campeón':  'campeon',
+};
+
+function _checkCompraTemaTienda(nombreProducto){
+  var idTema = _NOMBRES_TEMAS_TIENDA[nombreProducto];
+  if(!idTema || !userSesion || !baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  if(!u.temasDesbloqueados) u.temasDesbloqueados = [];
+  if(u.temasDesbloqueados.indexOf(idTema) === -1){
+    u.temasDesbloqueados.push(idTema);
+    guardarBD();
+    mostrarNotificacion('¡Tema '+nombreProducto+' desbloqueado! Actívalo en Perfil → Medallas y Torneos.','exito','🎨');
+  }
+}
 
 function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}">${icon}</div>`;}box.innerHTML=html;}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
