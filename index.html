@@ -306,13 +306,33 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .tema-chip .tema-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .tema-chip .tema-nombre{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-primary)}
 .tema-chip .tema-lock{font-size:10px;margin-left:auto;color:var(--txt-muted)}
+/* ── Temas de locke (base) ── */
 body.tema-egglocke{--neon-packs:#fbbf24;--neon-legal:#fde68a;--neon-ilegal:#f59e0b}
 body.tema-randomlocke{--neon-packs:#34d399;--neon-legal:#6ee7b7;--neon-ilegal:#10b981}
 body.tema-shinylocke{--neon-packs:#c084fc;--neon-legal:#a78bfa;--neon-ilegal:#e879f9}
 body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97316}
-body.tema-plasma{--neon-packs:#f43f5e;--neon-legal:#fb7185;--neon-ilegal:#e11d48}
-body.tema-rocket{--neon-packs:#eab308;--neon-legal:#facc15;--neon-ilegal:#ca8a04}
-body.tema-campeon{--neon-packs:#f59e0b;--neon-legal:#fcd34d;--neon-ilegal:#d97706}
+
+/* ── Tema Plasma: rojo oscuro, fondos con tinte carmesí ── */
+body.tema-plasma{
+  --neon-packs:#f43f5e;--neon-legal:#fb7185;--neon-ilegal:#e11d48;
+  --bg-base:#110508;--bg-surface:#1a080b;--bg-elevated:#200c10;--bg-overlay:#2a1018;--bg-card:#1e0c11;
+  --borde:rgba(244,63,94,.12);--borde-hover:rgba(244,63,94,.28);
+  --gris-700:#3d1520;--gris-800:#2a0e16;
+}
+/* ── Tema Rocket: amarillo/negro, fondos con tinte carbón cálido ── */
+body.tema-rocket{
+  --neon-packs:#facc15;--neon-legal:#fde047;--neon-ilegal:#ca8a04;
+  --bg-base:#0e0d02;--bg-surface:#161400;--bg-elevated:#1d1b00;--bg-overlay:#252300;--bg-card:#1a1800;
+  --borde:rgba(234,179,8,.12);--borde-hover:rgba(234,179,8,.28);
+  --gris-700:#352e00;--gris-800:#231e00;
+}
+/* ── Tema Campeón: dorado/azul marino profundo ── */
+body.tema-campeon{
+  --neon-packs:#f59e0b;--neon-legal:#fcd34d;--neon-ilegal:#d97706;
+  --bg-base:#06080f;--bg-surface:#090c18;--bg-elevated:#0d1220;--bg-overlay:#111828;--bg-card:#0b1020;
+  --borde:rgba(245,158,11,.14);--borde-hover:rgba(245,158,11,.32);
+  --gris-700:#1e2640;--gris-800:#141a2c;
+}
 /* Generador de tiendas - layout responsive */
 .gen-label{font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px}
 .gen-selects-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;min-width:0}
@@ -3629,10 +3649,14 @@ function _carnetColor(id, jugadorColor){
 
 function _carnetFondoParams(id){
   switch(id){
-    case 'midnight': return { bg1:'#0d1b2a', bg2:'#050d15', accentOp:0.22 };
-    case 'carbon':   return { bg1:'#111111', bg2:'#050505', accentOp:0.18 };
-    case 'aurora':   return { bg1:'#13111c', bg2:'#0a0d18', accentOp:0.30 };
-    default:         return { bg1:'#0f1929', bg2:'#080d14', accentOp:0.18 };
+    // Azul noche profundo con franja azul eléctrico
+    case 'midnight': return { bg1:'#030d1f', bg2:'#000810', stripe1:'#0ea5e9', stripe2:'#0284c7', accentOp:0.32, borderOp:0.35 };
+    // Negro puro carbón, contraste máximo
+    case 'carbon':   return { bg1:'#141414', bg2:'#000000', stripe1:'#27272a', stripe2:'#18181b', accentOp:0.40, borderOp:0.45 };
+    // Degradado vivo violeta→índigo
+    case 'aurora':   return { bg1:'#160b2e', bg2:'#060314', stripe1:'#7c3aed', stripe2:'#4f46e5', accentOp:0.55, borderOp:0.50 };
+    // Oscuro clásico (default)
+    default:         return { bg1:'#0f1929', bg2:'#060c16', stripe1:null,       stripe2:null,      accentOp:0.18, borderOp:0.30 };
   }
 }
 
@@ -3692,13 +3716,13 @@ function _svgClasico(u, id, color, fondo, tit, lockeStatus){
   return '<svg viewBox="0 0 640 390" xmlns="http://www.w3.org/2000/svg" font-family="Orbitron,Arial,sans-serif">'
     +'<defs>'
     +'<linearGradient id="cb0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
-    +'<linearGradient id="cb1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="'+cm+'" stop-opacity="'+fp.accentOp+'"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0.03"/></linearGradient>'
+    +'<linearGradient id="cb1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="'+(fp.stripe1||cm)+'" stop-opacity="'+fp.accentOp+'"/><stop offset="100%" stop-color="'+(fp.stripe2||cm)+'" stop-opacity="0.04"/></linearGradient>'
     +'</defs>'
     // Marco
     +'<rect x="1" y="1" width="638" height="388" rx="20" fill="url(#cb0)" stroke="'+cm+'" stroke-width="1.5"/>'
     +'<rect x="1" y="1" width="638" height="64" rx="20" fill="url(#cb1)"/>'
     +'<rect x="1" y="44" width="638" height="22" fill="url(#cb1)"/>'
-    +'<line x1="1" y1="64" x2="639" y2="64" stroke="'+cm+'" stroke-opacity="0.2" stroke-width="1"/>'
+    +'<line x1="1" y1="64" x2="639" y2="64" stroke="'+(fp.stripe1||cm)+'" stroke-opacity="'+(fp.borderOp||0.2)+'" stroke-width="2"/>'  + '<rect x="1" y="1" width="5" height="388" rx="3" fill="'+(fp.stripe1||cm)+'" opacity="0.7"/>'
     // Header
     +'<text x="28" y="34" font-size="14" font-weight="900" letter-spacing="2.5" fill="'+cm+'">SILPH CO.</text>'
     +'<text x="28" y="53" font-size="9" fill="#4a5f78" letter-spacing="1.2">TRAINER CARD  ·  NUZLOCKE SYSTEM</text>'
@@ -3765,11 +3789,11 @@ function _svgVertical(u, id, color, fondo, tit, lockeStatus){
   return '<svg viewBox="0 0 380 520" xmlns="http://www.w3.org/2000/svg" font-family="Orbitron,Arial,sans-serif">'
     +'<defs>'
     +'<linearGradient id="cv0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
-    +'<linearGradient id="cv1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+cm+'" stop-opacity="'+fp.accentOp+'"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0.02"/></linearGradient>'
+    +'<linearGradient id="cv1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+(fp.stripe1||cm)+'" stop-opacity="'+fp.accentOp+'"/><stop offset="100%" stop-color="'+(fp.stripe2||cm)+'" stop-opacity="0.03"/></linearGradient>'
     +'</defs>'
     +'<rect x="1" y="1" width="378" height="518" rx="20" fill="url(#cv0)" stroke="'+cm+'" stroke-width="1.5"/>'
     +'<rect x="1" y="1" width="378" height="72" rx="20" fill="url(#cv1)"/>'
-    +'<line x1="1" y1="72" x2="379" y2="72" stroke="'+cm+'" stroke-opacity="0.2" stroke-width="1"/>'
+    +'<line x1="1" y1="72" x2="379" y2="72" stroke="'+(fp.stripe1||cm)+'" stroke-opacity="'+(fp.borderOp||0.2)+'" stroke-width="2"/>'  + '<rect x="1" y="1" width="378" height="5" rx="3" fill="'+(fp.stripe1||cm)+'" opacity="0.7"/>'
     // Header
     +'<text x="190" y="34" text-anchor="middle" font-size="13" font-weight="900" letter-spacing="2" fill="'+cm+'">SILPH CO.</text>'
     +'<text x="190" y="52" text-anchor="middle" font-size="8.5" fill="#4a5f78" letter-spacing="1">TRAINER CARD  ·  NUZLOCKE</text>'
@@ -3830,7 +3854,7 @@ function _svgMinimalista(u, id, color, fondo, tit, lockeStatus){
     +'<linearGradient id="cm0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
     +'</defs>'
     +'<rect x="1" y="1" width="638" height="218" rx="16" fill="url(#cm0)" stroke="'+cm+'" stroke-width="1.5"/>'
-    +'<rect x="1" y="1" width="8" height="218" rx="4" fill="'+cm+'"/>'
+    +'<rect x="1" y="1" width="8" height="218" rx="4" fill="'+(fp.stripe1||cm)+'"/>' + '<rect x="1" y="1" width="638" height="5" rx="3" fill="'+(fp.stripe1||cm)+'" opacity="0.5"/>'
     // Nombre e iniciales
     +'<circle cx="50" cy="76" r="26" fill="'+cm+'20" stroke="'+cm+'" stroke-width="2"/>'
     +'<text x="50" y="83" text-anchor="middle" font-size="16" font-weight="900" fill="'+cm+'">'+ini+'</text>'
