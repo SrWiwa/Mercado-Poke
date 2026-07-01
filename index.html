@@ -81,6 +81,11 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .red-roster-info{min-width:0}
 .red-roster-nombre{font-family:var(--font-display);font-weight:800;font-size:12px;letter-spacing:.3px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .red-roster-titulo{font-family:var(--font-display);font-weight:700;font-size:9px;color:var(--neon-packs);letter-spacing:.3px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.carnet-modal-box{max-width:600px}
+.carnet-svg-wrap{width:100%;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:4px;background:#05070c}
+.carnet-svg-wrap svg{display:block;width:100%;height:auto}
+.btn-carnet-trigger{background:rgba(245,158,11,.08);color:var(--neon-packs);border:1px solid rgba(245,158,11,.3);padding:8px 14px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:6px}
+.btn-carnet-trigger:hover{background:rgba(245,158,11,.18);box-shadow:0 0 14px rgba(245,158,11,.15)}
 .red-roster-meta{font-size:10px;color:var(--txt-muted);font-family:var(--font-display)}
 .red-empty-state{text-align:center;padding:60px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated);font-family:var(--font-display);font-size:12px;letter-spacing:.5px}.rival-perfil-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px;height:fit-content}.rival-nombre{font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--blanco);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}.rival-stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--borde);font-size:12px}.rival-stat-row:last-child{border-bottom:none}.rival-stat-label{color:var(--txt-secondary)}.rival-stat-value{font-weight:700;font-family:var(--font-display);font-size:12px}
 .rival-equipo-area{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px}
@@ -275,6 +280,15 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .tracker-progreso-fill{height:100%;background:var(--neon-legal);transition:width .3s ease}
 .tracker-progreso-fill.perdido{background:var(--neon-ilegal)}
 @media (max-width:600px){.tracker-row{flex-wrap:wrap}.tracker-row .tracker-actions{width:100%;justify-content:stretch}.tracker-row .tracker-actions button{flex:1}}
+/* ── Carnet personalización ── */
+.carnet-color-swatch{width:36px;height:36px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .15s;flex-shrink:0}
+.carnet-color-swatch.activo{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.25),0 0 12px currentColor;transform:scale(1.12)}
+.carnet-fondo-opt,.carnet-layout-opt{padding:10px 12px;border-radius:var(--r-md);border:1px solid var(--borde);background:var(--bg-card);cursor:pointer;transition:all .15s;text-align:center}
+.carnet-fondo-opt:hover,.carnet-layout-opt:hover{border-color:var(--borde-hover)}
+.carnet-fondo-opt.activo,.carnet-layout-opt.activo{border-color:var(--neon-packs);background:rgba(99,102,241,.08)}
+.carnet-fondo-opt .cf-icon,.carnet-layout-opt .cl-icon{font-size:22px;display:block;margin-bottom:5px}
+.carnet-fondo-opt .cf-label,.carnet-layout-opt .cl-label{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-secondary)}
+.carnet-fondo-opt.activo .cf-label,.carnet-layout-opt.activo .cl-label{color:var(--neon-packs)}
 .titulo-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;border:1px solid var(--borde);background:var(--bg-overlay);color:var(--neon-packs);cursor:default}
 .titulo-badge.desbloqueado{border-color:rgba(var(--neon-packs-rgb,99,102,241),.4);background:rgba(var(--neon-packs-rgb,99,102,241),.08)}
 .titulo-activo-display{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--neon-packs);letter-spacing:.3px;margin-top:2px}
@@ -580,7 +594,10 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="section-header"><div class="section-title">Red de Entrenadores</div><div class="section-subtitle">Escanea los perfiles y equipos de los rivales</div></div>
       <div class="red-select-wrap">
         <label class="red-select-label">Selecciona un rival para escanear</label>
-        <select id="red-select-jugador" onchange="renderizarVisorRivalPublico()"><option value="">-- SELECCIONAR RIVAL --</option></select>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <select id="red-select-jugador" onchange="renderizarVisorRivalPublico()"><option value="">-- SELECCIONAR RIVAL --</option></select>
+          <button class="btn-carnet-trigger" onclick="abrirMiCarnetEntrenador()">🪪 Mi Carnet</button>
+        </div>
       </div>
       <div id="red-visor-dinamico" class="red-visor-grid"></div>
     </section>
@@ -701,6 +718,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="perfil-tab" id="ptab-diario" onclick="abrirOverlayDiarioNativo()">📖 Diario / Bitácora</button>
         <button class="perfil-tab" id="ptab-progreso" onclick="cambiarPerfilTab('progreso')">🏆 Medallas y Torneos</button>
         <button class="perfil-tab" id="ptab-tracker" onclick="cambiarPerfilTab('tracker')">🗺️ Tracker de Encuentros</button>
+        <button class="perfil-tab" id="ptab-carnet" onclick="cambiarPerfilTab('carnet')">🪪 Mi Carnet</button>
       </div>
       <div id="pv-vidas" class="perfil-view active">
         <div class="card" style="margin-bottom:12px">
@@ -791,6 +809,44 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
           <div id="tracker-lista" style="display:flex;flex-direction:column"></div>
           <div id="tracker-vacio" style="display:none;text-align:center;padding:20px 10px;color:var(--txt-muted);font-size:11px;font-style:italic">El administrador aún no ha definido rutas para este Locke.</div>
         </div>
+      </div>
+
+      <!-- CARNET PERSONALIZABLE -->
+      <div id="pv-carnet" class="perfil-view">
+
+        <!-- Preview en vivo -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title">🪪 Vista Previa del Carnet</div>
+          <div id="carnet-perfil-preview" style="width:100%;overflow-x:auto;padding:4px 0"></div>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn-admin" style="flex:1;min-width:120px" onclick="abrirMiCarnetEntrenador()">🔍 Ver en grande</button>
+          </div>
+        </div>
+
+        <!-- Color de acento -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title" style="margin-bottom:12px">🎨 Color de Acento</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap" id="carnet-color-picker">
+            <!-- generado por JS -->
+          </div>
+        </div>
+
+        <!-- Estilo de fondo -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title" style="margin-bottom:12px">🖼️ Estilo de Fondo</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px" id="carnet-fondo-picker">
+            <!-- generado por JS -->
+          </div>
+        </div>
+
+        <!-- Layout -->
+        <div class="card" style="margin-bottom:4px">
+          <div class="card-title" style="margin-bottom:12px">📐 Layout</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="carnet-layout-picker">
+            <!-- generado por JS -->
+          </div>
+        </div>
+
       </div>
     </section>
     <!-- HALL OF FAME -->
@@ -1272,6 +1328,19 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <div class="sac-footer">
       <button class="btn-sacrificar" id="btn-confirmar-sacrificio" onclick="confirmarSacrificio()" disabled>🔥 Ejecutar Sacrificio</button>
       <button class="btn-sac-cancel" onclick="cerrarModalSacrificio()">Cancelar</button>
+    </div>
+  </div>
+</div>
+<!-- CARNET DE ENTRENADOR -->
+<div id="carnet-modal-overlay" class="overlay-modal">
+  <div class="modal-box carnet-modal-box">
+    <div class="modal-title">🪪 Carnet de Entrenador</div>
+    <div class="modal-subtitle">Datos en vivo · Descárgalo para compartirlo</div>
+    <div id="carnet-svg-wrap" class="carnet-svg-wrap"></div>
+    <div class="modal-btns" style="flex-wrap:wrap">
+      <button class="btn-modal-prim" style="background:rgba(16,185,129,.08);color:var(--neon-legal);border:1px solid rgba(16,185,129,.25)" onclick="descargarCarnetPNG()">🖼️ Descargar PNG</button>
+      <button class="btn-modal-prim" style="background:rgba(59,130,246,.08);color:var(--neon-intercambio);border:1px solid rgba(59,130,246,.25)" onclick="descargarCarnetSVG()">📥 Descargar SVG</button>
+      <button class="btn-modal-cancel" onclick="cerrarCarnetEntrenador()">Cerrar</button>
     </div>
   </div>
 </div>
@@ -3057,7 +3126,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
     if(data){baseDatos=data;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];}
     else{baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[]};set(ref(db,'silph_co_market'),baseDatos);}
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 function guardarBD(){set(ref(db,'silph_co_market'),baseDatos);}
@@ -3068,7 +3137,7 @@ window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelec
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
 window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');sec.classList.add(`zona-${tab}`);}};
 window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.evento-tab').forEach(t=>t.classList.remove('active-arena','active-camara'));document.querySelectorAll('.evento-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`etab-${tab}`),ve=document.getElementById(`ev-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);if(tab==='camara')renderizarCamaraPublica();};
-window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='tracker')renderizarTracker();if(tab==='progreso')renderizarTitulosYTemas();};
+window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='tracker')renderizarTracker();if(tab==='progreso')renderizarTitulosYTemas();if(tab==='carnet')renderizarPanelCarnet();};
 
 /* ═══ LOGIN ═══ */
 window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;sessionStorage.setItem('silph_user_sesion',id);if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[])};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.tracker)u.tracker=crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[]);}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();};
@@ -3521,6 +3590,456 @@ window.obtenerTituloActivoJugador = function(u){
   return cfg ? { icon: cfg.icon, nombre: cfg.nombre } : null;
 };
 
+/* ═══ CARNET DE ENTRENADOR (SVG) ═══ */
+var carnetTargetId = null;
+
+/* ════════════════════════════════════════
+   CARNET DE ENTRENADOR — sistema completo
+   ════════════════════════════════════════ */
+
+var CARNET_COLORES = [
+  { id:'auto',    hex:null,      label:'Auto'     },
+  { id:'indigo',  hex:'#6366f1', label:'Índigo'   },
+  { id:'cyan',    hex:'#06b6d4', label:'Cyan'     },
+  { id:'emerald', hex:'#10b981', label:'Esmeralda'},
+  { id:'rose',    hex:'#f43f5e', label:'Rosa'     },
+  { id:'amber',   hex:'#f59e0b', label:'Ámbar'    },
+  { id:'violet',  hex:'#a855f7', label:'Violeta'  },
+  { id:'slate',   hex:'#94a3b8', label:'Gris'     },
+];
+
+var CARNET_FONDOS = [
+  { id:'oscuro',   label:'Oscuro',   icon:'🌑', desc:'Clásico oscuro' },
+  { id:'midnight', label:'Midnight', icon:'🌌', desc:'Azul noche'     },
+  { id:'carbon',   label:'Carbon',   icon:'⬛', desc:'Negro mate'     },
+  { id:'aurora',   label:'Aurora',   icon:'🌈', desc:'Degradado vivo' },
+];
+
+var CARNET_LAYOUTS = [
+  { id:'clasico',    label:'Clásico',    icon:'🪪', desc:'Horizontal'  },
+  { id:'vertical',   label:'Pokémon',    icon:'📄', desc:'Vertical'    },
+  { id:'minimalista',label:'Minimalista',icon:'◻️', desc:'Sin sprites'  },
+];
+
+function _carnetColor(id, jugadorColor){
+  if(id === 'auto' || !id) return jugadorColor;
+  var c = CARNET_COLORES.find(function(x){ return x.id === id; });
+  return (c && c.hex) ? c.hex : jugadorColor;
+}
+
+function _carnetFondoParams(id){
+  switch(id){
+    case 'midnight': return { bg1:'#0d1b2a', bg2:'#050d15', accentOp:0.22 };
+    case 'carbon':   return { bg1:'#111111', bg2:'#050505', accentOp:0.18 };
+    case 'aurora':   return { bg1:'#13111c', bg2:'#0a0d18', accentOp:0.30 };
+    default:         return { bg1:'#0f1929', bg2:'#080d14', accentOp:0.18 };
+  }
+}
+
+function _pipsSVG(numMed, color, startX, spacing, r){
+  var s = '';
+  for(var i = 0; i < 8; i++){
+    var cx = startX + i * spacing;
+    var filled = i < numMed;
+    s += '<circle cx="'+cx+'" cy="0" r="'+r+'" fill="'+(filled?color:'#1a2234')+'" stroke="'+(filled?color:'#2d3f5a')+'" stroke-width="1.5" opacity="'+(filled?'1':'0.5')+'"/>';
+  }
+  return s;
+}
+
+function _mpBlock_clasico(mp, color){
+  if(mp && mp.nombre){
+    var n  = escaparHTML(mp.nombre);
+    var mo = mp.mote ? '<text x="534" y="234" text-anchor="middle" font-size="10" fill="#94a3b8" font-style="italic">&#8220;'+escaparHTML(mp.mote)+'&#8221;</text>' : '';
+    var img = mp.sprite
+      ? '<image href="'+mp.sprite+'" x="476" y="88" width="116" height="116" preserveAspectRatio="xMidYMid meet"/>'
+      : '<text x="534" y="152" text-anchor="middle" font-size="38" fill="#243146">?</text>';
+    return img+'<text x="534" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0">'+n+'</text>'+mo;
+  }
+  return '<text x="534" y="155" text-anchor="middle" font-size="36" fill="#243146">❓</text>'
+       + '<text x="534" y="215" text-anchor="middle" font-size="10" fill="#475569">Sin Pokemon asignado</text>';
+}
+
+/* ── LAYOUT CLÁSICO (640×390) ── */
+function _svgClasico(u, id, color, fondo, tit, lockeStatus){
+  var fp = _carnetFondoParams(fondo);
+  var cm = color;
+  var lockeTxt   = lockeStatus==='ganado'?'🏆 LOCKE GANADO':(lockeStatus==='perdido'?'💀 LOCKE PERDIDO':'⏳ EN CURSO');
+  var lockeColor = lockeStatus==='ganado'?'#10b981':(lockeStatus==='perdido'?'#ef4444':'#f59e0b');
+  var numMed = u.numMedallas||0;
+  var dinero = (u.dinero||0).toLocaleString('es-ES');
+  var pf     = u.pf||0;
+  var vidas  = u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20);
+  var vidasT = u.vidasTotales||20;
+  var fecha  = new Date().toLocaleDateString('es-ES');
+  var ini    = escaparHTML(id.slice(0,2).toUpperCase());
+  var mp     = u.mejorPokemon||null;
+
+  // Título: ¿tiene o no?
+  var titRow = '';
+  var nameY = 90;
+  if(tit){
+    titRow = '<rect x="118" y="98" width="206" height="20" rx="10" fill="'+cm+'22" stroke="'+cm+'55" stroke-width="1"/>'
+           + '<text x="221" y="113" text-anchor="middle" font-size="10.5" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>';
+  }
+
+  // Posiciones verticales según si hay título
+  var statusY   = tit ? 142 : 118;
+  var vidY      = tit ? 173 : 150;
+  var medY      = tit ? 210 : 187;
+  var sepY      = tit ? 236 : 213;
+  var moneyY    = tit ? 245 : 222;
+
+  return '<svg viewBox="0 0 640 390" xmlns="http://www.w3.org/2000/svg" font-family="Orbitron,Arial,sans-serif">'
+    +'<defs>'
+    +'<linearGradient id="cb0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
+    +'<linearGradient id="cb1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="'+cm+'" stop-opacity="'+fp.accentOp+'"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0.03"/></linearGradient>'
+    +'</defs>'
+    // Marco
+    +'<rect x="1" y="1" width="638" height="388" rx="20" fill="url(#cb0)" stroke="'+cm+'" stroke-width="1.5"/>'
+    +'<rect x="1" y="1" width="638" height="64" rx="20" fill="url(#cb1)"/>'
+    +'<rect x="1" y="44" width="638" height="22" fill="url(#cb1)"/>'
+    +'<line x1="1" y1="64" x2="639" y2="64" stroke="'+cm+'" stroke-opacity="0.2" stroke-width="1"/>'
+    // Header
+    +'<text x="28" y="34" font-size="14" font-weight="900" letter-spacing="2.5" fill="'+cm+'">SILPH CO.</text>'
+    +'<text x="28" y="53" font-size="9" fill="#4a5f78" letter-spacing="1.2">TRAINER CARD  ·  NUZLOCKE SYSTEM</text>'
+    +'<text x="612" y="53" text-anchor="end" font-size="9" fill="#4a5f78">'+fecha+'</text>'
+    // Avatar
+    +'<circle cx="70" cy="112" r="34" fill="'+cm+'20" stroke="'+cm+'" stroke-width="2"/>'
+    +'<text x="70" y="120" text-anchor="middle" font-size="21" font-weight="900" fill="'+cm+'">'+ini+'</text>'
+    // Nombre + título + estado
+    +'<text x="117" y="'+nameY+'" font-size="21" font-weight="900" fill="#f1f5f9" letter-spacing="0.5">'+escaparHTML(id.toUpperCase())+'</text>'
+    + titRow
+    +'<rect x="117" y="'+(statusY-13)+'" width="180" height="19" rx="9.5" fill="'+lockeColor+'22" stroke="'+lockeColor+'" stroke-width="1"/>'
+    +'<text x="207" y="'+statusY+'" text-anchor="middle" font-size="9" font-weight="700" fill="'+lockeColor+'">'+lockeTxt+'</text>'
+    // ── Vidas (fila independiente)
+    +'<text x="28" y="'+(vidY-14)+'" font-size="8.5" fill="#4a5f78" letter-spacing="1">VIDAS</text>'
+    +'<text x="28" y="'+vidY+'" font-size="18" font-weight="900" fill="#f87171">❤ '+vidas+' / '+vidasT+'</text>'
+    // ── Medallas (fila independiente, siempre bajo las vidas)
+    +'<text x="28" y="'+(medY-14)+'" font-size="8.5" fill="#4a5f78" letter-spacing="1">MEDALLAS  '+numMed+'/8</text>'
+    +'<g transform="translate(0,'+(medY)+')">'+_pipsSVG(numMed,cm,28,24,6.5)+'</g>'
+    // Separador
+    +'<line x1="18" y1="'+sepY+'" x2="440" y2="'+sepY+'" stroke="#1e2e45" stroke-width="1"/>'
+    // ── Dinero
+    +'<rect x="18" y="'+(moneyY)+'" width="190" height="70" rx="12" fill="rgba(16,185,129,0.07)" stroke="rgba(16,185,129,0.22)" stroke-width="1"/>'
+    +'<text x="32" y="'+(moneyY+17)+'" font-size="8.5" fill="#4a5f78" letter-spacing="1">POKEDOLARES</text>'
+    +'<text x="32" y="'+(moneyY+50)+'" font-size="22" font-weight="900" fill="#10b981">'+dinero+' P&#8360;</text>'
+    // ── PF
+    +'<rect x="218" y="'+(moneyY)+'" width="190" height="70" rx="12" fill="rgba(168,85,247,0.07)" stroke="rgba(168,85,247,0.22)" stroke-width="1"/>'
+    +'<text x="232" y="'+(moneyY+17)+'" font-size="8.5" fill="#4a5f78" letter-spacing="1">PUNTOS DE FAVOR</text>'
+    +'<text x="232" y="'+(moneyY+50)+'" font-size="22" font-weight="900" fill="#a855f7">'+pf+' PF</text>'
+    // ── Pokémon (columna derecha)
+    +'<rect x="450" y="68" width="172" height="288" rx="14" fill="#05070c" stroke="'+cm+'44" stroke-width="1.5"/>'
+    +'<text x="536" y="87" text-anchor="middle" font-size="8.5" fill="#4a5f78" letter-spacing="1">MEJOR POKEMON</text>'
+    +_mpBlock_clasico(mp, cm)
+    +'</svg>';
+}
+
+/* ── LAYOUT VERTICAL (380×520) ── */
+function _svgVertical(u, id, color, fondo, tit, lockeStatus){
+  var fp = _carnetFondoParams(fondo);
+  var cm = color;
+  var lockeTxt   = lockeStatus==='ganado'?'🏆 GANADO':(lockeStatus==='perdido'?'💀 PERDIDO':'⏳ EN CURSO');
+  var lockeColor = lockeStatus==='ganado'?'#10b981':(lockeStatus==='perdido'?'#ef4444':'#f59e0b');
+  var numMed = u.numMedallas||0;
+  var dinero = (u.dinero||0).toLocaleString('es-ES');
+  var pf     = u.pf||0;
+  var vidas  = u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20);
+  var vidasT = u.vidasTotales||20;
+  var fecha  = new Date().toLocaleDateString('es-ES');
+  var ini    = escaparHTML(id.slice(0,2).toUpperCase());
+  var mp     = u.mejorPokemon||null;
+
+  var mpImg = (mp && mp.sprite)
+    ? '<image href="'+mp.sprite+'" x="130" y="140" width="120" height="120" preserveAspectRatio="xMidYMid meet"/>'
+    : '<text x="190" y="210" text-anchor="middle" font-size="48" fill="#243146">❓</text>';
+  var mpNombre = (mp && mp.nombre)
+    ? '<text x="190" y="272" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0">'+escaparHTML(mp.nombre)+'</text>'
+    : '<text x="190" y="272" text-anchor="middle" font-size="10" fill="#475569">Sin Pokemon asignado</text>';
+  var mpMote = (mp && mp.mote)
+    ? '<text x="190" y="288" text-anchor="middle" font-size="10" fill="#94a3b8" font-style="italic">&#8220;'+escaparHTML(mp.mote)+'&#8221;</text>'
+    : '';
+  var titRow = tit
+    ? '<rect x="115" y="126" width="150" height="18" rx="9" fill="'+cm+'22" stroke="'+cm+'55" stroke-width="1"/><text x="190" y="139" text-anchor="middle" font-size="10" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>'
+    : '';
+
+  return '<svg viewBox="0 0 380 520" xmlns="http://www.w3.org/2000/svg" font-family="Orbitron,Arial,sans-serif">'
+    +'<defs>'
+    +'<linearGradient id="cv0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
+    +'<linearGradient id="cv1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+cm+'" stop-opacity="'+fp.accentOp+'"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0.02"/></linearGradient>'
+    +'</defs>'
+    +'<rect x="1" y="1" width="378" height="518" rx="20" fill="url(#cv0)" stroke="'+cm+'" stroke-width="1.5"/>'
+    +'<rect x="1" y="1" width="378" height="72" rx="20" fill="url(#cv1)"/>'
+    +'<line x1="1" y1="72" x2="379" y2="72" stroke="'+cm+'" stroke-opacity="0.2" stroke-width="1"/>'
+    // Header
+    +'<text x="190" y="34" text-anchor="middle" font-size="13" font-weight="900" letter-spacing="2" fill="'+cm+'">SILPH CO.</text>'
+    +'<text x="190" y="52" text-anchor="middle" font-size="8.5" fill="#4a5f78" letter-spacing="1">TRAINER CARD  ·  NUZLOCKE</text>'
+    // Avatar + nombre centrados
+    +'<circle cx="190" cy="106" r="28" fill="'+cm+'20" stroke="'+cm+'" stroke-width="2"/>'
+    +'<text x="190" y="114" text-anchor="middle" font-size="18" font-weight="900" fill="'+cm+'">'+ini+'</text>'
+    +'<text x="190" y="127" text-anchor="middle" font-size="14" font-weight="900" fill="#f1f5f9">'+escaparHTML(id.toUpperCase())+'</text>'
+    + titRow
+    // Estado
+    +'<rect x="130" y="'+(tit?148:130)+'" width="120" height="16" rx="8" fill="'+lockeColor+'22" stroke="'+lockeColor+'" stroke-width="1"/>'
+    +'<text x="190" y="'+(tit?160:142)+'" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+lockeColor+'">'+lockeTxt+'</text>'
+    // Pokémon centrado
+    +'<rect x="120" y="172" width="140" height="128" rx="12" fill="#05070c" stroke="'+cm+'44" stroke-width="1.5"/>'
+    +'<text x="190" y="166" text-anchor="middle" font-size="8" fill="#4a5f78" letter-spacing="1">MEJOR POKEMON</text>'
+    + mpImg + mpNombre + mpMote
+    // Separador
+    +'<line x1="20" y1="308" x2="360" y2="308" stroke="#1e2e45" stroke-width="1"/>'
+    // Stats en 2 columnas
+    +'<text x="28" y="330" font-size="8.5" fill="#4a5f78" letter-spacing="1">VIDAS</text>'
+    +'<text x="28" y="352" font-size="16" font-weight="900" fill="#f87171">❤ '+vidas+'/'+vidasT+'</text>'
+    +'<text x="200" y="330" font-size="8.5" fill="#4a5f78" letter-spacing="1">MEDALLAS</text>'
+    +'<g transform="translate(0,348)">'+_pipsSVG(numMed,cm,200,18,5.5)+'</g>'
+    // Dinero
+    +'<rect x="18" y="370" width="162" height="62" rx="10" fill="rgba(16,185,129,0.07)" stroke="rgba(16,185,129,0.22)" stroke-width="1"/>'
+    +'<text x="30" y="386" font-size="8" fill="#4a5f78" letter-spacing="1">POKEDOLARES</text>'
+    +'<text x="30" y="416" font-size="19" font-weight="900" fill="#10b981">'+dinero+'</text>'
+    // PF
+    +'<rect x="200" y="370" width="162" height="62" rx="10" fill="rgba(168,85,247,0.07)" stroke="rgba(168,85,247,0.22)" stroke-width="1"/>'
+    +'<text x="212" y="386" font-size="8" fill="#4a5f78" letter-spacing="1">PTS. FAVOR</text>'
+    +'<text x="212" y="416" font-size="19" font-weight="900" fill="#a855f7">'+pf+' PF</text>'
+    // Fecha
+    +'<text x="190" y="500" text-anchor="middle" font-size="8" fill="#2d3f5a">'+fecha+'</text>'
+    +'</svg>';
+}
+
+/* ── LAYOUT MINIMALISTA (640×220) ── */
+function _svgMinimalista(u, id, color, fondo, tit, lockeStatus){
+  var fp = _carnetFondoParams(fondo);
+  var cm = color;
+  var lockeTxt   = lockeStatus==='ganado'?'🏆 GANADO':(lockeStatus==='perdido'?'💀 PERDIDO':'⏳ EN CURSO');
+  var lockeColor = lockeStatus==='ganado'?'#10b981':(lockeStatus==='perdido'?'#ef4444':'#f59e0b');
+  var numMed = u.numMedallas||0;
+  var dinero = (u.dinero||0).toLocaleString('es-ES');
+  var pf     = u.pf||0;
+  var vidas  = u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20);
+  var vidasT = u.vidasTotales||20;
+  var fecha  = new Date().toLocaleDateString('es-ES');
+  var ini    = escaparHTML(id.slice(0,2).toUpperCase());
+
+  var titRow = tit
+    ? '<rect x="118" y="82" width="190" height="18" rx="9" fill="'+cm+'22" stroke="'+cm+'55" stroke-width="1"/>'
+     +'<text x="213" y="95" text-anchor="middle" font-size="10" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>'
+    : '';
+  var statusTop = tit ? 108 : 86;
+
+  return '<svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" font-family="Orbitron,Arial,sans-serif">'
+    +'<defs>'
+    +'<linearGradient id="cm0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
+    +'</defs>'
+    +'<rect x="1" y="1" width="638" height="218" rx="16" fill="url(#cm0)" stroke="'+cm+'" stroke-width="1.5"/>'
+    +'<rect x="1" y="1" width="8" height="218" rx="4" fill="'+cm+'"/>'
+    // Nombre e iniciales
+    +'<circle cx="50" cy="76" r="26" fill="'+cm+'20" stroke="'+cm+'" stroke-width="2"/>'
+    +'<text x="50" y="83" text-anchor="middle" font-size="16" font-weight="900" fill="'+cm+'">'+ini+'</text>'
+    +'<text x="95" y="72" font-size="20" font-weight="900" fill="#f1f5f9">'+escaparHTML(id.toUpperCase())+'</text>'
+    + titRow
+    +'<rect x="94" y="'+(statusTop-12)+'" width="164" height="16" rx="8" fill="'+lockeColor+'22" stroke="'+lockeColor+'" stroke-width="1"/>'
+    +'<text x="176" y="'+statusTop+'" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+lockeColor+'">'+lockeTxt+'</text>'
+    // Stats en fila horizontal
+    +'<line x1="18" y1="130" x2="622" y2="130" stroke="#1e2e45" stroke-width="1"/>'
+    // Vidas
+    +'<text x="28" y="150" font-size="8" fill="#4a5f78" letter-spacing="1">VIDAS</text>'
+    +'<text x="28" y="170" font-size="16" font-weight="900" fill="#f87171">❤ '+vidas+'/'+vidasT+'</text>'
+    // Medallas
+    +'<text x="140" y="150" font-size="8" fill="#4a5f78" letter-spacing="1">MEDALLAS  '+numMed+'/8</text>'
+    +'<g transform="translate(0,164)">'+_pipsSVG(numMed,cm,140,22,6)+'</g>'
+    // Dinero
+    +'<text x="360" y="150" font-size="8" fill="#4a5f78" letter-spacing="1">POKEDOLARES</text>'
+    +'<text x="360" y="170" font-size="16" font-weight="900" fill="#10b981">'+dinero+' P&#8360;</text>'
+    // PF
+    +'<text x="510" y="150" font-size="8" fill="#4a5f78" letter-spacing="1">PTS. FAVOR</text>'
+    +'<text x="510" y="170" font-size="16" font-weight="900" fill="#a855f7">'+pf+' PF</text>'
+    // Fecha
+    +'<text x="28" y="205" font-size="8" fill="#2d3f5a">'+fecha+'</text>'
+    +'<text x="612" y="205" text-anchor="end" font-size="8" fill="#2d3f5a">SILPH CO.</text>'
+    +'</svg>';
+}
+
+function generarCarnetSVGMarkup(id){
+  var u  = (baseDatos.jugadores && baseDatos.jugadores[id]) || {};
+  var cfg = u.carnetConfig || {};
+  var jugadorColor = colorParaJugador(id);
+  var color  = _carnetColor(cfg.color||'auto', jugadorColor);
+  var fondo  = cfg.fondo  || 'oscuro';
+  var layout = cfg.layout || 'clasico';
+  var tit    = obtenerTituloActivoJugador(u);
+  var lockeStatus = u.lockeStatus || 'jugando';
+
+  if(layout === 'vertical')    return _svgVertical(u, id, color, fondo, tit, lockeStatus);
+  if(layout === 'minimalista') return _svgMinimalista(u, id, color, fondo, tit, lockeStatus);
+  return _svgClasico(u, id, color, fondo, tit, lockeStatus);
+}
+
+/* ── PANEL DE PERSONALIZACIÓN ── */
+window.renderizarPanelCarnet = function(){
+  if(!userSesion || !baseDatos.jugadores[userSesion]) return;
+  var u   = baseDatos.jugadores[userSesion];
+  var cfg = u.carnetConfig || {};
+  var colorActivo  = cfg.color  || 'auto';
+  var fondoActivo  = cfg.fondo  || 'oscuro';
+  var layoutActivo = cfg.layout || 'clasico';
+
+  // Preview
+  var preview = document.getElementById('carnet-perfil-preview');
+  if(preview) preview.innerHTML = generarCarnetSVGMarkup(userSesion);
+
+  // Color swatches
+  var cpEl = document.getElementById('carnet-color-picker');
+  if(cpEl){
+    var jugadorColor = colorParaJugador(userSesion);
+    cpEl.innerHTML = CARNET_COLORES.map(function(c){
+      var hex    = c.id === 'auto' ? jugadorColor : c.hex;
+      var activo = colorActivo === c.id ? ' activo' : '';
+      var bcolor = activo ? '#fff' : hex+'66';
+      return '<div style="display:flex;flex-direction:column;align-items:center;gap:4px">'
+           + '<div class="carnet-color-swatch'+activo+'" data-campo="color" data-valor="'+c.id+'" style="background:'+hex+';border-color:'+bcolor+';" title="'+c.label+'"></div>'
+           + '<span style="font-size:9px;font-family:var(--font-display);color:var(--txt-muted)">'+c.label+'</span>'
+           + '</div>';
+    }).join('');
+    cpEl.querySelectorAll('[data-campo]').forEach(function(el){
+      el.addEventListener('click', function(){ carnetSetConfig(this.dataset.campo, this.dataset.valor); });
+    });
+  }
+
+  // Fondos
+  var fpEl = document.getElementById('carnet-fondo-picker');
+  if(fpEl){
+    fpEl.innerHTML = CARNET_FONDOS.map(function(f){
+      var activo = fondoActivo === f.id ? ' activo' : '';
+      return '<div class="carnet-fondo-opt'+activo+'" data-campo="fondo" data-valor="'+f.id+'">'
+           + '<span class="cf-icon">'+f.icon+'</span>'
+           + '<span class="cf-label">'+f.label+'</span>'
+           + '</div>';
+    }).join('');
+    fpEl.querySelectorAll('[data-campo]').forEach(function(el){
+      el.addEventListener('click', function(){ carnetSetConfig(this.dataset.campo, this.dataset.valor); });
+    });
+  }
+
+  // Layouts
+  var lpEl = document.getElementById('carnet-layout-picker');
+  if(lpEl){
+    lpEl.innerHTML = CARNET_LAYOUTS.map(function(l){
+      var activo = layoutActivo === l.id ? ' activo' : '';
+      return '<div class="carnet-layout-opt'+activo+'" data-campo="layout" data-valor="'+l.id+'">'
+           + '<span class="cl-icon">'+l.icon+'</span>'
+           + '<span class="cl-label">'+l.label+'</span>'
+           + '<div style="font-size:9px;color:var(--txt-muted);margin-top:3px">'+l.desc+'</div>'
+           + '</div>';
+    }).join('');
+    lpEl.querySelectorAll('[data-campo]').forEach(function(el){
+      el.addEventListener('click', function(){ carnetSetConfig(this.dataset.campo, this.dataset.valor); });
+    });
+  }
+};
+
+window.carnetSetConfig = function(campo, valor){
+  if(!userSesion || !baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  if(!u.carnetConfig) u.carnetConfig = {};
+  u.carnetConfig[campo] = valor;
+  guardarBD();
+  renderizarPanelCarnet();
+};
+window.abrirCarnetEntrenador = function(id){
+  if(!id || !baseDatos.jugadores || !baseDatos.jugadores[id]){ mostrarNotificacion("Entrenador no encontrado.","error","🪪"); return; }
+  carnetTargetId = id;
+  var wrap = document.getElementById('carnet-svg-wrap');
+  if(wrap) wrap.innerHTML = generarCarnetSVGMarkup(id);
+  reproducirSonido('abrir');
+  document.getElementById('carnet-modal-overlay').style.display = 'flex';
+};
+
+window.abrirMiCarnetEntrenador = function(){
+  if(!userSesion){ mostrarNotificacion("Inicia sesión primero.","error","🪪"); return; }
+  abrirCarnetEntrenador(userSesion);
+};
+
+window.refrescarCarnetEntrenador = function(){
+  if(!carnetTargetId) return;
+  var overlay = document.getElementById('carnet-modal-overlay');
+  if(overlay && overlay.style.display === 'flex'){
+    if(!baseDatos.jugadores || !baseDatos.jugadores[carnetTargetId]) return;
+    var wrap = document.getElementById('carnet-svg-wrap');
+    if(wrap) wrap.innerHTML = generarCarnetSVGMarkup(carnetTargetId);
+  }
+  // Refrescar también el preview en la pestaña del perfil si está activa
+  var preview = document.getElementById('carnet-perfil-preview');
+  if(preview && preview.innerHTML && userSesion){
+    preview.innerHTML = generarCarnetSVGMarkup(userSesion);
+  }
+};
+
+window.cerrarCarnetEntrenador = function(){
+  reproducirSonido('cerrar');
+  document.getElementById('carnet-modal-overlay').style.display = 'none';
+  carnetTargetId = null;
+};
+
+window.descargarCarnetSVG = function(){
+  var wrap = document.getElementById('carnet-svg-wrap');
+  var svgEl = wrap ? wrap.querySelector('svg') : null;
+  if(!svgEl){ mostrarNotificacion("No hay carnet para descargar.","error","🪪"); return; }
+  var xml = new XMLSerializer().serializeToString(svgEl);
+  if(!xml.match(/^<svg[^>]+xmlns=/)) xml = xml.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+  var blob = new Blob([xml], {type: 'image/svg+xml;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'carnet_' + (carnetTargetId||'entrenador') + '.svg';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+  mostrarNotificacion("Carnet SVG descargado.","exito","📥");
+};
+
+window.descargarCarnetPNG = function(){
+  var wrap = document.getElementById('carnet-svg-wrap');
+  var svgEl = wrap ? wrap.querySelector('svg') : null;
+  if(!svgEl){ mostrarNotificacion("No hay carnet para descargar.","error","🪪"); return; }
+  var xml = new XMLSerializer().serializeToString(svgEl);
+  if(!xml.match(/^<svg[^>]+xmlns=/)) xml = xml.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+  var svgBlob = new Blob([xml], {type: 'image/svg+xml;charset=utf-8'});
+  var url = URL.createObjectURL(svgBlob);
+  var img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function(){
+    try{
+      var scale = 2;
+      var canvas = document.createElement('canvas');
+      canvas.width = 640*scale;
+      canvas.height = 380*scale;
+      var ctx = canvas.getContext('2d');
+      ctx.scale(scale, scale);
+      ctx.drawImage(img, 0, 0, 640, 380);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(function(pngBlob){
+        if(!pngBlob){ mostrarNotificacion("No se pudo generar el PNG. Prueba a descargar el SVG.","error","🖼️"); return; }
+        var purl = URL.createObjectURL(pngBlob);
+        var a = document.createElement('a');
+        a.href = purl;
+        a.download = 'carnet_' + (carnetTargetId||'entrenador') + '.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(()=>URL.revokeObjectURL(purl), 2000);
+        mostrarNotificacion("Carnet PNG descargado.","exito","🖼️");
+      }, 'image/png');
+    }catch(e){
+      mostrarNotificacion("No se pudo exportar a PNG (imagen bloqueada). Prueba a descargar el SVG.","error","🖼️");
+    }
+  };
+  img.onerror = function(){
+    URL.revokeObjectURL(url);
+    mostrarNotificacion("No se pudo exportar a PNG. Prueba a descargar el SVG.","error","🖼️");
+  };
+  img.src = url;
+};
+
 window.renderizarTitulosYTemas = function(){
   if(!userSesion || !baseDatos.jugadores[userSesion]) return;
   var u = baseDatos.jugadores[userSesion];
@@ -3667,7 +4186,7 @@ window.reclamarHackeoDiario=function(){let u=baseDatos.jugadores[userSesion],aho
 
 /* ═══ RED ENTRENADORES ═══ */
 window.seleccionarRivalDesdeTarjeta=function(id){const sel=document.getElementById('red-select-jugador');if(sel){sel.value=id;if(sel.__cselRefrescar)sel.__cselRefrescar();}renderizarVisorRivalPublico();};
-window.renderizarVisorRivalPublico=function(){let sel=document.getElementById('red-select-jugador'),target=sel?sel.value:'',box=document.getElementById('red-visor-dinamico');if(!box)return;box.innerHTML='';if(!target||!baseDatos.jugadores[target]){box.className='red-visor-grid red-visor-vacio';let ids=Object.keys(baseDatos.jugadores).filter(id=>id!==userSesion&&baseDatos.jugadores[id]);if(!ids.length){box.innerHTML='<div class="red-empty-state">📡 Todavía no hay otros entrenadores registrados en la red.</div>';return;}box.innerHTML='<div class="red-roster-grid">'+ids.map(id=>{let r=baseDatos.jugadores[id],color=colorParaJugador(id),tit=obtenerTituloActivoJugador(r),titH=tit?`<div class="red-roster-titulo">${tit.icon} ${escaparHTML(tit.nombre)}</div>`:'';return `<div class="red-roster-card" style="border-left-color:${color}" onclick="seleccionarRivalDesdeTarjeta('${id}')"><div class="red-roster-avatar" style="background:${color}22;color:${color};border-color:${color}66">${escaparHTML(id.slice(0,2).toUpperCase())}</div><div class="red-roster-info"><div class="red-roster-nombre" style="color:${color}">${escaparHTML(id.toUpperCase())}</div>${titH}<div class="red-roster-meta">🏅 ${r.numMedallas||0}/8 · ❤️ ${r.vidasActuales??r.vidasTotales??20} · 🔮 ${r.pf||0} PF</div></div></div>`;}).join('')+'</div>';return;}box.className='red-visor-grid';reproducirSonido('escaneo');let r=baseDatos.jugadores[target],stxt=r.lockeStatus==='ganado'?'🏆 GANADO':(r.lockeStatus==='perdido'?'💀 PERDIDO':'⏳ EN CURSO'),ts=r.sacrificios?r.sacrificios.length:0,titRival=obtenerTituloActivoJugador(r),titRivalH=titRival?`<div class="titulo-activo-display" style="display:block;margin-bottom:12px">${titRival.icon} ${escaparHTML(titRival.nombre)}</div>`:'';let hP=`<div class="rival-perfil-card"><div class="rival-nombre">${escaparHTML(target.toUpperCase())}</div>${titRivalH}<div class="rival-stat-row"><span class="rival-stat-label">Reputación</span><span class="rival-stat-value" style="color:var(--neon-ilegal)">${r.pf||0} PF</span></div><div class="rival-stat-row"><span class="rival-stat-label">Vidas</span><span class="rival-stat-value" style="color:#f87171">❤️ ${r.vidasActuales||0}/${r.vidasTotales||20}</span></div><div class="rival-stat-row"><span class="rival-stat-label">Desafío</span><span class="rival-stat-value">${stxt}</span></div><div class="rival-stat-row"><span class="rival-stat-label">Medallas</span><span class="rival-stat-value" style="color:var(--neon-legal)">${r.numMedallas||0}/8</span></div><div class="rival-stat-row"><span class="rival-stat-label">Torneos</span><span class="rival-stat-value">${r.torneos||0}</span></div><div class="rival-stat-row"><span class="rival-stat-label">🔥 Sacrificados</span><span class="rival-stat-value" style="color:var(--neon-sacrificio)">${ts}</span></div></div>`;let dH='';if(r.cementerio&&r.cementerio.length>0){dH=`<div class="rival-cementerio-section"><div class="rival-cem-label">💀 Cementerio</div><div class="rival-dead-grid">`;r.cementerio.forEach(b=>{dH+=`<div class="rival-dead-card"><div class="rival-dead-name">💀 ${escaparHTML(b.nombre)}</div><div class="rival-dead-meta">Caído en: ${escaparHTML(b.ruta)}</div><div class="rival-dead-meta">Fecha: ${escaparHTML(b.fecha)}</div><div class="rival-dead-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`;});dH+=`</div></div>`;}let sH='';if(r.sacrificios&&r.sacrificios.length>0){sH=`<div style="margin-top:14px;border-top:1px solid rgba(249,115,22,.15);padding-top:12px"><div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--neon-sacrificio);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">🔥 Sacrificios</div>`;[...r.sacrificios].reverse().slice(0,5).forEach(s=>{sH+=`<div style="background:rgba(249,115,22,.03);border:1px solid rgba(249,115,22,.1);border-left:3px solid var(--neon-sacrificio);padding:7px 10px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:5px;font-size:11px"><span style="color:var(--neon-sacrificio);font-weight:700">${escaparHTML(s.nombre)}</span> <span style="color:var(--txt-muted)">[${escaparHTML(s.categoria)}]</span> <span style="color:var(--neon-sacrificio);font-weight:700;float:right">+${s.vidasObtenidas}❤️</span></div>`;});sH+=`</div>`;}box.innerHTML=hP+`<div class='rival-equipo-area'>${dH}${sH}</div>`;};
+window.renderizarVisorRivalPublico=function(){let sel=document.getElementById('red-select-jugador'),target=sel?sel.value:'',box=document.getElementById('red-visor-dinamico');if(!box)return;box.innerHTML='';if(!target||!baseDatos.jugadores[target]){box.className='red-visor-grid red-visor-vacio';let ids=Object.keys(baseDatos.jugadores).filter(id=>id!==userSesion&&baseDatos.jugadores[id]);if(!ids.length){box.innerHTML='<div class="red-empty-state">📡 Todavía no hay otros entrenadores registrados en la red.</div>';return;}box.innerHTML='<div class="red-roster-grid">'+ids.map(id=>{let r=baseDatos.jugadores[id],color=colorParaJugador(id),tit=obtenerTituloActivoJugador(r),titH=tit?`<div class="red-roster-titulo">${tit.icon} ${escaparHTML(tit.nombre)}</div>`:'';return `<div class="red-roster-card" style="border-left-color:${color}" onclick="seleccionarRivalDesdeTarjeta('${id}')"><div class="red-roster-avatar" style="background:${color}22;color:${color};border-color:${color}66">${escaparHTML(id.slice(0,2).toUpperCase())}</div><div class="red-roster-info"><div class="red-roster-nombre" style="color:${color}">${escaparHTML(id.toUpperCase())}</div>${titH}<div class="red-roster-meta">🏅 ${r.numMedallas||0}/8 · ❤️ ${r.vidasActuales??r.vidasTotales??20} · 🔮 ${r.pf||0} PF</div></div></div>`;}).join('')+'</div>';return;}box.className='red-visor-grid';reproducirSonido('escaneo');let r=baseDatos.jugadores[target],stxt=r.lockeStatus==='ganado'?'🏆 GANADO':(r.lockeStatus==='perdido'?'💀 PERDIDO':'⏳ EN CURSO'),ts=r.sacrificios?r.sacrificios.length:0,titRival=obtenerTituloActivoJugador(r),titRivalH=titRival?`<div class="titulo-activo-display" style="display:block;margin-bottom:12px">${titRival.icon} ${escaparHTML(titRival.nombre)}</div>`:'';let hP=`<div class="rival-perfil-card"><div class="rival-nombre">${escaparHTML(target.toUpperCase())}</div>${titRivalH}<div class="rival-stat-row"><span class="rival-stat-label">Reputación</span><span class="rival-stat-value" style="color:var(--neon-ilegal)">${r.pf||0} PF</span></div><div class="rival-stat-row"><span class="rival-stat-label">Vidas</span><span class="rival-stat-value" style="color:#f87171">❤️ ${r.vidasActuales||0}/${r.vidasTotales||20}</span></div><div class="rival-stat-row"><span class="rival-stat-label">Desafío</span><span class="rival-stat-value">${stxt}</span></div><div class="rival-stat-row"><span class="rival-stat-label">Medallas</span><span class="rival-stat-value" style="color:var(--neon-legal)">${r.numMedallas||0}/8</span></div><div class="rival-stat-row"><span class="rival-stat-label">Torneos</span><span class="rival-stat-value">${r.torneos||0}</span></div><div class="rival-stat-row"><span class="rival-stat-label">🔥 Sacrificados</span><span class="rival-stat-value" style="color:var(--neon-sacrificio)">${ts}</span></div><button class="btn-carnet-trigger" style="width:100%;justify-content:center;margin-top:12px" onclick="abrirCarnetEntrenador('${target}')">🪪 Ver Carnet de Entrenador</button></div>`;let dH='';if(r.cementerio&&r.cementerio.length>0){dH=`<div class="rival-cementerio-section"><div class="rival-cem-label">💀 Cementerio</div><div class="rival-dead-grid">`;r.cementerio.forEach(b=>{dH+=`<div class="rival-dead-card"><div class="rival-dead-name">💀 ${escaparHTML(b.nombre)}</div><div class="rival-dead-meta">Caído en: ${escaparHTML(b.ruta)}</div><div class="rival-dead-meta">Fecha: ${escaparHTML(b.fecha)}</div><div class="rival-dead-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`;});dH+=`</div></div>`;}let sH='';if(r.sacrificios&&r.sacrificios.length>0){sH=`<div style="margin-top:14px;border-top:1px solid rgba(249,115,22,.15);padding-top:12px"><div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--neon-sacrificio);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">🔥 Sacrificios</div>`;[...r.sacrificios].reverse().slice(0,5).forEach(s=>{sH+=`<div style="background:rgba(249,115,22,.03);border:1px solid rgba(249,115,22,.1);border-left:3px solid var(--neon-sacrificio);padding:7px 10px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:5px;font-size:11px"><span style="color:var(--neon-sacrificio);font-weight:700">${escaparHTML(s.nombre)}</span> <span style="color:var(--txt-muted)">[${escaparHTML(s.categoria)}]</span> <span style="color:var(--neon-sacrificio);font-weight:700;float:right">+${s.vidasObtenidas}❤️</span></div>`;});sH+=`</div>`;}box.innerHTML=hP+`<div class='rival-equipo-area'>${dH}${sH}</div>`;};
 
 function limpiarNombreURL(l){return l.split('@')[0].trim().replace(/\(.*?\)/g,'').trim().toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9\-]/g,'');}
 
