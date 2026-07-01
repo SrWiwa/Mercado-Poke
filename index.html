@@ -4576,14 +4576,14 @@ window.pvpCancelarDuelo = function(){
 };
 
 /* ── Resetear ELO ── */
-window.pvpResetearElo = function(){
-  mostrarInfo({icono:'🗑️',titulo:'Resetear PvP',descripcion:'¿Borrar todo el historial y ELO del locke actual? Esta acción es irreversible.',tipo:'peligro',textoConfirmar:'Sí, resetear',textoCancelar:'Cancelar',onConfirm:function(){
-    baseDatos.pvp = { duelos:[], elo:{} };
-    logAdmin('Resetear ELO PvP','');
-    mostrarNotificacion('Historial PvP reseteado.','exito','🗑️');
-    pvpActualizarAdminPanel();
-    renderizarDuelosPvP();
-  }});
+window.pvpResetearElo = async function(){
+  let cf = await mostrarConfirmacion({icono:'🗑️',titulo:'Resetear PvP',descripcion:'¿Borrar todo el historial y ELO del locke actual? Esta acción es irreversible.',tipo:'peligro',textoConfirmar:'Sí, resetear',textoCancelar:'Cancelar',sonidoConfirmar:'error'});
+  if(!cf) return;
+  baseDatos.pvp = { duelos:[], elo:{} };
+  logAdmin('Resetear ELO PvP','');
+  mostrarNotificacion('Historial PvP reseteado.','exito','🗑️');
+  pvpActualizarAdminPanel();
+  renderizarDuelosPvP();
 };
 
 /* ── Panel admin: info duelo activo ── */
