@@ -364,7 +364,29 @@ body.tema-campeon{
 #section-tiendas::after{position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
 #section-perfil{position:relative}
 #section-perfil::after{content:'👤';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
-#section-hall-of-fame{position:relative}
+#section-duelos{position:relative}
+#section-duelos::after{content:'🥊';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
+.pvp-duelo-activo-card{background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(59,130,246,.05));border:1px solid rgba(139,92,246,.3);border-radius:var(--r-xl);padding:20px 22px;position:relative;overflow:hidden}
+.pvp-duelo-activo-card::after{content:'⚔️';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:56px;opacity:.06;pointer-events:none}
+.pvp-vs-row{display:flex;align-items:center;justify-content:center;gap:16px;margin:14px 0}
+.pvp-jugador-box{flex:1;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:14px 16px;text-align:center;max-width:200px}
+.pvp-jugador-nombre{font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco);margin-bottom:4px}
+.pvp-jugador-poke{font-size:10px;color:var(--txt-secondary)}
+.pvp-jugador-elo{font-family:var(--font-display);font-size:11px;color:var(--neon-packs);margin-top:4px}
+.pvp-vs-badge{font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--neon-arena);flex-shrink:0}
+.pvp-ranking-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);transition:border-color .15s}
+.pvp-ranking-row:hover{border-color:var(--borde-hover)}
+.pvp-ranking-pos{font-family:var(--font-display);font-size:14px;font-weight:900;min-width:28px;color:var(--txt-muted)}
+.pvp-ranking-pos.oro{color:#f59e0b}.pvp-ranking-pos.plata{color:#94a3b8}.pvp-ranking-pos.bronce{color:#cd7f32}
+.pvp-ranking-nombre{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--blanco);flex:1}
+.pvp-ranking-elo{font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--neon-packs)}
+.pvp-ranking-stats{font-size:10px;color:var(--txt-muted)}
+.pvp-historial-card{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-card);border:1px solid var(--borde);border-left:3px solid var(--borde);border-radius:var(--r-md)}
+.pvp-historial-card.victoria-a{border-left-color:#22c55e}
+.pvp-historial-card.victoria-b{border-left-color:#3b82f6}
+.pvp-historial-ganador{font-family:var(--font-display);font-size:11px;font-weight:700;flex:1}
+.pvp-historial-meta{font-size:10px;color:var(--txt-muted)}
+.pvp-racha{font-size:10px;color:#f59e0b;font-family:var(--font-display)}
 #section-hall-of-fame::after{content:'🏆';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
 
 /* ── HERO STRIP LOCKE ACTIVO ── */
@@ -507,6 +529,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-calculadora" onclick="navegarA('calculadora')"><span class="nav-icon">🧮</span> Calculadora de Tipos</div>
       <div class="nav-section-label">Actividad</div>
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span> Eventos</div>
+      <div class="nav-item" id="nav-duelos" onclick="navegarA('duelos')"><span class="nav-icon">🥊</span> Duelos PvP</div>
       <div class="nav-section-label">Personal</div>
       <div class="nav-item" id="nav-perfil" onclick="navegarA('perfil')"><span class="nav-icon">👤</span> Perfil</div>
       <div class="nav-item" id="nav-hall-of-fame" onclick="navegarA('hall-of-fame')"><span class="nav-icon">✨</span> Hall of Fame</div>
@@ -869,6 +892,31 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
       </div>
     </section>
+    <!-- DUELOS PvP -->
+    <section id="section-duelos" class="page-section">
+      <div class="hero-strip">
+        <div class="section-title">🥊 Duelos PvP</div>
+        <div class="section-subtitle">Combates uno a uno arbitrados por el Admin</div>
+      </div>
+
+      <!-- Duelo activo -->
+      <div id="pvp-duelo-activo" style="display:none;margin-bottom:16px"></div>
+
+      <!-- Ranking ELO -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">🏆 Ranking ELO</div>
+        <div id="pvp-ranking" style="display:flex;flex-direction:column;gap:6px"></div>
+        <div id="pvp-ranking-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:12px 0">Sin datos ELO todavía.</div>
+      </div>
+
+      <!-- Historial -->
+      <div class="card">
+        <div class="card-title">📋 Historial de Duelos</div>
+        <div id="pvp-historial" style="display:flex;flex-direction:column;gap:8px"></div>
+        <div id="pvp-historial-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:16px 0">Aún no se ha disputado ningún duelo.</div>
+      </div>
+    </section>
+
     <!-- HALL OF FAME -->
     <section id="section-hall-of-fame" class="page-section">
       <div class="section-header"><div class="section-title">✨ Hall of Fame</div><div class="section-subtitle">Los mejores de la Red Comercial</div></div>
@@ -936,8 +984,10 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-tienda" onclick="cambiarAdminTab('tienda')">🏪 Eventos y Tienda</button>
         <button class="dios-tab" id="dtab-apuestas" onclick="cambiarAdminTab('apuestas')">🎰 Apuestas y Trueques</button>
         <button class="dios-tab" id="dtab-radio" onclick="cambiarAdminTab('radio')">📻 Radio</button>
+        <button class="dios-tab" id="dtab-pvp" onclick="cambiarAdminTab('pvp')">🥊 Duelos PvP</button>
         <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#f87171;border-color:rgba(239,68,68,.3)">🔄 Nuevo Locke</button>
+        <button class="dios-tab" id="dtab-log" onclick="cambiarAdminTab('log')">📋 Log</button>
       </div>
       <!-- RESETEOS -->
       <div id="dv-reset" class="dios-view active">
@@ -1184,6 +1234,41 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
           </div>
         </div>
       </div>
+      <!-- PvP ADMIN -->
+      <div id="dv-pvp" class="dios-view">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+          <!-- Crear duelo -->
+          <div class="admin-panel">
+            <div class="admin-section-title" style="color:var(--neon-arena)">🥊 Crear Duelo</div>
+            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Retador A</label>
+            <select id="pvp-jugador-a" class="admin-select" style="margin-bottom:10px"></select>
+            <input id="pvp-poke-a" class="admin-input" placeholder="Pokémon de A (opcional)" style="margin-bottom:10px">
+            <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Retado B</label>
+            <select id="pvp-jugador-b" class="admin-select" style="margin-bottom:10px"></select>
+            <input id="pvp-poke-b" class="admin-input" placeholder="Pokémon de B (opcional)" style="margin-bottom:10px">
+            <input id="pvp-notas" class="admin-input" placeholder="Notas del duelo (opcional)" style="margin-bottom:10px">
+            <button class="btn-admin packs" onclick="pvpCrearDuelo()" style="width:100%">⚔️ Iniciar Duelo</button>
+          </div>
+
+          <!-- Resolver duelo activo -->
+          <div class="admin-panel">
+            <div class="admin-section-title" style="color:var(--neon-arena)">🏁 Resolver Duelo Activo</div>
+            <div id="pvp-admin-activo-info" style="font-size:11px;color:var(--txt-muted);font-style:italic;margin-bottom:12px">No hay duelo activo.</div>
+            <div id="pvp-admin-botones" style="display:none;flex-direction:column;gap:8px">
+              <button id="pvp-btn-gana-a" class="btn-admin" style="background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.4);color:#4ade80;font-weight:900" onclick="pvpResolverDuelo('a')">🏆 Gana A</button>
+              <button id="pvp-btn-gana-b" class="btn-admin" style="background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.4);color:#60a5fa;font-weight:900" onclick="pvpResolverDuelo('b')">🏆 Gana B</button>
+              <button class="btn-admin danger" style="font-size:10px;padding:6px" onclick="pvpCancelarDuelo()">✕ Cancelar duelo</button>
+            </div>
+            <hr class="admin-hr" style="margin:14px 0">
+            <div class="admin-section-title" style="color:var(--neon-arena)">🗑️ Resetear ELO</div>
+            <div style="font-size:10px;color:var(--txt-muted);margin-bottom:8px">Borra todo el historial y ELO del locke actual.</div>
+            <button class="btn-admin danger" onclick="pvpResetearElo()">🗑️ Resetear todo el PvP</button>
+          </div>
+
+        </div>
+      </div>
+
       <!-- CAMPEONES ADMIN -->
       <div id="dv-campeones" class="dios-view">
         <div class="card" style="max-width:520px">
@@ -1276,6 +1361,22 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             <button class="btn-admin danger" style="width:100%;font-size:13px;padding:12px;font-weight:900" onclick="confirmarNuevoLocke()">🔄 INICIAR NUEVO LOCKE</button>
             <button class="btn-admin" style="width:100%;margin-top:8px" onclick="nlPaso(1)">← Volver</button>
           </div>
+        </div>
+      </div>
+
+      <!-- LOG DE ACCIONES ADMIN -->
+      <div id="dv-log" class="dios-view">
+        <div class="card" style="max-width:720px">
+          <div class="card-title" style="color:var(--neon-packs)">📋 Log de Acciones de Admin</div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:16px">Registro de todas las acciones ejecutadas desde Modo Dios. Se conservan las últimas 500 entradas.</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+            <select id="log-filtro-accion" class="admin-select" style="flex:1;min-width:160px;margin-bottom:0" onchange="renderizarLogAdmin(1)"><option value="">— Todas las acciones —</option></select>
+            <input type="text" id="log-filtro-texto" class="admin-input" placeholder="Buscar en detalle..." style="flex:1;min-width:160px" oninput="renderizarLogAdmin(1)">
+            <button class="btn-admin" style="width:auto;padding:8px 14px" onclick="document.getElementById('log-filtro-texto').value='';document.getElementById('log-filtro-accion').value='';renderizarLogAdmin(1)">✕ Limpiar</button>
+          </div>
+          <div id="log-admin-lista" style="display:flex;flex-direction:column;gap:6px;max-height:520px;overflow-y:auto"></div>
+          <div id="log-admin-vacio" style="display:none;color:var(--txt-muted);font-size:11px;text-align:center;padding:20px;font-family:var(--font-display)">Sin registros que coincidan con el filtro.</div>
+          <div id="log-admin-paginacion" style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px"></div>
         </div>
       </div>
     </section>
@@ -1418,7 +1519,7 @@ const baseDatosInicial=[
     {id:309,tienda:'illegal',cat:'Hack de Sistema',nombre:'Alteración De Personalidad',precioPf:2,stock:1,icon:'🎭',desc:'Cambia la naturaleza.'},
     {id:310,tienda:'illegal',cat:'Hack de Sistema',nombre:'Resurrección Robada',precioPf:8,stock:1,icon:'🔮',desc:'Robas un Poke muerto de otro.'}
 ];
-let baseDatos={productos:[],jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[]};
+let baseDatos={productos:[],jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[]};
 let userSesion=sessionStorage.getItem('silph_user_sesion')||null;
 let filtroCategoriaGlobal="";
 const MAX_COMPRAS=3,MAX_VIDAS=20,MS_EN_6_HORAS=6*60*60*1000;
@@ -1581,9 +1682,9 @@ window.conmutarRadioGlobal=function(estado){
 };
 window.ajustarVolumenRadio=function(v){radioVolumen=Math.max(0,Math.min(1,parseFloat(v)));localStorage.setItem('silph_radio_volumen',String(radioVolumen));if(radioVolumen>0&&radioSilenciada){radioSilenciada=false;localStorage.setItem('silph_radio_silenciada','false');}if(radioAudioEl)radioAudioEl.volume=radioSilenciada?0:radioVolumen;let ic=document.getElementById('radio-icono-vol');if(ic)ic.textContent=radioSilenciada||radioVolumen===0?'🔇':(radioVolumen<0.5?'🔉':'🔊');};
 window.alternarSilencioRadio=function(){radioSilenciada=!radioSilenciada;localStorage.setItem('silph_radio_silenciada',String(radioSilenciada));if(radioAudioEl)radioAudioEl.volume=radioSilenciada?0:radioVolumen;let ic=document.getElementById('radio-icono-vol');if(ic)ic.textContent=radioSilenciada?'🔇':(radioVolumen<0.5?'🔉':'🔊');};
-window.subirCancionesRadio=async function(fileList){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let archivos=Array.from(fileList||[]);if(!archivos.length)return;let cajaEstado=document.getElementById('radio-subida-estado');for(const file of archivos){if(!file.type.startsWith('audio/'))continue;if(cajaEstado)cajaEstado.textContent=`Subiendo "${file.name}"...`;try{const ruta=`radio/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`,ar=storageRef(storage,ruta);await uploadBytes(ar,file);const url=await getDownloadURL(ar);const dur=await new Promise(res=>{let a=new Audio();a.preload='metadata';a.onloadedmetadata=()=>res(a.duration||180);a.onerror=()=>res(180);a.src=url;});let nid='song_'+Date.now()+Math.floor(Math.random()*1000);if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};baseDatos.radio.canciones[nid]={nombre:file.name.replace(/\.[^/.]+$/,''),url,duracion:Math.round(dur),ruta};if(!baseDatos.radio.semillaOrden)baseDatos.radio.semillaOrden=Date.now();if(!baseDatos.radio.inicioEpoch)baseDatos.radio.inicioEpoch=Date.now();guardarBD();}catch(err){mostrarNotificacion(`Error al subir "${file.name}".`,"error","⚠️");}}if(cajaEstado)cajaEstado.textContent='';reproducirSonido('exito');mostrarNotificacion("Canciones añadidas a Radio Pokeinomana.","exito","📻");renderizarListaRadioAdmin();};
-window.eliminarCancionRadio=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar canción',descripcion:'Se borrará también el archivo de Firebase Storage.',textoConfirmar:'Eliminar',tipo:'peligro'});if(!cf)return;let c=baseDatos.radio.canciones[id];if(c&&c.ruta){try{await deleteObject(storageRef(storage,c.ruta));}catch(e){}}delete baseDatos.radio.canciones[id];guardarBD();mostrarNotificacion("Canción eliminada.","info","🗑️");renderizarListaRadioAdmin();};
-window.reiniciarOrdenRadio=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};baseDatos.radio.semillaOrden=Date.now();baseDatos.radio.inicioEpoch=Date.now();guardarBD();reproducirSonido('exito');mostrarNotificacion("Orden reiniciado para todos los oyentes.","exito","🔀");};
+window.subirCancionesRadio=async function(fileList){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let archivos=Array.from(fileList||[]);if(!archivos.length)return;let cajaEstado=document.getElementById('radio-subida-estado');for(const file of archivos){if(!file.type.startsWith('audio/'))continue;if(cajaEstado)cajaEstado.textContent=`Subiendo "${file.name}"...`;try{const ruta=`radio/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`,ar=storageRef(storage,ruta);await uploadBytes(ar,file);const url=await getDownloadURL(ar);const dur=await new Promise(res=>{let a=new Audio();a.preload='metadata';a.onloadedmetadata=()=>res(a.duration||180);a.onerror=()=>res(180);a.src=url;});let nid='song_'+Date.now()+Math.floor(Math.random()*1000);if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};baseDatos.radio.canciones[nid]={nombre:file.name.replace(/\.[^/.]+$/,''),url,duracion:Math.round(dur),ruta};if(!baseDatos.radio.semillaOrden)baseDatos.radio.semillaOrden=Date.now();if(!baseDatos.radio.inicioEpoch)baseDatos.radio.inicioEpoch=Date.now();guardarBD();}catch(err){mostrarNotificacion(`Error al subir "${file.name}".`,"error","⚠️");}}if(cajaEstado)cajaEstado.textContent='';logAdmin('Subir canciones radio',archivos.map(f=>f.name).join(', '));reproducirSonido('exito');mostrarNotificacion("Canciones añadidas a Radio Pokeinomana.","exito","📻");renderizarListaRadioAdmin();};
+window.eliminarCancionRadio=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar canción',descripcion:'Se borrará también el archivo de Firebase Storage.',textoConfirmar:'Eliminar',tipo:'peligro'});if(!cf)return;let c=baseDatos.radio.canciones[id];if(c&&c.ruta){try{await deleteObject(storageRef(storage,c.ruta));}catch(e){}}let nombreCancion=c?c.nombre:id;delete baseDatos.radio.canciones[id];logAdmin('Eliminar canción radio',nombreCancion);mostrarNotificacion("Canción eliminada.","info","🗑️");renderizarListaRadioAdmin();};
+window.reiniciarOrdenRadio=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};baseDatos.radio.semillaOrden=Date.now();baseDatos.radio.inicioEpoch=Date.now();logAdmin('Reiniciar orden radio','');reproducirSonido('exito');mostrarNotificacion("Orden reiniciado para todos los oyentes.","exito","🔀");};
 function renderizarListaRadioAdmin(){let box=document.getElementById('radio-admin-lista');if(!box)return;let canciones=obtenerListaCanciones();if(!canciones.length){box.innerHTML='<div style="color:var(--txt-muted);font-size:11px;text-align:center;padding:14px;font-family:var(--font-display)">Sin canciones subidas todavía.</div>';return;}box.innerHTML='';canciones.forEach(c=>{let m=Math.floor(c.duracion/60),s=String(Math.round(c.duracion%60)).padStart(2,'0');box.innerHTML+=`<div class="admin-item-card"><button class="btn-del-item" onclick="eliminarCancionRadio('${c.id}')">✕</button><div style="color:var(--txt-primary);font-size:12px;font-weight:600">🎵 ${escaparHTML(c.nombre)}</div><div style="font-size:10px;color:var(--txt-muted);margin-top:3px;font-family:var(--font-display)">${m}:${s}</div></div>`;});}
 
 /* ═══ CALCULADORA DE EFECTIVIDAD DE TIPOS ═══ */
@@ -2687,7 +2788,7 @@ window.generarTiendasAutomaticas = function(cual){
 
   // Guardar gimnasio activo en BD para mostrarlo en la tienda
   baseDatos.gimnasioActivo = { tier: tier, gen: maxGen, label: GYM_LABELS[tier] };
-  guardarBD();
+  logAdmin('Generar tiendas automáticas', cual+' · '+GYM_LABELS[tier]+' · Gen '+maxGen+' · '+generados+' productos');
   renderInitializeLoaders();
   actualizarBadgeGimnasio();
 
@@ -2908,7 +3009,7 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas){
   // Limpiar campeones del locke anterior
   baseDatos.campeones = {};
 
-  guardarBD();
+  logAdmin('Nuevo Locke', tipo+' · '+juego.n+' · '+vidasIni+' vidas · Locke #'+baseDatos.lockeActivo.num);
   document.body.style.transition='opacity .25s ease';
   document.body.style.opacity='0';
   setTimeout(function(){
@@ -3093,7 +3194,7 @@ window.guardarCampeones = function(){
   baseDatos.campeones.vidas = vidasGanadores;
   var sf = document.getElementById('adm-campeon-finalísima');
   baseDatos.campeones.finalísima = sf ? sf.value : '';
-  guardarBD();
+  logAdmin('Guardar campeones Hall of Fame', 'Torneos: '+(baseDatos.campeones.torneos||'-')+', Vidas: '+(vidasGanadores.join(', ')||'-')+', Finalísima: '+(baseDatos.campeones.finalísima||'-'));
   renderizarHallOfFame();
   var est = document.getElementById('adm-campeones-estado');
   if(est){ est.textContent = '✅ Campeones guardados correctamente'; setTimeout(()=>{ est.textContent=''; }, 2500); }
@@ -3143,17 +3244,17 @@ function reanimarElemento(el){transicionarVista(el);}
 /* ═══ FIREBASE ═══ */
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];}
-    else{baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[]};set(ref(db,'silph_co_market'),baseDatos);}
+    if(data){baseDatos=data;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];}
+    else{baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[]};set(ref(db,'silph_co_market'),baseDatos);}
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();if(document.getElementById('section-duelos')&&document.getElementById('section-duelos').classList.contains('active'))renderizarDuelosPvP();pvpActualizarAdminPanel();}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 function guardarBD(){set(ref(db,'silph_co_market'),baseDatos);}
 
 /* ═══ NAVEGACIÓN ═══ */
-window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='perfil'){cargarMejorPokemonEnPerfil();}if(s==='tiendas'){actualizarBadgeGimnasio();}/* Cerrar sidebar siempre en móvil */var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}};
+window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='perfil'){cargarMejorPokemonEnPerfil();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}document.body.style.overflow='';};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);};
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
 window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');sec.classList.add(`zona-${tab}`);}};
 window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.evento-tab').forEach(t=>t.classList.remove('active-arena','active-camara'));document.querySelectorAll('.evento-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`etab-${tab}`),ve=document.getElementById(`ev-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);if(tab==='camara')renderizarCamaraPublica();};
@@ -3393,6 +3494,66 @@ function registrarActividadGlobal(jugadorId,txt,ts){
     baseDatos.actividadGlobal.push({jugador:jugadorId,texto:txt,timestamp:ts});
     if(baseDatos.actividadGlobal.length>60)baseDatos.actividadGlobal=baseDatos.actividadGlobal.slice(-60);
 }
+/* ═══ LOG DE ACCIONES DE ADMIN ═══ */
+function logAdmin(accion,detalle){
+    if(!baseDatos.adminLog)baseDatos.adminLog=[];
+    let d=new Date();
+    let ts=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+    baseDatos.adminLog.push({timestamp:ts,admin:userSesion||'?',accion:accion||'',detalle:detalle||''});
+    if(baseDatos.adminLog.length>500)baseDatos.adminLog=baseDatos.adminLog.slice(-500);
+    guardarBD();
+    if(document.getElementById('dv-log')&&document.getElementById('dv-log').classList.contains('active'))renderizarLogAdmin();
+}
+window.logAdmin=logAdmin;
+
+/* ── Vista del Log de Admin (filtro + paginación) ── */
+const LOG_ADMIN_POR_PAGINA=15;
+let logAdminPaginaActual=1;
+function renderizarLogAdmin(pagina){
+    if(pagina)logAdminPaginaActual=pagina;
+    let lista=document.getElementById('log-admin-lista');
+    let vacio=document.getElementById('log-admin-vacio');
+    let pagBox=document.getElementById('log-admin-paginacion');
+    let selAccion=document.getElementById('log-filtro-accion');
+    if(!lista||!vacio||!pagBox)return;
+    let todos=baseDatos.adminLog||[];
+    if(selAccion){
+        let accionesUnicas=[...new Set(todos.map(l=>l.accion).filter(Boolean))].sort();
+        let valActual=selAccion.value;
+        selAccion.innerHTML='<option value="">— Todas las acciones —</option>'+accionesUnicas.map(a=>`<option value="${escaparHTML(a)}">${escaparHTML(a)}</option>`).join('');
+        if(accionesUnicas.includes(valActual))selAccion.value=valActual;
+        if(selAccion.__cselRefrescar)selAccion.__cselRefrescar();
+    }
+    let filtroAccion=selAccion?selAccion.value:'';
+    let filtroTexto=(document.getElementById('log-filtro-texto')?.value||'').toLowerCase().trim();
+    let logs=todos.slice().reverse();
+    if(filtroAccion)logs=logs.filter(l=>l.accion===filtroAccion);
+    if(filtroTexto)logs=logs.filter(l=>(l.detalle||'').toLowerCase().includes(filtroTexto)||(l.admin||'').toLowerCase().includes(filtroTexto)||(l.accion||'').toLowerCase().includes(filtroTexto));
+    if(!logs.length){
+        lista.innerHTML='';
+        vacio.style.display='block';
+        pagBox.innerHTML='';
+        return;
+    }
+    vacio.style.display='none';
+    let totalPaginas=Math.max(1,Math.ceil(logs.length/LOG_ADMIN_POR_PAGINA));
+    if(logAdminPaginaActual>totalPaginas)logAdminPaginaActual=totalPaginas;
+    if(logAdminPaginaActual<1)logAdminPaginaActual=1;
+    let inicio=(logAdminPaginaActual-1)*LOG_ADMIN_POR_PAGINA;
+    let pageItems=logs.slice(inicio,inicio+LOG_ADMIN_POR_PAGINA);
+    lista.innerHTML=pageItems.map(l=>`<div class="admin-item-card" style="display:flex;flex-direction:column;gap:2px;padding:10px 12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <span style="font-family:var(--font-display);font-size:10.5px;font-weight:700;color:var(--neon-packs);text-transform:uppercase;letter-spacing:.3px">${escaparHTML(l.accion)}</span>
+          <span style="font-size:9.5px;color:var(--txt-muted);font-family:var(--font-display);white-space:nowrap">🕐 ${escaparHTML(l.timestamp)}</span>
+        </div>
+        <div style="font-size:11px;color:var(--txt-primary)">${escaparHTML(l.detalle||'—')}</div>
+        <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display)">👤 ${escaparHTML((l.admin||'?').toUpperCase())}</div>
+      </div>`).join('');
+    pagBox.innerHTML=`<button class="btn-admin" style="width:auto;padding:6px 14px" ${logAdminPaginaActual<=1?'disabled':''} onclick="renderizarLogAdmin(${logAdminPaginaActual-1})">← Anterior</button>
+      <span style="font-family:var(--font-display);font-size:10px;color:var(--txt-secondary)">Página ${logAdminPaginaActual} / ${totalPaginas} · ${logs.length} registros</span>
+      <button class="btn-admin" style="width:auto;padding:6px 14px" ${logAdminPaginaActual>=totalPaginas?'disabled':''} onclick="renderizarLogAdmin(${logAdminPaginaActual+1})">Siguiente →</button>`;
+}
+window.renderizarLogAdmin=renderizarLogAdmin;
 function inyectarEntradaDiarioAutomatica(txt){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],d=new Date();let ts=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;if(!u.diarioLogs)u.diarioLogs=[];u.diarioLogs.push({timestamp:ts,text:txt,texto:txt});registrarActividadGlobal(userSesion,txt,ts);}
 function inyectarEntradaDiarioAutomaticaPara(uid,txt){if(!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid],d=new Date();let ts=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;if(!u.diarioLogs)u.diarioLogs=[];u.diarioLogs.push({timestamp:ts,text:txt,texto:txt});registrarActividadGlobal(uid,txt,ts);}
 
@@ -4216,7 +4377,7 @@ function limpiarNombreURL(l){return l.split('@')[0].trim().replace(/\(.*?\)/g,''
 
 
 /* ═══ ARENA ═══ */
-window.crearCombateArena=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let jA=document.getElementById('adm-arena-jugador-a').value,jB=document.getElementById('adm-arena-jugador-b').value,desc=document.getElementById('adm-arena-descripcion').value.trim(),lim=parseInt(document.getElementById('adm-arena-limite').value)||5;if(!jA||!jB){mostrarNotificacion("Selecciona los dos jugadores.","error","⚔️");return;}if(jA===jB){mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","⚔️");return;}if(!desc){mostrarNotificacion("Añade una descripción.","error","⚔️");return;}let id="arena_"+Date.now();if(!baseDatos.arena)baseDatos.arena={};baseDatos.arena[id]={id,jugadorA:jA,jugadorB:jB,descripcion:desc,limitePf:lim,estado:"abierto",ganador:null,apuestas:{},boteA:0,boteB:0,fechaCreacion:new Date().toLocaleDateString()};guardarBD();reproducirSonido('exito');mostrarNotificacion(`Combate "${desc}" abierto en la Arena.`,'exito','🎰');};
+window.crearCombateArena=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let jA=document.getElementById('adm-arena-jugador-a').value,jB=document.getElementById('adm-arena-jugador-b').value,desc=document.getElementById('adm-arena-descripcion').value.trim(),lim=parseInt(document.getElementById('adm-arena-limite').value)||5;if(!jA||!jB){mostrarNotificacion("Selecciona los dos jugadores.","error","⚔️");return;}if(jA===jB){mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","⚔️");return;}if(!desc){mostrarNotificacion("Añade una descripción.","error","⚔️");return;}let id="arena_"+Date.now();if(!baseDatos.arena)baseDatos.arena={};baseDatos.arena[id]={id,jugadorA:jA,jugadorB:jB,descripcion:desc,limitePf:lim,estado:"abierto",ganador:null,apuestas:{},boteA:0,boteB:0,fechaCreacion:new Date().toLocaleDateString()};logAdmin('Crear combate Arena',`${jA.toUpperCase()} vs ${jB.toUpperCase()}: "${desc}"`);reproducirSonido('exito');mostrarNotificacion(`Combate "${desc}" abierto en la Arena.`,'exito','🎰');};
 window.cerrarApuestasCombate=function(cid){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;if(baseDatos.arena[cid]){baseDatos.arena[cid].estado="cerrado";guardarBD();reproducirSonido('cerrar');}};
 window.resolverCombateArena=function(cid,gl){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let c=baseDatos.arena[cid];if(!c)return;c.ganador=gl;c.estado="resuelto";if(!c.apuestas)c.apuestas={};let bG=gl==='A'?(c.boteA||0):(c.boteB||0),bP=gl==='A'?(c.boteB||0):(c.boteA||0);let gan=[],per=[];Object.keys(c.apuestas).forEach(uid=>{let ap=c.apuestas[uid];if(ap.lado===gl)gan.push({uid,cantidad:ap.cantidad});else per.push({uid,cantidad:ap.cantidad});});if(gan.length>0&&bG>0){gan.forEach(g=>{let prop=g.cantidad/bG,ganancia=Math.floor(bP*prop),tot=g.cantidad+ganancia;if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+tot;inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: ¡Acertaste en [${c.descripcion}]! +${tot} PF.`);}});per.forEach(g=>{if(baseDatos.jugadores[g.uid])inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: Apuesta perdida en [${c.descripcion}]. −${g.cantidad} PF.`);});}else if(gan.length===0&&per.length>0){per.forEach(g=>{if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+g.cantidad;inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: Nadie apostó al ganador. Tus ${g.cantidad} PF devueltos.`);}});}let nG=gl==='A'?c.jugadorA:c.jugadorB;guardarBD();reproducirSonido('exito');mostrarNotificacion(`Combate resuelto. Ganador: ${nG.toUpperCase()}`,'exito','🏆');};
 window.apostarEnCombate=async function(cid,lado){if(!userSesion)return;let c=baseDatos.arena[cid];if(!c||c.estado!=="abierto"){mostrarNotificacion("Las apuestas están cerradas.","error","🔒");return;}if(c.jugadorA===userSesion||c.jugadorB===userSesion){mostrarNotificacion("No puedes apostar en tu propio combate.","error","⚔️");return;}if(c.apuestas&&c.apuestas[userSesion]){mostrarNotificacion("Ya has apostado en este combate.","error","🎰");return;}let ie=document.getElementById(`arena-input-${cid}`),cantidad=parseInt(ie?ie.value:0)||0;if(cantidad<=0){mostrarNotificacion("Introduce una cantidad válida.","error","🎰");return;}if(cantidad>c.limitePf){mostrarNotificacion(`El máximo permitido es ${c.limitePf} PF.`,"error","🎰");return;}let u=baseDatos.jugadores[userSesion];if((u.pf||0)<cantidad){mostrarNotificacion(`PF insuficientes. Tienes ${u.pf||0} PF.`,"error","🔮");return;}let nJ=lado==='A'?c.jugadorA:c.jugadorB;let cf=await mostrarConfirmacion({icono:'🎰',titulo:'Confirmar apuesta',descripcion:`Apostar ${cantidad} PF a que ${nJ.toUpperCase()} gana\n"${c.descripcion}"`,textoConfirmar:'Apostar',sonidoConfirmar:'apuesta'});if(!cf)return;u.pf=(u.pf||0)-cantidad;if(!c.apuestas)c.apuestas={};c.apuestas[userSesion]={lado,cantidad};if(lado==='A')c.boteA=(c.boteA||0)+cantidad;else c.boteB=(c.boteB||0)+cantidad;inyectarEntradaDiarioAutomatica(`🎰 APUESTA: Aposté ${cantidad} PF a ${nJ.toUpperCase()} en [${c.descripcion}].`);guardarBD();mostrarNotificacion(`${cantidad} PF a ${nJ.toUpperCase()}.`,'exito','🎰','Apuesta registrada',true);};
@@ -4224,38 +4385,38 @@ window.cambiarArenaSubtab=function(tipo){reproducirSonido('tab');document.queryS
 function crearFilaOpcionEncuesta(valor){let row=document.createElement('div');row.className='encuesta-opcion-row';row.innerHTML=`<input type="text" class="admin-input encuesta-opcion-input" placeholder="Opción" value="${valor?escaparHTML(valor):''}"><button type="button" class="btn-del-opcion" onclick="this.parentElement.remove()">✕</button>`;return row;}
 function resetearOpcionesEncuesta(){let box=document.getElementById('adm-encuesta-opciones-list');if(!box)return;box.innerHTML='';box.appendChild(crearFilaOpcionEncuesta('Sí'));box.appendChild(crearFilaOpcionEncuesta('No'));}
 window.anadirOpcionEncuesta=function(){let box=document.getElementById('adm-encuesta-opciones-list');if(!box)return;if(box.children.length>=8){mostrarNotificacion("Máximo 8 opciones por encuesta.","error","🗳️");return;}box.appendChild(crearFilaOpcionEncuesta(''));};
-window.crearEncuestaArena=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let pregunta=document.getElementById('adm-encuesta-pregunta').value.trim(),lim=parseInt(document.getElementById('adm-encuesta-limite').value)||5;if(!pregunta){mostrarNotificacion("Escribe la pregunta de la encuesta.","error","🗳️");return;}let opciones=[];document.querySelectorAll('#adm-encuesta-opciones-list .encuesta-opcion-input').forEach(i=>{let v=i.value.trim();if(v)opciones.push(v);});if(opciones.length<2){mostrarNotificacion("Añade al menos 2 opciones.","error","🗳️");return;}let id="arena_"+Date.now();if(!baseDatos.arena)baseDatos.arena={};baseDatos.arena[id]={id,tipo:'encuesta',descripcion:pregunta,opciones,limitePf:lim,estado:"abierto",ganador:null,apuestas:{},botes:{},fechaCreacion:new Date().toLocaleDateString()};guardarBD();document.getElementById('adm-encuesta-pregunta').value='';resetearOpcionesEncuesta();reproducirSonido('exito');mostrarNotificacion(`Encuesta "${pregunta}" publicada en la Arena.`,'exito','🗳️');};
+window.crearEncuestaArena=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let pregunta=document.getElementById('adm-encuesta-pregunta').value.trim(),lim=parseInt(document.getElementById('adm-encuesta-limite').value)||5;if(!pregunta){mostrarNotificacion("Escribe la pregunta de la encuesta.","error","🗳️");return;}let opciones=[];document.querySelectorAll('#adm-encuesta-opciones-list .encuesta-opcion-input').forEach(i=>{let v=i.value.trim();if(v)opciones.push(v);});if(opciones.length<2){mostrarNotificacion("Añade al menos 2 opciones.","error","🗳️");return;}let id="arena_"+Date.now();if(!baseDatos.arena)baseDatos.arena={};baseDatos.arena[id]={id,tipo:'encuesta',descripcion:pregunta,opciones,limitePf:lim,estado:"abierto",ganador:null,apuestas:{},botes:{},fechaCreacion:new Date().toLocaleDateString()};logAdmin('Crear encuesta Arena',`"${pregunta}" (${opciones.length} opciones)`);document.getElementById('adm-encuesta-pregunta').value='';resetearOpcionesEncuesta();reproducirSonido('exito');mostrarNotificacion(`Encuesta "${pregunta}" publicada en la Arena.`,'exito','🗳️');};
 window.apostarEnEncuesta=async function(cid,opIdx){if(!userSesion)return;let c=baseDatos.arena[cid];if(!c||c.estado!=="abierto"){mostrarNotificacion("Las votaciones están cerradas.","error","🔒");return;}if(c.apuestas&&c.apuestas[userSesion]){mostrarNotificacion("Ya has apostado en esta encuesta.","error","🗳️");return;}opIdx=Number(opIdx);let ie=document.getElementById(`encuesta-input-${cid}`),cantidad=parseInt(ie?ie.value:0)||0;if(cantidad<=0){mostrarNotificacion("Introduce una cantidad válida.","error","🗳️");return;}if(cantidad>c.limitePf){mostrarNotificacion(`El máximo permitido es ${c.limitePf} PF.`,"error","🗳️");return;}let u=baseDatos.jugadores[userSesion];if((u.pf||0)<cantidad){mostrarNotificacion(`PF insuficientes. Tienes ${u.pf||0} PF.`,"error","🔮");return;}let opcionTxt=c.opciones[opIdx];let cf=await mostrarConfirmacion({icono:'🗳️',titulo:'Confirmar apuesta',descripcion:`Apostar ${cantidad} PF a "${opcionTxt}"\n"${c.descripcion}"`,textoConfirmar:'Apostar',sonidoConfirmar:'apuesta'});if(!cf)return;u.pf=(u.pf||0)-cantidad;if(!c.apuestas)c.apuestas={};c.apuestas[userSesion]={opcion:opIdx,cantidad};if(!c.botes)c.botes={};c.botes[opIdx]=(c.botes[opIdx]||0)+cantidad;inyectarEntradaDiarioAutomatica(`🗳️ ENCUESTA: Aposté ${cantidad} PF a "${opcionTxt}" en [${c.descripcion}].`);guardarBD();mostrarNotificacion(`${cantidad} PF a "${opcionTxt}".`,'exito','🗳️','Apuesta registrada',true);};
 window.resolverEncuestaArena=function(cid,opIdx){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let c=baseDatos.arena[cid];if(!c||c.tipo!=='encuesta')return;opIdx=Number(opIdx);c.ganador=opIdx;c.estado="resuelto";if(!c.apuestas)c.apuestas={};if(!c.botes)c.botes={};let total=0;c.opciones.forEach((_,i)=>{total+=(c.botes[i]||0);});let bG=c.botes[opIdx]||0,bP=total-bG,gan=[],per=[];Object.keys(c.apuestas).forEach(uid=>{let ap=c.apuestas[uid];if(Number(ap.opcion)===opIdx)gan.push({uid,cantidad:ap.cantidad});else per.push({uid,cantidad:ap.cantidad});});if(gan.length>0&&bG>0){gan.forEach(g=>{let prop=g.cantidad/bG,ganancia=Math.floor(bP*prop),tot=g.cantidad+ganancia;if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+tot;inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: ¡Acertaste en [${c.descripcion}]! +${ganancia} PF.`);}});per.forEach(g=>{if(baseDatos.jugadores[g.uid])inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: Apuesta perdida en [${c.descripcion}]. −${g.cantidad} PF.`);});}else if(gan.length===0&&per.length>0){per.forEach(g=>{if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+g.cantidad;inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: Nadie acertó la opción ganadora. Tus ${g.cantidad} PF devueltos.`);}});}guardarBD();reproducirSonido('exito');mostrarNotificacion(`Encuesta resuelta. Opción ganadora: ${c.opciones[opIdx].toUpperCase()}`,'exito','🏆');};
 function renderTarjetaEncuestaPublica(c){let total=0;c.opciones.forEach((_,i)=>{total+=(c.botes&&c.botes[i])||0;});let ma=c.apuestas&&c.apuestas[userSesion]?c.apuestas[userSesion]:null;let bH=c.estado==='abierto'?'<span class="arena-badge badge-abierto">🟢 ABIERTA</span>':c.estado==='cerrado'?'<span class="arena-badge badge-cerrado">🔒 CERRADA</span>':'<span class="arena-badge badge-resuelto">✅ RESUELTA</span>';let inputRow=(c.estado==='abierto'&&!ma)?`<div class="arena-apostar-row" style="margin-top:0;padding-top:0;border-top:none"><span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">APUESTA OPCIONAL (máx. ${c.limitePf} PF):</span><input type="number" id="encuesta-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1"></div>`:'';let opcionesHtml=c.opciones.map((op,i)=>{let boteI=(c.botes&&c.botes[i])||0,pct=total>0?Math.round((boteI/total)*100):0,cardClass='encuesta-opcion-card';if(c.estado==='resuelto'){cardClass+=(Number(c.ganador)===i?' ganadora':' perdedora');}let votarBtn=(c.estado==='abierto'&&!ma)?`<button class="btn-votar-opcion" onclick="apostarEnEncuesta('${c.id}','${i}')">Votar "${escaparHTML(op)}"</button>`:'';let miVotoTag=(ma&&Number(ma.opcion)===i)?`<div style="font-size:9px;color:var(--neon-arena);font-family:var(--font-display);margin-top:4px">✅ Tu apuesta: ${ma.cantidad} PF</div>`:'';return `<div class="${cardClass}"><div class="encuesta-opcion-top"><div class="encuesta-opcion-nombre">${escaparHTML(op)}${c.estado==='resuelto'&&Number(c.ganador)===i?' 🏆':''}</div><div class="encuesta-opcion-datos">${boteI} PF · ${pct}%</div></div><div class="encuesta-opcion-barra"><div class="encuesta-opcion-barra-fill" style="width:${pct}%"></div></div>${votarBtn}${miVotoTag}</div>`;}).join('');let rH='';if(c.estado==='resuelto'&&ma){if(Number(ma.opcion)===Number(c.ganador)){let bG=(c.botes&&c.botes[c.ganador])||0,bP2=total-bG,prop=bG>0?ma.cantidad/bG:0,gan=Math.floor(bP2*prop),tot=ma.cantidad+gan;rH=`<div class="arena-resultado resultado-gane">🏆 ¡ACERTASTE! +${gan} ganancia = <strong>${tot} PF</strong></div>`;}else rH=`<div class="arena-resultado resultado-perdi">💸 Fallaste. Perdiste ${ma.cantidad} PF.</div>`;}else if(c.estado==='resuelto'&&!ma){rH=`<div class="arena-resultado resultado-no-parti">— No participaste en esta encuesta.</div>`;}return `<div class="arena-combate-card ${c.estado==='resuelto'?'resuelto':''}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px"><div style="font-family:var(--font-display);font-size:12px;color:var(--txt-primary);font-weight:700">🗳️ ${escaparHTML(c.descripcion)} ${bH}</div><div style="font-size:10px;color:var(--txt-muted)">Bote total: <span style="color:var(--neon-arena);font-weight:700;font-family:var(--font-display)">${total} PF</span></div></div>${inputRow}<div class="encuesta-opciones-render">${opcionesHtml}</div>${rH}</div>`;}
 function renderizarArenaPublica(){let box=document.getElementById('arena-lista-combates'),sb=document.getElementById('arena-stats-personales');if(!box)return;box.innerHTML='';if(!baseDatos.arena||!Object.keys(baseDatos.arena).length){box.innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated)"><div style="font-size:36px;margin-bottom:12px">🎰</div><div style="font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:2px">Arena Vacía</div><div style="font-size:11px;margin-top:6px">El Mercader aún no ha abierto ningún combate.</div></div>`;return;}if(sb&&userSesion){let g=0,p=0;Object.values(baseDatos.arena).forEach(c=>{if(c.estado==='resuelto'&&c.apuestas&&c.apuestas[userSesion]){let ma=c.apuestas[userSesion];if((c.tipo||'duelo')==='encuesta'){if(Number(ma.opcion)===Number(c.ganador))g++;else p++;}else{if(ma.lado===c.ganador)g++;else p++;}}});sb.innerHTML=`<div class="arena-stat-chip">Ganadas: <span>${g}</span></div><div class="arena-stat-chip">Perdidas: <span>${p}</span></div>`;}let combates=Object.values(baseDatos.arena).sort((a,b)=>({abierto:0,cerrado:1,resuelto:2}[a.estado]||0)-({abierto:0,cerrado:1,resuelto:2}[b.estado]||0));combates.forEach(c=>{if((c.tipo||'duelo')==='encuesta'){box.innerHTML+=renderTarjetaEncuestaPublica(c);return;}let bt=(c.boteA||0)+(c.boteB||0),pA=bt>0?Math.round(((c.boteA||0)/bt)*100):50,pB=100-pA;let ma=c.apuestas&&c.apuestas[userSesion]?c.apuestas[userSesion]:null,sp=c.jugadorA===userSesion||c.jugadorB===userSesion;let bH=c.estado==='abierto'?'<span class="arena-badge badge-abierto">🟢 ABIERTAS</span>':c.estado==='cerrado'?'<span class="arena-badge badge-cerrado">🔒 CERRADAS</span>':'<span class="arena-badge badge-resuelto">✅ RESUELTO</span>';let lA='lado-a',lB='lado-b';if(c.estado==='resuelto'){lA+=(c.ganador==='A'?' ganador':' perdedor');lB+=(c.ganador==='B'?' ganador':' perdedor');}let aH='';if(c.estado==='abierto'&&!sp){if(ma)aH=`<div class="arena-mi-apuesta">✅ Apostaste ${ma.cantidad} PF a ${escaparHTML((ma.lado==='A'?c.jugadorA:c.jugadorB).toUpperCase())}</div>`;else aH=`<div class="arena-apostar-row"><span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">APUESTA (máx. ${c.limitePf} PF):</span><input type="number" id="arena-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1"><button class="btn-aposta-a" onclick="apostarEnCombate('${c.id}','A')">A ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-aposta-b" onclick="apostarEnCombate('${c.id}','B')">B ${escaparHTML(c.jugadorB.toUpperCase())}</button></div>`;}else if(sp&&c.estado==='abierto'){aH=`<div class="arena-mi-apuesta" style="color:var(--txt-muted)">⚔️ Eres participante de este combate</div>`;}let rH='';if(c.estado==='resuelto'&&ma){if(ma.lado===c.ganador){let bG=c.ganador==='A'?(c.boteA||0):(c.boteB||0),bP2=c.ganador==='A'?(c.boteB||0):(c.boteA||0),prop=bG>0?ma.cantidad/bG:0,gan=Math.floor(bP2*prop),tot=ma.cantidad+gan;rH=`<div class="arena-resultado resultado-gane">🏆 ¡ACERTASTE! +${gan} ganancia = <strong>${tot} PF</strong></div>`;}else rH=`<div class="arena-resultado resultado-perdi">💸 Fallaste. Perdiste ${ma.cantidad} PF.</div>`;}else if(c.estado==='resuelto'&&!ma&&!sp){rH=`<div class="arena-resultado resultado-no-parti">— No participaste en este combate.</div>`;}box.innerHTML+=`<div class="arena-combate-card ${c.estado==='resuelto'?'resuelto':''}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px"><div style="font-family:var(--font-display);font-size:12px;color:var(--txt-primary);font-weight:700">${escaparHTML(c.descripcion)} ${bH}</div><div style="font-size:10px;color:var(--txt-muted)">Bote: <span style="color:var(--neon-arena);font-weight:700;font-family:var(--font-display)">${bt} PF</span></div></div><div class="arena-vs-row"><div class="arena-lado ${lA}"><div class="arena-jugador azul">${escaparHTML(c.jugadorA.toUpperCase())}</div><div class="arena-bote-num">${c.boteA||0} PF</div><div class="arena-bote-pct">${pA}% del bote</div>${c.estado==='resuelto'&&c.ganador==='A'?'<div style="font-size:18px;margin-top:5px">🏆</div>':''}</div><div class="arena-vs-badge">VS</div><div class="arena-lado ${lB}"><div class="arena-jugador rojo">${escaparHTML(c.jugadorB.toUpperCase())}</div><div class="arena-bote-num">${c.boteB||0} PF</div><div class="arena-bote-pct">${pB}% del bote</div>${c.estado==='resuelto'&&c.ganador==='B'?'<div style="font-size:18px;margin-top:5px">🏆</div>':''}</div></div><div class="arena-barra"><div class="arena-barra-a" style="width:${pA}%"></div><div class="arena-barra-b" style="width:${pB}%"></div></div>${aH}${rH}</div>`;});}
 
 /* ═══ CÁMARA DE COMERCIO ═══ */
-window.crearTruequeCamara=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let jA=document.getElementById('adm-camara-jugador-a').value,oA=document.getElementById('adm-camara-objeto-a').value.trim(),jB=document.getElementById('adm-camara-jugador-b').value,oB=document.getElementById('adm-camara-objeto-b').value.trim(),cat=document.getElementById('adm-camara-categoria').value;if(!jA||!jB){mostrarNotificacion("Selecciona los dos jugadores.","error","🏛️");return;}if(jA===jB){mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","🏛️");return;}if(!oA||!oB){mostrarNotificacion("Indica los objetos de ambos jugadores.","error","📦");return;}if(!cat){mostrarNotificacion("Selecciona la categoría del intercambio.","error","🏛️");return;}let cd=CAMARA_CATEGORIAS[cat];if(!cd){mostrarNotificacion("Categoría inválida.","error","🏛️");return;}let uA=baseDatos.jugadores[jA],uB=baseDatos.jugadores[jB];if(!uA||!uB){mostrarNotificacion("Uno o ambos jugadores no encontrados.","error","🏛️");return;}if((uA.pf||0)<cd.coste){mostrarNotificacion(`${jA.toUpperCase()} no tiene suficientes PF (necesita ${cd.coste}, tiene ${uA.pf||0}).`,"error","🔮");return;}if((uB.pf||0)<cd.coste){mostrarNotificacion(`${jB.toUpperCase()} no tiene suficientes PF (necesita ${cd.coste}, tiene ${uB.pf||0}).`,"error","🔮");return;}uA.pf=(uA.pf||0)-cd.coste;uB.pf=(uB.pf||0)-cd.coste;let tid="camara_"+Date.now();if(!baseDatos.camara)baseDatos.camara={};baseDatos.camara[tid]={id:tid,jugadorA:jA,objetoA:oA,jugadorB:jB,objetoB:oB,categoria:cat,costePorJugador:cd.coste,estado:"votacion",votos:{},fechaCreacion:new Date().toLocaleDateString()};inyectarEntradaDiarioAutomaticaPara(jA,`🏛️ CÁMARA: El Mercader propuso un trueque contigo. Entregas '${oA}' a ${jB.toUpperCase()} a cambio de '${oB}'. Coste: ${cd.coste} PF retenidos.`);inyectarEntradaDiarioAutomaticaPara(jB,`🏛️ CÁMARA: El Mercader propuso un trueque contigo. Entregas '${oB}' a ${jA.toUpperCase()} a cambio de '${oA}'. Coste: ${cd.coste} PF retenidos.`);guardarBD();document.getElementById('adm-camara-objeto-a').value='';document.getElementById('adm-camara-objeto-b').value='';reproducirSonido('trueque');mostrarNotificacion(`${jA.toUpperCase()} y ${jB.toUpperCase()} han retenido ${cd.coste} PF cada uno.`,'exito','🏛️','Trueque publicado');};
+window.crearTruequeCamara=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let jA=document.getElementById('adm-camara-jugador-a').value,oA=document.getElementById('adm-camara-objeto-a').value.trim(),jB=document.getElementById('adm-camara-jugador-b').value,oB=document.getElementById('adm-camara-objeto-b').value.trim(),cat=document.getElementById('adm-camara-categoria').value;if(!jA||!jB){mostrarNotificacion("Selecciona los dos jugadores.","error","🏛️");return;}if(jA===jB){mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","🏛️");return;}if(!oA||!oB){mostrarNotificacion("Indica los objetos de ambos jugadores.","error","📦");return;}if(!cat){mostrarNotificacion("Selecciona la categoría del intercambio.","error","🏛️");return;}let cd=CAMARA_CATEGORIAS[cat];if(!cd){mostrarNotificacion("Categoría inválida.","error","🏛️");return;}let uA=baseDatos.jugadores[jA],uB=baseDatos.jugadores[jB];if(!uA||!uB){mostrarNotificacion("Uno o ambos jugadores no encontrados.","error","🏛️");return;}if((uA.pf||0)<cd.coste){mostrarNotificacion(`${jA.toUpperCase()} no tiene suficientes PF (necesita ${cd.coste}, tiene ${uA.pf||0}).`,"error","🔮");return;}if((uB.pf||0)<cd.coste){mostrarNotificacion(`${jB.toUpperCase()} no tiene suficientes PF (necesita ${cd.coste}, tiene ${uB.pf||0}).`,"error","🔮");return;}uA.pf=(uA.pf||0)-cd.coste;uB.pf=(uB.pf||0)-cd.coste;let tid="camara_"+Date.now();if(!baseDatos.camara)baseDatos.camara={};baseDatos.camara[tid]={id:tid,jugadorA:jA,objetoA:oA,jugadorB:jB,objetoB:oB,categoria:cat,costePorJugador:cd.coste,estado:"votacion",votos:{},fechaCreacion:new Date().toLocaleDateString()};inyectarEntradaDiarioAutomaticaPara(jA,`🏛️ CÁMARA: El Mercader propuso un trueque contigo. Entregas '${oA}' a ${jB.toUpperCase()} a cambio de '${oB}'. Coste: ${cd.coste} PF retenidos.`);inyectarEntradaDiarioAutomaticaPara(jB,`🏛️ CÁMARA: El Mercader propuso un trueque contigo. Entregas '${oB}' a ${jA.toUpperCase()} a cambio de '${oA}'. Coste: ${cd.coste} PF retenidos.`);logAdmin('Crear trueque Cámara',`${jA.toUpperCase()} (${oA}) ⇄ ${jB.toUpperCase()} (${oB}) [${cat}]`);document.getElementById('adm-camara-objeto-a').value='';document.getElementById('adm-camara-objeto-b').value='';reproducirSonido('trueque');mostrarNotificacion(`${jA.toUpperCase()} y ${jB.toUpperCase()} han retenido ${cd.coste} PF cada uno.`,'exito','🏛️','Trueque publicado');};
 window.votarTruequeCamara=function(tid,tipo){if(!userSesion)return;let t=baseDatos.camara[tid];if(!t||t.estado!=="votacion"){mostrarNotificacion("Este trueque ya no está en votación.","error","🏛️");return;}if(t.jugadorA===userSesion||t.jugadorB===userSesion){mostrarNotificacion("No puedes votar en tu propio trueque.","error","🏛️");return;}if(t.votos&&t.votos[userSesion]){mostrarNotificacion("Ya emitiste tu voto.","error","🏛️");return;}if(!t.votos)t.votos={};t.votos[userSesion]=tipo;guardarBD();reproducirSonido('voto');mostrarNotificacion(tipo==='SI'?'Has aprobado el trueque.':'Has rechazado el trueque.','info',tipo==='SI'?'👍':'👎');};
 window.resolverTruequeCamara=function(tid,res){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=baseDatos.camara[tid];if(!t){mostrarNotificacion("Trueque no encontrado.","error","🏛️");return;}let uA=baseDatos.jugadores[t.jugadorA],uB=baseDatos.jugadores[t.jugadorB],c=t.costePorJugador||0;if(res==='ACEPTADO'){t.estado="completado";inyectarEntradaDiarioAutomaticaPara(t.jugadorA,`🏛️ CÁMARA ACEPTADA: Trueque '${t.objetoA}' → '${t.objetoB}' completado con ${t.jugadorB.toUpperCase()}. Coste definitivo: ${c} PF.`);inyectarEntradaDiarioAutomaticaPara(t.jugadorB,`🏛️ CÁMARA ACEPTADA: Trueque '${t.objetoB}' → '${t.objetoA}' completado con ${t.jugadorA.toUpperCase()}. Coste definitivo: ${c} PF.`);guardarBD();reproducirSonido('exito');mostrarNotificacion('Los PF no se devuelven.','exito','✅','Trueque aceptado');}else{if(uA)uA.pf=(uA.pf||0)+c;if(uB)uB.pf=(uB.pf||0)+c;t.estado="rechazado";inyectarEntradaDiarioAutomaticaPara(t.jugadorA,`🏛️ CÁMARA RECHAZADA: El trueque con ${t.jugadorB.toUpperCase()} fue cancelado. Te han devuelto ${c} PF.`);inyectarEntradaDiarioAutomaticaPara(t.jugadorB,`🏛️ CÁMARA RECHAZADA: El trueque con ${t.jugadorA.toUpperCase()} fue cancelado. Te han devuelto ${c} PF.`);guardarBD();reproducirSonido('cerrar');mostrarNotificacion(`Se han devuelto ${c} PF a cada jugador.`,'info','❌','Trueque rechazado');}};
 function renderizarCamaraPublica(){let box=document.getElementById('contenedor-intercambios-camara');if(!box)return;box.innerHTML='';if(!baseDatos.camara||!Object.keys(baseDatos.camara).length){box.innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated)"><div style="font-size:36px;margin-bottom:12px">🏛️</div><div style="font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:2px">Cámara Vacía</div><div style="font-size:11px;margin-top:6px">El Mercader aún no ha publicado ningún trueque.</div></div>`;return;}let trueques=Object.values(baseDatos.camara).sort((a,b)=>({votacion:0,completado:1,rechazado:2}[a.estado]||0)-({votacion:0,completado:1,rechazado:2}[b.estado]||0));trueques.forEach(t=>{let cd=CAMARA_CATEGORIAS[t.categoria]||{label:'Desconocida',icon:'❓',badgeClass:'',coste:0},si=t.jugadorA===userSesion||t.jugadorB===userSesion,yv=t.votos&&t.votos[userSesion],vs=t.votos?Object.values(t.votos).filter(v=>v==='SI').length:0,vn=t.votos?Object.values(t.votos).filter(v=>v==='NO').length:0;let bE=t.estado==='votacion'?'<span class="arena-badge badge-abierto">🗳️ VOTACIÓN</span>':t.estado==='completado'?'<span class="arena-badge badge-resuelto">✅ COMPLETADO</span>':'<span class="arena-badge badge-cerrado">❌ RECHAZADO</span>';let rH='';if(t.estado==='completado'&&si)rH=`<div class="arena-resultado resultado-gane" style="margin-top:10px">✅ Trueque aceptado. Coste final: ${t.costePorJugador} PF.</div>`;else if(t.estado==='rechazado'&&si)rH=`<div class="arena-resultado resultado-perdi" style="margin-top:10px">❌ Trueque rechazado. Se te han devuelto ${t.costePorJugador} PF.</div>`;let vH='';if(t.estado==='votacion'&&!si){if(yv)vH=`<div class="arena-mi-apuesta" style="margin-top:10px">✅ Votaste: <strong>${yv==='SI'?'👍 A favor':'👎 En contra'}</strong></div>`;else vH=`<div style="display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--borde);flex-wrap:wrap"><span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);align-self:center">¿Apruebas este trueque?</span><button style="padding:7px 14px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--neon-legal);border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase" onclick="votarTruequeCamara('${t.id}','SI')">👍 Aprobar</button><button style="padding:7px 14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#f87171;border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase" onclick="votarTruequeCamara('${t.id}','NO')">👎 Rechazar</button></div>`;}else if(t.estado==='votacion'&&si){vH=`<div class="arena-mi-apuesta" style="color:var(--txt-muted);margin-top:8px">⚖️ Eres parte de este trueque</div>`;}box.innerHTML+=`<div class="intercambio-card" style="border-left-color:${t.estado==='votacion'?'var(--neon-intercambio)':t.estado==='completado'?'var(--neon-legal)':'#f87171'}"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:6px"><div><div style="font-family:var(--font-display);font-size:11px;color:var(--neon-intercambio);font-weight:700;margin-bottom:4px">${escaparHTML(t.jugadorA.toUpperCase())} ⇄ ${escaparHTML(t.jugadorB.toUpperCase())} ${bE}</div><span class="cat-badge ${cd.badgeClass}">${cd.icon} ${escaparHTML(cd.label)}</span><span style="font-size:10px;color:var(--txt-muted);margin-left:8px;font-family:var(--font-display)">Coste: ${t.costePorJugador} PF c/u</span></div><div style="display:flex;gap:4px;align-items:center"><span class="votos-badge votos-si">👍 ${vs}</span><span class="votos-badge votos-no">👎 ${vn}</span></div></div><div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:rgba(0,0,0,.2);padding:12px;border-radius:var(--r-md)"><div style="text-align:center"><div style="font-size:9px;color:#60a5fa;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">${escaparHTML(t.jugadorA.toUpperCase())} entrega</div><div style="font-size:14px;font-weight:700;color:var(--txt-primary)">📦 ${escaparHTML(t.objetoA)}</div></div><div style="font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--neon-intercambio);text-align:center">⇄</div><div style="text-align:center"><div style="font-size:9px;color:#f87171;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">${escaparHTML(t.jugadorB.toUpperCase())} entrega</div><div style="font-size:14px;font-weight:700;color:var(--txt-primary)">📦 ${escaparHTML(t.objetoB)}</div></div></div>${vH}${rH}</div>`;});}
 function renderizarAdminCamara(){let box=document.getElementById('adm-camara-trueques-activos');if(!box)return;box.innerHTML='';if(!baseDatos.camara||!Object.keys(baseDatos.camara).length){box.innerHTML='<div style="color:var(--txt-muted);font-size:10px;text-align:center;padding:10px;font-family:var(--font-display)">No hay trueques activos.</div>';return;}Object.values(baseDatos.camara).forEach(t=>{if(t.estado!=='votacion')return;let cd=CAMARA_CATEGORIAS[t.categoria]||{label:'?',icon:'❓',coste:0},vs=t.votos?Object.values(t.votos).filter(v=>v==='SI').length:0,vn=t.votos?Object.values(t.votos).filter(v=>v==='NO').length:0;box.innerHTML+=`<div class="admin-camara-card"><div style="font-size:11px;color:var(--neon-intercambio);font-weight:700;margin-bottom:4px;font-family:var(--font-display)">${escaparHTML(t.jugadorA.toUpperCase())} ⇄ ${escaparHTML(t.jugadorB.toUpperCase())}</div><div style="font-size:10px;color:var(--txt-secondary);margin-bottom:5px">${cd.icon} ${cd.label} · ${t.costePorJugador} PF c/u</div><div style="font-size:10px;color:var(--txt-muted);margin-bottom:7px">📦 ${escaparHTML(t.objetoA)} ⇄ 📦 ${escaparHTML(t.objetoB)}</div><div style="font-size:10px;color:var(--txt-muted);margin-bottom:7px">Votos: 👍 ${vs} · 👎 ${vn}</div><div class="admin-btns-row"><button class="btn-admin-sm legal" onclick="resolverTruequeCamara('${t.id}','ACEPTADO')">✅ Aceptar</button><button class="btn-admin-sm danger" onclick="resolverTruequeCamara('${t.id}','RECHAZADO')">❌ Rechazar</button></div></div>`;});}
 
 /* ═══ ADMIN ═══ */
-window.restablecerComprasDiariasDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-usuario').value;if(!t){mostrarNotificacion("Selecciona un entrenador.","error","🔄");return;}baseDatos.jugadores[t].comprasDisponibles=MAX_COMPRAS;baseDatos.jugadores[t].comprasHoy={};baseDatos.jugadores[t].ultimaRecarga=Date.now();guardarBD();reproducirSonido('exito');mostrarNotificacion("Compras reiniciadas.","exito","🔄");};
-window.restablecerGachaDiarioDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-gacha-usuario').value;if(!t||!baseDatos.jugadores[t]){mostrarNotificacion("Entrenador no encontrado.","error","⚡");return;}baseDatos.jugadores[t].ultimoHackeo=0;guardarBD();reproducirSonido('exito');mostrarNotificacion(`Gacha de ${t.toUpperCase()} reiniciado.`,"exito","⚡");};
-window.emitirOrdenEconomicaGlobal=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}baseDatos.eventoSistema=document.getElementById('adm-evento-economico').value;guardarBD();reproducirSonido('exito');mostrarNotificacion("Orden de Red distribuida.","exito","📢");};
+window.restablecerComprasDiariasDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-usuario').value;if(!t){mostrarNotificacion("Selecciona un entrenador.","error","🔄");return;}baseDatos.jugadores[t].comprasDisponibles=MAX_COMPRAS;baseDatos.jugadores[t].comprasHoy={};baseDatos.jugadores[t].ultimaRecarga=Date.now();logAdmin('Resetear compras diarias',`${t.toUpperCase()}`);reproducirSonido('exito');mostrarNotificacion("Compras reiniciadas.","exito","🔄");};
+window.restablecerGachaDiarioDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-gacha-usuario').value;if(!t||!baseDatos.jugadores[t]){mostrarNotificacion("Entrenador no encontrado.","error","⚡");return;}baseDatos.jugadores[t].ultimoHackeo=0;logAdmin('Resetear gacha diario',`${t.toUpperCase()}`);reproducirSonido('exito');mostrarNotificacion(`Gacha de ${t.toUpperCase()} reiniciado.`,"exito","⚡");};
+window.emitirOrdenEconomicaGlobal=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}baseDatos.eventoSistema=document.getElementById('adm-evento-economico').value;logAdmin('Orden económica global',`${baseDatos.eventoSistema}`);reproducirSonido('exito');mostrarNotificacion("Orden de Red distribuida.","exito","📢");};
 window.cargarTituloManualEnAdmin=function(){let uid=document.getElementById('adm-titulo-usuario').value,inp=document.getElementById('adm-titulo-texto');if(!uid||!inp)return;let u=baseDatos.jugadores[uid];inp.value=(u&&u.tituloManual)?u.tituloManual:'';};
-window.asignarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value,txt=document.getElementById('adm-titulo-texto').value.trim();if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}if(!txt){mostrarNotificacion("Escribe el texto del título.","error","🏷️");return;}let u=baseDatos.jugadores[uid];u.tituloManual=txt;u.tituloActivo='manual';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader te otorgó el título 🏷️ "${txt}".`);guardarBD();reproducirSonido('exito');mostrarNotificacion(`Título "${txt}" otorgado a ${uid.toUpperCase()}.`,"exito","🏷️");if(userSesion===uid)renderizarTitulosYTemas();};
-window.quitarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value;if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}let u=baseDatos.jugadores[uid];if(!u.tituloManual){mostrarNotificacion("Este entrenador no tiene título manual.","error","🏷️");return;}delete u.tituloManual;if(u.tituloActivo==='manual')u.tituloActivo=null;guardarBD();document.getElementById('adm-titulo-texto').value='';reproducirSonido('click');mostrarNotificacion(`Título manual eliminado de ${uid.toUpperCase()}.`,"info","🗑️");if(userSesion===uid)renderizarTitulosYTemas();};
-window.ajustarVidasEntrenador=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-vidas-usuario').value,ini=parseInt(document.getElementById('adm-vidas-iniciales').value)||20,act=parseInt(document.getElementById('adm-vidas-actuales').value);if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","❤️");return;}if(isNaN(act)){mostrarNotificacion("Introduce las vidas actuales.","error","❤️");return;}act=Math.max(0,Math.min(act,ini));baseDatos.jugadores[uid].vidasTotales=ini;baseDatos.jugadores[uid].vidasActuales=act;if(act<=0)baseDatos.jugadores[uid].lockeStatus='perdido';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader ajustó tus vidas → ❤️ ${act}/${ini}`);guardarBD();reproducirSonido('exito');mostrarNotificacion(`${uid.toUpperCase()}: vidas ajustadas a ${act}/${ini}`,'exito','❤️');};
+window.asignarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value,txt=document.getElementById('adm-titulo-texto').value.trim();if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}if(!txt){mostrarNotificacion("Escribe el texto del título.","error","🏷️");return;}let u=baseDatos.jugadores[uid];u.tituloManual=txt;u.tituloActivo='manual';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader te otorgó el título 🏷️ "${txt}".`);logAdmin('Asignar título',`${uid.toUpperCase()}: "${txt}"`);reproducirSonido('exito');mostrarNotificacion(`Título "${txt}" otorgado a ${uid.toUpperCase()}.`,"exito","🏷️");if(userSesion===uid)renderizarTitulosYTemas();};
+window.quitarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value;if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}let u=baseDatos.jugadores[uid];if(!u.tituloManual){mostrarNotificacion("Este entrenador no tiene título manual.","error","🏷️");return;}delete u.tituloManual;if(u.tituloActivo==='manual')u.tituloActivo=null;logAdmin('Quitar título',`${uid.toUpperCase()}`);document.getElementById('adm-titulo-texto').value='';reproducirSonido('click');mostrarNotificacion(`Título manual eliminado de ${uid.toUpperCase()}.`,"info","🗑️");if(userSesion===uid)renderizarTitulosYTemas();};
+window.ajustarVidasEntrenador=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-vidas-usuario').value,ini=parseInt(document.getElementById('adm-vidas-iniciales').value)||20,act=parseInt(document.getElementById('adm-vidas-actuales').value);if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","❤️");return;}if(isNaN(act)){mostrarNotificacion("Introduce las vidas actuales.","error","❤️");return;}act=Math.max(0,Math.min(act,ini));baseDatos.jugadores[uid].vidasTotales=ini;baseDatos.jugadores[uid].vidasActuales=act;if(act<=0)baseDatos.jugadores[uid].lockeStatus='perdido';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader ajustó tus vidas → ❤️ ${act}/${ini}`);logAdmin('Ajustar vidas',`${uid.toUpperCase()} → ${act}/${ini}`);reproducirSonido('exito');mostrarNotificacion(`${uid.toUpperCase()}: vidas ajustadas a ${act}/${ini}`,'exito','❤️');};
 window.cargarVidasEnAdmin=function(){let uid=document.getElementById('adm-vidas-usuario').value;if(!uid||!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid];document.getElementById('adm-vidas-iniciales').value=u.vidasTotales||20;document.getElementById('adm-vidas-actuales').value=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);};
-window.modificarFondosEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-banco-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","💰");return;}baseDatos.jugadores[uid].dinero+=(op==='SUMAR'?cant:-cant);guardarBD();document.getElementById('adm-banco-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} P₠ para ${uid.toUpperCase()}.`,"exito","💰");};
-window.modificarPFEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-pf-usuario').value,cant=parseInt(document.getElementById('adm-pf-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","🔮");return;}baseDatos.jugadores[uid].pf=(baseDatos.jugadores[uid].pf||0)+(op==='SUMAR'?cant:-cant);guardarBD();document.getElementById('adm-pf-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} PF para ${uid.toUpperCase()}.`,"exito","🔮");};
+window.modificarFondosEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-banco-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","💰");return;}baseDatos.jugadores[uid].dinero+=(op==='SUMAR'?cant:-cant);logAdmin('Modificar dinero',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} P₠`);document.getElementById('adm-banco-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} P₠ para ${uid.toUpperCase()}.`,"exito","💰");};
+window.modificarPFEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-pf-usuario').value,cant=parseInt(document.getElementById('adm-pf-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","🔮");return;}baseDatos.jugadores[uid].pf=(baseDatos.jugadores[uid].pf||0)+(op==='SUMAR'?cant:-cant);logAdmin('Modificar PF',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} PF`);document.getElementById('adm-pf-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} PF para ${uid.toUpperCase()}.`,"exito","🔮");};
 window.conmutarEstadoTienda=function(prop,estado){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;baseDatos[prop]=estado;guardarBD();reproducirSonido(estado?'exito':'cerrar');if(prop==='illegalOpen'&&estado){registrarActividadGlobal('Sistema','☢️ La Red de Ilegalidades ha sido desbloqueada por el Mercader.',(()=>{let d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;})());}};
 window.ajustarCamposFormularioMercader=function(){let t=document.getElementById('ins-tienda').value;document.getElementById('form-bloque-legal-cat').style.display=t==='legal'?'block':'none';document.getElementById('form-bloque-pack-detalles').style.display=t==='pack'?'block':'none';document.getElementById('form-bloque-illegal-detalles').style.display=t==='illegal'?'block':'none';document.getElementById('bloque-ins-pf').style.display=t!=='illegal'?'block':'none';document.getElementById('lbl-ins-precio').textContent=t==='illegal'?'Coste (PF):':'Coste (P₠):';};
-window.inyectarObjetoNuevoMaster=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('ins-tienda').value,n=document.getElementById('ins-nombre').value.trim(),p=parseInt(document.getElementById('ins-precio').value)||0,s=parseInt(document.getElementById('ins-stock').value)||0;if(!n){mostrarNotificacion("Falta el nombre del producto.","error","📦");return;}let nuevo={id:Date.now(),tienda:t,stock:s,icon:document.getElementById('ins-icono').value.trim()||'📦',nombre:n};if(t==='legal'){nuevo.cat=document.getElementById('ins-cat-legal').value;nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;}else if(t==='pack'){nuevo.cat='Pack Especial';nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;nuevo.desc=document.getElementById('ins-pack-desc').value.trim();nuevo.estrategia=document.getElementById('ins-pack-estrategia').value.trim();}else if(t==='illegal'){nuevo.cat='Hack de Sistema';nuevo.precioPf=p;nuevo.desc=document.getElementById('ins-illegal-desc').value.trim();nuevo.beneficio=document.getElementById('ins-illegal-beneficio').value.trim();nuevo.castigo=document.getElementById('ins-illegal-castigo').value.trim();}if(!baseDatos.productos)baseDatos.productos=[];baseDatos.productos.push(nuevo);guardarBD();document.getElementById('ins-nombre').value='';document.getElementById('ins-precio').value='';document.getElementById('ins-illegal-beneficio').value='';document.getElementById('ins-illegal-castigo').value='';document.getElementById('ins-illegal-desc').value='';reproducirSonido('exito');mostrarNotificacion(`${nuevo.icon} ${n} publicado.`,"exito","📦");};
+window.inyectarObjetoNuevoMaster=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('ins-tienda').value,n=document.getElementById('ins-nombre').value.trim(),p=parseInt(document.getElementById('ins-precio').value)||0,s=parseInt(document.getElementById('ins-stock').value)||0;if(!n){mostrarNotificacion("Falta el nombre del producto.","error","📦");return;}let nuevo={id:Date.now(),tienda:t,stock:s,icon:document.getElementById('ins-icono').value.trim()||'📦',nombre:n};if(t==='legal'){nuevo.cat=document.getElementById('ins-cat-legal').value;nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;}else if(t==='pack'){nuevo.cat='Pack Especial';nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;nuevo.desc=document.getElementById('ins-pack-desc').value.trim();nuevo.estrategia=document.getElementById('ins-pack-estrategia').value.trim();}else if(t==='illegal'){nuevo.cat='Hack de Sistema';nuevo.precioPf=p;nuevo.desc=document.getElementById('ins-illegal-desc').value.trim();nuevo.beneficio=document.getElementById('ins-illegal-beneficio').value.trim();nuevo.castigo=document.getElementById('ins-illegal-castigo').value.trim();}if(!baseDatos.productos)baseDatos.productos=[];baseDatos.productos.push(nuevo);logAdmin('Publicar producto',`${nuevo.icon} ${n} (${t})`);document.getElementById('ins-nombre').value='';document.getElementById('ins-precio').value='';document.getElementById('ins-illegal-beneficio').value='';document.getElementById('ins-illegal-castigo').value='';document.getElementById('ins-illegal-desc').value='';reproducirSonido('exito');mostrarNotificacion(`${nuevo.icon} ${n} publicado.`,"exito","📦");};
 window.actualizarPropertyProducto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=parseInt(val)||0;guardarBD();}};
 window.actualizarPropertyProductoTexto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=val;guardarBD();}};
-window.eliminarTodosLosProductosDeTienda=async function(tienda){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let cf=await mostrarConfirmacion({icono:'🗑️',titulo:`¿Vaciar ${tienda==='legal'?'Tienda Legal':tienda==='pack'?'Shop PF Pack':'Ilegalidades'}?`,descripcion:'Se eliminarán todos los productos publicados en esta tienda. Esta acción no se puede deshacer.',textoConfirmar:'Vaciar tienda',tipo:'sacrificio'});if(!cf)return;baseDatos.productos=baseDatos.productos.filter(p=>p.tienda!==tienda);guardarBD();redibujarConsolaAdminMaster();mostrarNotificacion('Tienda vaciada.','exito','🗑️');};
+window.eliminarTodosLosProductosDeTienda=async function(tienda){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let cf=await mostrarConfirmacion({icono:'🗑️',titulo:`¿Vaciar ${tienda==='legal'?'Tienda Legal':tienda==='pack'?'Shop PF Pack':'Ilegalidades'}?`,descripcion:'Se eliminarán todos los productos publicados en esta tienda. Esta acción no se puede deshacer.',textoConfirmar:'Vaciar tienda',tipo:'sacrificio'});if(!cf)return;baseDatos.productos=baseDatos.productos.filter(p=>p.tienda!==tienda);logAdmin('Vaciar tienda',`${tienda}`);redibujarConsolaAdminMaster();mostrarNotificacion('Tienda vaciada.','exito','🗑️');};
 window.eliminarProductoMaster=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar producto',descripcion:'Esta acción no se puede deshacer.',textoConfirmar:'Eliminar',tipo:'peligro'});if(cf){baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id);guardarBD();mostrarNotificacion("Producto eliminado.","info","🗑️",null,true);}};
-function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b'),sp=document.getElementById('adm-pf-usuario'),st=document.getElementById('adm-titulo-usuario');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB,sp,st].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(sp)sp.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(st)st.innerHTML+=`<option value="${id}">${id.toUpperCase()}${u.tituloManual?' (🏷️ '+u.tituloManual+')':''}</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();if(st&&st.value)window.cargarTituloManualEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});
+function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b'),sp=document.getElementById('adm-pf-usuario'),st=document.getElementById('adm-titulo-usuario'),spa=document.getElementById('pvp-jugador-a'),spb=document.getElementById('pvp-jugador-b');if(!sb||!sr)return;[sb,sr,sg,sa,sb2,sv,scA,scB,sp,st,spa,spb].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(sp)sp.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(st)st.innerHTML+=`<option value="${id}">${id.toUpperCase()}${u.tituloManual?' (🏷️ '+u.tituloManual+')':''}</option>`;if(spa)spa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(spb)spb.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;});if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();if(st&&st.value)window.cargarTituloManualEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});
   // Poblar lista dinámica de campeones por vidas
   var vidasLista=document.getElementById('adm-campeon-vidas-lista');
   if(vidasLista){
@@ -4317,6 +4478,229 @@ window.renderizarInventarioGlobalAdmin=function(){
     al.appendChild(card);
   });
 }
+
+/* ════════════════════════════════════════
+   SISTEMA PvP — Duelos con ELO
+   ════════════════════════════════════════ */
+
+var PVP_ELO_BASE    = 1000;
+var PVP_ELO_GANADOR = 25;
+var PVP_ELO_PERDEDOR = 20;
+
+function pvpGetData(){
+  if(!baseDatos.pvp) baseDatos.pvp = { duelos:[], elo:{} };
+  if(!baseDatos.pvp.duelos) baseDatos.pvp.duelos = [];
+  if(!baseDatos.pvp.elo)    baseDatos.pvp.elo    = {};
+  return baseDatos.pvp;
+}
+
+function pvpGetElo(id){
+  var pvp = pvpGetData();
+  if(!pvp.elo[id]) pvp.elo[id] = { puntos:PVP_ELO_BASE, victorias:0, derrotas:0, racha:0 };
+  return pvp.elo[id];
+}
+
+function pvpDueloActivo(){
+  var pvp = pvpGetData();
+  return pvp.duelos.find(function(d){ return d.estado === 'activo'; }) || null;
+}
+
+/* ── Crear duelo ── */
+window.pvpCrearDuelo = function(){
+  var a  = document.getElementById('pvp-jugador-a').value;
+  var b  = document.getElementById('pvp-jugador-b').value;
+  var pa = (document.getElementById('pvp-poke-a').value||'').trim();
+  var pb = (document.getElementById('pvp-poke-b').value||'').trim();
+  var n  = (document.getElementById('pvp-notas').value||'').trim();
+  if(!a || !b)          { mostrarNotificacion('Elige los dos jugadores.','error','⚔️'); return; }
+  if(a === b)           { mostrarNotificacion('Un jugador no puede luchar contra sí mismo.','error','⚔️'); return; }
+  if(pvpDueloActivo())  { mostrarNotificacion('Ya hay un duelo activo. Resuélvelo primero.','error','⚔️'); return; }
+  var pvp = pvpGetData();
+  var duelo = {
+    id:       'duelo_'+Date.now(),
+    retador:  a,
+    retado:   b,
+    pokeA:    pa,
+    pokeB:    pb,
+    notas:    n,
+    estado:   'activo',
+    ganador:  null,
+    timestamp: Date.now(),
+    fecha:    new Date().toLocaleDateString('es-ES')
+  };
+  pvp.duelos.unshift(duelo);
+  logAdmin('Crear duelo PvP', a.toUpperCase()+' vs '+b.toUpperCase()+(pa||pb?' ('+[pa,pb].filter(Boolean).join(' vs ')+')':''));
+  inyectarEntradaDiarioAutomatica('⚔️ ¡Nuevo duelo! '+a.toUpperCase()+' vs '+b.toUpperCase()+(pa||pb?' ('+[pa,pb].filter(Boolean).join(' vs ')+')':''));
+  mostrarNotificacion('¡Duelo iniciado! '+a.toUpperCase()+' vs '+b.toUpperCase(),'exito','⚔️');
+  // Limpiar inputs
+  ['pvp-poke-a','pvp-poke-b','pvp-notas'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  pvpActualizarAdminPanel();
+  renderizarDuelosPvP();
+};
+
+/* ── Resolver duelo ── */
+window.pvpResolverDuelo = function(quien){
+  var duelo = pvpDueloActivo();
+  if(!duelo){ mostrarNotificacion('No hay duelo activo.','error','⚔️'); return; }
+  var ganadorId  = quien === 'a' ? duelo.retador : duelo.retado;
+  var perdedorId = quien === 'a' ? duelo.retado  : duelo.retador;
+  duelo.estado  = 'resuelto';
+  duelo.ganador = ganadorId;
+  // ELO
+  var pvp = pvpGetData();
+  var eloG = pvpGetElo(ganadorId);
+  var eloP = pvpGetElo(perdedorId);
+  eloG.puntos    += PVP_ELO_GANADOR;
+  eloG.victorias += 1;
+  eloG.racha      = (eloG.racha > 0 ? eloG.racha : 0) + 1;
+  eloP.puntos     = Math.max(800, eloP.puntos - PVP_ELO_PERDEDOR);
+  eloP.derrotas  += 1;
+  eloP.racha      = (eloP.racha < 0 ? eloP.racha : 0) - 1;
+  logAdmin('Resolver duelo PvP', ganadorId.toUpperCase()+' vence a '+perdedorId.toUpperCase());
+  reproducirSonido('exito');
+  inyectarEntradaDiarioAutomatica('🏆 Duelo resuelto: '+ganadorId.toUpperCase()+' GANA a '+perdedorId.toUpperCase()+'. ELO: +'+PVP_ELO_GANADOR+' / -'+PVP_ELO_PERDEDOR);
+  mostrarNotificacion('🏆 '+ganadorId.toUpperCase()+' gana el duelo! +'+PVP_ELO_GANADOR+' ELO','exito','🏆');
+  pvpActualizarAdminPanel();
+  renderizarDuelosPvP();
+};
+
+/* ── Cancelar duelo ── */
+window.pvpCancelarDuelo = function(){
+  var duelo = pvpDueloActivo();
+  if(!duelo){ mostrarNotificacion('No hay duelo activo.','error','⚔️'); return; }
+  duelo.estado = 'cancelado';
+  logAdmin('Cancelar duelo PvP', duelo.retador.toUpperCase()+' vs '+duelo.retado.toUpperCase());
+  mostrarNotificacion('Duelo cancelado.','advertencia','✕');
+  pvpActualizarAdminPanel();
+  renderizarDuelosPvP();
+};
+
+/* ── Resetear ELO ── */
+window.pvpResetearElo = function(){
+  mostrarInfo({icono:'🗑️',titulo:'Resetear PvP',descripcion:'¿Borrar todo el historial y ELO del locke actual? Esta acción es irreversible.',tipo:'peligro',textoConfirmar:'Sí, resetear',textoCancelar:'Cancelar',onConfirm:function(){
+    baseDatos.pvp = { duelos:[], elo:{} };
+    logAdmin('Resetear ELO PvP','');
+    mostrarNotificacion('Historial PvP reseteado.','exito','🗑️');
+    pvpActualizarAdminPanel();
+    renderizarDuelosPvP();
+  }});
+};
+
+/* ── Panel admin: info duelo activo ── */
+window.pvpActualizarAdminPanel = function(){
+  var infoEl  = document.getElementById('pvp-admin-activo-info');
+  var btsEl   = document.getElementById('pvp-admin-botones');
+  var btnA    = document.getElementById('pvp-btn-gana-a');
+  var btnB    = document.getElementById('pvp-btn-gana-b');
+  if(!infoEl) return;
+  var duelo = pvpDueloActivo();
+  if(!duelo){
+    infoEl.textContent = 'No hay duelo activo.';
+    if(btsEl) btsEl.style.display = 'none';
+    return;
+  }
+  var eloA = pvpGetElo(duelo.retador).puntos;
+  var eloB = pvpGetElo(duelo.retado).puntos;
+  infoEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'
+    + '<div style="flex:1;text-align:center"><div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:#4ade80">'+duelo.retador.toUpperCase()+'</div>'
+    + (duelo.pokeA ? '<div style="font-size:10px;color:var(--txt-muted)">'+escaparHTML(duelo.pokeA)+'</div>' : '')
+    + '<div style="font-size:10px;color:var(--neon-packs)">ELO: '+eloA+'</div></div>'
+    + '<div style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--neon-arena)">VS</div>'
+    + '<div style="flex:1;text-align:center"><div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:#60a5fa">'+duelo.retado.toUpperCase()+'</div>'
+    + (duelo.pokeB ? '<div style="font-size:10px;color:var(--txt-muted)">'+escaparHTML(duelo.pokeB)+'</div>' : '')
+    + '<div style="font-size:10px;color:var(--neon-packs)">ELO: '+eloB+'</div></div>'
+    + '</div>'
+    + (duelo.notas ? '<div style="font-size:10px;color:var(--txt-muted);font-style:italic">📝 '+escaparHTML(duelo.notas)+'</div>' : '');
+  if(btsEl) btsEl.style.display = 'flex';
+  if(btnA) btnA.textContent = '🏆 Gana '+duelo.retador.toUpperCase();
+  if(btnB) btnB.textContent = '🏆 Gana '+duelo.retado.toUpperCase();
+};
+
+/* ── Render público ── */
+window.renderizarDuelosPvP = function(){
+  var pvp = pvpGetData();
+
+  // Duelo activo
+  var activoEl = document.getElementById('pvp-duelo-activo');
+  var duelo    = pvpDueloActivo();
+  if(activoEl){
+    if(duelo){
+      activoEl.style.display = 'block';
+      var eloA = pvpGetElo(duelo.retador).puntos;
+      var eloB = pvpGetElo(duelo.retado).puntos;
+      activoEl.innerHTML = '<div class="pvp-duelo-activo-card">'
+        + '<div style="font-family:var(--font-display);font-size:10px;color:var(--neon-arena);letter-spacing:1px;margin-bottom:8px">⚔️ DUELO EN CURSO · '+duelo.fecha+'</div>'
+        + '<div class="pvp-vs-row">'
+        + '<div class="pvp-jugador-box"><div class="pvp-jugador-nombre" style="color:#4ade80">'+duelo.retador.toUpperCase()+'</div>'
+        + (duelo.pokeA ? '<div class="pvp-jugador-poke">'+escaparHTML(duelo.pokeA)+'</div>' : '')
+        + '<div class="pvp-jugador-elo">ELO '+eloA+'</div></div>'
+        + '<div class="pvp-vs-badge">VS</div>'
+        + '<div class="pvp-jugador-box"><div class="pvp-jugador-nombre" style="color:#60a5fa">'+duelo.retado.toUpperCase()+'</div>'
+        + (duelo.pokeB ? '<div class="pvp-jugador-poke">'+escaparHTML(duelo.pokeB)+'</div>' : '')
+        + '<div class="pvp-jugador-elo">ELO '+eloB+'</div></div>'
+        + '</div>'
+        + (duelo.notas ? '<div style="font-size:10px;color:var(--txt-muted);text-align:center;font-style:italic">📝 '+escaparHTML(duelo.notas)+'</div>' : '')
+        + '</div>';
+    } else {
+      activoEl.style.display = 'none';
+    }
+  }
+
+  // Ranking ELO
+  var rankEl   = document.getElementById('pvp-ranking');
+  var rankVacio = document.getElementById('pvp-ranking-vacio');
+  if(rankEl){
+    var elos = Object.keys(pvp.elo).map(function(id){
+      return { id:id, data:pvp.elo[id] };
+    }).sort(function(a,b){ return b.data.puntos - a.data.puntos; });
+    if(!elos.length){
+      rankEl.innerHTML = '';
+      if(rankVacio) rankVacio.style.display = 'block';
+    } else {
+      if(rankVacio) rankVacio.style.display = 'none';
+      var posClases = ['oro','plata','bronce'];
+      rankEl.innerHTML = elos.map(function(e, i){
+        var cls = posClases[i] || '';
+        var racha = e.data.racha;
+        var rachaStr = racha > 1 ? ' 🔥'+racha : (racha < -1 ? ' 📉'+Math.abs(racha) : '');
+        return '<div class="pvp-ranking-row">'
+          + '<span class="pvp-ranking-pos '+cls+'">'+(i+1)+'º</span>'
+          + '<span class="pvp-ranking-nombre">'+e.id.toUpperCase()+rachaStr+'</span>'
+          + '<span class="pvp-ranking-stats">'+e.data.victorias+'V / '+e.data.derrotas+'D</span>'
+          + '<span class="pvp-ranking-elo">'+e.data.puntos+' ELO</span>'
+          + '</div>';
+      }).join('');
+    }
+  }
+
+  // Historial
+  var histEl   = document.getElementById('pvp-historial');
+  var histVacio = document.getElementById('pvp-historial-vacio');
+  if(histEl){
+    var resueltos = pvp.duelos.filter(function(d){ return d.estado === 'resuelto'; });
+    if(!resueltos.length){
+      histEl.innerHTML = '';
+      if(histVacio) histVacio.style.display = 'block';
+    } else {
+      if(histVacio) histVacio.style.display = 'none';
+      histEl.innerHTML = resueltos.slice(0,20).map(function(d){
+        var perdedor = d.ganador === d.retador ? d.retado : d.retador;
+        var esA = d.ganador === d.retador;
+        var pokeG = esA ? d.pokeA : d.pokeB;
+        var pokeP = esA ? d.pokeB : d.pokeA;
+        return '<div class="pvp-historial-card '+(esA?'victoria-a':'victoria-b')+'">'
+          + '<div style="flex:1">'
+          + '<div class="pvp-historial-ganador">🏆 '+d.ganador.toUpperCase()+' venció a '+perdedor.toUpperCase()
+          + (pokeG||pokeP ? ' <span style="font-size:9px;color:var(--txt-muted);font-weight:400">('+[pokeG,pokeP].filter(Boolean).join(' vs ')+')</span>' : '')
+          + '</div>'
+          + (d.notas ? '<div class="pvp-historial-meta">📝 '+escaparHTML(d.notas)+'</div>' : '')
+          + '</div>'
+          + '<div class="pvp-historial-meta">'+d.fecha+'</div>'
+          + '</div>';
+      }).join('');
+    }
+  }
+};
 </script>
 </body>
 </html>
