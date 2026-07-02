@@ -81,9 +81,11 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .red-roster-info{min-width:0}
 .red-roster-nombre{font-family:var(--font-display);font-weight:800;font-size:12px;letter-spacing:.3px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .red-roster-titulo{font-family:var(--font-display);font-weight:700;font-size:9px;color:var(--neon-packs);letter-spacing:.3px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.carnet-modal-box{max-width:600px}
+.carnet-modal-box{max-width:520px}
 .carnet-svg-wrap{width:100%;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:4px;background:#05070c}
 .carnet-svg-wrap svg{display:block;width:100%;height:auto}
+#carnet-perfil-preview{max-width:420px}
+#carnet-perfil-preview svg{display:block;width:100%;height:auto;border-radius:var(--r-lg)}
 .btn-carnet-trigger{background:rgba(245,158,11,.08);color:var(--neon-packs);border:1px solid rgba(245,158,11,.3);padding:8px 14px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:6px}
 .btn-carnet-trigger:hover{background:rgba(245,158,11,.18);box-shadow:0 0 14px rgba(245,158,11,.15)}
 .red-roster-meta{font-size:10px;color:var(--txt-muted);font-family:var(--font-display)}
@@ -4239,17 +4241,17 @@ function _pipsSVG(numMed, color, startX, spacing, r){
 function _mpBlock_clasico(mp, color){
   if(mp && mp.nombre){
     var n  = escaparHTML(mp.nombre);
-    var mo = mp.mote ? '<text x="534" y="234" text-anchor="middle" font-size="10" fill="#94a3b8" font-style="italic">&#8220;'+escaparHTML(mp.mote)+'&#8221;</text>' : '';
+    var mo = mp.mote ? '<text x="534" y="234" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.65" font-style="italic">&#8220;'+escaparHTML(mp.mote)+'&#8221;</text>' : '';
     var img = mp.sprite
       ? '<image href="'+mp.sprite+'" x="476" y="88" width="116" height="116" preserveAspectRatio="xMidYMid meet"/>'
-      : '<text x="534" y="152" text-anchor="middle" font-size="38" fill="#243146">?</text>';
-    return img+'<text x="534" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0">'+n+'</text>'+mo;
+      : '<text x="534" y="152" text-anchor="middle" font-size="38" fill="#ffffff" opacity="0.15">?</text>';
+    return img+'<text x="534" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">'+n+'</text>'+mo;
   }
-  return '<text x="534" y="155" text-anchor="middle" font-size="36" fill="#243146">❓</text>'
-       + '<text x="534" y="215" text-anchor="middle" font-size="10" fill="#475569">Sin Pokemon asignado</text>';
+  return '<text x="534" y="155" text-anchor="middle" font-size="36" fill="#ffffff" opacity="0.15">❓</text>'
+       + '<text x="534" y="215" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.38">Sin Pokemon asignado</text>';
 }
 
-/* ── LAYOUT CLÁSICO (640×390) ── */
+/* ── LAYOUT CLÁSICO / HORIZONTAL (640×300) ── */
 function _svgClasico(u, id, color, fondo, tit, lockeStatus){
   var fp=_carnetFondoParams(fondo), cm=color;
   var lockeTxt  = lockeStatus==='ganado'?'LOCKE GANADO':(lockeStatus==='perdido'?'LOCKE PERDIDO':'EN CURSO');
@@ -4259,170 +4261,249 @@ function _svgClasico(u, id, color, fondo, tit, lockeStatus){
   var vidas=u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20), vidasT=u.vidasTotales||20;
   var fecha=new Date().toLocaleDateString('es-ES'), ini=escaparHTML(id.slice(0,2).toUpperCase());
   var mp=u.mejorPokemon||null;
-  var ac=cm; // accent color
 
-  // Pokémon panel
+  // Pokémon panel (columna derecha fija 180px)
+  var mpX=460, mpCX=550;
   var mpImg=mp&&mp.sprite
-    ?'<image href="'+mp.sprite+'" x="458" y="92" width="112" height="112" preserveAspectRatio="xMidYMid meet"/>'
-    :'<text x="516" y="158" text-anchor="middle" font-size="52" fill="'+cm+'18">?</text>';
-  var mpNom=mp&&mp.nombre?'<text x="516" y="222" text-anchor="middle" font-size="11" font-weight="700" fill="#e2e8f0">'+escaparHTML(mp.nombre)+'</text>':'<text x="516" y="218" text-anchor="middle" font-size="10" fill="#3a4a5e">Sin Pokémon</text>';
-  var mpMot=mp&&mp.mote?'<text x="516" y="237" text-anchor="middle" font-size="9.5" fill="#4a5f78" font-style="italic">"'+escaparHTML(mp.mote)+'"</text>':'';
+    ?'<image href="'+mp.sprite+'" x="'+(mpX+10)+'" y="88" width="120" height="120" preserveAspectRatio="xMidYMid meet"/>'
+    :'<text x="'+mpCX+'" y="160" text-anchor="middle" font-size="48" fill="'+cm+'12">?</text>';
+  var mpNom=mp&&mp.nombre?'<text x="'+mpCX+'" y="222" text-anchor="middle" font-size="11" font-weight="700" fill="#e2e8f0">'+escaparHTML(mp.nombre)+'</text>':'<text x="'+mpCX+'" y="220" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.60">Sin Pokémon</text>';
+  var mpMot=mp&&mp.mote?'<text x="'+mpCX+'" y="237" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.65" font-style="italic">"'+escaparHTML(mp.mote)+'"</text>':'';
 
-  // Título pill
-  var titH=tit?26:0;
-  var titSVG=tit?'<rect x="108" y="98" rx="11" width="220" height="22" fill="'+cm+'18" stroke="'+cm+'40" stroke-width="1"/><text x="218" y="113" text-anchor="middle" font-size="10" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>':'';
+  // Columna izquierda — layout fijo sin variables dinámicas problemáticas
+  // Zona: nombre en y=92, título en y=114 (opcional), badge en y=138/114
+  var titSVG='', badgeY=0;
+  if(tit){
+    titSVG='<rect x="108" y="100" rx="10" width="210" height="19" fill="'+cm+'18" stroke="'+cm+'40" stroke-width="1"/>'
+           +'<text x="213" y="113" text-anchor="middle" font-size="9.5" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>';
+    badgeY=128;
+  } else {
+    badgeY=108;
+  }
 
-  var Y0=tit?130:108; // Y base para status badge
-
-  // Medallas como grupo de pips más grandes
+  // Medallas en fila simple
   var pips='';
   for(var pi=0;pi<8;pi++){
     var px=28+pi*28, filled=pi<numMed;
     pips+='<rect x="'+(px-7)+'" y="-7" width="14" height="14" rx="4" fill="'+(filled?cm:'#1a2234')+'" stroke="'+(filled?cm:'#2d3748')+'" stroke-width="1.5" opacity="'+(filled?'1':'0.5')+'"/>';
-    if(filled&&pi<numMed-1) pips+='<line x1="'+(px+7)+'" y1="0" x2="'+(px+21)+'" y2="0" stroke="'+cm+'" stroke-width="1.5" opacity="0.3"/>';
   }
 
-  var vidY=Y0+52, medLabelY=Y0+84, medY=Y0+100, sep=Y0+120, moneyY=sep+14, cardH=moneyY+82;
-  var totalH=Math.max(cardH+12, 350);
+  // Zona de stats: empieza en y=160 (fija)
+  // Vidas: label y=163, valor y=182
+  // Medallas: label y=200, pips y=216
+  // Separador: y=232
+  // Cards dinero/PF: y=240 → 300
+  var totalH=310;
 
-  return '<svg viewBox="0 0 630 '+totalH+'" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">'
-    // BG
+  return '<svg viewBox="0 0 640 '+totalH+'" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">'
     +'<defs>'
     +'<linearGradient id="cg0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
-    +'<linearGradient id="cg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="'+cm+'" stop-opacity="0.35"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0"/></linearGradient>'
-    +'<clipPath id="cpcard"><rect x="1" y="1" width="628" height="'+(totalH-2)+'" rx="18"/></clipPath>'
+    +'<linearGradient id="cg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="'+cm+'" stop-opacity="0.60"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0"/></linearGradient>'
+    +'<clipPath id="cpcard"><rect x="1" y="1" width="638" height="'+(totalH-2)+'" rx="16"/></clipPath>'
     +'</defs>'
-    +'<rect x="1" y="1" width="628" height="'+(totalH-2)+'" rx="18" fill="url(#cg0)" stroke="'+cm+'60" stroke-width="1.5"/>'
+    +'<rect x="1" y="1" width="638" height="'+(totalH-2)+'" rx="16" fill="url(#cg0)" stroke="'+cm+'55" stroke-width="1.5"/>'
     // Franja superior de color
-    +'<rect x="1" y="1" width="628" height="58" rx="18" fill="'+cm+'" opacity="0.10" clip-path="url(#cpcard)"/>'
-    +'<rect x="1" y="44" width="628" height="14" fill="'+cm+'" opacity="0.06"/>'
+    +'<rect x="1" y="1" width="638" height="54" rx="16" fill="'+cm+'" opacity="0.10" clip-path="url(#cpcard)"/>'
     // Barra izq decorativa
     +'<rect x="1" y="1" width="4" height="'+(totalH-2)+'" rx="2" fill="url(#cg1)"/>'
-    // Separador header
-    +'<line x1="1" y1="58" x2="629" y2="58" stroke="'+cm+'" stroke-opacity="0.18" stroke-width="1"/>'
+    // Divisor header
+    +'<line x1="1" y1="54" x2="639" y2="54" stroke="'+cm+'" stroke-opacity="0.15" stroke-width="1"/>'
     // Header: logo + fecha
-    +'<text x="22" y="30" font-size="11" font-weight="700" letter-spacing="3" fill="'+cm+'" opacity="0.9">SILPH CO.</text>'
-    +'<text x="22" y="47" font-size="8" fill="#3a4a5e" letter-spacing="1.5">TRAINER CARD</text>'
-    +'<text x="608" y="47" text-anchor="end" font-size="8" fill="#3a4a5e">'+fecha+'</text>'
-    // Avatar grande
-    +'<circle cx="60" cy="108" r="36" fill="'+cm+'14" stroke="'+cm+'" stroke-width="2"/>'
-    +'<circle cx="60" cy="108" r="28" fill="'+cm+'22"/>'
-    +'<text x="60" y="116" text-anchor="middle" font-size="20" font-weight="700" fill="'+cm+'">'+ini+'</text>'
-    // Nombre
-    +'<text x="108" y="93" font-size="20" font-weight="700" fill="#f1f5f9" letter-spacing="0.5">'+escaparHTML(id.toUpperCase())+'</text>'
-    // Título
-    +titSVG
-    // Badge estado
-    +'<rect x="108" y="'+(Y0-16)+'" width="170" height="20" rx="10" fill="'+lockeCol+'18" stroke="'+lockeCol+'50" stroke-width="1"/>'
-    +'<text x="193" y="'+(Y0-2)+'" text-anchor="middle" font-size="9" font-weight="700" fill="'+lockeCol+'">'+lockeIco+' '+lockeTxt+'</text>'
-    // Vidas
-    +'<text x="22" y="'+(vidY-16)+'" font-size="7.5" fill="#3a4a5e" letter-spacing="1.5">VIDAS</text>'
-    +'<text x="22" y="'+vidY+'" font-size="17" font-weight="700" fill="#f87171">'+vidas+' / '+vidasT+'</text>'
-    +'<text x="100" y="'+vidY+'" font-size="9" fill="#3a4a5e" font-weight="400">❤️</text>'
-    // Medallas
-    +'<text x="22" y="'+medLabelY+'" font-size="7.5" fill="#3a4a5e" letter-spacing="1.5">MEDALLAS · '+numMed+'/8</text>'
-    +'<g transform="translate(0,'+(medY)+')" style="transform:translate(0,'+medY+'px)">'+pips+'</g>'
-    // Separador
-    +'<line x1="16" y1="'+sep+'" x2="432" y2="'+sep+'" stroke="'+cm+'" stroke-opacity="0.10" stroke-width="1"/>'
-    // Dinero card
-    +'<rect x="16" y="'+moneyY+'" width="196" height="66" rx="10" fill="'+cm+'08" stroke="#10b98130" stroke-width="1"/>'
-    +'<text x="30" y="'+(moneyY+16)+'" font-size="7.5" fill="#3a4a5e" letter-spacing="1.5">POKEDÓLARES</text>'
-    +'<text x="30" y="'+(moneyY+48)+'" font-size="20" font-weight="700" fill="#10b981">'+dinero+'</text>'
-    +'<text x="30" y="'+(moneyY+62)+'" font-size="8" fill="#3a4a5e">P&#8360;</text>'
-    // PF card
-    +'<rect x="224" y="'+moneyY+'" width="196" height="66" rx="10" fill="'+cm+'08" stroke="#a855f730" stroke-width="1"/>'
-    +'<text x="238" y="'+(moneyY+16)+'" font-size="7.5" fill="#3a4a5e" letter-spacing="1.5">PUNTOS DE FAVOR</text>'
-    +'<text x="238" y="'+(moneyY+48)+'" font-size="20" font-weight="700" fill="#a855f7">'+pf+'</text>'
-    +'<text x="238" y="'+(moneyY+62)+'" font-size="8" fill="#3a4a5e">PF</text>'
-    // Pokémon panel derecho
-    +'<rect x="442" y="64" width="174" height="'+(totalH-76)+'" rx="12" fill="'+cm+'08" stroke="'+cm+'25" stroke-width="1"/>'
-    +'<line x1="442" y1="84" x2="616" y2="84" stroke="'+cm+'" stroke-opacity="0.12" stroke-width="1"/>'
-    +'<text x="529" y="78" text-anchor="middle" font-size="7.5" fill="#3a4a5e" letter-spacing="1.5">MEJOR POKÉMON</text>'
+    +'<text x="20" y="28" font-size="11" font-weight="700" letter-spacing="3" fill="'+cm+'" opacity="0.9">SILPH CO.</text>'
+    +'<text x="20" y="44" font-size="7.5" fill="#ffffff" opacity="0.60" letter-spacing="1.5">TRAINER CARD</text>'
+    +'<text x="620" y="44" text-anchor="end" font-size="7.5" fill="#ffffff" opacity="0.60">'+fecha+'</text>'
+    // Divisor vertical columna pokémon
+    +'<line x1="452" y1="62" x2="452" y2="'+(totalH-12)+'" stroke="'+cm+'" stroke-opacity="0.12" stroke-width="1"/>'
+    // Pokémon panel — label de cabecera
+    +'<text x="'+mpCX+'" y="80" text-anchor="middle" font-size="7" fill="#ffffff" opacity="0.60" letter-spacing="1.5">MEJOR POKÉMON</text>'
+    +'<line x1="462" y1="84" x2="630" y2="84" stroke="'+cm+'" stroke-opacity="0.08" stroke-width="1"/>'
     +mpImg+mpNom+mpMot
+    // Avatar
+    +'<circle cx="56" cy="108" r="34" fill="'+cm+'14" stroke="'+cm+'" stroke-width="2"/>'
+    +'<circle cx="56" cy="108" r="26" fill="'+cm+'22"/>'
+    +'<text x="56" y="116" text-anchor="middle" font-size="19" font-weight="700" fill="'+cm+'">'+ini+'</text>'
+    // Nombre — y fijo en 90
+    +'<text x="104" y="90" font-size="19" font-weight="700" fill="#f1f5f9" letter-spacing="0.4">'+escaparHTML(id.toUpperCase())+'</text>'
+    // Título (opcional) — y fijo en 113
+    +titSVG
+    // Badge estado — posición calculada según si hay título
+    +'<rect x="104" y="'+badgeY+'" width="162" height="18" rx="9" fill="'+lockeCol+'18" stroke="'+lockeCol+'50" stroke-width="1"/>'
+    +'<text x="185" y="'+(badgeY+12)+'" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+lockeCol+'">'+lockeIco+' '+lockeTxt+'</text>'
+    // Separador horizontal
+    +'<line x1="14" y1="158" x2="442" y2="158" stroke="'+cm+'" stroke-opacity="0.10" stroke-width="1"/>'
+    // Vidas — label y=170, valor y=188
+    +'<text x="20" y="170" font-size="7.5" fill="#ffffff" opacity="0.60" letter-spacing="1.5">VIDAS</text>'
+    +'<text x="20" y="188" font-size="16" font-weight="700" fill="#f87171">'+vidas+' / '+vidasT+' ❤️</text>'
+    // Medallas — label y=206, pips en y=220
+    +'<text x="20" y="206" font-size="7.5" fill="#ffffff" opacity="0.60" letter-spacing="1.5">MEDALLAS · '+numMed+'/8</text>'
+    +'<g transform="translate(20,220)">'+pips+'</g>'
+    // Separador
+    +'<line x1="14" y1="240" x2="442" y2="240" stroke="'+cm+'" stroke-opacity="0.08" stroke-width="1"/>'
+    // Cards dinero + PF — desde y=248
+    +'<rect x="16" y="250" width="195" height="50" rx="10" fill="'+cm+'08" stroke="#10b98130" stroke-width="1"/>'
+    +'<text x="28" y="264" font-size="7.5" fill="#ffffff" opacity="0.60" letter-spacing="1.5">POKEDÓLARES</text>'
+    +'<text x="28" y="291" font-size="18" font-weight="700" fill="#10b981">'+dinero+' P&#8360;</text>'
+    +'<rect x="222" y="250" width="195" height="50" rx="10" fill="'+cm+'08" stroke="#a855f730" stroke-width="1"/>'
+    +'<text x="234" y="264" font-size="7.5" fill="#ffffff" opacity="0.60" letter-spacing="1.5">PUNTOS DE FAVOR</text>'
+    +'<text x="234" y="291" font-size="18" font-weight="700" fill="#a855f7">'+pf+' PF</text>'
     +'</svg>';
 }
 
-/* ── LAYOUT VERTICAL — Estilo carnet Pokémon clásico (360×500) ── */
+/* ── LAYOUT VERTICAL (360×600) ──────────────────────────────────────
+   MAPA DE ZONAS (todas coordenadas absolutas, nada dinámico):
+
+    0 ──── HEADER (bg coloreado) ────────────────────────────
+   65 ──── AVATAR  cy=108  r=34  (ocupa 74–142) ────────────
+  142 ──── NOMBRE  text-y=158 ──────────────────────────────
+  160 ──── TÍTULO  rect y=164 h=20 (si existe, si no: vacío)
+  186 ──── BADGE   rect y=188 h=22 ────────────────────────
+  212 ──── gap ────────────────────────────────────────────
+  220 ──── PANEL POKÉMON rect y=220 h=160 ─────────────────
+              label  text-y=235
+              imagen x=110 y=244 w=140 h=100
+              nombre text-y=360
+              mote   text-y=376
+  382 ──── fin panel (220+160=380 + 2px borde) ────────────
+  394 ──── SEPARADOR line y=394 ───────────────────────────
+  408 ──── LABEL VIDAS   x=20   | LABEL MEDALLAS x=192 ──
+  426 ──── VALOR VIDAS   x=20   | PIPS g(192,428) ────────
+            (font-size 15, ocupa hasta ~442)
+            (pips 2 filas×18px+4gap = 40 → hasta ~468)
+  470 ──── SEPARADOR line y=470 ───────────────────────────
+  480 ──── CARD DINERO rect y=480 h=54 ────────────────────
+            label  text-y=494
+            valor  text-y=524   (font 16)
+  536 ──── fin cards ────────────────────────────────────
+  548 ──── PIE fecha text-y=562 ────────────────────────
+  570 ──── viewBox height ─────────────────────────────
+─────────────────────────────────────────────────────── */
 function _svgVertical(u, id, color, fondo, tit, lockeStatus){
   var fp=_carnetFondoParams(fondo), cm=color;
-  var lockeTxt  = lockeStatus==='ganado'?'GANADO':(lockeStatus==='perdido'?'PERDIDO':'EN CURSO');
-  var lockeIco  = lockeStatus==='ganado'?'🏆':(lockeStatus==='perdido'?'💀':'⚡');
-  var lockeCol  = lockeStatus==='ganado'?'#10b981':(lockeStatus==='perdido'?'#ef4444':'#f59e0b');
+  var lockeTxt = lockeStatus==='ganado'?'GANADO':(lockeStatus==='perdido'?'PERDIDO':'EN CURSO');
+  var lockeIco = lockeStatus==='ganado'?'🏆':(lockeStatus==='perdido'?'💀':'⚡');
+  var lockeCol = lockeStatus==='ganado'?'#10b981':(lockeStatus==='perdido'?'#ef4444':'#f59e0b');
   var numMed=u.numMedallas||0, dinero=(u.dinero||0).toLocaleString('es-ES'), pf=u.pf||0;
   var vidas=u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20), vidasT=u.vidasTotales||20;
   var fecha=new Date().toLocaleDateString('es-ES'), ini=escaparHTML(id.slice(0,2).toUpperCase());
   var mp=u.mejorPokemon||null;
 
-  var mpImg=mp&&mp.sprite
-    ?'<image href="'+mp.sprite+'" x="120" y="152" width="120" height="120" preserveAspectRatio="xMidYMid meet"/>'
-    :'<text x="180" y="218" text-anchor="middle" font-size="52" fill="'+cm+'18">?</text>';
-  var mpNom=mp&&mp.nombre?'<text x="180" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0">'+escaparHTML(mp.nombre)+'</text>':'<text x="180" y="278" text-anchor="middle" font-size="10" fill="#3a4a5e">Sin Pokémon</text>';
-  var mpMot=mp&&mp.mote?'<text x="180" y="298" text-anchor="middle" font-size="9" fill="#4a5f78" font-style="italic">"'+escaparHTML(mp.mote)+'"</text>':'';
-  var titSVG=tit?'<rect x="80" y="120" rx="10" width="200" height="19" fill="'+cm+'18" stroke="'+cm+'40" stroke-width="1"/><text x="180" y="133" text-anchor="middle" font-size="9.5" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>':'';
-  var statusY=tit?152:132;
+  // Título — ocupa zona y=164–184 (solo si existe; si no, espacio en blanco)
+  var titSVG = tit
+    ? '<rect x="90" y="164" rx="10" width="180" height="20" fill="'+cm+'18" stroke="'+cm+'40" stroke-width="1"/>'
+      +'<text x="180" y="177" text-anchor="middle" font-size="9" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>'
+    : '';
 
-  // Pips medallas 4x2
+  // Panel pokémon — coordenadas ABSOLUTAS, no relativas
+  // rect: y=220 h=160  →  termina en 380
+  // label: y=235  imagen: y=244 h=100 (termina 344)  nombre: y=360  mote: y=376
+  var mpImg = mp&&mp.sprite
+    ? '<image href="'+mp.sprite+'" x="110" y="244" width="140" height="100" preserveAspectRatio="xMidYMid meet"/>'
+    : '<text x="180" y="310" text-anchor="middle" font-size="44" fill="'+cm+'10">?</text>';
+  var mpNom = mp&&mp.nombre
+    ? '<text x="180" y="360" text-anchor="middle" font-size="12" font-weight="700" fill="#e2e8f0">'+escaparHTML(mp.nombre)+'</text>'
+    : '<text x="180" y="356" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.60">Sin Pokémon asignado</text>';
+  var mpMot = mp&&mp.mote
+    ? '<text x="180" y="376" text-anchor="middle" font-size="9" fill="#ffffff" opacity="0.65" font-style="italic">"'+escaparHTML(mp.mote)+'"</text>'
+    : '';
+
+  // Medallas 4×2 — pips de 18×18 con gap 4px — grupo translateado a (192,428)
+  // fila0: y=0–18  fila1: y=22–40 → el grupo mide 40px de alto, termina en 468
   var pipsMed='';
   for(var pi=0;pi<8;pi++){
-    var col2=pi%4, row2=Math.floor(pi/4), px2=32+col2*32, py2=row2*18;
-    var filled=pi<numMed;
-    pipsMed+='<rect x="'+(px2-8)+'" y="'+(py2-8)+'" width="16" height="16" rx="5" fill="'+(filled?cm:'#1a2234')+'" stroke="'+(filled?cm:'#2d3748')+'" stroke-width="1.5" opacity="'+(filled?'1':'0.5')+'"/>';
+    var col2=pi%4, row2=Math.floor(pi/4);
+    pipsMed+='<rect x="'+(col2*22)+'" y="'+(row2*22)+'" width="18" height="18" rx="5"'
+      +' fill="'+(pi<numMed?cm:'#1a2234')+'" stroke="'+(pi<numMed?cm:'#2d3748')+'"'
+      +' stroke-width="1.5" opacity="'+(pi<numMed?'1':'0.45')+'"/>';
   }
 
-  return '<svg viewBox="0 0 360 500" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">'
+  return '<svg viewBox="0 0 360 580" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">'
+    // ── DEFS ──
     +'<defs>'
-    +'<linearGradient id="cv0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
-    +'<linearGradient id="cv1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="'+cm+'" stop-opacity="0.4"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0"/></linearGradient>'
-    +'<clipPath id="cvclip"><rect x="1" y="1" width="358" height="498" rx="18"/></clipPath>'
+    +'<linearGradient id="cv0" x1="0" y1="0" x2="0" y2="1">'
+      +'<stop offset="0%" stop-color="'+fp.bg1+'"/>'
+      +'<stop offset="100%" stop-color="'+fp.bg2+'"/>'
+    +'</linearGradient>'
+    +'<linearGradient id="cv1" x1="0" y1="0" x2="1" y2="0">'
+      +'<stop offset="0%" stop-color="'+cm+'" stop-opacity="0.4"/>'
+      +'<stop offset="100%" stop-color="'+cm+'" stop-opacity="0"/>'
+    +'</linearGradient>'
+    +'<clipPath id="cvclip"><rect x="1" y="1" width="358" height="578" rx="18"/></clipPath>'
     +'</defs>'
-    +'<rect x="1" y="1" width="358" height="498" rx="18" fill="url(#cv0)" stroke="'+cm+'60" stroke-width="1.5"/>'
-    // Franja top
-    +'<rect x="1" y="1" width="358" height="56" rx="18" fill="'+cm+'" opacity="0.12" clip-path="url(#cvclip)"/>'
-    +'<line x1="1" y1="56" x2="359" y2="56" stroke="'+cm+'" stroke-opacity="0.2" stroke-width="1"/>'
-    // Barra top decorativa
+
+    // ── FONDO ──
+    +'<rect x="1" y="1" width="358" height="578" rx="18" fill="url(#cv0)" stroke="'+cm+'55" stroke-width="1.5"/>'
+    +'<rect x="1" y="1" width="358" height="65" rx="18" fill="'+cm+'" opacity="0.12" clip-path="url(#cvclip)"/>'
     +'<rect x="1" y="1" width="358" height="4" rx="2" fill="url(#cv1)"/>'
-    // Header centrado
-    +'<text x="180" y="28" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="3" fill="'+cm+'" opacity="0.9">SILPH CO.</text>'
-    +'<text x="180" y="45" text-anchor="middle" font-size="7.5" fill="#3a4a5e" letter-spacing="1.5">TRAINER CARD</text>'
-    // Avatar centrado grande
-    +'<circle cx="180" cy="98" r="34" fill="'+cm+'14" stroke="'+cm+'" stroke-width="2"/>'
-    +'<circle cx="180" cy="98" r="26" fill="'+cm+'22"/>'
-    +'<text x="180" y="106" text-anchor="middle" font-size="19" font-weight="700" fill="'+cm+'">'+ini+'</text>'
-    // Nombre centrado
-    +'<text x="180" y="118" text-anchor="middle" font-size="15" font-weight="700" fill="#f1f5f9" letter-spacing="0.5">'+escaparHTML(id.toUpperCase())+'</text>'
-    // Título
+    +'<line x1="1" y1="65" x2="359" y2="65" stroke="'+cm+'" stroke-opacity="0.18" stroke-width="1"/>'
+
+    // ── ZONA 1: HEADER  (y 0–65) ──
+    +'<text x="180" y="32" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="3" fill="'+cm+'" opacity="0.9">SILPH CO.</text>'
+    +'<text x="180" y="49" text-anchor="middle" font-size="7.5" fill="#ffffff" opacity="0.60" letter-spacing="1.5">TRAINER CARD</text>'
+
+    // ── ZONA 2: AVATAR  (cy=108, ocupa 74–142) ──
+    +'<circle cx="180" cy="108" r="34" fill="'+cm+'14" stroke="'+cm+'" stroke-width="2"/>'
+    +'<circle cx="180" cy="108" r="25" fill="'+cm+'22"/>'
+    +'<text x="180" y="116" text-anchor="middle" font-size="18" font-weight="700" fill="'+cm+'">'+ini+'</text>'
+
+    // ── ZONA 3: NOMBRE  (text-y=156) ──
+    +'<text x="180" y="156" text-anchor="middle" font-size="16" font-weight="700" fill="#f1f5f9" letter-spacing="0.5">'+escaparHTML(id.toUpperCase())+'</text>'
+
+    // ── ZONA 4: TÍTULO opcional (rect y=164–184) ──
     +titSVG
-    // Estado
-    +'<rect x="110" y="'+(statusY-14)+'" width="140" height="18" rx="9" fill="'+lockeCol+'18" stroke="'+lockeCol+'50" stroke-width="1"/>'
-    +'<text x="180" y="'+(statusY)+'+" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+lockeCol+'">'+lockeIco+' '+lockeTxt+'</text>'
-    +'<text x="180" y="'+statusY+'" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+lockeCol+'">'+lockeIco+' '+lockeTxt+'</text>'
-    // Panel pokémon
-    +'<rect x="110" y="'+(statusY+10)+'" width="140" height="140" rx="12" fill="'+cm+'08" stroke="'+cm+'25" stroke-width="1"/>'
-    +'<line x1="110" y1="'+(statusY+28)+'" x2="250" y2="'+(statusY+28)+'" stroke="'+cm+'" stroke-opacity="0.12" stroke-width="1"/>'
-    +'<text x="180" y="'+(statusY+22)+'" text-anchor="middle" font-size="7" fill="#3a4a5e" letter-spacing="1.5">MEJOR POKÉMON</text>'
-    +'<image href="'+(mp&&mp.sprite?mp.sprite:'')+'" x="120" y="'+(statusY+30)+'" width="120" height="100" preserveAspectRatio="xMidYMid meet" '+(mp&&mp.sprite?'':'style="display:none"')+'/>'
-    +(!(mp&&mp.sprite)?'<text x="180" y="'+(statusY+92)+'" text-anchor="middle" font-size="40" fill="'+cm+'18">?</text>':'')
-    +(mp&&mp.nombre?'<text x="180" y="'+(statusY+152)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#e2e8f0">'+escaparHTML(mp.nombre)+'</text>':'')
-    +(mp&&mp.mote?'<text x="180" y="'+(statusY+166)+'" text-anchor="middle" font-size="9" fill="#4a5f78" font-style="italic">"'+escaparHTML(mp.mote)+'"</text>':'')
-    // Línea separadora
-    +'<line x1="20" y1="'+(statusY+175)+'" x2="340" y2="'+(statusY+175)+'" stroke="'+cm+'" stroke-opacity="0.10" stroke-width="1"/>'
-    // Fila stats: vidas + medallas
-    +'<text x="22" y="'+(statusY+193)+'" font-size="7.5" fill="#3a4a5e" letter-spacing="1.5">VIDAS</text>'
-    +'<text x="22" y="'+(statusY+212)+'" font-size="16" font-weight="700" fill="#f87171">'+vidas+' / '+vidasT+'</text>'
-    +'<text x="190" y="'+(statusY+193)+'" font-size="7.5" fill="#3a4a5e" letter-spacing="1.5">MEDALLAS · '+numMed+'/8</text>'
-    +'<g transform="translate(0,'+(statusY+210)+')">'+pipsMed+'</g>'
-    // Dinero + PF
-    +'<rect x="14" y="'+(statusY+240)+'" width="156" height="56" rx="10" fill="'+cm+'08" stroke="#10b98130" stroke-width="1"/>'
-    +'<text x="26" y="'+(statusY+256)+'" font-size="7" fill="#3a4a5e" letter-spacing="1.5">POKEDÓLARES</text>'
-    +'<text x="26" y="'+(statusY+284)+'" font-size="17" font-weight="700" fill="#10b981">'+dinero+'</text>'
-    +'<rect x="184" y="'+(statusY+240)+'" width="156" height="56" rx="10" fill="'+cm+'08" stroke="#a855f730" stroke-width="1"/>'
-    +'<text x="196" y="'+(statusY+256)+'" font-size="7" fill="#3a4a5e" letter-spacing="1.5">PUNTOS DE FAVOR</text>'
-    +'<text x="196" y="'+(statusY+284)+'" font-size="17" font-weight="700" fill="#a855f7">'+pf+' PF</text>'
-    +'<text x="180" y="494" text-anchor="middle" font-size="7.5" fill="#2d3f5a">'+fecha+'</text>'
+
+    // ── ZONA 5: BADGE ESTADO  (rect y=188–210) ──
+    +'<rect x="100" y="188" width="160" height="22" rx="11" fill="'+lockeCol+'18" stroke="'+lockeCol+'50" stroke-width="1"/>'
+    +'<text x="180" y="203" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+lockeCol+'">'+lockeIco+' '+lockeTxt+'</text>'
+
+    // ── ZONA 6: PANEL POKÉMON  (rect y=220–380) ──
+    +'<rect x="30" y="220" width="300" height="160" rx="12" fill="'+cm+'07" stroke="'+cm+'22" stroke-width="1"/>'
+    +'<line x1="30" y1="242" x2="330" y2="242" stroke="'+cm+'" stroke-opacity="0.10" stroke-width="1"/>'
+    +'<text x="180" y="235" text-anchor="middle" font-size="7" fill="#ffffff" opacity="0.60" letter-spacing="1.5">MEJOR POKÉMON</text>'
+    +mpImg
+    +mpNom
+    +mpMot
+
+    // ── ZONA 7: SEPARADOR  (y=394) ──
+    +'<line x1="20" y1="394" x2="340" y2="394" stroke="'+cm+'" stroke-opacity="0.10" stroke-width="1"/>'
+
+    // ── ZONA 8: STATS  (labels y=408, valores y=426 | pips desde y=410) ──
+    +'<text x="20" y="408" font-size="7.5" fill="#ffffff" opacity="0.60" letter-spacing="1.5">VIDAS</text>'
+    +'<text x="20" y="428" font-size="16" font-weight="700" fill="#f87171">'+vidas+' / '+vidasT+' ❤️</text>'
+    +'<text x="192" y="408" font-size="7.5" fill="#ffffff" opacity="0.60" letter-spacing="1.5">MEDALLAS · '+numMed+'/8</text>'
+    +'<g transform="translate(192,414)">'+pipsMed+'</g>'
+
+    // ── ZONA 9: SEPARADOR  (y=468) ──
+    +'<line x1="20" y1="468" x2="340" y2="468" stroke="'+cm+'" stroke-opacity="0.08" stroke-width="1"/>'
+
+    // ── ZONA 10: CARDS DINERO + PF  (rect y=478 h=54 → termina 532) ──
+    +'<rect x="14" y="478" width="156" height="54" rx="10" fill="'+cm+'08" stroke="#10b98130" stroke-width="1"/>'
+    +'<text x="26" y="492" font-size="7" fill="#ffffff" opacity="0.60" letter-spacing="1.5">POKEDÓLARES</text>'
+    +'<text x="26" y="522" font-size="16" font-weight="700" fill="#10b981">'+dinero+' P&#8360;</text>'
+    +'<rect x="184" y="478" width="156" height="54" rx="10" fill="'+cm+'08" stroke="#a855f730" stroke-width="1"/>'
+    +'<text x="196" y="492" font-size="7" fill="#ffffff" opacity="0.60" letter-spacing="1.5">PUNTOS DE FAVOR</text>'
+    +'<text x="196" y="522" font-size="16" font-weight="700" fill="#a855f7">'+pf+' PF</text>'
+
+    // ── ZONA 11: PIE  (y=562) ──
+    +'<text x="180" y="566" text-anchor="middle" font-size="7.5" fill="#ffffff" opacity="0.40">'+fecha+'</text>'
+
     +'</svg>';
 }
 
-/* ── LAYOUT MINIMALISTA — Tarjeta compacta tipo ID (620×190) ── */
+/* ── LAYOUT MINIMALISTA — Tarjeta ID horizontal compacta (620×220) ──
+   Zonas fijas:
+   0–220  → card completa
+   Izq:   avatar centrado en cx=52 cy=110
+   Dcha:  columna x=108
+     y=32  → SILPH CO. (label)
+     y=46  → TRAINER CARD (sub-label)
+     y=72  → nombre jugador
+     y=88  → título (opcional)
+     y=106 → badge estado
+     ── separador y=124 ──
+     y=138 → labels stats
+     y=158 → valores stats (vidas | medallas | dinero | PF)
+     y=196 → fecha
+── */
 function _svgMinimalista(u, id, color, fondo, tit, lockeStatus){
   var fp=_carnetFondoParams(fondo), cm=color;
   var lockeTxt  = lockeStatus==='ganado'?'GANADO':(lockeStatus==='perdido'?'PERDIDO':'EN CURSO');
@@ -4432,53 +4513,64 @@ function _svgMinimalista(u, id, color, fondo, tit, lockeStatus){
   var vidas=u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20), vidasT=u.vidasTotales||20;
   var fecha=new Date().toLocaleDateString('es-ES'), ini=escaparHTML(id.slice(0,2).toUpperCase());
 
+  // Título (opcional) — ocupa y=88-100, empuja badge si está presente
   var titSVG=tit
-    ?'<rect x="110" y="84" rx="9" width="195" height="17" fill="'+cm+'18" stroke="'+cm+'40" stroke-width="1"/>'
-     +'<text x="207" y="96" text-anchor="middle" font-size="9" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>'
+    ?'<rect x="108" y="88" rx="9" width="190" height="16" fill="'+cm+'18" stroke="'+cm+'40" stroke-width="1"/>'
+     +'<text x="203" y="99" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+cm+'">'+escaparHTML(tit.icon+' '+tit.nombre)+'</text>'
     :'';
-  var statusY=tit?108:88;
+  // Badge: y=110 sin título / y=110 con título (el título está en 88-104, badge en 110 de todas formas — las filas no se pisan)
+  var badgeY = tit ? 110 : 110; // mismo sitio: la fila de label+badge siempre en y=110
 
+  // Medallas — 8 pips en línea, espaciado 18px
   var pips='';
   for(var pi=0;pi<8;pi++){
-    pips+='<rect x="'+(pi*20-6)+'" y="-6" width="12" height="12" rx="3" fill="'+(pi<numMed?cm:'#1a2234')+'" stroke="'+(pi<numMed?cm:'#2d3748')+'" stroke-width="1.2" opacity="'+(pi<numMed?'1':'0.45')+'"/>';
+    pips+='<rect x="'+(pi*19)+'" y="0" width="14" height="14" rx="4" fill="'+(pi<numMed?cm:'#1a2234')+'" stroke="'+(pi<numMed?cm:'#2d3748')+'" stroke-width="1.2" opacity="'+(pi<numMed?'1':'0.45')+'"/>';
   }
 
-  return '<svg viewBox="0 0 620 190" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">'
+  return '<svg viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">'
     +'<defs>'
     +'<linearGradient id="cm0" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="'+fp.bg1+'"/><stop offset="100%" stop-color="'+fp.bg2+'"/></linearGradient>'
-    +'<linearGradient id="cm1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="'+cm+'" stop-opacity="0.5"/><stop offset="60%" stop-color="'+cm+'" stop-opacity="0.08"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0"/></linearGradient>'
-    +'<clipPath id="cmclip"><rect x="1" y="1" width="618" height="188" rx="14"/></clipPath>'
+    +'<linearGradient id="cm1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="'+cm+'" stop-opacity="0.65"/><stop offset="55%" stop-color="'+cm+'" stop-opacity="0.06"/><stop offset="100%" stop-color="'+cm+'" stop-opacity="0"/></linearGradient>'
+    +'<clipPath id="cmclip"><rect x="1" y="1" width="618" height="218" rx="14"/></clipPath>'
     +'</defs>'
-    +'<rect x="1" y="1" width="618" height="188" rx="14" fill="url(#cm0)" stroke="'+cm+'55" stroke-width="1.5"/>'
-    // Franja izquierda de color (efecto "portada")
-    +'<rect x="1" y="1" width="90" height="188" rx="14" fill="'+cm+'" opacity="0.12" clip-path="url(#cmclip)"/>'
-    +'<rect x="1" y="1" width="618" height="188" rx="14" fill="url(#cm1)" clip-path="url(#cmclip)" opacity="0.6"/>'
-    // Borde izq sólido
-    +'<rect x="1" y="1" width="5" height="188" rx="3" fill="'+cm+'" opacity="0.9"/>'
-    // Avatar en zona izquierda
-    +'<circle cx="47" cy="95" r="30" fill="'+cm+'20" stroke="'+cm+'" stroke-width="1.5"/>'
-    +'<circle cx="47" cy="95" r="22" fill="'+cm+'28"/>'
-    +'<text x="47" y="103" text-anchor="middle" font-size="17" font-weight="700" fill="'+cm+'">'+ini+'</text>'
-    // Info
-    +'<text x="108" y="72" font-size="18" font-weight="700" fill="#f1f5f9" letter-spacing="0.3">'+escaparHTML(id.toUpperCase())+'</text>'
-    +'<text x="108" y="83" font-size="7.5" fill="#3a4a5e" letter-spacing="2">SILPH CO. · TRAINER CARD</text>'
+    +'<rect x="1" y="1" width="618" height="218" rx="14" fill="url(#cm0)" stroke="'+cm+'55" stroke-width="1.5"/>'
+    // Zona izquierda coloreada + gradiente
+    +'<rect x="1" y="1" width="94" height="218" rx="14" fill="'+cm+'" opacity="0.11" clip-path="url(#cmclip)"/>'
+    +'<rect x="1" y="1" width="618" height="218" fill="url(#cm1)" clip-path="url(#cmclip)" opacity="0.55"/>'
+    // Borde izq sólido (acento color)
+    +'<rect x="1" y="1" width="5" height="218" rx="3" fill="'+cm+'" opacity="0.85"/>'
+    // Divisor vertical
+    +'<line x1="96" y1="14" x2="96" y2="206" stroke="'+cm+'" stroke-opacity="0.15" stroke-width="1"/>'
+    // ── AVATAR ── cx=52 cy=110
+    +'<circle cx="52" cy="110" r="30" fill="'+cm+'1a" stroke="'+cm+'" stroke-width="1.5"/>'
+    +'<circle cx="52" cy="110" r="22" fill="'+cm+'26"/>'
+    +'<text x="52" y="118" text-anchor="middle" font-size="16" font-weight="700" fill="'+cm+'">'+ini+'</text>'
+    // ── BLOQUE INFO DERECHO ──
+    // Sub-label superior
+    +'<text x="108" y="32" font-size="7" fill="#ffffff" opacity="0.40" letter-spacing="2">SILPH CO. · TRAINER CARD</text>'
+    // Nombre
+    +'<text x="108" y="60" font-size="20" font-weight="700" fill="#f1f5f9" letter-spacing="0.4">'+escaparHTML(id.toUpperCase())+'</text>'
+    // Línea bajo nombre
+    +'<line x1="108" y1="68" x2="500" y2="68" stroke="'+cm+'" stroke-opacity="0.12" stroke-width="1"/>'
+    // Título (opcional) — y=88-104
     +titSVG
-    // Badge estado
-    +'<rect x="108" y="'+(statusY-13)+'" width="148" height="17" rx="8.5" fill="'+lockeCol+'18" stroke="'+lockeCol+'50" stroke-width="1"/>'
-    +'<text x="182" y="'+statusY+'" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+lockeCol+'">'+lockeIco+' '+lockeTxt+'</text>'
-    // Separador
-    +'<line x1="108" y1="124" x2="610" y2="124" stroke="'+cm+'" stroke-opacity="0.10" stroke-width="1"/>'
-    // Stats fila
-    +'<text x="108" y="138" font-size="7" fill="#3a4a5e" letter-spacing="1.5">VIDAS</text>'
-    +'<text x="108" y="155" font-size="15" font-weight="700" fill="#f87171">'+vidas+'/'+vidasT+'</text>'
-    +'<text x="185" y="138" font-size="7" fill="#3a4a5e" letter-spacing="1.5">MEDALLAS · '+numMed+'/8</text>'
-    +'<g transform="translate(185,153)">'+pips+'</g>'
-    +'<text x="390" y="138" font-size="7" fill="#3a4a5e" letter-spacing="1.5">POKEDÓLARES</text>'
-    +'<text x="390" y="155" font-size="15" font-weight="700" fill="#10b981">'+dinero+' P&#8360;</text>'
-    +'<text x="510" y="138" font-size="7" fill="#3a4a5e" letter-spacing="1.5">PF</text>'
-    +'<text x="510" y="155" font-size="15" font-weight="700" fill="#a855f7">'+pf+'</text>'
-    // Fecha pie
-    +'<text x="610" y="182" text-anchor="end" font-size="7" fill="#2d3f5a">'+fecha+'</text>'
+    // Badge estado — SIEMPRE en y=110, independiente del título
+    +'<rect x="108" y="112" width="150" height="17" rx="8.5" fill="'+lockeCol+'18" stroke="'+lockeCol+'50" stroke-width="1"/>'
+    +'<text x="183" y="124" text-anchor="middle" font-size="8.5" font-weight="700" fill="'+lockeCol+'">'+lockeIco+' '+lockeTxt+'</text>'
+    // ── SEPARADOR ── y=140
+    +'<line x1="108" y1="140" x2="610" y2="140" stroke="'+cm+'" stroke-opacity="0.10" stroke-width="1"/>'
+    // ── LABELS STATS ── y=154
+    +'<text x="108" y="154" font-size="7" fill="#ffffff" opacity="0.60" letter-spacing="1.5">VIDAS</text>'
+    +'<text x="192" y="154" font-size="7" fill="#ffffff" opacity="0.60" letter-spacing="1.5">MEDALLAS · '+numMed+'/8</text>'
+    +'<text x="390" y="154" font-size="7" fill="#ffffff" opacity="0.60" letter-spacing="1.5">POKEDÓLARES</text>'
+    +'<text x="530" y="154" font-size="7" fill="#ffffff" opacity="0.60" letter-spacing="1.5">PF</text>'
+    // ── VALORES STATS ── y=174
+    +'<text x="108" y="174" font-size="15" font-weight="700" fill="#f87171">'+vidas+'/'+vidasT+' ❤️</text>'
+    +'<g transform="translate(192,162)">'+pips+'</g>'
+    +'<text x="390" y="174" font-size="14" font-weight="700" fill="#10b981">'+dinero+' P&#8360;</text>'
+    +'<text x="530" y="174" font-size="15" font-weight="700" fill="#a855f7">'+pf+'</text>'
+    // ── FECHA ──
+    +'<text x="610" y="210" text-anchor="end" font-size="7" fill="#ffffff" opacity="0.40">'+fecha+'</text>'
     +'</svg>';
 }
 
