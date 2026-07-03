@@ -357,6 +357,7 @@ body.tema-campeon{
   .gen-field-full{grid-column:1/-1}
   .gen-btns-grid{grid-template-columns:1fr}
   .gen-btn{padding:12px}
+  #hof-campeones-grid{grid-template-columns:1fr!important;overflow-x:unset!important}
 }
 /* ═══════════════════════════════════════════════
    MEJORAS V2 — MERCADO POKE
@@ -956,7 +957,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <!-- CAMPEONES -->
       <div class="card" style="margin-bottom:22px">
         <div class="card-title" style="color:var(--amarillo)">🏆 Campeones del Locke</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="hof-campeones-grid">
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(100px,1fr));gap:12px;overflow-x:auto;-webkit-overflow-scrolling:touch" id="hof-campeones-grid">
           <div class="medallas-card" style="text-align:center;padding:18px 12px;border-color:rgba(245,158,11,.25)">
             <div style="font-size:36px;margin-bottom:8px">🎖️</div>
             <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--neon-packs);margin-bottom:8px">Campeón Torneos</div>
