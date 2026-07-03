@@ -1344,7 +1344,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
                 <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="EggLocke" checked> 🥚 EggLocke</label>
                 <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Randomlocke"> 🎲 Randomlocke</label>
                 <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Shinylocke"> ✨ Shinylocke</label>
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="DualLinks"> ⚡ DualLinks</label>
+                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="DualLinks"> ⚡ Soul-Link</label>
               </div>
             </div>
 
@@ -2863,7 +2863,7 @@ var NL_TIPOS = {
   'EggLocke':    {icon:'🥚', color:'#fbbf24', bg:'rgba(251,191,36,.06)',  tema:'egglocke'},
   'Randomlocke': {icon:'🎲', color:'#34d399', bg:'rgba(52,211,153,.06)', tema:'randomlocke'},
   'Shinylocke':  {icon:'✨', color:'#c084fc', bg:'rgba(192,132,252,.06)', tema:'shinylocke'},
-  'DualLinks':   {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks'},
+  'DualLinks':   {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks', label:'Soul-Link'},
 };
 
 var _nlJuegoSel = null;
@@ -3059,14 +3059,14 @@ function renderizarBannerLocke(){
   var sub = banner.closest('.page-section');
   if(sub){
     var subEl = sub.querySelector('.section-subtitle');
-    if(subEl) subEl.textContent = cfg.icon+' '+la.tipo+' · '+la.juegoIcon+' '+la.juego;
+    if(subEl) subEl.textContent = cfg.icon+' '+(cfg.label||la.tipo)+' · '+la.juegoIcon+' '+la.juego;
   }
   var elIcon  = document.getElementById('hof-locke-icon');
   var elNombre= document.getElementById('hof-locke-nombre');
   var elJuego = document.getElementById('hof-locke-juego');
   var elNum   = document.getElementById('hof-locke-num');
   if(elIcon)   elIcon.textContent  = cfg.icon+' '+la.juegoIcon;
-  if(elNombre) elNombre.textContent= la.tipo;
+  if(elNombre) elNombre.textContent= cfg.label||la.tipo;
   if(elNombre) elNombre.style.color= cfg.color;
   if(elJuego)  elJuego.textContent = la.juegoIcon+' '+la.juego+' ('+la.juegoGen+')';
   if(elNum)    elNum.textContent   = 'Locke #'+(la.num||1);
@@ -3086,7 +3086,7 @@ function actualizarHeroStrip(){
   var elTipo = document.getElementById('hero-tipo');
   var elJuego= document.getElementById('hero-juego');
   if(elIcon) elIcon.textContent = cfg.icon+' '+(la.juegoIcon||'🎮');
-  if(elTipo) elTipo.textContent = la.tipo;
+  if(elTipo) elTipo.textContent = cfg.label||la.tipo;
   if(elTipo) elTipo.style.color = cfg.color;
   if(elJuego) elJuego.textContent = (la.juego||'—')+(la.juegoGen?' ('+la.juegoGen+')':'');
 
@@ -3158,7 +3158,7 @@ function renderizarHistorialLockes(){
       +'<div style="padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)">'
         +'<span style="font-size:26px">'+cfg.icon+' '+escaparHTML(e.juegoIcon)+'</span>'
         +'<div style="flex:1">'
-          +'<div style="font-family:var(--font-display);font-size:13px;font-weight:900;color:'+cfg.color+'">'+escaparHTML(e.tipo)+'</div>'
+          +'<div style="font-family:var(--font-display);font-size:13px;font-weight:900;color:'+cfg.color+'">'+escaparHTML(cfg.label||e.tipo)+'</div>'
           +'<div style="font-size:11px;color:var(--txt-secondary);font-family:var(--font-display)">'+escaparHTML(e.juegoIcon+' '+e.juego)+' <span style="color:var(--txt-muted);font-size:9px">('+escaparHTML(e.juegoGen)+')</span></div>'
         +'</div>'
         +'<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted)">Locke #'+e.num+'</div>'
