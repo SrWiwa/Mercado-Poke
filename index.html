@@ -994,12 +994,14 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
       <!-- HISTORIAL DE LOCKES -->
       <div id="hof-historial-wrap" style="display:none">
-        <div style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-muted);margin-bottom:14px;display:flex;align-items:center;gap:8px">
-          <span style="flex:1;height:1px;background:var(--borde);display:block"></span>
-          📜 Historial de Lockes
-          <span style="flex:1;height:1px;background:var(--borde);display:block"></span>
+        <div class="card" style="margin-bottom:0;border-color:rgba(99,102,241,.25);background:linear-gradient(135deg,rgba(99,102,241,.04),transparent)">
+          <div class="card-title" style="color:#818cf8;display:flex;align-items:center;gap:10px">
+            📜 Museo de Lockes Anteriores
+            <span id="hof-historial-count" style="font-size:10px;font-family:var(--font-body);font-weight:400;color:var(--txt-muted);background:var(--bg-elevated);padding:2px 8px;border-radius:20px"></span>
+          </div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:16px">Campeones y Pokémon de cada locke completado.</div>
+          <div id="hof-historial-list" style="display:flex;flex-direction:column;gap:14px"></div>
         </div>
-        <div id="hof-historial-list" style="display:flex;flex-direction:column;gap:18px"></div>
       </div>
     </section>
     <!-- MODO DIOS -->
@@ -3002,27 +3004,27 @@ function crearTrackerDesdeRutas(rutas){
 
 function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas, modalidades){
   modalidades = modalidades || [tipo];
-  // ── ARCHIVAR el locke actual ANTES de borrar ──
   var numActual = (baseDatos.lockeActivo && baseDatos.lockeActivo.num) || 0;
-  if(numActual > 0){
-    if(!baseDatos.historialLockes) baseDatos.historialLockes = {};
-    var entrada = {
-      num:      numActual,
-      tipo:     baseDatos.lockeActivo.tipo || '?',
-      modalidades: baseDatos.lockeActivo.modalidades || [],
-      juego:    baseDatos.lockeActivo.juego || '?',
-      juegoIcon:baseDatos.lockeActivo.juegoIcon || '🎮',
-      juegoGen: baseDatos.lockeActivo.juegoGen || '',
-      campeones: JSON.parse(JSON.stringify(baseDatos.campeones || {})),
-      pokemon:   {}
-    };
-    // Archivar mejorPokemon de cada jugador
-    Object.keys(baseDatos.jugadores || {}).forEach(function(id){
-      var mp = baseDatos.jugadores[id].mejorPokemon;
-      if(mp && mp.nombre) entrada.pokemon[id] = JSON.parse(JSON.stringify(mp));
-    });
-    baseDatos.historialLockes['locke'+numActual] = entrada;
-  }
+  var numNuevo  = numActual + 1;
+
+  // ── ARCHIVAR el locke actual SIEMPRE (incluso si es el primero) ──
+  if(!baseDatos.historialLockes) baseDatos.historialLockes = {};
+  var entrada = {
+    num:        numNuevo,   // número que identifica este locke en el museo
+    tipo:       (baseDatos.lockeActivo && baseDatos.lockeActivo.tipo)      || 'EggLocke',
+    modalidades:(baseDatos.lockeActivo && baseDatos.lockeActivo.modalidades)|| [],
+    juego:      (baseDatos.lockeActivo && baseDatos.lockeActivo.juego)     || juego.n,
+    juegoIcon:  (baseDatos.lockeActivo && baseDatos.lockeActivo.juegoIcon) || juego.icon,
+    juegoGen:   (baseDatos.lockeActivo && baseDatos.lockeActivo.juegoGen)  || juego.gen,
+    campeones:  JSON.parse(JSON.stringify(baseDatos.campeones || {})),
+    pokemon:    {}
+  };
+  Object.keys(baseDatos.jugadores || {}).forEach(function(id){
+    var mp = baseDatos.jugadores[id].mejorPokemon;
+    if(mp && mp.nombre) entrada.pokemon[id] = JSON.parse(JSON.stringify(mp));
+  });
+  // Usar timestamp como desempate para la clave, así nunca hay colisión
+  baseDatos.historialLockes['locke' + Date.now()] = entrada;
 
   // Resetear todos los jugadores
   Object.keys(baseDatos.jugadores||{}).forEach(function(id){
@@ -3033,13 +3035,18 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas, modalidades){
     u.vidasTotales = vidasIni;
     u.inventario   = [];
     u.muertes      = [];
-    u.sacrificios  = 0;
-    u.diario       = [];
+    u.sacrificios  = [];
+    u.diarioLogs   = [{timestamp:'Inicio', texto:'Nuevo Locke iniciado.'}];
     u.comprasHoy   = {};
     u.mejorPokemon = null;
+    u.cementerio   = [];
     u.tracker      = crearTrackerDesdeRutas(rutas);
-    // NO tocar: insignias, torneos
+    // NO tocar: numMedallas, tipoMedallas, torneos, lockeStatus
+    u.lockeStatus  = 'jugando';
   });
+
+  // Limpiar feed de actividad global
+  baseDatos.actividadGlobal = [];
   // Guardar info del locke activo
   if(!baseDatos.lockeActivo) baseDatos.lockeActivo = {};
   baseDatos.lockeActivo.tipo   = tipo;
@@ -3048,7 +3055,7 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas, modalidades){
   baseDatos.lockeActivo.juegoIcon = juego.icon;
   baseDatos.lockeActivo.juegoColor= juego.color;
   baseDatos.lockeActivo.juegoGen  = juego.gen;
-  baseDatos.lockeActivo.num    = numActual + 1;
+  baseDatos.lockeActivo.num    = numNuevo;
   baseDatos.lockeActivo.rutasDefinidas = (rutas||[]).slice();
   // Limpiar campeones del locke anterior
   baseDatos.campeones = {};
@@ -3146,66 +3153,77 @@ function renderizarHistorialLockes(){
   var hist = baseDatos && baseDatos.historialLockes;
   if(!hist || !Object.keys(hist).length){ wrap.style.display='none'; return; }
   wrap.style.display = 'block';
+  var countEl = document.getElementById('hof-historial-count');
+  if(countEl) countEl.textContent = Object.keys(hist).length + (Object.keys(hist).length === 1 ? ' locke' : ' lockes');
 
-  // Ordenar por num descendente (más reciente primero)
   var entradas = Object.values(hist).sort(function(a,b){ return b.num - a.num; });
-  var color = window.colorParaJugador || function(){ return 'var(--neon-packs)'; };
+  var colorFn = window.colorParaJugador || function(){ return 'var(--neon-packs)'; };
 
-  list.innerHTML = entradas.map(function(e){
-    var cfg = NL_TIPOS[e.tipo] || {icon:'🎮', color:'var(--neon-packs)', bg:'rgba(99,102,241,.06)'};
-    // Campeones
+  list.innerHTML = entradas.map(function(e, idx){
+    var tipoKey = e.tipo || 'EggLocke';
+    var cfg = NL_TIPOS[tipoKey] || {icon:'🎮', color:'#6366f1', bg:'rgba(99,102,241,.06)', label: tipoKey};
+    var mods = (e.modalidades && e.modalidades.length) ? e.modalidades : [tipoKey];
+    var modLabel = mods.map(function(m){ return (NL_TIPOS[m] && NL_TIPOS[m].label) || m; }).join(' + ');
+    var numDisplay = e.num || (entradas.length - idx);
+
     var c = e.campeones || {};
-    var campHTML = [
-      {lbl:'Campeón Torneos', ico:'🎖️', val:c.torneos,     col:'var(--neon-packs)'},
-      {lbl:'Campeón Por Vidas',ico:'❤️', val:Array.isArray(c.vidas)?c.vidas.join(', '):c.vidas,      col:'#f87171'},
-      {lbl:'Campeón Finalísima',ico:'👑',val:c['finalísima']||c.finalísima, col:'var(--amarillo)'}
-    ].filter(function(x){ return x.val; }).map(function(x){
-      return '<div style="text-align:center;padding:8px 6px">'
-        +'<div style="font-size:18px">'+x.ico+'</div>'
-        +'<div style="font-size:8px;color:'+x.col+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin:2px 0">'+x.lbl+'</div>'
-        +'<div style="font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--blanco)">'+escaparHTML(x.val.toUpperCase())+'</div>'
-        +'</div>';
-    }).join('');
-    if(!campHTML) campHTML = '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px">Sin campeones registrados</div>';
+    var campRows = [
+      {lbl:'Campeón Torneos',   ico:'🎖️', val:c.torneos,                                         col:'var(--neon-packs)'},
+      {lbl:'Campeón Por Vidas', ico:'❤️', val:Array.isArray(c.vidas)?c.vidas.join(', '):c.vidas, col:'#f87171'},
+      {lbl:'Campeón Finalísima',ico:'👑', val:c['finalísima']||c.finalísima,                     col:'var(--amarillo)'}
+    ].filter(function(x){ return x.val; });
 
-    // Pokémon
+    var campHTML = campRows.length
+      ? campRows.map(function(x){
+          return '<div style="text-align:center;padding:8px 6px">'
+            +'<div style="font-size:18px">'+x.ico+'</div>'
+            +'<div style="font-size:8px;color:'+x.col+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin:2px 0">'+x.lbl+'</div>'
+            +'<div style="font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--blanco)">'+escaparHTML(String(x.val).toUpperCase())+'</div>'
+            +'</div>';
+        }).join('')
+      : '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px">Sin campeones registrados</div>';
+
     var pokes = e.pokemon || {};
     var pokesKeys = Object.keys(pokes);
-    var pokesHTML = pokesKeys.length ? pokesKeys.map(function(id){
-      var mp = pokes[id];
-      var c2 = color(id);
-      var imgH = mp.sprite
-        ? '<img src="'+mp.sprite+'" alt="" style="width:52px;height:52px;image-rendering:pixelated;display:block;margin:0 auto">'
-        : '<div style="font-size:28px;text-align:center;opacity:.3">❓</div>';
-      var moteH = mp.mote ? '<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700">&ldquo;'+escaparHTML(mp.mote)+'&rdquo;</div>' : '';
-      return '<div style="text-align:center;padding:6px 4px">'
-        +imgH
-        +'<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:2px">'+escaparHTML(id.toUpperCase())+'</div>'
-        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:900;color:var(--blanco)">'+escaparHTML(mp.nombre)+'</div>'
-        +moteH
-        +'</div>';
-    }).join('') : '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px">Sin Pokémon registrados</div>';
+    var pokesHTML = pokesKeys.length
+      ? pokesKeys.map(function(id){
+          var mp = pokes[id];
+          var c2 = colorFn(id);
+          var imgH = mp.sprite
+            ? '<img src="'+mp.sprite+'" alt="" style="width:52px;height:52px;image-rendering:pixelated;display:block;margin:0 auto">'
+            : '<div style="font-size:28px;text-align:center;opacity:.3">❓</div>';
+          var moteH = mp.mote ? '<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700">&ldquo;'+escaparHTML(mp.mote)+'&rdquo;</div>' : '';
+          return '<div style="text-align:center;padding:6px 4px">'
+            +imgH
+            +'<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:2px">'+escaparHTML(id.toUpperCase())+'</div>'
+            +'<div style="font-family:var(--font-display);font-size:10px;font-weight:900;color:var(--blanco)">'+escaparHTML(mp.nombre)+'</div>'
+            +moteH
+            +'</div>';
+        }).join('')
+      : '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px">Sin Pokémon registrados</div>';
 
-    return '<div style="border:1px solid '+cfg.color.replace('var(--neon-packs)','rgba(99,102,241,.3)')+';border-radius:var(--r-xl);overflow:hidden;background:'+cfg.bg+'">'
-      // Cabecera del locke archivado
+    var cfgColor = cfg.color || '#6366f1';
+    var borderCol = cfgColor.indexOf('var(') === 0 ? 'rgba(99,102,241,.3)' : cfgColor;
+    var juegoIcon = e.juegoIcon || '🎮';
+    var juegoTxt = (e.juego && e.juego !== '?') ? escaparHTML(juegoIcon+' '+e.juego) : '—';
+    var genTxt = e.juegoGen ? ' <span style="color:var(--txt-muted);font-size:9px">('+escaparHTML(e.juegoGen)+')</span>' : '';
+
+    return '<div style="border:1px solid '+borderCol+';border-radius:var(--r-xl);overflow:hidden;background:'+cfg.bg+'">'
       +'<div style="padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)">'
-        +'<span style="font-size:26px">'+cfg.icon+' '+escaparHTML(e.juegoIcon)+'</span>'
+        +'<span style="font-size:26px">'+cfg.icon+' '+escaparHTML(juegoIcon)+'</span>'
         +'<div style="flex:1">'
-          +'<div style="font-family:var(--font-display);font-size:13px;font-weight:900;color:'+cfg.color+'">'+escaparHTML(cfg.label||e.tipo)+'</div>'
-          +'<div style="font-size:11px;color:var(--txt-secondary);font-family:var(--font-display)">'+escaparHTML(e.juegoIcon+' '+e.juego)+' <span style="color:var(--txt-muted);font-size:9px">('+escaparHTML(e.juegoGen)+')</span></div>'
+          +'<div style="font-family:var(--font-display);font-size:13px;font-weight:900;color:'+cfgColor+'">'+escaparHTML(modLabel)+'</div>'
+          +'<div style="font-size:11px;color:var(--txt-secondary);font-family:var(--font-display)">'+juegoTxt+genTxt+'</div>'
         +'</div>'
-        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted)">Locke #'+e.num+'</div>'
+        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted)">Locke #'+numDisplay+'</div>'
       +'</div>'
-      // Campeones
       +'<div style="padding:10px 16px 4px;font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px">🏆 Campeones</div>'
       +'<div style="display:flex;flex-wrap:wrap;gap:0;padding:0 10px 8px">'+campHTML+'</div>'
-      // Pokémon
       +'<div style="padding:4px 16px 4px;font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px;border-top:1px solid rgba(255,255,255,.05)">⭐ Mejores Pokémon</div>'
       +'<div style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 12px 12px">'+pokesHTML+'</div>'
       +'</div>';
   }).join('');
 }
-
 /* ── Campeones Por Vidas — selección dinámica ── */
 window.agregarGanadorVidas = function(){
   agregarGanadorVidasConValor('');
@@ -5266,4 +5284,4 @@ window.renderizarDuelosPvP = function(){
 };
 </script>
 </body>
-</html>
+      </html>
