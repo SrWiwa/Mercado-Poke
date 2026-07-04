@@ -259,12 +259,19 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .nl-radio-label{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r-md);border:1px solid var(--borde);cursor:pointer;font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--txt-secondary);transition:all .15s}
 .nl-radio-label:has(input:checked){border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.08);color:var(--blanco)}
 .nl-radio-label input{accent-color:#f87171}
-.nl-ruta-row{display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-family:var(--font-display)}
-.nl-ruta-row .nl-ruta-orden{color:var(--txt-muted);font-weight:900;min-width:18px}
-.nl-ruta-row .nl-ruta-nombre{flex:1;color:var(--txt-primary);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.nl-ruta-row .nl-ruta-del{cursor:pointer;color:var(--neon-ilegal);font-size:13px;flex-shrink:0;background:none;border:none;padding:2px 4px}
-.nl-ruta-row .nl-ruta-up,.nl-ruta-row .nl-ruta-down{cursor:pointer;color:var(--txt-muted);font-size:10px;flex-shrink:0;background:none;border:none;padding:0 2px;line-height:1}
+.nl-ruta-row{display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-sm);padding:8px 12px;font-size:12px;font-family:var(--font-display)}
+.nl-ruta-row .nl-ruta-orden{color:var(--txt-muted);font-weight:900;min-width:20px}
+.nl-ruta-row .nl-ruta-nombre{flex:1;color:var(--blanco);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nl-ruta-row .nl-ruta-del{cursor:pointer;color:var(--neon-ilegal);font-size:14px;flex-shrink:0;background:none;border:none;padding:2px 6px}
+.nl-ruta-row .nl-ruta-up,.nl-ruta-row .nl-ruta-down{cursor:pointer;color:var(--txt-muted);font-size:11px;flex-shrink:0;background:none;border:none;padding:0 3px;line-height:1}
 .nl-ruta-row .nl-ruta-up:hover,.nl-ruta-row .nl-ruta-down:hover{color:var(--blanco)}
+.nl-ruta-input-wrap{display:flex;gap:8px;margin-bottom:8px}
+.nl-ruta-input-wrap input{flex:1;background:var(--bg-card);color:var(--blanco);border:1px solid rgba(239,68,68,.3);padding:10px 14px;border-radius:var(--r-md);font-size:13px;font-family:var(--font-body)}
+.nl-ruta-input-wrap input:focus{outline:none;border-color:rgba(239,68,68,.7);box-shadow:0 0 0 3px rgba(239,68,68,.08)}
+.nl-ruta-input-wrap input::placeholder{color:var(--txt-muted);font-size:12px}
+.nl-checkbox-label{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--r-md);border:1px solid var(--borde);cursor:pointer;font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--txt-secondary);transition:all .15s}
+.nl-checkbox-label:has(input:checked){border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.08);color:var(--blanco)}
+.nl-checkbox-label input{accent-color:#f87171;width:15px;height:15px}
 .tracker-row{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);padding:10px 12px;margin-bottom:8px;transition:all .18s ease}
 .tracker-row.estado-atrapado{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.06)}
 .tracker-row.estado-perdido{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.06)}
@@ -1340,38 +1347,35 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
           <!-- PASO 2: Tipo + Juego + Vidas -->
           <div id="nl-paso2" style="display:none">
             <div style="margin-bottom:16px">
-              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Tipo de Locke</div>
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Modalidades del Locke <span style="color:#f87171;font-size:9px">(elige las que apliquen)</span></div>
               <div style="display:flex;flex-direction:column;gap:6px" id="nl-tipo-list">
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="EggLocke" checked> 🥚 EggLocke</label>
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Randomlocke"> 🎲 Randomlocke</label>
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Shinylocke"> ✨ Shinylocke</label>
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="DualLinks"> ⚡ Soul-Link</label>
+                <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="EggLocke"> 🥚 EggLocke</label>
+                <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="Randomlocke"> 🎲 Randomlocke</label>
+                <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="Shinylocke"> ✨ Shinylocke</label>
+                <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="SoulLink"> ⚡ Soul-Link</label>
               </div>
             </div>
 
             <div style="margin-bottom:16px">
               <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Juego</div>
-              <div style="position:relative">
-                <input id="nl-juego-search" class="admin-input" style="margin-bottom:0;font-family:var(--font-body)" placeholder="Buscar juego (GBA · NDS · 3DS)..." oninput="nlFiltrarJuegos()" onfocus="nlFiltrarJuegos()" autocomplete="off">
-                <div id="nl-juego-lista" style="position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:220px;overflow-y:auto;display:none"></div>
-              </div>
-              <div id="nl-juego-sel" style="margin-top:6px;display:none;font-size:10px;font-family:var(--font-display);color:var(--neon-legal)">✅ <span id="nl-juego-sel-txt"></span></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="nl-juego-grupos"></div>
+              <div id="nl-juego-sel" style="margin-top:8px;display:none;font-size:10px;font-family:var(--font-display);color:var(--neon-legal);padding:6px 10px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:var(--r-sm)">✅ <span id="nl-juego-sel-txt"></span></div>
             </div>
 
             <div style="margin-bottom:20px">
               <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Vidas iniciales por jugador</div>
-              <div style="display:flex;align-items:center;gap:12px">
-                <button class="torneos-btn" onclick="var v=document.getElementById('nl-vidas-val');v.textContent=Math.max(1,parseInt(v.textContent)-1)">−</button>
-                <span id="nl-vidas-val" style="font-family:var(--font-display);font-size:26px;font-weight:900;color:var(--blanco);min-width:36px;text-align:center">5</span>
-                <button class="torneos-btn" onclick="var v=document.getElementById('nl-vidas-val');v.textContent=Math.min(20,parseInt(v.textContent)+1)">+</button>
-                <span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">/ 20 máx.</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <button class="torneos-btn" onclick="var v=document.getElementById('nl-vidas-val');v.value=Math.max(1,parseInt(v.value||1)-1)">−</button>
+                <input id="nl-vidas-val" type="number" min="1" value="5" style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--blanco);background:var(--bg-card);border:1px solid rgba(239,68,68,.3);border-radius:var(--r-md);padding:6px 12px;width:72px;text-align:center">
+                <button class="torneos-btn" onclick="var v=document.getElementById('nl-vidas-val');v.value=Math.max(1,parseInt(v.value||1)+1)">+</button>
+                <span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">sin límite máx.</span>
               </div>
             </div>
 
             <div style="margin-bottom:20px">
               <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">🗺️ Rutas / Ciudades del Tracker</div>
-              <div style="display:flex;gap:8px;margin-bottom:8px">
-                <input id="nl-ruta-input" class="admin-input" style="margin-bottom:0;flex:1;font-family:var(--font-body)" placeholder="Ej: Ruta 1, Ciudad Verde..." onkeydown="if(event.key==='Enter'){event.preventDefault();nlAnadirRuta();}" autocomplete="off">
+              <div class="nl-ruta-input-wrap">
+                <input id="nl-ruta-input" placeholder="Ej: Ruta 1, Ciudad Azulona..." onkeydown="if(event.key==='Enter'){event.preventDefault();nlAnadirRuta();}" autocomplete="off">
                 <button class="btn-admin" style="padding:0 16px;flex-shrink:0" onclick="nlAnadirRuta()">➕</button>
               </div>
               <div id="nl-rutas-lista" style="display:flex;flex-direction:column;gap:4px;max-height:220px;overflow-y:auto"></div>
@@ -1462,7 +1466,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
           <div class="sac-preview-txt"><div id="sac-preview-nombre-txt" style="font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--txt-primary)"></div><div style="font-size:10px;color:var(--txt-muted);margin-top:2px">Vidas que recibirás a cambio del sacrificio</div></div>
           <div class="sac-preview-num" id="sac-preview-numero-txt">+0</div>
         </div>
-        <div id="sac-aviso-limite" class="sac-aviso-max">⛔ Ya tienes el máximo de 20 vidas.</div>
+        <div id="sac-aviso-limite" class="sac-aviso-max" style="display:none">⛔ Ya tienes el máximo de vidas posible.</div>
       </div>
       <div id="sac-historial-seccion"><div class="sac-historial-titulo">📜 Registro de Sacrificios</div><div id="sac-historial-lista"></div></div>
     </div>
@@ -1542,7 +1546,7 @@ const baseDatosInicial=[
 let baseDatos={productos:[],jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[]};
 let userSesion=sessionStorage.getItem('silph_user_sesion')||null;
 let filtroCategoriaGlobal="";
-const MAX_COMPRAS=3,MAX_VIDAS=20,MS_EN_6_HORAS=6*60*60*1000;
+const MAX_COMPRAS=3,MS_EN_6_HORAS=6*60*60*1000;
 const SACRIFICIO_VALORES={basura:{vidas:1,etiqueta:'Basura / Muy común'},normal:{vidas:2,etiqueta:'Normal / Utilidad media'},fuerte:{vidas:3,etiqueta:'Fuerte / Evolución final'},pseudo:{vidas:5,etiqueta:'Pseudo-legendario'},ultra:{vidas:6,etiqueta:'Ultraente'},legendario:{vidas:7,etiqueta:'Legendario / Singular'}};
 function escaparHTML(str){if(!str)return '';return str.replace(/[&<>'"]/g,tag=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]||tag));}
 
@@ -2833,38 +2837,50 @@ function actualizarBadgeGimnasio(){
 
 /* ═══ LOCKE ACTIVO + NUEVO LOCKE ═══ */
 var NL_JUEGOS = [
-  // GBA
-  {n:'Pokémon Rojo Fuego',       gen:'GBA',  icon:'🔥', color:'#ef4444'},
-  {n:'Pokémon Verde Hoja',       gen:'GBA',  icon:'🌿', color:'#22c55e'},
-  {n:'Pokémon Rubí',             gen:'GBA',  icon:'💎', color:'#e11d48'},
-  {n:'Pokémon Zafiro',           gen:'GBA',  icon:'💠', color:'#3b82f6'},
-  {n:'Pokémon Rubí Omega',       gen:'GBA',  icon:'♦️', color:'#dc2626'},
-  {n:'Pokémon Zafiro Alfa',      gen:'GBA',  icon:'🔹', color:'#2563eb'},
-  {n:'Pokémon Esmeralda',        gen:'GBA',  icon:'💚', color:'#16a34a'},
-  // NDS
-  {n:'Pokémon Diamante',         gen:'NDS',  icon:'💎', color:'#818cf8'},
-  {n:'Pokémon Perla',            gen:'NDS',  icon:'🩷', color:'#f9a8d4'},
-  {n:'Pokémon Platino',          gen:'NDS',  icon:'⚙️', color:'#94a3b8'},
-  {n:'Pokémon Oro HeartGold',    gen:'NDS',  icon:'🌟', color:'#f59e0b'},
-  {n:'Pokémon Plata SoulSilver', gen:'NDS',  icon:'🌙', color:'#cbd5e1'},
-  {n:'Pokémon Negro',            gen:'NDS',  icon:'🖤', color:'#374151'},
-  {n:'Pokémon Blanco',           gen:'NDS',  icon:'🤍', color:'#e2e8f0'},
-  {n:'Pokémon Negro 2',          gen:'NDS',  icon:'🌀', color:'#4b5563'},
-  {n:'Pokémon Blanco 2',         gen:'NDS',  icon:'❄️', color:'#bae6fd'},
-  // 3DS
-  {n:'Pokémon X',                gen:'3DS',  icon:'❌', color:'#3b82f6'},
-  {n:'Pokémon Y',                gen:'3DS',  icon:'✳️', color:'#ec4899'},
-  {n:'Pokémon Sol',              gen:'3DS',  icon:'☀️', color:'#f59e0b'},
-  {n:'Pokémon Luna',             gen:'3DS',  icon:'🌙', color:'#6366f1'},
-  {n:'Pokémon Ultra Sol',        gen:'3DS',  icon:'🌞', color:'#ea580c'},
-  {n:'Pokémon Ultra Luna',       gen:'3DS',  icon:'🌛', color:'#7c3aed'},
+  // GBA - Gen 1 remake
+  {n:'Pokémon Rojo Fuego / Verde Hoja', gen:'GBA',  icon:'🔥', color:'#ef4444'},
+  // GBA - Gen 3
+  {n:'Pokémon Rubí / Zafiro',          gen:'GBA',  icon:'💎', color:'#3b82f6'},
+  {n:'Pokémon Esmeralda',              gen:'GBA',  icon:'💚', color:'#16a34a'},
+  // GBA - Gen 3 remake
+  {n:'Pokémon Rubí Omega / Zafiro Alfa',gen:'GBA', icon:'♦️', color:'#dc2626'},
+  // NDS - Gen 4
+  {n:'Pokémon Diamante / Perla',       gen:'NDS',  icon:'💠', color:'#818cf8'},
+  {n:'Pokémon Platino',                gen:'NDS',  icon:'⚙️', color:'#94a3b8'},
+  // NDS - Gen 2 remake
+  {n:'Pokémon Oro HeartGold / Plata SoulSilver', gen:'NDS', icon:'🌟', color:'#f59e0b'},
+  // NDS - Gen 5
+  {n:'Pokémon Negro / Blanco',         gen:'NDS',  icon:'🖤', color:'#e2e8f0'},
+  {n:'Pokémon Negro 2 / Blanco 2',     gen:'NDS',  icon:'🌀', color:'#6366f1'},
+  // 3DS - Gen 6
+  {n:'Pokémon X / Y',                  gen:'3DS',  icon:'❌', color:'#3b82f6'},
+  // 3DS - Gen 7
+  {n:'Pokémon Sol / Luna',             gen:'3DS',  icon:'☀️', color:'#f59e0b'},
+  {n:'Pokémon Ultra Sol / Ultra Luna', gen:'3DS',  icon:'🌞', color:'#ea580c'},
+];
+
+// Grupos para el selector visual por generación
+var NL_GRUPOS = [
+  { label:'Gen I · FR/VH', gen:'GBA', juego: 'Pokémon Rojo Fuego / Verde Hoja' },
+  { label:'Gen III · Rubí/Zafiro', gen:'GBA', juego: 'Pokémon Rubí / Zafiro' },
+  { label:'Gen III · Esmeralda', gen:'GBA', juego: 'Pokémon Esmeralda' },
+  { label:'Gen III · OR/ZA', gen:'GBA', juego: 'Pokémon Rubí Omega / Zafiro Alfa' },
+  { label:'Gen IV · D/P', gen:'NDS', juego: 'Pokémon Diamante / Perla' },
+  { label:'Gen IV · Platino', gen:'NDS', juego: 'Pokémon Platino' },
+  { label:'Gen II · HG/SS', gen:'NDS', juego: 'Pokémon Oro HeartGold / Plata SoulSilver' },
+  { label:'Gen V · N/B', gen:'NDS', juego: 'Pokémon Negro / Blanco' },
+  { label:'Gen V · N2/B2', gen:'NDS', juego: 'Pokémon Negro 2 / Blanco 2' },
+  { label:'Gen VI · X/Y', gen:'3DS', juego: 'Pokémon X / Y' },
+  { label:'Gen VII · Sol/Luna', gen:'3DS', juego: 'Pokémon Sol / Luna' },
+  { label:'Gen VII · US/UL', gen:'3DS', juego: 'Pokémon Ultra Sol / Ultra Luna' },
 ];
 
 var NL_TIPOS = {
-  'EggLocke':    {icon:'🥚', color:'#fbbf24', bg:'rgba(251,191,36,.06)',  tema:'egglocke'},
-  'Randomlocke': {icon:'🎲', color:'#34d399', bg:'rgba(52,211,153,.06)', tema:'randomlocke'},
-  'Shinylocke':  {icon:'✨', color:'#c084fc', bg:'rgba(192,132,252,.06)', tema:'shinylocke'},
-  'DualLinks':   {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks', label:'Soul-Link'},
+  'EggLocke':    {icon:'🥚', color:'#fbbf24', bg:'rgba(251,191,36,.06)',  tema:'egglocke',    label:'EggLocke'},
+  'Randomlocke': {icon:'🎲', color:'#34d399', bg:'rgba(52,211,153,.06)', tema:'randomlocke', label:'Randomlocke'},
+  'Shinylocke':  {icon:'✨', color:'#c084fc', bg:'rgba(192,132,252,.06)', tema:'shinylocke',  label:'Shinylocke'},
+  'SoulLink':    {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks',   label:'Soul-Link'},
+  'DualLinks':   {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks',   label:'Soul-Link'},
 };
 
 var _nlJuegoSel = null;
@@ -2915,61 +2931,66 @@ function nlRenderRutas(){
   }).join('');
 }
 
-window.nlFiltrarJuegos = function(){
-  var val = (document.getElementById('nl-juego-search').value||'').toLowerCase();
-  var lista = document.getElementById('nl-juego-lista');
-  var matches = val.length < 1
-    ? NL_JUEGOS
-    : NL_JUEGOS.filter(function(j){ return j.n.toLowerCase().indexOf(val)!==-1 || j.gen.toLowerCase().indexOf(val)!==-1; });
-  if(!matches.length){ lista.style.display='none'; return; }
-  lista.innerHTML = matches.map(function(j){
-    return '<div onclick="nlSelJuego(\''+j.n+'\')" style="padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body);display:flex;align-items:center;gap:8px" onmouseover="this.style.background=\'var(--bg-overlay)\'" onmouseout="this.style.background=\'\'">'
-      +'<span>'+j.icon+'</span><span style="flex:1">'+j.n+'</span><span style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display)">'+j.gen+'</span></div>';
+function nlRenderGrupos(){
+  var cont = document.getElementById('nl-juego-grupos');
+  if(!cont) return;
+  cont.innerHTML = NL_GRUPOS.map(function(g, idx){
+    var j = NL_JUEGOS.find(function(x){ return x.n === g.juego; });
+    if(!j) return '';
+    var sel = (_nlJuegoSel && _nlJuegoSel.n === j.n);
+    var genColor = g.gen==='GBA'?'#22c55e': g.gen==='NDS'?'#818cf8':'#f59e0b';
+    var bgCol = sel ? 'rgba(239,68,68,.14)' : 'var(--bg-card)';
+    var borCol = sel ? 'rgba(239,68,68,.5)' : 'var(--borde)';
+    var txtCol = sel ? 'var(--blanco)' : 'var(--txt-primary)';
+    return '<button class="nl-juego-btn" data-juego-idx="'+idx+'" style="background:'+bgCol+';border:1px solid '+borCol+';border-radius:var(--r-md);padding:9px 10px;cursor:pointer;text-align:left;transition:all .15s;display:flex;flex-direction:column;gap:4px">'
+      +'<span style="font-size:18px">'+j.icon+'</span>'
+      +'<span style="font-family:var(--font-display);font-size:10px;font-weight:700;color:'+txtCol+';line-height:1.2">'+g.label+'</span>'
+      +'<span style="font-size:9px;font-family:var(--font-display);color:'+genColor+';font-weight:700">'+g.gen+'</span>'
+      +'</button>';
   }).join('');
-  lista.style.display = 'block';
-};
+  cont.onclick = function(e){
+    var btn = e.target.closest('.nl-juego-btn');
+    if(!btn) return;
+    var idx = parseInt(btn.getAttribute('data-juego-idx'));
+    var g = NL_GRUPOS[idx];
+    if(g) nlSelJuego(g.juego);
+  };
+}
 
 window.nlSelJuego = function(nombre){
   _nlJuegoSel = NL_JUEGOS.find(function(j){ return j.n===nombre; });
-  document.getElementById('nl-juego-search').value = nombre;
-  document.getElementById('nl-juego-lista').style.display = 'none';
   var sel = document.getElementById('nl-juego-sel');
   var txt = document.getElementById('nl-juego-sel-txt');
   if(sel) sel.style.display = 'block';
   if(txt && _nlJuegoSel) txt.textContent = _nlJuegoSel.icon+' '+_nlJuegoSel.n+' ('+_nlJuegoSel.gen+')';
+  nlRenderGrupos();
 };
-
-// Cerrar lista al clickar fuera
-document.addEventListener('click', function(e){
-  if(!e.target.closest('#nl-juego-search') && !e.target.closest('#nl-juego-lista')){
-    var l=document.getElementById('nl-juego-lista'); if(l) l.style.display='none';
-  }
-});
-document.addEventListener('DOMContentLoaded', function(){
-  var ns=document.getElementById('nl-juego-search');
-  if(ns) ns.addEventListener('focus', function(){ if(!ns.value) window.nlFiltrarJuegos(); });
-});
 
 window.nlPaso = function(n){
   document.getElementById('nl-paso1').style.display = n===1 ? 'block' : 'none';
   document.getElementById('nl-paso2').style.display = n===2 ? 'block' : 'none';
   if(n===2){
     _nlJuegoSel=null;
-    document.getElementById('nl-juego-search').value='';
-    document.getElementById('nl-juego-sel').style.display='none';
+    var sel = document.getElementById('nl-juego-sel'); if(sel) sel.style.display='none';
+    document.querySelectorAll('input[name="nl-tipo"]').forEach(function(cb){ cb.checked=false; });
     _nlRutas = [];
     var ri = document.getElementById('nl-ruta-input'); if(ri) ri.value='';
+    var vi = document.getElementById('nl-vidas-val'); if(vi) vi.value=5;
     nlRenderRutas();
+    nlRenderGrupos();
   }
 };
 
 window.confirmarNuevoLocke = function(){
-  var tipoEl = document.querySelector('input[name="nl-tipo"]:checked');
-  var tipo = tipoEl ? tipoEl.value : 'EggLocke';
+  var checks = Array.from(document.querySelectorAll('input[name="nl-tipo"]:checked'));
+  var modalidades = checks.map(function(c){ return c.value; });
+  if(!modalidades.length){ mostrarNotificacion('Elige al menos una modalidad.','error','🎮'); return; }
   if(!_nlJuegoSel){ mostrarNotificacion('Elige un juego primero.','error','🎮'); return; }
-  var vidasIni = parseInt(document.getElementById('nl-vidas-val').textContent)||5;
+  var vidasIni = parseInt(document.getElementById('nl-vidas-val').value)||5;
   var rutas = _nlRutas.slice();
-  ejecutarNuevoLocke(tipo, _nlJuegoSel, vidasIni, rutas);
+  // Usamos la primera modalidad como tipo principal para compatibilidad con NL_TIPOS
+  var tipoPrincipal = modalidades[0];
+  ejecutarNuevoLocke(tipoPrincipal, _nlJuegoSel, vidasIni, rutas, modalidades);
   nlPaso(1);
 };
 
@@ -2979,7 +3000,8 @@ function crearTrackerDesdeRutas(rutas){
   });
 }
 
-function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas){
+function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas, modalidades){
+  modalidades = modalidades || [tipo];
   // ── ARCHIVAR el locke actual ANTES de borrar ──
   var numActual = (baseDatos.lockeActivo && baseDatos.lockeActivo.num) || 0;
   if(numActual > 0){
@@ -2987,6 +3009,7 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas){
     var entrada = {
       num:      numActual,
       tipo:     baseDatos.lockeActivo.tipo || '?',
+      modalidades: baseDatos.lockeActivo.modalidades || [],
       juego:    baseDatos.lockeActivo.juego || '?',
       juegoIcon:baseDatos.lockeActivo.juegoIcon || '🎮',
       juegoGen: baseDatos.lockeActivo.juegoGen || '',
@@ -3020,6 +3043,7 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas){
   // Guardar info del locke activo
   if(!baseDatos.lockeActivo) baseDatos.lockeActivo = {};
   baseDatos.lockeActivo.tipo   = tipo;
+  baseDatos.lockeActivo.modalidades = modalidades;
   baseDatos.lockeActivo.juego  = juego.n;
   baseDatos.lockeActivo.juegoIcon = juego.icon;
   baseDatos.lockeActivo.juegoColor= juego.color;
@@ -3028,8 +3052,9 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas){
   baseDatos.lockeActivo.rutasDefinidas = (rutas||[]).slice();
   // Limpiar campeones del locke anterior
   baseDatos.campeones = {};
+  guardarBD();
 
-    document.body.style.transition='opacity .25s ease';
+  document.body.style.transition='opacity .25s ease';
   document.body.style.opacity='0';
   setTimeout(function(){
     aplicarTemaLocke();
@@ -3038,7 +3063,9 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas){
     renderizarHallOfFame();
     document.body.style.opacity='1';
   }, 260);
-  logAdmin('🔄','Nuevo Locke iniciado',tipo+' · '+juego.n+' · '+vidasIni+' vidas · '+( rutas&&rutas.length?rutas.length+' rutas':'sin rutas'));mostrarNotificacion('¡Nuevo Locke iniciado! '+NL_TIPOS[tipo].icon+' '+tipo+' · '+juego.icon+' '+juego.n,'exito','🔄');
+  var modLabel = modalidades.map(function(m){ return (NL_TIPOS[m]&&NL_TIPOS[m].label)||m; }).join(' + ');
+  logAdmin('🔄','Nuevo Locke iniciado',modLabel+' · '+juego.n+' · '+vidasIni+' vidas · '+(rutas&&rutas.length?rutas.length+' rutas':'sin rutas'));
+  mostrarNotificacion('¡Nuevo Locke iniciado! '+juego.icon+' '+juego.n+' · '+modLabel,'exito','🔄');
   // Volver al tab reset
   setTimeout(function(){ cambiarAdminTab('reset'); }, 800);
 }
@@ -3056,18 +3083,21 @@ function renderizarBannerLocke(){
   banner.style.display = 'block';
   banner.style.setProperty('--hof-color', cfg.color);
   banner.style.setProperty('--hof-bg', cfg.bg);
+  // Etiqueta de modalidades combinadas
+  var mods = la.modalidades || [la.tipo];
+  var modLabel = mods.map(function(m){ return (NL_TIPOS[m]&&NL_TIPOS[m].label)||m; }).join(' + ');
   // Actualizar subtítulo de la sección
   var sub = banner.closest('.page-section');
   if(sub){
     var subEl = sub.querySelector('.section-subtitle');
-    if(subEl) subEl.textContent = cfg.icon+' '+(cfg.label||la.tipo)+' · '+la.juegoIcon+' '+la.juego;
+    if(subEl) subEl.textContent = cfg.icon+' '+modLabel+' · '+la.juegoIcon+' '+la.juego;
   }
   var elIcon  = document.getElementById('hof-locke-icon');
   var elNombre= document.getElementById('hof-locke-nombre');
   var elJuego = document.getElementById('hof-locke-juego');
   var elNum   = document.getElementById('hof-locke-num');
   if(elIcon)   elIcon.textContent  = cfg.icon+' '+la.juegoIcon;
-  if(elNombre) elNombre.textContent= cfg.label||la.tipo;
+  if(elNombre) elNombre.textContent= modLabel;
   if(elNombre) elNombre.style.color= cfg.color;
   if(elJuego)  elJuego.textContent = la.juegoIcon+' '+la.juego+' ('+la.juegoGen+')';
   if(elNum)    elNum.textContent   = 'Locke #'+(la.num||1);
@@ -3081,13 +3111,15 @@ function actualizarHeroStrip(){
   var ga = baseDatos && baseDatos.gimnasioActivo;
   if(!la || !la.tipo){ strip.style.display='none'; return; }
   var cfg = (typeof NL_TIPOS!=='undefined' && NL_TIPOS[la.tipo]) || {icon:'🎮',color:'var(--neon-packs)'};
+  var mods = la.modalidades || [la.tipo];
+  var modLabel = mods.map(function(m){ return (NL_TIPOS[m]&&NL_TIPOS[m].label)||m; }).join(' + ');
   strip.style.display = 'flex';
   strip.style.setProperty('--hero-color', cfg.color);
   var elIcon = document.getElementById('hero-icon');
   var elTipo = document.getElementById('hero-tipo');
   var elJuego= document.getElementById('hero-juego');
   if(elIcon) elIcon.textContent = cfg.icon+' '+(la.juegoIcon||'🎮');
-  if(elTipo) elTipo.textContent = cfg.label||la.tipo;
+  if(elTipo) elTipo.textContent = modLabel;
   if(elTipo) elTipo.style.color = cfg.color;
   if(elJuego) elJuego.textContent = (la.juego||'—')+(la.juegoGen?' ('+la.juegoGen+')':'');
 
@@ -3496,12 +3528,12 @@ function actualizarBarraVidasDesdeDB(){if(!userSesion||!baseDatos.jugadores[user
 function _renderBarra(act,ini){let f=document.getElementById('perf-vida-barra-fill'),d=document.getElementById('perf-vidas-display'),pl=document.getElementById('perf-vida-pct');if(!f||!d)return;let pct=ini>0?Math.max(0,Math.min(100,(act/ini)*100)):0;f.style.width=pct+'%';f.className='hp-fill';if(act<=0){f.classList.add('cero');d.style.color='var(--gris-600)';}else if(pct>50){f.classList.add('alta');d.style.color='var(--neon-legal)';}else if(pct>25){f.classList.add('media');d.style.color='var(--amarillo)';}else{f.classList.add('baja');d.style.color='#f87171';}d.textContent=`${act} / ${ini}`;if(pl)pl.textContent=Math.round(pct)+'%';}
 
 /* ═══ SACRIFICIO ═══ */
-window.abrirModalSacrificio=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);document.getElementById('sac-nombre-poke').value='';document.getElementById('sac-mote-poke').value='';document.getElementById('sac-categoria').value='';document.getElementById('sac-preview-vidas-box').classList.add('hidden');document.getElementById('sac-aviso-limite').style.display='none';document.getElementById('btn-confirmar-sacrificio').disabled=true;if(va>=MAX_VIDAS)document.getElementById('sac-aviso-limite').style.display='block';refrescarSelectsPersonalizados();renderizarHistorialSacrificios();reproducirSonido('abrir');document.getElementById('sacrificio-modal-overlay').style.display='flex';};
+window.abrirModalSacrificio=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);document.getElementById('sac-nombre-poke').value='';document.getElementById('sac-mote-poke').value='';document.getElementById('sac-categoria').value='';document.getElementById('sac-preview-vidas-box').classList.add('hidden');document.getElementById('sac-aviso-limite').style.display='none';document.getElementById('btn-confirmar-sacrificio').disabled=true;refrescarSelectsPersonalizados();renderizarHistorialSacrificios();reproducirSonido('abrir');document.getElementById('sacrificio-modal-overlay').style.display='flex';};
 window.cerrarModalSacrificio=function(){reproducirSonido('cerrar');document.getElementById('sacrificio-modal-overlay').style.display='none';};
-window.actualizarPreviewSacrificio=function(){let cat=document.getElementById('sac-categoria').value,n=document.getElementById('sac-nombre-poke').value.trim(),pb=document.getElementById('sac-preview-vidas-box'),bc=document.getElementById('btn-confirmar-sacrificio'),av=document.getElementById('sac-aviso-limite');if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>=MAX_VIDAS){av.style.display='block';pb.classList.add('hidden');bc.disabled=true;return;}av.style.display='none';if(!cat||!n){pb.classList.add('hidden');bc.disabled=true;return;}let datos=SACRIFICIO_VALORES[cat];if(!datos)return;let vr=Math.min(datos.vidas,MAX_VIDAS-va),ex=vr<datos.vidas?` (cap: máx. ${MAX_VIDAS})`:'';document.getElementById('sac-preview-nombre-txt').textContent=`${escaparHTML(n)} · ${datos.etiqueta}${ex}`;document.getElementById('sac-preview-numero-txt').textContent=`+${vr} ❤️`;pb.classList.remove('hidden');bc.disabled=false;};
-window.confirmarSacrificio=async function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let n=document.getElementById('sac-nombre-poke').value.trim(),m=document.getElementById('sac-mote-poke').value.trim(),cat=document.getElementById('sac-categoria').value;if(!n){mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥");return;}if(!cat){mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;if(va>=MAX_VIDAS){mostrarNotificacion(`Ya tienes el máximo de ${MAX_VIDAS} vidas.`,"error","⛔");return;}let datos=SACRIFICIO_VALORES[cat];if(!datos){mostrarNotificacion("Categoría inválida.","error","🔥");return;}let vg=Math.min(datos.vidas,MAX_VIDAS-va),nv=va+vg,nc=m?`${n} "${m}"`:n;let cf=await mostrarConfirmacion({icono:'🔥',titulo:'Sacrificio Pokéinomano',descripcion:`Pokémon: ${nc}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vg} ❤️\nVidas tras el sacrificio: ${nv}/${vt}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,textoConfirmar:'Ejecutar Sacrificio',tipo:'sacrificio',sonidoConfirmar:'revivir'});if(!cf)return;u.vidasActuales=nv;if(u.lockeStatus==='perdido'&&nv>0)u.lockeStatus='jugando';if(!u.sacrificios)u.sacrificios=[];let dobj=new Date(),ts=`${String(dobj.getDate()).padStart(2,'0')}/${String(dobj.getMonth()+1).padStart(2,'0')}/${dobj.getFullYear()} ${String(dobj.getHours()).padStart(2,'0')}:${String(dobj.getMinutes()).padStart(2,'0')}`;u.sacrificios.push({nombre:nc,categoria:datos.etiqueta,vidasObtenidas:vg,vidasTras:nv,timestamp:ts});inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO: '${nc}' [${datos.etiqueta}] ofrecido al Mercader. +${vg} ❤️. Vidas: ${nv}/${vt}.`);guardarBD();cerrarModalSacrificio();destellarPantalla('naranja');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();mostrarInfo({icono:'🔥',titulo:'Sacrificio completado',descripcion:`${nc} descansa en paz.\n❤️ Vidas: +${vg} → ${nv}`,textoConfirmar:'Aceptar'});};
+window.actualizarPreviewSacrificio=function(){let cat=document.getElementById('sac-categoria').value,n=document.getElementById('sac-nombre-poke').value.trim(),pb=document.getElementById('sac-preview-vidas-box'),bc=document.getElementById('btn-confirmar-sacrificio'),av=document.getElementById('sac-aviso-limite');if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);av.style.display='none';if(!cat||!n){pb.classList.add('hidden');bc.disabled=true;return;}let datos=SACRIFICIO_VALORES[cat];if(!datos)return;let vr=datos.vidas;document.getElementById('sac-preview-nombre-txt').textContent=`${escaparHTML(n)} · ${datos.etiqueta}`;document.getElementById('sac-preview-numero-txt').textContent=`+${vr} ❤️`;pb.classList.remove('hidden');bc.disabled=false;};
+window.confirmarSacrificio=async function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let n=document.getElementById('sac-nombre-poke').value.trim(),m=document.getElementById('sac-mote-poke').value.trim(),cat=document.getElementById('sac-categoria').value;if(!n){mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥");return;}if(!cat){mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;let datos=SACRIFICIO_VALORES[cat];if(!datos){mostrarNotificacion("Categoría inválida.","error","🔥");return;}let vg=datos.vidas,nv=va+vg,nc=m?`${n} "${m}"`:n;let cf=await mostrarConfirmacion({icono:'🔥',titulo:'Sacrificio Pokéinomano',descripcion:`Pokémon: ${nc}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vg} ❤️\nVidas tras el sacrificio: ${nv}/${vt}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,textoConfirmar:'Ejecutar Sacrificio',tipo:'sacrificio',sonidoConfirmar:'revivir'});if(!cf)return;u.vidasActuales=nv;if(u.lockeStatus==='perdido'&&nv>0)u.lockeStatus='jugando';if(!u.sacrificios)u.sacrificios=[];let dobj=new Date(),ts=`${String(dobj.getDate()).padStart(2,'0')}/${String(dobj.getMonth()+1).padStart(2,'0')}/${dobj.getFullYear()} ${String(dobj.getHours()).padStart(2,'0')}:${String(dobj.getMinutes()).padStart(2,'0')}`;u.sacrificios.push({nombre:nc,categoria:datos.etiqueta,vidasObtenidas:vg,vidasTras:nv,timestamp:ts});inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO: '${nc}' [${datos.etiqueta}] ofrecido al Mercader. +${vg} ❤️. Vidas: ${nv}/${vt}.`);guardarBD();cerrarModalSacrificio();destellarPantalla('naranja');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();mostrarInfo({icono:'🔥',titulo:'Sacrificio completado',descripcion:`${nc} descansa en paz.\n❤️ Vidas: +${vg} → ${nv}`,textoConfirmar:'Aceptar'});};
 function renderizarHistorialSacrificios(){let box=document.getElementById('sac-historial-lista');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];box.innerHTML='';if(!u.sacrificios||!u.sacrificios.length){box.innerHTML='<div style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display);padding:10px 0;font-style:italic">Ningún compañero sacrificado aún.</div>';return;}[...u.sacrificios].reverse().slice(0,8).forEach(s=>{box.innerHTML+=`<div class="sac-entry"><div class="sac-entry-ts">🕐 ${escaparHTML(s.timestamp)}</div><div style="display:flex;justify-content:space-between;align-items:center"><div><span style="color:var(--neon-sacrificio);font-weight:700;font-family:var(--font-display);font-size:11px">🔥 ${escaparHTML(s.nombre)}</span> <span style="color:var(--txt-muted);font-size:10px">· ${escaparHTML(s.categoria)}</span></div><div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:var(--neon-sacrificio)">+${s.vidasObtenidas}❤️</div></div><div style="font-size:10px;color:var(--txt-muted);margin-top:2px">Vidas tras el canje: ${s.vidasTras}</div></div>`;});}
-function actualizarEstadisticasSacrificioPanel(){let box=document.getElementById('sac-stats-mini-panel');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],t=u.sacrificios?u.sacrificios.length:0,v=u.sacrificios?u.sacrificios.reduce((a,s)=>a+(s.vidasObtenidas||0),0):0;box.innerHTML=`<div class="sac-chip">Sacrificios: <span>${t}</span></div><div class="sac-chip">Vidas recuperadas: <span>${v} ❤️</span></div>`;let btn=document.getElementById('btn-trigger-sacrificio');if(btn){let va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);btn.disabled=(va>=MAX_VIDAS);btn.title=va>=MAX_VIDAS?'Ya tienes el máximo de 20 vidas':'Sacrificar un Pokémon para recuperar vidas';}}
+function actualizarEstadisticasSacrificioPanel(){let box=document.getElementById('sac-stats-mini-panel');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],t=u.sacrificios?u.sacrificios.length:0,v=u.sacrificios?u.sacrificios.reduce((a,s)=>a+(s.vidasObtenidas||0),0):0;box.innerHTML=`<div class="sac-chip">Sacrificios: <span>${t}</span></div><div class="sac-chip">Vidas recuperadas: <span>${v} ❤️</span></div>`;let btn=document.getElementById('btn-trigger-sacrificio');if(btn){let va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);btn.disabled=false;btn.title='Sacrificar un Pokémon para recuperar vidas';}}
 
 /* ═══ DIARIO ═══ */
 window.abrirOverlayDiarioNativo=function(){reproducirSonido('abrir');document.getElementById('diario-overlay-sistema').style.display='flex';redibujarHistorialDiario();};
