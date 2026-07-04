@@ -249,8 +249,8 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .tpk-legend-dot{width:10px;height:10px;border-radius:3px;display:inline-block;border:1px solid var(--borde)}
 @media(max-width:760px){.calculadora-layout>.tpk-widget{flex:1 1 100%;max-width:none}.tpk-chart-card{flex:1 1 100%}.tpk-chart-table th,.tpk-chart-table td{width:26px;min-width:26px;height:26px;font-size:11px}}
 .nl-radio-label{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r-md);border:1px solid var(--borde);cursor:pointer;font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--txt-secondary);transition:all .15s}
-.nl-radio-label:has(input:checked){border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.08);color:var(--blanco)}
-.nl-radio-label input{accent-color:#f87171}
+.nl-radio-label:has(input:checked){border-color:rgba(245,158,11,.45);background:rgba(245,158,11,.07);color:var(--blanco)}
+.nl-radio-label input{accent-color:var(--neon-packs)}
 body.tema-shinylocke{--neon-packs:#c084fc;--neon-legal:#a78bfa;--neon-ilegal:#e879f9}
 body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#f97316}
 /* Generador de tiendas - layout responsive */
@@ -1079,10 +1079,10 @@ body.tema-randomlocke{--neon-packs:#22d3ee;--neon-legal:#34d399;--neon-ilegal:#8
             <div style="margin-bottom:16px">
               <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Tipo de Locke</div>
               <div style="display:flex;flex-direction:column;gap:6px" id="nl-tipo-list">
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Shinylocke" checked> ✨ Shinylocke</label>
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Soul-Link"> ⚡ Soul-Link</label>
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="EggLocke"> 🥚 EggLocke</label>
-                <label class="nl-radio-label"><input type="radio" name="nl-tipo" value="Randomlocke"> 🎲 Randomlocke</label>
+                <label class="nl-radio-label"><input type="checkbox" class="nl-tipo-check" value="Shinylocke"> ✨ Shinylocke</label>
+                <label class="nl-radio-label"><input type="checkbox" class="nl-tipo-check" value="Soul-Link"> ⚡ Soul-Link</label>
+                <label class="nl-radio-label"><input type="checkbox" class="nl-tipo-check" value="EggLocke"> 🥚 EggLocke</label>
+                <label class="nl-radio-label"><input type="checkbox" class="nl-tipo-check" value="Randomlocke"> 🎲 Randomlocke</label>
               </div>
             </div>
 
@@ -2613,8 +2613,9 @@ window.nlPaso = function(n){
 };
 
 window.confirmarNuevoLocke = function(){
-  var tipoEl = document.querySelector('input[name="nl-tipo"]:checked');
-  var tipo = tipoEl ? tipoEl.value : 'Shinylocke';
+  var tipoChecks = Array.from(document.querySelectorAll('.nl-tipo-check:checked')).map(function(cb){return cb.value;});
+  var tipo = tipoChecks.length ? tipoChecks.join(' + ') : '';
+  if(!tipo){ mostrarNotificacion('Elige al menos una modalidad.','error','🎮'); return; }
   if(!_nlJuegoSel){ mostrarNotificacion('Elige un juego primero.','error','🎮'); return; }
   var vidasIni = parseInt(document.getElementById('nl-vidas-val').value)||5;
   var vidasMax = parseInt(document.getElementById('nl-vidas-max').value)||vidasIni;
@@ -2700,8 +2701,9 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, vidasMax){
 function aplicarTemaLocke(){
   var la = baseDatos && baseDatos.lockeActivo;
   document.body.classList.remove('tema-nuzlocke','tema-shinylocke','tema-duallinks','tema-egglocke','tema-randomlocke');
-  if(la && la.tipo && NL_TIPOS[la.tipo]){
-    document.body.classList.add('tema-'+NL_TIPOS[la.tipo].tema);
+  if(la && la.tipo){
+    var _primerTipo=la.tipo.split(' + ')[0].trim();
+    if(NL_TIPOS[_primerTipo]) document.body.classList.add('tema-'+NL_TIPOS[_primerTipo].tema);
   }
 }
 
@@ -2710,7 +2712,7 @@ function renderizarBannerLocke(){
   var banner = document.getElementById('hof-locke-banner');
   if(!banner) return;
   if(!la || !la.tipo){ banner.style.display='none'; return; }
-  var cfg = NL_TIPOS[la.tipo] || NL_TIPOS['Shinylocke'];
+  var _tipoPrincipal=(la.tipo||'').split(' + ')[0].trim();var cfg = NL_TIPOS[_tipoPrincipal] || NL_TIPOS['Shinylocke'];
   banner.style.display = 'block';
   banner.style.setProperty('--hof-color', cfg.color);
   banner.style.setProperty('--hof-bg', cfg.bg);
@@ -2738,14 +2740,17 @@ function actualizarHeroStrip(){
   var la = baseDatos && baseDatos.lockeActivo;
   var ga = baseDatos && baseDatos.gimnasioActivo;
   if(!la || !la.tipo){ strip.style.display='none'; return; }
-  var cfg = (typeof NL_TIPOS!=='undefined' && NL_TIPOS[la.tipo]) || {icon:'🎮',color:'var(--neon-packs)'};
+  var _tipoPrimH=(la.tipo||'').split(' + ')[0].trim();var cfg = (typeof NL_TIPOS!=='undefined' && NL_TIPOS[_tipoPrimH]) || {icon:'🎮',color:'var(--neon-packs)'};
   strip.style.display = 'flex';
   strip.style.setProperty('--hero-color', cfg.color);
   var elIcon = document.getElementById('hero-icon');
   var elTipo = document.getElementById('hero-tipo');
   var elJuego= document.getElementById('hero-juego');
   if(elIcon) elIcon.textContent = cfg.icon+' '+(la.juegoIcon||'🎮');
-  if(elTipo) elTipo.textContent = la.tipo;
+  if(elTipo){
+    var _iconos=(la.tipo||'').split(' + ').map(function(t){return (NL_TIPOS[t.trim()]||{icon:'🎮'}).icon+' '+t.trim();}).join(' + ');
+    elTipo.textContent = _iconos;
+  }
   if(elTipo) elTipo.style.color = cfg.color;
   if(elJuego) elJuego.textContent = (la.juego||'—')+(la.juegoGen?' ('+la.juegoGen+')':'');
 
@@ -2778,7 +2783,7 @@ function renderizarHistorialLockes(){
   var color = window.colorParaJugador || function(){ return 'var(--neon-packs)'; };
 
   list.innerHTML = entradas.map(function(e){
-    var cfg = NL_TIPOS[e.tipo] || {icon:'🎮', color:'var(--neon-packs)', bg:'rgba(99,102,241,.06)'};
+    var _tph=(e.tipo||'').split(' + ')[0].trim();var cfg = NL_TIPOS[_tph] || {icon:'🎮', color:'var(--neon-packs)', bg:'rgba(99,102,241,.06)'};
     // Campeones
     var c = e.campeones || {};
     var campHTML = [
