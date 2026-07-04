@@ -1015,6 +1015,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-radio" onclick="cambiarAdminTab('radio')">📻 Radio</button>
         <button class="dios-tab" id="dtab-pvp" onclick="cambiarAdminTab('pvp')">🥊 Duelos PvP</button>
         <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
+        <button class="dios-tab" id="dtab-museo" onclick="cambiarAdminTab('museo')" style="color:#818cf8;border-color:rgba(129,140,248,.3)">📜 Museo</button>
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#f87171;border-color:rgba(239,68,68,.3)">🔄 Nuevo Locke</button>
         <button class="dios-tab" id="dtab-log" onclick="cambiarAdminTab('log')">📋 Log</button>
       </div>
@@ -1329,6 +1330,41 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
 
       <!-- NUEVO LOCKE -->
+      <!-- MUSEO: añadir entradas manuales al historial -->
+      <div id="dv-museo" class="dios-view">
+        <div class="card" style="max-width:560px;border-color:rgba(129,140,248,.25)">
+          <div class="card-title" style="color:#818cf8">📜 Museo de Lockes</div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:18px">Añade o edita manualmente entradas del historial. Útil para recuperar datos de lockes anteriores.</div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Número de locke</div>
+            <input id="museo-num" type="number" min="1" class="admin-input" style="margin-bottom:0" placeholder="Ej: 1">
+
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Juego</div>
+            <input id="museo-juego" class="admin-input" style="margin-bottom:0" placeholder="Ej: Pokémon X / Y">
+
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Tipo/Modalidad</div>
+            <input id="museo-tipo" class="admin-input" style="margin-bottom:0" placeholder="Ej: EggLocke, Randomlocke...">
+
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Campeón Torneos</div>
+            <input id="museo-camp-torneos" class="admin-input" style="margin-bottom:0" placeholder="Nombre del jugador">
+
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Campeón Finalísima</div>
+            <input id="museo-camp-final" class="admin-input" style="margin-bottom:0" placeholder="Nombre del jugador">
+
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Campeón Por Vidas (puede ser empate, separar con comas)</div>
+            <input id="museo-camp-vidas" class="admin-input" style="margin-bottom:0" placeholder="Ej: srwiwa, jugador2">
+          </div>
+
+          <button class="btn-admin" style="width:100%;margin-bottom:8px" onclick="museoGuardarEntrada()">💾 Guardar en el Museo</button>
+
+          <div style="margin-top:20px;border-top:1px solid var(--borde);padding-top:16px">
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">Entradas actuales en el museo</div>
+            <div id="museo-lista-admin" style="display:flex;flex-direction:column;gap:6px"></div>
+          </div>
+        </div>
+      </div>
+
       <div id="dv-nuevolocke" class="dios-view">
         <div class="card" style="max-width:480px;border-color:rgba(239,68,68,.25)">
           <div class="card-title" style="color:#f87171">🔄 Nuevo Locke</div>
@@ -3004,18 +3040,18 @@ function crearTrackerDesdeRutas(rutas){
 
 function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas, modalidades){
   modalidades = modalidades || [tipo];
-  var numActual = (baseDatos.lockeActivo && baseDatos.lockeActivo.num) || 0;
+  var numActual = (baseDatos.lockeActivo && baseDatos.lockeActivo.num) || 1;
   var numNuevo  = numActual + 1;
 
-  // ── ARCHIVAR el locke actual SIEMPRE (incluso si es el primero) ──
+  // ── ARCHIVAR el locke ACTUAL antes de borrarlo ──
   if(!baseDatos.historialLockes) baseDatos.historialLockes = {};
   var entrada = {
-    num:        numNuevo,   // número que identifica este locke en el museo
-    tipo:       (baseDatos.lockeActivo && baseDatos.lockeActivo.tipo)      || 'EggLocke',
-    modalidades:(baseDatos.lockeActivo && baseDatos.lockeActivo.modalidades)|| [],
-    juego:      (baseDatos.lockeActivo && baseDatos.lockeActivo.juego)     || juego.n,
-    juegoIcon:  (baseDatos.lockeActivo && baseDatos.lockeActivo.juegoIcon) || juego.icon,
-    juegoGen:   (baseDatos.lockeActivo && baseDatos.lockeActivo.juegoGen)  || juego.gen,
+    num:        numActual,
+    tipo:       (baseDatos.lockeActivo && baseDatos.lockeActivo.tipo)       || 'EggLocke',
+    modalidades:(baseDatos.lockeActivo && baseDatos.lockeActivo.modalidades) || [],
+    juego:      (baseDatos.lockeActivo && baseDatos.lockeActivo.juego)      || '—',
+    juegoIcon:  (baseDatos.lockeActivo && baseDatos.lockeActivo.juegoIcon)  || '🎮',
+    juegoGen:   (baseDatos.lockeActivo && baseDatos.lockeActivo.juegoGen)   || '',
     campeones:  JSON.parse(JSON.stringify(baseDatos.campeones || {})),
     pokemon:    {}
   };
@@ -3023,8 +3059,7 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas, modalidades){
     var mp = baseDatos.jugadores[id].mejorPokemon;
     if(mp && mp.nombre) entrada.pokemon[id] = JSON.parse(JSON.stringify(mp));
   });
-  // Usar timestamp como desempate para la clave, así nunca hay colisión
-  baseDatos.historialLockes['locke' + Date.now()] = entrada;
+  baseDatos.historialLockes['locke' + numActual] = entrada;
 
   // Resetear todos los jugadores
   Object.keys(baseDatos.jugadores||{}).forEach(function(id){
@@ -3323,7 +3358,86 @@ function guardarBD(){set(ref(db,'silph_co_market'),baseDatos);}
 
 /* ═══ NAVEGACIÓN ═══ */
 window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='perfil'){cargarMejorPokemonEnPerfil();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='tracker')renderizarTracker();if(s==='inicio')renderizarMapaInicio();var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo')museoRenderAdmin();};
+
+window.museoGuardarEntrada = function(){
+  var num    = parseInt(document.getElementById('museo-num').value);
+  var juego  = document.getElementById('museo-juego').value.trim();
+  var tipo   = document.getElementById('museo-tipo').value.trim() || 'EggLocke';
+  var cTorn  = document.getElementById('museo-camp-torneos').value.trim();
+  var cFin   = document.getElementById('museo-camp-final').value.trim();
+  var cVidas = document.getElementById('museo-camp-vidas').value.trim();
+
+  if(!num || num < 1){ mostrarNotificacion('Pon un número de locke válido.','error','📜'); return; }
+  if(!juego){ mostrarNotificacion('Pon el nombre del juego.','error','📜'); return; }
+
+  if(!baseDatos.historialLockes) baseDatos.historialLockes = {};
+
+  var vidasArr = cVidas ? cVidas.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+
+  baseDatos.historialLockes['locke' + num] = {
+    num:        num,
+    tipo:       tipo,
+    modalidades:[tipo],
+    juego:      juego,
+    juegoIcon:  '🎮',
+    juegoGen:   '',
+    campeones: {
+      torneos:     cTorn  || null,
+      'finalísima':cFin   || null,
+      vidas:       vidasArr.length ? (vidasArr.length === 1 ? vidasArr[0] : vidasArr) : null
+    },
+    pokemon: {}
+  };
+
+  guardarBD();
+  mostrarNotificacion('Entrada Locke #'+num+' guardada en el museo ✅','exito','📜');
+  // Limpiar campos
+  ['museo-num','museo-juego','museo-tipo','museo-camp-torneos','museo-camp-final','museo-camp-vidas'].forEach(function(id){
+    document.getElementById(id).value = '';
+  });
+  museoRenderAdmin();
+  renderizarHistorialLockes();
+};
+
+window.museoEliminarEntrada = function(clave){
+  if(!baseDatos.historialLockes || !baseDatos.historialLockes[clave]) return;
+  delete baseDatos.historialLockes[clave];
+  guardarBD();
+  mostrarNotificacion('Entrada eliminada del museo.','info','🗑️');
+  museoRenderAdmin();
+  renderizarHistorialLockes();
+};
+
+window.museoRenderAdmin = function(){
+  var lista = document.getElementById('museo-lista-admin');
+  if(!lista) return;
+  var hist = baseDatos && baseDatos.historialLockes;
+  if(!hist || !Object.keys(hist).length){
+    lista.innerHTML = '<div style="font-size:11px;color:var(--txt-muted);font-style:italic">Sin entradas todavía.</div>';
+    return;
+  }
+  var entradas = Object.entries(hist).sort(function(a,b){ return b[1].num - a[1].num; });
+  lista.innerHTML = entradas.map(function(kv){
+    var clave = kv[0], e = kv[1];
+    var mods = (e.modalidades && e.modalidades.length) ? e.modalidades.join(' + ') : (e.tipo || '—');
+    var c = e.campeones || {};
+    var camps = [c.torneos, c['finalísima'], Array.isArray(c.vidas) ? c.vidas.join('/') : c.vidas].filter(Boolean).join(' · ') || 'Sin campeones';
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);font-size:11px">'
+      +'<span style="font-family:var(--font-display);font-weight:900;color:#818cf8;font-size:13px;min-width:24px">#'+e.num+'</span>'
+      +'<div style="flex:1;min-width:0">'
+        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--blanco);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escaparHTML(mods)+' · '+escaparHTML(e.juego||'—')+'</div>'
+        +'<div style="font-size:9px;color:var(--txt-muted)">'+escaparHTML(camps)+'</div>'
+      +'</div>'
+      +'<button class="btn-admin danger" style="padding:3px 8px;font-size:9px;flex-shrink:0" data-clave="'+escaparHTML(clave)+'">🗑️</button>'
+      +'</div>';
+  }).join('');
+  // Event delegation para borrar
+  lista.onclick = function(e){
+    var btn = e.target.closest('button[data-clave]');
+    if(btn) museoEliminarEntrada(btn.getAttribute('data-clave'));
+  };
+};
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
 window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');sec.classList.add(`zona-${tab}`);}};
 window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.evento-tab').forEach(t=>t.classList.remove('active-arena','active-camara'));document.querySelectorAll('.evento-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`etab-${tab}`),ve=document.getElementById(`ev-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);if(tab==='camara')renderizarCamaraPublica();};
@@ -5284,4 +5398,4 @@ window.renderizarDuelosPvP = function(){
 };
 </script>
 </body>
-      </html>
+</html>
