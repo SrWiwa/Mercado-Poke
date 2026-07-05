@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Silph Co v3 | Build: 2026-07-05 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1298,17 +1299,30 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
           <!-- Crear duelo -->
           <div class="admin-panel">
             <div class="admin-section-title" style="color:var(--neon-arena)">🥊 Crear Duelo</div>
+
             <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Retador A</label>
-            <select id="pvp-jugador-a" class="admin-select" style="margin-bottom:10px"></select>
-            <input id="pvp-poke-a" class="admin-input" placeholder="Pokémon de A (opcional)" style="margin-bottom:10px">
+            <select id="pvp-jugador-a" class="admin-select" style="margin-bottom:8px"></select>
+            <div id="pvp-equipo-a-lista" style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px"></div>
+            <div id="pvp-equipo-a-form" style="display:none;position:relative;margin-bottom:6px">
+              <input id="pvp-poke-a" class="admin-input" placeholder="Buscar Pokémon..." style="margin-bottom:0;width:100%;box-sizing:border-box" oninput="pvpPokeAutocom('a')" autocomplete="off">
+              <div id="pvp-poke-a-dd" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:180px;overflow-y:auto"></div>
+            </div>
+            <button id="pvp-btn-add-a" onclick="pvpToggleAddPoke('a')" class="btn-admin" style="width:100%;font-size:10px;padding:5px;margin-bottom:12px">➕ Añadir Pokémon</button>
+
             <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Retado B</label>
-            <select id="pvp-jugador-b" class="admin-select" style="margin-bottom:10px"></select>
-            <input id="pvp-poke-b" class="admin-input" placeholder="Pokémon de B (opcional)" style="margin-bottom:10px">
+            <select id="pvp-jugador-b" class="admin-select" style="margin-bottom:8px"></select>
+            <div id="pvp-equipo-b-lista" style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px"></div>
+            <div id="pvp-equipo-b-form" style="display:none;position:relative;margin-bottom:6px">
+              <input id="pvp-poke-b" class="admin-input" placeholder="Buscar Pokémon..." style="margin-bottom:0;width:100%;box-sizing:border-box" oninput="pvpPokeAutocom('b')" autocomplete="off">
+              <div id="pvp-poke-b-dd" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:180px;overflow-y:auto"></div>
+            </div>
+            <button id="pvp-btn-add-b" onclick="pvpToggleAddPoke('b')" class="btn-admin" style="width:100%;font-size:10px;padding:5px;margin-bottom:12px">➕ Añadir Pokémon</button>
+
             <input id="pvp-notas" class="admin-input" placeholder="Notas del duelo (opcional)" style="margin-bottom:10px">
             <button class="btn-admin packs" onclick="pvpCrearDuelo()" style="width:100%">⚔️ Iniciar Duelo</button>
           </div>
 
-          <!-- Resolver duelo activo -->
+                    <!-- Resolver duelo activo -->
           <div class="admin-panel">
             <div class="admin-section-title" style="color:var(--neon-arena)">🏁 Resolver Duelo Activo</div>
             <div id="pvp-admin-activo-info" style="font-size:11px;color:var(--txt-muted);font-style:italic;margin-bottom:12px">No hay duelo activo.</div>
@@ -3507,11 +3521,10 @@ window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelec
 
 
 /* ═══ MUSEO ADMIN — estado local ═══ */
-var _museoPokesTemp    = {};   // { jugadorId: { nombre, mote, sprite, num } }
-var _museoJuegoSel     = null; // objeto de NL_JUEGOS seleccionado
-var _museoPokeSelected = null; // pokémon seleccionado en el autocomplete
+var _museoPokesTemp    = {};
+var _museoJuegoSel     = null;
+var _museoPokeSelected = null;
 
-/* ── Lista completa PokeAPI (megas, formas regionales, Gmax, etc.) ── */
 var _museoPokeListaCompleta = [];
 var _museoPokeListaCargada  = false;
 var _museoPokeListaCargando = false;
@@ -3537,118 +3550,94 @@ function museoPokeIdDesdeUrl(url){
 }
 
 function museoPokeLabel(apiName){
-  // Nombres compuestos que no deben dividirse por el primer guion
-  var compuestos = [
-    'mr-mime','mr-rime','ho-oh','porygon-z','jangmo-o','hakamo-o','kommo-o',
-    'tapu-koko','tapu-lele','tapu-bulu','tapu-fini','chi-yu','ting-lu',
-    'chien-pao','wo-chien','iron-leaves','iron-valiant','iron-moth','iron-hands',
-    'iron-jugulis','iron-thorns','iron-bundle','iron-treads','flutter-mane',
-    'slither-wing','sandy-shocks','scream-tail','brute-bonnet','roaring-moon',
-    'great-tusk','gouging-fire','raging-bolt','walking-wake','flutter-mane',
-    'iron-boulder','iron-crown','raging-bolt','gouging-fire'
-  ];
-  if(compuestos.indexOf(apiName) !== -1){
+  var compuestos = ['mr-mime','mr-rime','ho-oh','porygon-z','jangmo-o','hakamo-o','kommo-o',
+    'tapu-koko','tapu-lele','tapu-bulu','tapu-fini','chi-yu','ting-lu','chien-pao','wo-chien',
+    'iron-leaves','iron-valiant','iron-moth','iron-hands','iron-jugulis','iron-thorns',
+    'iron-bundle','iron-treads','flutter-mane','slither-wing','sandy-shocks','scream-tail',
+    'brute-bonnet','roaring-moon','great-tusk','gouging-fire','raging-bolt','walking-wake',
+    'iron-boulder','iron-crown'];
+  if(compuestos.indexOf(apiName) !== -1)
     return apiName.replace(/-/g,' ').replace(/\b\w/g,function(c){ return c.toUpperCase(); });
-  }
   var partes = apiName.split('-');
-  var base   = partes[0].charAt(0).toUpperCase() + partes[0].slice(1);
+  var base   = partes[0].charAt(0).toUpperCase()+partes[0].slice(1);
   if(partes.length === 1) return base;
   var sufijos = {
     'mega':'Mega','mega-x':'Mega X','mega-y':'Mega Y',
-    'alola':'(Alola)','alolan':'(Alola)',
-    'galar':'(Galar)','galarian':'(Galar)',
-    'hisui':'(Hisui)','hisuian':'(Hisui)',
-    'paldea':'(Paldea)','paldean':'(Paldea)',
-    'gmax':'Gigamax',
-    'f':'\u2640','m':'\u2642',
-    'x':'X','y':'Y','z':'Z',
-    'black':'Negro','white':'Blanco',
-    'sky':'Cielo','land':'Tierra',
-    'incarnate':'Encarnado','therian':'T\u00f3tem',
-    'pirouette':'Pirueta','aria':'Aria',
-    'blade':'Espada','shield':'Escudo',
-    '10':'10%','complete':'Completo',
-    'original':'Original','crowned':'Coronado',
-    'eternamax':'Eternamax','zero':'Zero','hero':'H\u00e9roe',
-    'combat':'Combate','blaze':'Llama','aqua':'Agua',
+    'alola':'(Alola)','alolan':'(Alola)','galar':'(Galar)','galarian':'(Galar)',
+    'hisui':'(Hisui)','hisuian':'(Hisui)','paldea':'(Paldea)','paldean':'(Paldea)',
+    'gmax':'Gigamax','f':'\u2640','m':'\u2642','x':'X','y':'Y','z':'Z',
+    'black':'Negro','white':'Blanco','sky':'Cielo','land':'Tierra',
+    'incarnate':'Encarnado','therian':'T\u00f3tem','pirouette':'Pirueta','aria':'Aria',
+    'blade':'Espada','shield':'Escudo','10':'10%','complete':'Completo',
+    'original':'Original','crowned':'Coronado','eternamax':'Eternamax',
+    'zero':'Zero','hero':'H\u00e9roe','combat':'Combate','blaze':'Llama','aqua':'Agua',
     'sunny':'Soleado','rainy':'Lluvioso','snowy':'Nevado',
     'heat':'Calor','wash':'Agua','frost':'Hielo','fan':'Ventilador','mow':'Cortac\u00e9sped',
     'dawn':'Aurora','dusk':'Crep\u00fasculo','midnight':'Medianoche',
     'school':'Banco','solo':'Solo','disguised':'Disfrazado','busted':'Revelado',
-    'low-key':'Nota Baja','amped':'Amplificado',
-    'ice':'Hielo','dragon':'Drag\u00f3n',
+    'low-key':'Nota Baja','amped':'Amplificado','ice':'Hielo','dragon':'Drag\u00f3n',
     'single-strike':'Golpe \u00danico','rapid-strike':'Golpe R\u00e1pido',
-    'noice':'Noice','hangry':'Hambriento',
-    'gorging':'Devorador','gulping':'Engullidor',
-    'apex':'Apex'
+    'hangry':'Hambriento','apex':'Apex'
   };
   var sufStr = partes.slice(1).join('-');
   var sufFmt = sufijos[sufStr]
     ? sufijos[sufStr]
     : partes.slice(1).map(function(p){ return p.charAt(0).toUpperCase()+p.slice(1); }).join(' ');
-  return base + ' ' + sufFmt;
+  return base+' '+sufFmt;
 }
 
-/* Autocomplete museo: busca en toda la lista de PokeAPI */
 window.museoPokeAutocom = function(){
-  var raw = (document.getElementById('museo-poke-nombre').value||'').trim().toLowerCase();
-  var dd  = document.getElementById('museo-poke-dropdown');
-  if(!dd) return;
-  // Resetear seleccion previa y preview
+  var inputEl = document.getElementById('museo-poke-nombre');
+  var dd      = document.getElementById('museo-poke-dropdown');
+  if(!inputEl || !dd) return;
+  var raw = (inputEl.value||'').trim().toLowerCase();
+  var q   = raw.replace(/\s+/g,'-');
   _museoPokeSelected = null;
   document.getElementById('museo-poke-preview').style.display = 'none';
   if(raw.length < 2){ dd.style.display='none'; return; }
-  // Normalizar para buscar: espacios -> guiones, quitar acentos basicos
-  var q = raw.replace(/\s+/g,'-');
 
   function doSearch(){
-    // Buscar contra nombre API (con guiones) Y contra el label formateado
     var matches = _museoPokeListaCompleta
       .filter(function(p){
         if(p.name.indexOf(q) !== -1) return true;
-        var lbl = museoPokeLabel(p.name).toLowerCase();
-        return lbl.indexOf(raw) !== -1;
-      })
-      .slice(0, 10);
+        return museoPokeLabel(p.name).toLowerCase().indexOf(raw) !== -1;
+      }).slice(0,10);
     if(!matches.length){ dd.style.display='none'; return; }
     dd.innerHTML = matches.map(function(m){
       var id     = museoPokeIdDesdeUrl(m.url);
       var sprite = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png' : '';
       var label  = museoPokeLabel(m.name);
-      var idStr  = id ? '#'+id : '';
       return '<div class="museo-poke-opt"'
         +' data-apiname="'+m.name+'"'
         +' data-id="'+id+'"'
         +' data-sprite="'+sprite+'"'
         +' data-label="'+label.replace(/"/g,'&quot;')+'"'
         +' style="padding:7px 12px;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)">'
-        +'<img src="'+sprite+'" style="width:28px;height:28px;image-rendering:pixelated" onerror="this.style.opacity=\'0.25\'">'
+        +'<img src="'+sprite+'" style="width:28px;height:28px;image-rendering:pixelated" onerror="this.style.opacity=&apos;0.25&apos;">'
         +'<span>'+label+'</span>'
-        +'<span style="color:var(--txt-muted);font-size:9px;margin-left:auto">'+idStr+'</span>'
+        +(id ? '<span style="color:var(--txt-muted);font-size:9px;margin-left:auto">#'+id+'</span>' : '')
         +'</div>';
     }).join('');
     dd.style.display = 'block';
     dd.onclick = function(ev){
       var opt = ev.target.closest('.museo-poke-opt');
       if(!opt) return;
-      var apiName = opt.getAttribute('data-apiname');
-      var id      = parseInt(opt.getAttribute('data-id')) || 0;
-      var sprite  = opt.getAttribute('data-sprite');
-      var label   = opt.getAttribute('data-label');
-      document.getElementById('museo-poke-nombre').value = label;
+      var label  = opt.getAttribute('data-label');
+      var sprite = opt.getAttribute('data-sprite');
+      var id     = parseInt(opt.getAttribute('data-id'))||0;
+      inputEl.value = label;
       dd.style.display = 'none';
-      _museoPokeSelected = { num: id, nombre: label, apiName: apiName, sprite: sprite };
+      _museoPokeSelected = { num: id, nombre: label, sprite: sprite };
       document.getElementById('museo-poke-sprite').src = sprite;
       document.getElementById('museo-poke-nombre-preview').textContent = label;
-      document.getElementById('museo-poke-num-preview').textContent = id || '?';
+      document.getElementById('museo-poke-num-preview').textContent = id||'?';
       document.getElementById('museo-poke-preview').style.display = 'flex';
     };
   }
 
-  if(_museoPokeListaCargada){
-    doSearch();
-  } else {
-    dd.innerHTML = '<div style="padding:10px 12px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">\u23f3 Cargando lista completa...</div>';
+  if(_museoPokeListaCargada){ doSearch(); }
+  else {
+    dd.innerHTML = '<div style="padding:10px 12px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">\u23f3 Cargando lista...</div>';
     dd.style.display = 'block';
     museoCargarListaCompleta(doSearch);
   }
@@ -3697,18 +3686,21 @@ function museoPokesRender(){
 }
 
 
+// ── Estado temporal del formulario del museo ──
+var _museoJuegoSel   = null;
+var _museoPokesTemp  = {};
+
 window.museoIniciarPanel = function(){
-  _museoJuegoSel  = null;
-  _museoPokesTemp = {};
+  _museoJuegoSel     = null;
+  _museoPokesTemp    = {};
   _museoPokeSelected = null;
+  museoCargarListaCompleta(null);
   var fields = ['museo-num','museo-poke-nombre','museo-poke-mote'];
   fields.forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
   document.querySelectorAll('input[name="museo-modal"]').forEach(function(cb){ cb.checked=false; });
   var juegoVal = document.getElementById('museo-juego-val'); if(juegoVal) juegoVal.value='';
   var juegoSel = document.getElementById('museo-juego-sel'); if(juegoSel) juegoSel.style.display='none';
   var preview  = document.getElementById('museo-poke-preview'); if(preview) preview.style.display='none';
-  // Precargar la lista de Pokémon en segundo plano
-  museoCargarListaCompleta(null);
   museoRenderJuegoGrid();
   museoRenderCampBtns();
   museoRenderPokesLista();
@@ -5660,36 +5652,157 @@ function pvpDueloActivo(){
 }
 
 /* ── Crear duelo ── */
+/* ── PVP Pokémon equipos (1–6 por lado) ── */
+var _pvpEquipos      = { a: [], b: [] };
+var _pvpPokeSelected = { a: null, b: null };
+
+function pvpRenderEquipo(lado){
+  var lista  = document.getElementById('pvp-equipo-'+lado+'-lista');
+  var btnAdd = document.getElementById('pvp-btn-add-'+lado);
+  if(!lista) return;
+  var eq = _pvpEquipos[lado];
+  lista.innerHTML = eq.map(function(p, i){
+    return '<div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-sm)">'
+      +'<img src="'+p.sprite+'" style="width:24px;height:24px;image-rendering:pixelated" onerror="this.style.opacity=\'0.2\'">'
+      +'<span style="font-family:var(--font-display);font-size:11px;flex:1;color:var(--txt-primary)">'+escaparHTML(p.nombre)+'</span>'
+      +'<button onclick="pvpQuitarPoke(\''+lado+'\','+i+')" style="background:none;border:none;color:var(--txt-muted);cursor:pointer;font-size:15px;padding:0 2px;line-height:1">&#215;</button>'
+      +'</div>';
+  }).join('');
+  if(btnAdd) btnAdd.style.display = eq.length >= 6 ? 'none' : 'block';
+}
+
+window.pvpToggleAddPoke = function(lado){
+  var formEl  = document.getElementById('pvp-equipo-'+lado+'-form');
+  var inputEl = document.getElementById('pvp-poke-'+lado);
+  if(!formEl) return;
+  var visible = formEl.style.display !== 'none';
+  formEl.style.display = visible ? 'none' : 'block';
+  if(!visible && inputEl){ inputEl.value=''; inputEl.focus(); _pvpPokeSelected[lado]=null; }
+};
+
+window.pvpQuitarPoke = function(lado, idx){
+  _pvpEquipos[lado].splice(idx,1);
+  pvpRenderEquipo(lado);
+};
+
+window.pvpPokeAutocom = function(lado){
+  var inputEl = document.getElementById('pvp-poke-'+lado);
+  var ddEl    = document.getElementById('pvp-poke-'+lado+'-dd');
+  if(!inputEl || !ddEl) return;
+  var raw = (inputEl.value||'').trim().toLowerCase();
+  var q   = raw.replace(/\s+/g,'-');
+  _pvpPokeSelected[lado] = null;
+  if(raw.length < 2){ ddEl.style.display='none'; return; }
+
+  function doSearch(){
+    var matches = _museoPokeListaCompleta
+      .filter(function(p){
+        if(p.name.indexOf(q) !== -1) return true;
+        return museoPokeLabel(p.name).toLowerCase().indexOf(raw) !== -1;
+      }).slice(0,10);
+    if(!matches.length){ ddEl.style.display='none'; return; }
+    ddEl.innerHTML = matches.map(function(m){
+      var id     = museoPokeIdDesdeUrl(m.url);
+      var sprite = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png' : '';
+      var label  = museoPokeLabel(m.name);
+      return '<div class="pvp-poke-opt"'
+        +' data-label="'+label.replace(/"/g,'&quot;')+'"'
+        +' data-sprite="'+sprite+'"'
+        +' data-id="'+id+'"'
+        +' style="padding:7px 12px;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)">'
+        +'<img src="'+sprite+'" style="width:28px;height:28px;image-rendering:pixelated" onerror="this.style.opacity=\'0.25\'">'
+        +'<span>'+label+'</span>'
+        +(id ? '<span style="color:var(--txt-muted);font-size:9px;margin-left:auto">#'+id+'</span>' : '')
+        +'</div>';
+    }).join('');
+    ddEl.style.display = 'block';
+    ddEl.onclick = function(ev){
+      var opt = ev.target.closest('.pvp-poke-opt');
+      if(!opt) return;
+      var label  = opt.getAttribute('data-label');
+      var sprite = opt.getAttribute('data-sprite');
+      var id     = parseInt(opt.getAttribute('data-id'))||0;
+      ddEl.style.display = 'none';
+      if(_pvpEquipos[lado].length < 6){
+        _pvpEquipos[lado].push({ nombre: label, sprite: sprite, num: id });
+        pvpRenderEquipo(lado);
+      }
+      inputEl.value = '';
+      var formEl = document.getElementById('pvp-equipo-'+lado+'-form');
+      if(formEl) formEl.style.display = 'none';
+      _pvpPokeSelected[lado] = null;
+    };
+  }
+
+  if(_museoPokeListaCargada){ doSearch(); }
+  else {
+    ddEl.innerHTML = '<div style="padding:10px 12px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">⏳ Cargando lista...</div>';
+    ddEl.style.display = 'block';
+    museoCargarListaCompleta(doSearch);
+  }
+};
+
+document.addEventListener('click', function(e){
+  ['a','b'].forEach(function(lado){
+    if(!e.target.closest('#pvp-poke-'+lado) && !e.target.closest('#pvp-poke-'+lado+'-dd')){
+      var dd = document.getElementById('pvp-poke-'+lado+'-dd');
+      if(dd) dd.style.display = 'none';
+    }
+  });
+});
+
+function pvpRenderSpritesEquipo(equipo){
+  if(!equipo || !equipo.length) return '';
+  return '<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:center;margin-top:4px">'
+    + equipo.map(function(p){
+        return '<img src="'+escaparHTML(p.sprite)+'" title="'+escaparHTML(p.nombre)+'" style="width:30px;height:30px;image-rendering:pixelated" onerror="this.style.opacity=\'0.2\'">';
+      }).join('')
+    + '</div>';
+}
+
 window.pvpCrearDuelo = function(){
   var a  = document.getElementById('pvp-jugador-a').value;
   var b  = document.getElementById('pvp-jugador-b').value;
-  var pa = (document.getElementById('pvp-poke-a').value||'').trim();
-  var pb = (document.getElementById('pvp-poke-b').value||'').trim();
   var n  = (document.getElementById('pvp-notas').value||'').trim();
-  if(!a || !b)          { mostrarNotificacion('Elige los dos jugadores.','error','⚔️'); return; }
-  if(a === b)           { mostrarNotificacion('Un jugador no puede luchar contra sí mismo.','error','⚔️'); return; }
-  if(pvpDueloActivo())  { mostrarNotificacion('Ya hay un duelo activo. Resuélvelo primero.','error','⚔️'); return; }
+  if(!a || !b)         { mostrarNotificacion('Elige los dos jugadores.','error','⚔️'); return; }
+  if(a === b)          { mostrarNotificacion('Un jugador no puede luchar contra si mismo.','error','⚔️'); return; }
+  if(pvpDueloActivo()) { mostrarNotificacion('Ya hay un duelo activo. Resuelvelo primero.','error','⚔️'); return; }
+  var equipoA = _pvpEquipos.a.slice();
+  var equipoB = _pvpEquipos.b.slice();
+  var pa = equipoA.map(function(p){ return p.nombre; }).join(', ');
+  var pb = equipoB.map(function(p){ return p.nombre; }).join(', ');
   var pvp = pvpGetData();
   var duelo = {
-    id:       'duelo_'+Date.now(),
-    retador:  a,
-    retado:   b,
-    pokeA:    pa,
-    pokeB:    pb,
-    notas:    n,
-    estado:   'activo',
-    ganador:  null,
+    id:        'duelo_'+Date.now(),
+    retador:   a,
+    retado:    b,
+    equipoA:   equipoA,
+    equipoB:   equipoB,
+    pokeA:     pa,
+    pokeB:     pb,
+    notas:     n,
+    estado:    'activo',
+    ganador:   null,
     timestamp: Date.now(),
-    fecha:    new Date().toLocaleDateString('es-ES')
+    fecha:     new Date().toLocaleDateString('es-ES')
   };
   pvp.duelos.unshift(duelo);
-  logAdmin('🥊','Crear duelo PvP',a.toUpperCase()+' vs '+b.toUpperCase()+(pa||pb?' ('+[pa,pb].filter(Boolean).join(' vs ')+')':''));inyectarEntradaDiarioAutomatica('⚔️ ¡Nuevo duelo! '+a.toUpperCase()+' vs '+b.toUpperCase()+(pa||pb?' ('+[pa,pb].filter(Boolean).join(' vs ')+')':''));
-  mostrarNotificacion('¡Duelo iniciado! '+a.toUpperCase()+' vs '+b.toUpperCase(),'exito','⚔️');
-  // Limpiar inputs
-  ['pvp-poke-a','pvp-poke-b','pvp-notas'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  var resLog = (pa||pb ? ' ('+[pa,pb].filter(Boolean).join(' vs ')+')' : '');
+  logAdmin('🥊','Crear duelo PvP', a.toUpperCase()+' vs '+b.toUpperCase()+resLog);
+  inyectarEntradaDiarioAutomatica('⚔️ Nuevo duelo! '+a.toUpperCase()+' vs '+b.toUpperCase()+resLog);
+  mostrarNotificacion('Duelo iniciado! '+a.toUpperCase()+' vs '+b.toUpperCase(),'exito','⚔️');
+  var notas = document.getElementById('pvp-notas'); if(notas) notas.value='';
+  _pvpEquipos = { a: [], b: [] };
+  _pvpPokeSelected = { a: null, b: null };
+  ['a','b'].forEach(function(lado){
+    pvpRenderEquipo(lado);
+    var f = document.getElementById('pvp-equipo-'+lado+'-form'); if(f) f.style.display='none';
+    var inp = document.getElementById('pvp-poke-'+lado); if(inp) inp.value='';
+  });
   pvpActualizarAdminPanel();
   renderizarDuelosPvP();
 };
+
 
 /* ── Resolver duelo ── */
 window.pvpResolverDuelo = function(quien){
@@ -5755,11 +5868,11 @@ window.pvpActualizarAdminPanel = function(){
   var eloB = pvpGetElo(duelo.retado).puntos;
   infoEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'
     + '<div style="flex:1;text-align:center"><div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:#4ade80">'+duelo.retador.toUpperCase()+'</div>'
-    + (duelo.pokeA ? '<div style="font-size:10px;color:var(--txt-muted)">'+escaparHTML(duelo.pokeA)+'</div>' : '')
+    + (duelo.equipoA&&duelo.equipoA.length ? pvpRenderSpritesEquipo(duelo.equipoA) : (duelo.pokeA ? '<div style="font-size:10px;color:var(--txt-muted)">'+escaparHTML(duelo.pokeA)+'</div>' : ''))
     + '<div style="font-size:10px;color:var(--neon-packs)">ELO: '+eloA+'</div></div>'
     + '<div style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--neon-arena)">VS</div>'
     + '<div style="flex:1;text-align:center"><div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:#60a5fa">'+duelo.retado.toUpperCase()+'</div>'
-    + (duelo.pokeB ? '<div style="font-size:10px;color:var(--txt-muted)">'+escaparHTML(duelo.pokeB)+'</div>' : '')
+    + (duelo.equipoB&&duelo.equipoB.length ? pvpRenderSpritesEquipo(duelo.equipoB) : (duelo.pokeB ? '<div style="font-size:10px;color:var(--txt-muted)">'+escaparHTML(duelo.pokeB)+'</div>' : ''))
     + '<div style="font-size:10px;color:var(--neon-packs)">ELO: '+eloB+'</div></div>'
     + '</div>'
     + (duelo.notas ? '<div style="font-size:10px;color:var(--txt-muted);font-style:italic">📝 '+escaparHTML(duelo.notas)+'</div>' : '');
@@ -5784,11 +5897,11 @@ window.renderizarDuelosPvP = function(){
         + '<div style="font-family:var(--font-display);font-size:10px;color:var(--neon-arena);letter-spacing:1px;margin-bottom:8px">⚔️ DUELO EN CURSO · '+duelo.fecha+'</div>'
         + '<div class="pvp-vs-row">'
         + '<div class="pvp-jugador-box"><div class="pvp-jugador-nombre" style="color:#4ade80">'+duelo.retador.toUpperCase()+'</div>'
-        + (duelo.pokeA ? '<div class="pvp-jugador-poke">'+escaparHTML(duelo.pokeA)+'</div>' : '')
+        + (duelo.equipoA&&duelo.equipoA.length ? pvpRenderSpritesEquipo(duelo.equipoA) : (duelo.pokeA ? '<div class="pvp-jugador-poke">'+escaparHTML(duelo.pokeA)+'</div>' : ''))
         + '<div class="pvp-jugador-elo">ELO '+eloA+'</div></div>'
         + '<div class="pvp-vs-badge">VS</div>'
         + '<div class="pvp-jugador-box"><div class="pvp-jugador-nombre" style="color:#60a5fa">'+duelo.retado.toUpperCase()+'</div>'
-        + (duelo.pokeB ? '<div class="pvp-jugador-poke">'+escaparHTML(duelo.pokeB)+'</div>' : '')
+        + (duelo.equipoB&&duelo.equipoB.length ? pvpRenderSpritesEquipo(duelo.equipoB) : (duelo.pokeB ? '<div class="pvp-jugador-poke">'+escaparHTML(duelo.pokeB)+'</div>' : ''))
         + '<div class="pvp-jugador-elo">ELO '+eloB+'</div></div>'
         + '</div>'
         + (duelo.notas ? '<div style="font-size:10px;color:var(--txt-muted);text-align:center;font-style:italic">📝 '+escaparHTML(duelo.notas)+'</div>' : '')
