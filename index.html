@@ -24,6 +24,8 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .sidebar-logo{padding:18px 20px 16px;border-bottom:1px solid var(--borde);display:flex;align-items:center;gap:10px;flex-shrink:0}
 .sidebar-logo-mark{width:32px;height:32px;border-radius:50%;background:var(--rojo);position:relative;flex-shrink:0;box-shadow:0 0 16px rgba(239,68,68,.3)}.sidebar-logo-mark::before{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:rgba(0,0,0,.4);border-radius:16px 16px 0 0}.sidebar-logo-mark::after{content:'';position:absolute;top:calc(50% - 5px);left:calc(50% - 5px);width:10px;height:10px;background:#fff;border:2px solid #000;border-radius:50%}
 .sidebar-close-btn{display:none;margin-left:auto;width:28px;height:28px;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-sm);cursor:pointer;align-items:center;justify-content:center;color:var(--txt-secondary);font-size:14px;font-weight:700;flex-shrink:0}
+
+
 .sidebar-logo-text{font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--blanco);letter-spacing:.5px;line-height:1.2}.sidebar-logo-sub{font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.3px}
 .sidebar-nav{flex:1;padding:12px 10px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
 .nav-section-label{font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;padding:10px 10px 4px}
@@ -131,7 +133,7 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .sacrificio-modal-box{background:#120a06;border:1px solid rgba(249,115,22,.2);border-radius:var(--r-2xl);width:100%;max-width:580px;max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl),0 0 50px rgba(249,115,22,.06);animation:pop-in .3s cubic-bezier(.16,1,.3,1);overflow:hidden}.sac-header{background:linear-gradient(135deg,rgba(92,42,16,.7),rgba(18,10,6,.9));border-bottom:1px solid rgba(249,115,22,.15);padding:16px 20px 12px;position:relative;overflow:hidden;flex-shrink:0}.sac-header::before{content:'🔥';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.06;pointer-events:none}.sac-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--neon-sacrificio),transparent);opacity:.4}.sac-title{font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--neon-sacrificio);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}.sac-subtitulo{font-size:11px;color:var(--txt-muted);font-family:var(--font-display)}.sac-tabla{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:5px;padding:10px 20px;background:rgba(0,0,0,.25);border-bottom:1px solid rgba(249,115,22,.1);flex-shrink:0}.sac-tabla-chip{display:flex;align-items:center;gap:6px;background:rgba(249,115,22,.04);border:1px solid rgba(249,115,22,.1);border-radius:var(--r-sm);padding:4px 8px;font-size:10px;color:var(--txt-secondary);font-family:var(--font-display)}.sac-vida-badge{background:var(--neon-sacrificio);color:#000;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:900;flex-shrink:0}.sac-body{flex:1;overflow-y:auto;padding:16px 20px}.sac-form{background:rgba(0,0,0,.3);border:1px solid rgba(249,115,22,.12);border-radius:var(--r-lg);padding:14px;margin-bottom:12px}.sac-label{font-size:10px;font-family:var(--font-display);font-weight:700;color:var(--txt-secondary);letter-spacing:.8px;text-transform:uppercase;display:block;margin-bottom:5px}.sac-input{background:var(--bg-base);color:var(--blanco);border:1px solid rgba(249,115,22,.15);padding:9px 12px;width:100%;border-radius:var(--r-md);font-size:13px;font-family:var(--font-body);transition:border-color .18s;margin-bottom:9px}.sac-input:focus{outline:none;border-color:var(--neon-sacrificio);box-shadow:0 0 0 3px rgba(249,115,22,.08)}.sac-select{background:var(--bg-base);color:var(--neon-sacrificio);border:1px solid rgba(249,115,22,.15);padding:9px 12px;width:100%;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:700;-webkit-appearance:none;appearance:none;cursor:pointer;margin-bottom:9px}.sac-select:focus{outline:none;border-color:var(--neon-sacrificio)}.sac-preview{display:flex;align-items:center;gap:10px;background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.18);border-radius:var(--r-md);padding:11px 13px;margin-top:8px;transition:all .3s ease}.sac-preview.hidden{opacity:0;pointer-events:none}.sac-preview-txt{font-family:var(--font-display);font-size:11px;color:var(--txt-secondary);flex:1}.sac-preview-num{font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--neon-sacrificio);flex-shrink:0}.sac-aviso-max{display:none;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:var(--r-md);padding:9px 12px;margin-top:8px;font-size:11px;color:#f87171;font-family:var(--font-display)}.sac-historial-titulo{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}.sac-entry{background:rgba(249,115,22,.03);border:1px solid rgba(249,115,22,.1);border-left:3px solid var(--neon-sacrificio);padding:8px 11px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:5px;font-size:11px;color:var(--txt-secondary);transition:border-left-color .15s}.sac-entry:hover{border-left-color:#fdba74}.sac-entry-ts{font-family:var(--font-display);font-size:9px;color:var(--txt-muted);margin-bottom:3px}.sac-footer{padding:12px 20px;background:rgba(0,0,0,.4);border-top:1px solid rgba(249,115,22,.1);display:flex;gap:10px;flex-shrink:0}.btn-sacrificar{flex:1;padding:11px;background:rgba(249,115,22,.08);color:var(--neon-sacrificio);border:1px solid rgba(249,115,22,.3);cursor:pointer;border-radius:var(--r-md);font-weight:900;font-size:11px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.8px;transition:all .2s}.btn-sacrificar:hover:not(:disabled){background:rgba(249,115,22,.2);box-shadow:0 0 20px rgba(249,115,22,.15)}.btn-sacrificar:disabled{background:var(--bg-surface)!important;color:var(--txt-muted)!important;border-color:var(--gris-700)!important;cursor:not-allowed}.btn-sac-cancel{padding:11px 16px;background:var(--bg-overlay);color:var(--txt-secondary);border:1px solid var(--borde);cursor:pointer;border-radius:var(--r-md);font-weight:700;font-size:11px;font-family:var(--font-display);text-transform:uppercase;transition:all .18s}.btn-sac-cancel:hover{border-color:var(--borde-hover);color:var(--blanco)}
 .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg-base);background-image:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(239,68,68,.06) 0%,transparent 70%);transition:opacity .3s ease}.login-screen.fade-out{opacity:0}.app-shell.fade-in{animation:vistaEntrada .4s cubic-bezier(.16,1,.3,1)}.login-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-2xl);padding:38px 34px;width:100%;max-width:360px;box-shadow:var(--shadow-xl);animation:pop-in .4s cubic-bezier(.16,1,.3,1);text-align:center}.login-pokeball{width:52px;height:52px;border-radius:50%;background:var(--rojo);position:relative;margin:0 auto 20px;box-shadow:0 0 30px rgba(239,68,68,.25)}.login-pokeball::before{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:rgba(0,0,0,.35);border-radius:26px 26px 0 0}.login-pokeball::after{content:'';position:absolute;top:calc(50% - 7px);left:calc(50% - 7px);width:14px;height:14px;background:#fff;border:3px solid #000;border-radius:50%;box-shadow:0 0 8px rgba(255,255,255,.3)}.login-title{font-family:var(--font-display);font-size:17px;font-weight:900;color:var(--neon-packs);letter-spacing:.5px;margin-bottom:4px}.login-sub{font-size:11px;color:var(--txt-muted);margin-bottom:26px;font-family:var(--font-display);letter-spacing:.5px}.login-input{background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:12px 16px;width:100%;margin-bottom:12px;text-align:center;border-radius:var(--r-md);font-size:14px;font-family:var(--font-display);letter-spacing:1px;transition:border-color .18s}.login-input:focus{outline:none;border-color:var(--rojo);box-shadow:0 0 0 3px rgba(239,68,68,.08)}.login-input::placeholder{color:var(--txt-muted);font-size:11px}.btn-login{width:100%;padding:12px;background:rgba(239,68,68,.1);color:var(--rojo);border:1px solid rgba(239,68,68,.3);border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:all .2s}.btn-login:hover{background:rgba(239,68,68,.2);box-shadow:0 0 20px rgba(239,68,68,.1)}
 .dios-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;padding-bottom:2px}.dios-tab{padding:8px 13px;border-radius:var(--r-md);font-family:var(--font-display);font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-secondary);transition:all .18s ease;white-space:nowrap}.dios-tab:hover{color:var(--blanco);background:var(--bg-overlay)}.dios-tab.active{background:rgba(245,158,11,.1);color:var(--neon-packs);border-color:rgba(245,158,11,.3);box-shadow:0 0 14px -4px rgba(245,158,11,.5)}.dios-view{display:none;width:100%;box-sizing:border-box}.dios-view.active{display:block}.dios-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.admin-panel{background:var(--bg-elevated);border:1px solid var(--borde);padding:16px;border-radius:var(--r-lg);height:fit-content;box-sizing:border-box;min-width:0}.admin-section-title{color:var(--neon-packs);font-size:11px;font-family:var(--font-display);font-weight:700;letter-spacing:.5px;margin:0 0 10px 0}.admin-input{background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:7px 10px;width:100%;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;transition:border-color .18s;margin-bottom:8px}.admin-input:focus{outline:none;border-color:var(--gris-600)}.admin-select{background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:7px 10px;width:100%;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;-webkit-appearance:none;appearance:none;cursor:pointer;margin-bottom:8px}.admin-hr{border:none;border-top:1px solid var(--borde);margin:14px 0}
+.admin-panel{background:var(--bg-elevated);border:1px solid var(--borde);padding:16px;border-radius:var(--r-lg);height:fit-content;box-sizing:border-box;min-width:0}.admin-section-title{color:var(--neon-packs);font-size:11px;font-family:var(--font-display);font-weight:700;letter-spacing:.5px;margin:0 0 10px 0}.adm-label{font-size:9px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;display:block}.museo-btn-jugador{transition:all .15s;cursor:pointer}.museo-btn-jugador:hover{opacity:.85}.admin-input{background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:7px 10px;width:100%;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;transition:border-color .18s;margin-bottom:8px}.admin-input:focus{outline:none;border-color:var(--gris-600)}.admin-select{background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:7px 10px;width:100%;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;-webkit-appearance:none;appearance:none;cursor:pointer;margin-bottom:8px}.admin-hr{border:none;border-top:1px solid var(--borde);margin:14px 0}
 .btn-admin{padding:8px 14px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s;margin-bottom:14px;width:100%}.btn-admin.packs{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.25);color:var(--neon-packs)}.btn-admin.packs:hover{background:rgba(245,158,11,.16)}.btn-admin.legal{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.25);color:var(--neon-legal)}.btn-admin.legal:hover{background:rgba(16,185,129,.16)}.btn-admin.danger{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.25);color:#f87171}.btn-admin.danger:hover{background:rgba(239,68,68,.16)}.btn-admin.arena{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.25);color:var(--neon-arena)}.btn-admin.arena:hover{background:rgba(139,92,246,.16)}.btn-admin.intercambio{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.25);color:var(--neon-intercambio)}.btn-admin.intercambio:hover{background:rgba(59,130,246,.16)}
 .admin-item-card{background:var(--bg-card);border:1px solid var(--borde);padding:11px;border-radius:var(--r-md);margin-bottom:8px;position:relative}.admin-item-row{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}.admin-field label{font-size:9px;color:var(--txt-muted);display:block;font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px}.btn-del-item{position:absolute;top:8px;right:8px;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2);width:22px;height:22px;border-radius:var(--r-sm);cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .15s}.btn-del-item:hover{background:rgba(239,68,68,.3)}
 .admin-arena-card{background:var(--bg-card);border:1px solid rgba(139,92,246,.15);padding:11px;border-radius:var(--r-md);margin-bottom:8px}.admin-btns-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.btn-admin-sm{padding:4px 10px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:9px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .15s;border:1px solid}.btn-admin-sm.packs{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);color:var(--neon-packs)}.btn-admin-sm.legal{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:var(--neon-legal)}.btn-admin-sm.danger{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:#f87171}.btn-admin-sm.arena{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.3);color:var(--neon-arena)}.btn-admin-sm.intercambio{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.3);color:var(--neon-intercambio)}.checkbox-label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--txt-primary);margin-bottom:8px}
@@ -946,7 +948,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
     <!-- HALL OF FAME -->
     <section id="section-hall-of-fame" class="page-section">
-      <div class="section-header"><div class="section-title">✨ Hall of Fame</div><div class="section-subtitle">Los mejores de la Red Comercial</div></div>
+      <div class="section-header"><div class="section-title">✨ Hall of Fame</div><div class="section-subtitle" id="hof-subtitulo">Los mejores de la Red Comercial</div></div>
 
       <!-- BANNER LOCKE ACTIVO -->
       <div id="hof-locke-banner" style="display:none;margin-bottom:22px">
@@ -961,9 +963,9 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
       </div>
 
-      <!-- CAMPEONES -->
+      <!-- CAMPEONES LOCKE ACTUAL -->
       <div class="card" style="margin-bottom:22px">
-        <div class="card-title" style="color:var(--amarillo)">🏆 Campeones del Locke</div>
+        <div class="card-title" style="color:var(--amarillo)">🏆 Campeones del Locke Actual</div>
         <div style="display:grid;grid-template-columns:repeat(3,minmax(100px,1fr));gap:12px;overflow-x:auto;-webkit-overflow-scrolling:touch" id="hof-campeones-grid">
           <div class="medallas-card" style="text-align:center;padding:18px 12px;border-color:rgba(245,158,11,.25)">
             <div style="font-size:36px;margin-bottom:8px">🎖️</div>
@@ -983,25 +985,50 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
       </div>
 
-      <!-- MEJORES POKÉMON -->
-      <div class="card" style="margin-bottom:22px">
-        <div class="card-title" style="color:var(--neon-packs)">⭐ Mejores Pokémon del Locke</div>
+      <!-- MEJORES POKÉMON LOCKE ACTUAL -->
+      <div class="card" style="margin-bottom:32px">
+        <div class="card-title" style="color:var(--neon-packs)">⭐ Mejores Pokémon del Locke Actual</div>
         <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:16px">El compañero más memorable de cada entrenador en su run.</div>
         <div id="hof-pokemon-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
           <div style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display);text-align:center;padding:30px;grid-column:1/-1">Todavía no hay entrenadores en el Hall of Fame.</div>
         </div>
       </div>
 
-      <!-- HISTORIAL DE LOCKES -->
+      <!-- ══ MUSEO ══ -->
       <div id="hof-historial-wrap" style="display:none">
-        <div class="card" style="margin-bottom:0;border-color:rgba(99,102,241,.25);background:linear-gradient(135deg,rgba(99,102,241,.04),transparent)">
-          <div class="card-title" style="color:#818cf8;display:flex;align-items:center;gap:10px">
-            📜 Museo de Lockes Anteriores
-            <span id="hof-historial-count" style="font-size:10px;font-family:var(--font-body);font-weight:400;color:var(--txt-muted);background:var(--bg-elevated);padding:2px 8px;border-radius:20px"></span>
+
+        <!-- Título museo -->
+        <div style="position:relative;text-align:center;margin-bottom:24px">
+          <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.4),transparent);position:absolute;top:50%;left:0;right:0"></div>
+          <div style="position:relative;display:inline-flex;align-items:center;gap:10px;background:var(--bg-base);padding:0 20px">
+            <span style="font-size:20px">🏛️</span>
+            <span style="font-family:var(--font-display);font-size:14px;font-weight:900;color:#a78bfa;letter-spacing:1px;text-transform:uppercase">Museo de Lockes</span>
+            <span id="hof-historial-count" style="font-size:10px;font-family:var(--font-body);font-weight:600;color:var(--txt-muted);background:var(--bg-elevated);border:1px solid rgba(167,139,250,.25);padding:2px 9px;border-radius:20px"></span>
           </div>
-          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:16px">Campeones y Pokémon de cada locke completado.</div>
-          <div id="hof-historial-list" style="display:flex;flex-direction:column;gap:14px"></div>
         </div>
+
+        <!-- Filtros -->
+        <div style="background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-xl);padding:14px 16px;margin-bottom:20px">
+          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🔍 Buscar en el archivo</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <input id="museo-q-jugador" class="admin-input" style="margin:0;font-size:12px;padding:8px 12px" placeholder="👤 Jugador / campeón..." oninput="museoFiltrar()">
+            <input id="museo-q-juego"   class="admin-input" style="margin:0;font-size:12px;padding:8px 12px" placeholder="🎮 Juego..." oninput="museoFiltrar()">
+            <input id="museo-q-modal"   class="admin-input" style="margin:0;font-size:12px;padding:8px 12px" placeholder="⚡ Modalidad..." oninput="museoFiltrar()">
+            <input id="museo-q-poke"    class="admin-input" style="margin:0;font-size:12px;padding:8px 12px" placeholder="🌟 Pokémon..." oninput="museoFiltrar()">
+          </div>
+          <div id="museo-filtro-activo" style="display:none;margin-top:10px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">Mostrando: </span>
+            <span id="museo-filtro-count" style="font-size:10px;color:#a78bfa;font-family:var(--font-display);font-weight:700"></span>
+            <button onclick="museoClearFiltros()" style="font-size:10px;color:var(--neon-ilegal);background:none;border:none;cursor:pointer;font-family:var(--font-display);font-weight:700;margin-left:auto">✕ Limpiar</button>
+          </div>
+        </div>
+
+        <div id="museo-no-results" style="display:none;text-align:center;padding:36px;color:var(--txt-muted);font-family:var(--font-display);font-size:11px">
+          <div style="font-size:32px;margin-bottom:8px">🔎</div>
+          Sin resultados para esa búsqueda.
+        </div>
+
+        <div id="hof-historial-list" style="display:flex;flex-direction:column;gap:20px"></div>
       </div>
     </section>
     <!-- MODO DIOS -->
@@ -1330,36 +1357,89 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
 
       <!-- NUEVO LOCKE -->
-      <!-- MUSEO: añadir entradas manuales al historial -->
+      <!-- MUSEO ADMIN -->
       <div id="dv-museo" class="dios-view">
-        <div class="card" style="max-width:560px;border-color:rgba(129,140,248,.25)">
-          <div class="card-title" style="color:#818cf8">📜 Museo de Lockes</div>
-          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:18px">Añade o edita manualmente entradas del historial. Útil para recuperar datos de lockes anteriores.</div>
+        <div class="card" style="max-width:600px;border-color:rgba(129,140,248,.25)">
+          <div class="card-title" style="color:#818cf8">🏛️ Museo — Añadir entrada</div>
+          <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:18px">Crea o edita manualmente una entrada del museo. Útil para recuperar datos de lockes anteriores.</div>
 
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
-            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Número de locke</div>
-            <input id="museo-num" type="number" min="1" class="admin-input" style="margin-bottom:0" placeholder="Ej: 1">
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:18px">
 
-            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Juego</div>
-            <input id="museo-juego" class="admin-input" style="margin-bottom:0" placeholder="Ej: Pokémon X / Y">
+            <!-- Número -->
+            <div>
+              <div class="adm-label">Número de Locke</div>
+              <input id="museo-num" type="number" min="1" class="admin-input" style="margin-bottom:0" placeholder="Ej: 1">
+            </div>
 
-            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Tipo/Modalidad</div>
-            <input id="museo-tipo" class="admin-input" style="margin-bottom:0" placeholder="Ej: EggLocke, Randomlocke...">
+            <!-- Juego — selector visual -->
+            <div>
+              <div class="adm-label">Juego</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:6px" id="museo-juego-grid"></div>
+              <div id="museo-juego-sel" style="display:none;font-size:10px;font-family:var(--font-display);color:var(--neon-legal);padding:5px 10px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:var(--r-sm)">✅ <span id="museo-juego-sel-txt"></span></div>
+              <input id="museo-juego-val" type="hidden" value="">
+            </div>
 
-            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Campeón Torneos</div>
-            <input id="museo-camp-torneos" class="admin-input" style="margin-bottom:0" placeholder="Nombre del jugador">
+            <!-- Modalidades — checkboxes -->
+            <div>
+              <div class="adm-label">Modalidades</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px" id="museo-modal-list">
+                <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="EggLocke"> 🥚 EggLocke</label>
+                <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="Randomlocke"> 🎲 Randomlocke</label>
+                <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="Shinylocke"> ✨ Shinylocke</label>
+                <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="SoulLink"> ⚡ Soul-Link</label>
+              </div>
+            </div>
 
-            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px">Campeón Finalísima</div>
-            <input id="museo-camp-final" class="admin-input" style="margin-bottom:0" placeholder="Nombre del jugador">
+            <!-- Campeón Torneos -->
+            <div>
+              <div class="adm-label" style="color:var(--neon-packs)">🎖️ Campeón Torneos</div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px" id="museo-camp-torneos-btns"></div>
+              <input id="museo-camp-torneos-val" type="hidden" value="">
+            </div>
 
-            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Campeón Por Vidas (puede ser empate, separar con comas)</div>
-            <input id="museo-camp-vidas" class="admin-input" style="margin-bottom:0" placeholder="Ej: srwiwa, jugador2">
+            <!-- Campeón Finalísima -->
+            <div>
+              <div class="adm-label" style="color:var(--amarillo)">👑 Campeón Finalísima</div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px" id="museo-camp-final-btns"></div>
+              <input id="museo-camp-final-val" type="hidden" value="">
+            </div>
+
+            <!-- Campeones Por Vidas (multi) -->
+            <div>
+              <div class="adm-label" style="color:#f87171">❤️ Campeones Por Vidas <span style="font-weight:400;color:var(--txt-muted)">(puedes seleccionar varios)</span></div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px" id="museo-camp-vidas-btns"></div>
+            </div>
+
+            <!-- Pokémon por jugador -->
+            <div style="border-top:1px solid var(--borde);padding-top:14px">
+              <div class="adm-label" style="color:var(--neon-packs)">⭐ Mejor Pokémon por jugador</div>
+              <div style="font-size:10px;color:var(--txt-muted);margin-bottom:10px">Selecciona el jugador, busca el Pokémon y guarda.</div>
+              <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+                <select id="museo-poke-jugador" class="admin-select" style="flex:1;min-width:120px;margin-bottom:0"></select>
+                <div style="position:relative;flex:2;min-width:160px">
+                  <input id="museo-poke-nombre" class="admin-input" style="margin-bottom:0;width:100%;box-sizing:border-box" placeholder="Buscar Pokémon..." oninput="museoPokeAutocom()" autocomplete="off">
+                  <div id="museo-poke-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:180px;overflow-y:auto"></div>
+                </div>
+                <input id="museo-poke-mote" class="admin-input" style="margin-bottom:0;flex:2;min-width:100px" placeholder="Mote (opcional)">
+              </div>
+              <div id="museo-poke-preview" style="display:none;margin-bottom:8px;padding:8px 12px;background:var(--bg-card);border:1px solid rgba(99,102,241,.2);border-radius:var(--r-md);display:flex;align-items:center;gap:10px">
+                <img id="museo-poke-sprite" src="" style="width:40px;height:40px;image-rendering:pixelated">
+                <div>
+                  <div id="museo-poke-nombre-preview" style="font-family:var(--font-display);font-size:12px;font-weight:900;color:var(--blanco)"></div>
+                  <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display)">#<span id="museo-poke-num-preview"></span></div>
+                </div>
+              </div>
+              <button class="btn-admin" style="width:100%;font-size:11px;padding:8px" onclick="museoAnadirPoke()">➕ Añadir Pokémon a este jugador</button>
+              <div id="museo-pokes-lista" style="margin-top:10px;display:flex;flex-direction:column;gap:4px"></div>
+            </div>
           </div>
 
-          <button class="btn-admin" style="width:100%;margin-bottom:8px" onclick="museoGuardarEntrada()">💾 Guardar en el Museo</button>
+          <button class="btn-admin packs" style="width:100%;margin-bottom:8px;font-weight:900" onclick="museoGuardarEntrada()">💾 Guardar en el Museo</button>
+          <div id="museo-estado" style="text-align:center;font-size:10px;font-family:var(--font-display);color:var(--neon-legal);min-height:14px"></div>
 
-          <div style="margin-top:20px;border-top:1px solid var(--borde);padding-top:16px">
-            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">Entradas actuales en el museo</div>
+          <!-- Lista entradas actuales -->
+          <div style="margin-top:22px;border-top:1px solid var(--borde);padding-top:16px">
+            <div class="adm-label" style="margin-bottom:10px">Entradas actuales en el museo</div>
             <div id="museo-lista-admin" style="display:flex;flex-direction:column;gap:6px"></div>
           </div>
         </div>
@@ -3181,6 +3261,90 @@ function actualizarHeroStrip(){
 
 
 
+function museoCardHTML(e, idx, total){
+  var tipoKey = e.tipo || 'EggLocke';
+  var cfg = NL_TIPOS[tipoKey] || {icon:'🎮', color:'#6366f1', bg:'rgba(99,102,241,.06)', label: tipoKey};
+  var mods = (e.modalidades && e.modalidades.length) ? e.modalidades : [tipoKey];
+  var modLabel = mods.map(function(m){ return (NL_TIPOS[m] && NL_TIPOS[m].label) || m; }).join(' + ');
+  var numDisplay = e.num || (total - idx);
+  var cfgColor = cfg.color || '#6366f1';
+  var borderCol = cfgColor.indexOf('var(') === 0 ? 'rgba(99,102,241,.35)' : cfgColor+'88';
+  var juegoIcon = e.juegoIcon || '🎮';
+  var juegoNombre = (e.juego && e.juego !== '?') ? e.juego : '—';
+  var colorFn = window.colorParaJugador || function(){ return 'var(--neon-packs)'; };
+
+  // ── Campeones ──
+  var c = e.campeones || {};
+  var campRows = [
+    {lbl:'Torneos',   ico:'🎖️', val:c.torneos,                                          col:'var(--neon-packs)'},
+    {lbl:'Por Vidas', ico:'❤️', val:Array.isArray(c.vidas)?c.vidas.join(' & '):c.vidas, col:'#f87171'},
+    {lbl:'Finalísima',ico:'👑', val:c['finalísima']||c.finalísima,                      col:'#fbbf24'}
+  ].filter(function(x){ return x.val; });
+
+  var campHTML = campRows.length
+    ? campRows.map(function(x){
+        return '<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg-elevated);border-radius:var(--r-md);border:1px solid rgba(255,255,255,.05)">'
+          +'<span style="font-size:16px;flex-shrink:0">'+x.ico+'</span>'
+          +'<div style="min-width:0">'
+            +'<div style="font-size:8px;color:'+x.col+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px">'+x.lbl+'</div>'
+            +'<div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:var(--blanco);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escaparHTML(String(x.val).toUpperCase())+'</div>'
+          +'</div>'
+          +'</div>';
+      }).join('')
+    : '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px 4px;font-style:italic">Sin campeones registrados</div>';
+
+  // ── Pokémon ──
+  var pokes = e.pokemon || {};
+  var pokesKeys = Object.keys(pokes);
+  var pokesHTML = pokesKeys.length
+    ? pokesKeys.map(function(id){
+        var mp = pokes[id];
+        var c2 = colorFn(id);
+        var imgH = mp.sprite
+          ? '<img src="'+mp.sprite+'" alt="" style="width:56px;height:56px;image-rendering:pixelated;display:block;margin:0 auto;filter:drop-shadow(0 2px 6px '+c2+'44)">'
+          : '<div style="font-size:30px;text-align:center;line-height:56px;opacity:.25">❓</div>';
+        var moteH = mp.mote ? '<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700;font-style:italic;margin-top:1px">&ldquo;'+escaparHTML(mp.mote)+'&rdquo;</div>' : '';
+        return '<div style="text-align:center;background:var(--bg-elevated);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:10px 8px;min-width:80px">'
+          +imgH
+          +'<div style="font-size:8px;color:'+c2+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:4px">'+escaparHTML(id)+'</div>'
+          +'<div style="font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--blanco)">'+escaparHTML(mp.nombre)+'</div>'
+          +moteH
+          +'</div>';
+      }).join('')
+    : '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px 4px;font-style:italic">Sin Pokémon registrados</div>';
+
+  return '<div class="museo-card" data-idx="'+idx+'" style="border:1px solid '+borderCol+';border-radius:var(--r-xl);overflow:hidden;background:linear-gradient(145deg,'+cfg.bg+',transparent)">'
+    // ── Cabecera ──
+    +'<div style="background:linear-gradient(135deg,'+cfg.bg+',rgba(0,0,0,.2));padding:14px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,.06)">'
+      +'<div style="width:50px;height:50px;border-radius:50%;background:'+cfg.bg+';border:2px solid '+borderCol+';display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">'+cfg.icon+'</div>'
+      +'<div style="flex:1;min-width:0">'
+        +'<div style="font-family:var(--font-display);font-size:14px;font-weight:900;color:'+cfgColor+';letter-spacing:.3px">'+escaparHTML(modLabel)+'</div>'
+        +'<div style="font-size:11px;color:var(--txt-secondary);font-family:var(--font-display);margin-top:2px">'+escaparHTML(juegoIcon+' '+juegoNombre)+(e.juegoGen?' <span style="color:var(--txt-muted);font-size:9px">('+escaparHTML(e.juegoGen)+')</span>':'')+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;flex-shrink:0">'
+        +'<div style="font-family:var(--font-display);font-size:18px;font-weight:900;color:'+cfgColor+';opacity:.6">#'+numDisplay+'</div>'
+        +'<div style="font-size:8px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px">Locke</div>'
+      +'</div>'
+    +'</div>'
+    // ── Cuerpo ──
+    +'<div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:14px">'
+      // Campeones
+      +'<div>'
+        +'<div style="font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🏆 Campeones</div>'
+        +'<div style="display:flex;flex-direction:column;gap:6px">'+campHTML+'</div>'
+      +'</div>'
+      // Pokémon
+      +'<div>'
+        +'<div style="font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">⭐ Mejores Pokémon</div>'
+        +'<div style="display:flex;flex-wrap:wrap;gap:6px">'+pokesHTML+'</div>'
+      +'</div>'
+    +'</div>'
+    +'</div>';
+}
+
+// Datos cacheados para filtrar sin re-renderizar
+var _museoEntradas = [];
+
 function renderizarHistorialLockes(){
   var wrap = document.getElementById('hof-historial-wrap');
   var list = document.getElementById('hof-historial-list');
@@ -3188,77 +3352,58 @@ function renderizarHistorialLockes(){
   var hist = baseDatos && baseDatos.historialLockes;
   if(!hist || !Object.keys(hist).length){ wrap.style.display='none'; return; }
   wrap.style.display = 'block';
+
+  _museoEntradas = Object.values(hist).sort(function(a,b){ return b.num - a.num; });
+
   var countEl = document.getElementById('hof-historial-count');
-  if(countEl) countEl.textContent = Object.keys(hist).length + (Object.keys(hist).length === 1 ? ' locke' : ' lockes');
+  if(countEl) countEl.textContent = _museoEntradas.length + (_museoEntradas.length === 1 ? ' locke' : ' lockes');
 
-  var entradas = Object.values(hist).sort(function(a,b){ return b.num - a.num; });
-  var colorFn = window.colorParaJugador || function(){ return 'var(--neon-packs)'; };
-
-  list.innerHTML = entradas.map(function(e, idx){
-    var tipoKey = e.tipo || 'EggLocke';
-    var cfg = NL_TIPOS[tipoKey] || {icon:'🎮', color:'#6366f1', bg:'rgba(99,102,241,.06)', label: tipoKey};
-    var mods = (e.modalidades && e.modalidades.length) ? e.modalidades : [tipoKey];
-    var modLabel = mods.map(function(m){ return (NL_TIPOS[m] && NL_TIPOS[m].label) || m; }).join(' + ');
-    var numDisplay = e.num || (entradas.length - idx);
-
-    var c = e.campeones || {};
-    var campRows = [
-      {lbl:'Campeón Torneos',   ico:'🎖️', val:c.torneos,                                         col:'var(--neon-packs)'},
-      {lbl:'Campeón Por Vidas', ico:'❤️', val:Array.isArray(c.vidas)?c.vidas.join(', '):c.vidas, col:'#f87171'},
-      {lbl:'Campeón Finalísima',ico:'👑', val:c['finalísima']||c.finalísima,                     col:'var(--amarillo)'}
-    ].filter(function(x){ return x.val; });
-
-    var campHTML = campRows.length
-      ? campRows.map(function(x){
-          return '<div style="text-align:center;padding:8px 6px">'
-            +'<div style="font-size:18px">'+x.ico+'</div>'
-            +'<div style="font-size:8px;color:'+x.col+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin:2px 0">'+x.lbl+'</div>'
-            +'<div style="font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--blanco)">'+escaparHTML(String(x.val).toUpperCase())+'</div>'
-            +'</div>';
-        }).join('')
-      : '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px">Sin campeones registrados</div>';
-
-    var pokes = e.pokemon || {};
-    var pokesKeys = Object.keys(pokes);
-    var pokesHTML = pokesKeys.length
-      ? pokesKeys.map(function(id){
-          var mp = pokes[id];
-          var c2 = colorFn(id);
-          var imgH = mp.sprite
-            ? '<img src="'+mp.sprite+'" alt="" style="width:52px;height:52px;image-rendering:pixelated;display:block;margin:0 auto">'
-            : '<div style="font-size:28px;text-align:center;opacity:.3">❓</div>';
-          var moteH = mp.mote ? '<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700">&ldquo;'+escaparHTML(mp.mote)+'&rdquo;</div>' : '';
-          return '<div style="text-align:center;padding:6px 4px">'
-            +imgH
-            +'<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:2px">'+escaparHTML(id.toUpperCase())+'</div>'
-            +'<div style="font-family:var(--font-display);font-size:10px;font-weight:900;color:var(--blanco)">'+escaparHTML(mp.nombre)+'</div>'
-            +moteH
-            +'</div>';
-        }).join('')
-      : '<div style="color:var(--txt-muted);font-size:10px;font-family:var(--font-display);padding:8px">Sin Pokémon registrados</div>';
-
-    var cfgColor = cfg.color || '#6366f1';
-    var borderCol = cfgColor.indexOf('var(') === 0 ? 'rgba(99,102,241,.3)' : cfgColor;
-    var juegoIcon = e.juegoIcon || '🎮';
-    var juegoTxt = (e.juego && e.juego !== '?') ? escaparHTML(juegoIcon+' '+e.juego) : '—';
-    var genTxt = e.juegoGen ? ' <span style="color:var(--txt-muted);font-size:9px">('+escaparHTML(e.juegoGen)+')</span>' : '';
-
-    return '<div style="border:1px solid '+borderCol+';border-radius:var(--r-xl);overflow:hidden;background:'+cfg.bg+'">'
-      +'<div style="padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)">'
-        +'<span style="font-size:26px">'+cfg.icon+' '+escaparHTML(juegoIcon)+'</span>'
-        +'<div style="flex:1">'
-          +'<div style="font-family:var(--font-display);font-size:13px;font-weight:900;color:'+cfgColor+'">'+escaparHTML(modLabel)+'</div>'
-          +'<div style="font-size:11px;color:var(--txt-secondary);font-family:var(--font-display)">'+juegoTxt+genTxt+'</div>'
-        +'</div>'
-        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted)">Locke #'+numDisplay+'</div>'
-      +'</div>'
-      +'<div style="padding:10px 16px 4px;font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px">🏆 Campeones</div>'
-      +'<div style="display:flex;flex-wrap:wrap;gap:0;padding:0 10px 8px">'+campHTML+'</div>'
-      +'<div style="padding:4px 16px 4px;font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px;border-top:1px solid rgba(255,255,255,.05)">⭐ Mejores Pokémon</div>'
-      +'<div style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 12px 12px">'+pokesHTML+'</div>'
-      +'</div>';
-  }).join('');
+  list.innerHTML = _museoEntradas.map(function(e,i){ return museoCardHTML(e, i, _museoEntradas.length); }).join('');
+  museoFiltrar();
 }
+
+window.museoFiltrar = function(){
+  var qJ  = (document.getElementById('museo-q-jugador')||{value:''}).value.toLowerCase().trim();
+  var qG  = (document.getElementById('museo-q-juego')  ||{value:''}).value.toLowerCase().trim();
+  var qM  = (document.getElementById('museo-q-modal')  ||{value:''}).value.toLowerCase().trim();
+  var qP  = (document.getElementById('museo-q-poke')   ||{value:''}).value.toLowerCase().trim();
+  var any = qJ||qG||qM||qP;
+
+  var visible = 0;
+  var cards = document.querySelectorAll('.museo-card');
+  cards.forEach(function(card, i){
+    var e = _museoEntradas[i];
+    if(!e){ card.style.display='none'; return; }
+    var mods  = (e.modalidades||[e.tipo||'']).join(' ').toLowerCase();
+    var juego = (e.juego||'').toLowerCase();
+    var jugadores = Object.keys(e.pokemon||{}).join(' ').toLowerCase();
+    var campeones = Object.values(e.campeones||{}).join(' ').toLowerCase();
+    var pokeNames = Object.values(e.pokemon||{}).map(function(p){ return (p.nombre||'')+' '+(p.mote||''); }).join(' ').toLowerCase();
+
+    var ok = (!qJ || jugadores.indexOf(qJ)!==-1 || campeones.indexOf(qJ)!==-1)
+          && (!qG || juego.indexOf(qG)!==-1)
+          && (!qM || mods.indexOf(qM)!==-1)
+          && (!qP || pokeNames.indexOf(qP)!==-1);
+
+    card.style.display = ok ? '' : 'none';
+    if(ok) visible++;
+  });
+
+  var noRes = document.getElementById('museo-no-results');
+  var activo = document.getElementById('museo-filtro-activo');
+  var countFilt = document.getElementById('museo-filtro-count');
+  if(noRes) noRes.style.display = (any && visible===0) ? 'block' : 'none';
+  if(activo) activo.style.display = any ? 'flex' : 'none';
+  if(countFilt) countFilt.textContent = visible + ' de ' + _museoEntradas.length + ' lockes';
+};
+
+window.museoClearFiltros = function(){
+  ['museo-q-jugador','museo-q-juego','museo-q-modal','museo-q-poke'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value='';
+  });
+  museoFiltrar();
+};
+
 /* ── Campeones Por Vidas — selección dinámica ── */
 window.agregarGanadorVidas = function(){
   agregarGanadorVidasConValor('');
@@ -3358,86 +3503,398 @@ function guardarBD(){set(ref(db,'silph_co_market'),baseDatos);}
 
 /* ═══ NAVEGACIÓN ═══ */
 window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='perfil'){cargarMejorPokemonEnPerfil();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='tracker')renderizarTracker();if(s==='inicio')renderizarMapaInicio();var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo')museoRenderAdmin();};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }};
+
+
+/* ═══ MUSEO ADMIN — estado local ═══ */
+var _museoPokesTemp    = {};   // { jugadorId: { nombre, mote, sprite, num } }
+var _museoJuegoSel     = null; // objeto de NL_JUEGOS seleccionado
+var _museoPokeSelected = null; // pokémon seleccionado en el autocomplete
+
+/* ── Lista completa PokeAPI (megas, formas regionales, Gmax, etc.) ── */
+var _museoPokeListaCompleta = [];
+var _museoPokeListaCargada  = false;
+var _museoPokeListaCargando = false;
+
+function museoCargarListaCompleta(cb){
+  if(_museoPokeListaCargada){ if(cb) cb(); return; }
+  if(_museoPokeListaCargando){ if(cb) setTimeout(function(){ museoCargarListaCompleta(cb); }, 200); return; }
+  _museoPokeListaCargando = true;
+  fetch('https://pokeapi.co/api/v2/pokemon?limit=2000&offset=0')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      _museoPokeListaCompleta = d.results;
+      _museoPokeListaCargada  = true;
+      _museoPokeListaCargando = false;
+      if(cb) cb();
+    })
+    .catch(function(){ _museoPokeListaCargando = false; });
+}
+
+function museoPokeIdDesdeUrl(url){
+  var m = url.match(/\/pokemon\/(\d+)\//);
+  return m ? parseInt(m[1]) : 0;
+}
+
+function museoPokeLabel(apiName){
+  // Nombres compuestos que no deben dividirse por el primer guion
+  var compuestos = [
+    'mr-mime','mr-rime','ho-oh','porygon-z','jangmo-o','hakamo-o','kommo-o',
+    'tapu-koko','tapu-lele','tapu-bulu','tapu-fini','chi-yu','ting-lu',
+    'chien-pao','wo-chien','iron-leaves','iron-valiant','iron-moth','iron-hands',
+    'iron-jugulis','iron-thorns','iron-bundle','iron-treads','flutter-mane',
+    'slither-wing','sandy-shocks','scream-tail','brute-bonnet','roaring-moon',
+    'great-tusk','gouging-fire','raging-bolt','walking-wake','flutter-mane',
+    'iron-boulder','iron-crown','raging-bolt','gouging-fire'
+  ];
+  if(compuestos.indexOf(apiName) !== -1){
+    return apiName.replace(/-/g,' ').replace(/\b\w/g,function(c){ return c.toUpperCase(); });
+  }
+  var partes = apiName.split('-');
+  var base   = partes[0].charAt(0).toUpperCase() + partes[0].slice(1);
+  if(partes.length === 1) return base;
+  var sufijos = {
+    'mega':'Mega','mega-x':'Mega X','mega-y':'Mega Y',
+    'alola':'(Alola)','alolan':'(Alola)',
+    'galar':'(Galar)','galarian':'(Galar)',
+    'hisui':'(Hisui)','hisuian':'(Hisui)',
+    'paldea':'(Paldea)','paldean':'(Paldea)',
+    'gmax':'Gigamax',
+    'f':'\u2640','m':'\u2642',
+    'x':'X','y':'Y','z':'Z',
+    'black':'Negro','white':'Blanco',
+    'sky':'Cielo','land':'Tierra',
+    'incarnate':'Encarnado','therian':'T\u00f3tem',
+    'pirouette':'Pirueta','aria':'Aria',
+    'blade':'Espada','shield':'Escudo',
+    '10':'10%','complete':'Completo',
+    'original':'Original','crowned':'Coronado',
+    'eternamax':'Eternamax','zero':'Zero','hero':'H\u00e9roe',
+    'combat':'Combate','blaze':'Llama','aqua':'Agua',
+    'sunny':'Soleado','rainy':'Lluvioso','snowy':'Nevado',
+    'heat':'Calor','wash':'Agua','frost':'Hielo','fan':'Ventilador','mow':'Cortac\u00e9sped',
+    'dawn':'Aurora','dusk':'Crep\u00fasculo','midnight':'Medianoche',
+    'school':'Banco','solo':'Solo','disguised':'Disfrazado','busted':'Revelado',
+    'low-key':'Nota Baja','amped':'Amplificado',
+    'ice':'Hielo','dragon':'Drag\u00f3n',
+    'single-strike':'Golpe \u00danico','rapid-strike':'Golpe R\u00e1pido',
+    'noice':'Noice','hangry':'Hambriento',
+    'gorging':'Devorador','gulping':'Engullidor',
+    'apex':'Apex'
+  };
+  var sufStr = partes.slice(1).join('-');
+  var sufFmt = sufijos[sufStr]
+    ? sufijos[sufStr]
+    : partes.slice(1).map(function(p){ return p.charAt(0).toUpperCase()+p.slice(1); }).join(' ');
+  return base + ' ' + sufFmt;
+}
+
+/* Autocomplete museo: busca en toda la lista de PokeAPI */
+window.museoPokeAutocom = function(){
+  var raw = (document.getElementById('museo-poke-nombre').value||'').trim().toLowerCase();
+  var dd  = document.getElementById('museo-poke-dropdown');
+  if(!dd) return;
+  // Resetear seleccion previa y preview
+  _museoPokeSelected = null;
+  document.getElementById('museo-poke-preview').style.display = 'none';
+  if(raw.length < 2){ dd.style.display='none'; return; }
+  // Normalizar para buscar: espacios -> guiones, quitar acentos basicos
+  var q = raw.replace(/\s+/g,'-');
+
+  function doSearch(){
+    // Buscar contra nombre API (con guiones) Y contra el label formateado
+    var matches = _museoPokeListaCompleta
+      .filter(function(p){
+        if(p.name.indexOf(q) !== -1) return true;
+        var lbl = museoPokeLabel(p.name).toLowerCase();
+        return lbl.indexOf(raw) !== -1;
+      })
+      .slice(0, 10);
+    if(!matches.length){ dd.style.display='none'; return; }
+    dd.innerHTML = matches.map(function(m){
+      var id     = museoPokeIdDesdeUrl(m.url);
+      var sprite = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png' : '';
+      var label  = museoPokeLabel(m.name);
+      var idStr  = id ? '#'+id : '';
+      return '<div class="museo-poke-opt"'
+        +' data-apiname="'+m.name+'"'
+        +' data-id="'+id+'"'
+        +' data-sprite="'+sprite+'"'
+        +' data-label="'+label.replace(/"/g,'&quot;')+'"'
+        +' style="padding:7px 12px;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)">'
+        +'<img src="'+sprite+'" style="width:28px;height:28px;image-rendering:pixelated" onerror="this.style.opacity=\'0.25\'">'
+        +'<span>'+label+'</span>'
+        +'<span style="color:var(--txt-muted);font-size:9px;margin-left:auto">'+idStr+'</span>'
+        +'</div>';
+    }).join('');
+    dd.style.display = 'block';
+    dd.onclick = function(ev){
+      var opt = ev.target.closest('.museo-poke-opt');
+      if(!opt) return;
+      var apiName = opt.getAttribute('data-apiname');
+      var id      = parseInt(opt.getAttribute('data-id')) || 0;
+      var sprite  = opt.getAttribute('data-sprite');
+      var label   = opt.getAttribute('data-label');
+      document.getElementById('museo-poke-nombre').value = label;
+      dd.style.display = 'none';
+      _museoPokeSelected = { num: id, nombre: label, apiName: apiName, sprite: sprite };
+      document.getElementById('museo-poke-sprite').src = sprite;
+      document.getElementById('museo-poke-nombre-preview').textContent = label;
+      document.getElementById('museo-poke-num-preview').textContent = id || '?';
+      document.getElementById('museo-poke-preview').style.display = 'flex';
+    };
+  }
+
+  if(_museoPokeListaCargada){
+    doSearch();
+  } else {
+    dd.innerHTML = '<div style="padding:10px 12px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">\u23f3 Cargando lista completa...</div>';
+    dd.style.display = 'block';
+    museoCargarListaCompleta(doSearch);
+  }
+};
+document.addEventListener('click', function(e){
+  if(!e.target.closest('#museo-poke-nombre') && !e.target.closest('#museo-poke-dropdown')){
+    var dd = document.getElementById('museo-poke-dropdown');
+    if(dd) dd.style.display = 'none';
+  }
+});
+
+window.museoAnadirPoke = function(){
+  var jugador = (document.getElementById('museo-poke-jugador')||{}).value;
+  var mote    = (document.getElementById('museo-poke-mote')||{}).value.trim();
+  if(!jugador){ mostrarNotificacion('Selecciona un jugador.','error','⭐'); return; }
+  if(!_museoPokeSelected){ mostrarNotificacion('Selecciona un Pokémon del desplegable.','error','⭐'); return; }
+  _museoPokesTemp[jugador] = { nombre: _museoPokeSelected.nombre, sprite: _museoPokeSelected.sprite, num: _museoPokeSelected.num, mote: mote };
+  _museoPokeSelected = null;
+  document.getElementById('museo-poke-nombre').value = '';
+  document.getElementById('museo-poke-mote').value = '';
+  document.getElementById('museo-poke-preview').style.display = 'none';
+  museoPokesRender();
+};
+
+function museoPokesRender(){
+  var cont = document.getElementById('museo-pokes-lista');
+  if(!cont) return;
+  var keys = Object.keys(_museoPokesTemp);
+  if(!keys.length){ cont.innerHTML = ''; return; }
+  cont.innerHTML = keys.map(function(id){
+    var p = _museoPokesTemp[id];
+    return '<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md)">'
+      +'<img src="'+p.sprite+'" style="width:32px;height:32px;image-rendering:pixelated">'
+      +'<div style="flex:1;min-width:0">'
+        +'<div style="font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--blanco)">'+escaparHTML(id.toUpperCase())+': '+escaparHTML(p.nombre)+(p.mote?' <span style="color:var(--txt-muted)">— '+escaparHTML(p.mote)+'</span>':'')+'</div>'
+      +'</div>'
+      +'<button class="museo-poke-del" data-id="'+id+'" style="background:none;border:none;color:var(--neon-ilegal);cursor:pointer;font-size:14px;padding:2px 6px">✕</button>'
+      +'</div>';
+  }).join('');
+  cont.onclick = function(e){
+    var btn = e.target.closest('.museo-poke-del');
+    if(!btn) return;
+    delete _museoPokesTemp[btn.getAttribute('data-id')];
+    museoPokesRender();
+  };
+}
+
+
+window.museoIniciarPanel = function(){
+  _museoJuegoSel  = null;
+  _museoPokesTemp = {};
+  _museoPokeSelected = null;
+  var fields = ['museo-num','museo-poke-nombre','museo-poke-mote'];
+  fields.forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  document.querySelectorAll('input[name="museo-modal"]').forEach(function(cb){ cb.checked=false; });
+  var juegoVal = document.getElementById('museo-juego-val'); if(juegoVal) juegoVal.value='';
+  var juegoSel = document.getElementById('museo-juego-sel'); if(juegoSel) juegoSel.style.display='none';
+  var preview  = document.getElementById('museo-poke-preview'); if(preview) preview.style.display='none';
+  // Precargar la lista de Pokémon en segundo plano
+  museoCargarListaCompleta(null);
+  museoRenderJuegoGrid();
+  museoRenderCampBtns();
+  museoRenderPokesLista();
+  museoRenderAdmin();
+};
+
+window.museoRenderJuegoGrid = function(){
+  var cont = document.getElementById('museo-juego-grid');
+  if(!cont) return;
+  cont.innerHTML = NL_GRUPOS.map(function(g, idx){
+    var j = NL_JUEGOS.find(function(x){ return x.n === g.juego; });
+    if(!j) return '';
+    var sel = (_museoJuegoSel && _museoJuegoSel.n === j.n);
+    var genColor = g.gen==='GBA'?'#22c55e': g.gen==='NDS'?'#818cf8':'#f59e0b';
+    var bgCol  = sel ? 'rgba(129,140,248,.2)' : 'var(--bg-card)';
+    var borCol = sel ? 'rgba(129,140,248,.6)' : 'var(--borde)';
+    var txtCol = sel ? 'var(--blanco)' : 'var(--txt-secondary)';
+    return '<button class="museo-juego-btn" data-idx="'+idx+'" style="background:'+bgCol+';border:1px solid '+borCol+';border-radius:var(--r-md);padding:7px 6px;cursor:pointer;text-align:left;transition:all .15s;display:flex;flex-direction:column;gap:2px">'
+      +'<span style="font-size:16px">'+j.icon+'</span>'
+      +'<span style="font-family:var(--font-display);font-size:9px;font-weight:700;color:'+txtCol+';line-height:1.2">'+g.label+'</span>'
+      +'<span style="font-size:8px;font-family:var(--font-display);color:'+genColor+';font-weight:700">'+g.gen+'</span>'
+      +'</button>';
+  }).join('');
+  cont.onclick = function(e){
+    var btn = e.target.closest('.museo-juego-btn');
+    if(!btn) return;
+    var idx = parseInt(btn.getAttribute('data-idx'));
+    var g = NL_GRUPOS[idx]; if(!g) return;
+    _museoJuegoSel = NL_JUEGOS.find(function(x){ return x.n === g.juego; });
+    var hidVal = document.getElementById('museo-juego-val'); if(hidVal) hidVal.value = _museoJuegoSel ? _museoJuegoSel.n : '';
+    var sel = document.getElementById('museo-juego-sel');
+    var txt = document.getElementById('museo-juego-sel-txt');
+    if(sel) sel.style.display = 'block';
+    if(txt && _museoJuegoSel) txt.textContent = _museoJuegoSel.icon+' '+_museoJuegoSel.n+' ('+_museoJuegoSel.gen+')';
+    museoRenderJuegoGrid();
+  };
+};
+
+window.museoRenderCampBtns = function(){
+  var jugadores = Object.keys((baseDatos && baseDatos.jugadores) || {});
+  function renderGroup(contId, hidId, single){
+    var cont = document.getElementById(contId);
+    if(!cont) return;
+    var hidEl = document.getElementById(hidId);
+    var curVal = hidEl ? hidEl.value : '';
+    cont.innerHTML = jugadores.map(function(id){
+      var sel = single ? (curVal === id) : false;
+      var c = colorParaJugador(id);
+      var selBorder = sel ? c : 'var(--borde)';
+      var selBg     = sel ? (c+'22') : 'var(--bg-card)';
+      var selColor  = sel ? c : 'var(--txt-secondary)';
+      return '<button class="museo-btn-jugador'+(sel?' museo-btn-activo':'')+'" data-id="'+id+'"'
+        +' style="font-family:var(--font-display);font-size:10px;font-weight:700;padding:5px 10px;border-radius:20px;cursor:pointer;'
+        +'border:1px solid '+selBorder+';background:'+selBg+';color:'+selColor+'">'
+        +id.toUpperCase()+'</button>';
+    }).join('');
+    cont.onclick = function(e){
+      var btn = e.target.closest('.museo-btn-jugador');
+      if(!btn) return;
+      var id = btn.getAttribute('data-id');
+      if(single){
+        var wasActive = btn.classList.contains('museo-btn-activo');
+        cont.querySelectorAll('.museo-btn-jugador').forEach(function(b){
+          b.classList.remove('museo-btn-activo');
+          var bi=b.getAttribute('data-id'); var ci=colorParaJugador(bi);
+          b.style.border='1px solid var(--borde)'; b.style.background='var(--bg-card)'; b.style.color='var(--txt-secondary)';
+        });
+        if(!wasActive){
+          btn.classList.add('museo-btn-activo');
+          var c2=colorParaJugador(id);
+          btn.style.border='1px solid '+c2; btn.style.background=c2+'22'; btn.style.color=c2;
+          if(hidEl) hidEl.value = id;
+        } else { if(hidEl) hidEl.value = ''; }
+      } else {
+        var isNowActive = btn.classList.toggle('museo-btn-activo');
+        var c3=colorParaJugador(id);
+        btn.style.border = isNowActive ? '1px solid '+c3 : '1px solid var(--borde)';
+        btn.style.background = isNowActive ? c3+'22' : 'var(--bg-card)';
+        btn.style.color = isNowActive ? c3 : 'var(--txt-secondary)';
+      }
+    };
+  }
+  renderGroup('museo-camp-torneos-btns', 'museo-camp-torneos-val', true);
+  renderGroup('museo-camp-final-btns',   'museo-camp-final-val',   true);
+  renderGroup('museo-camp-vidas-btns',   null,                     false);
+  var pjSel = document.getElementById('museo-poke-jugador');
+  if(pjSel){
+    pjSel.innerHTML = jugadores.map(function(id){
+      return '<option value="'+id+'">'+id.toUpperCase()+'</option>';
+    }).join('');
+  }
+};
+
+window.museoRenderPokesLista = function(){
+  var lista = document.getElementById('museo-pokes-lista');
+  if(!lista) return;
+  var keys = Object.keys(_museoPokesTemp);
+  if(!keys.length){ lista.innerHTML=''; return; }
+  lista.innerHTML = keys.map(function(id){
+    var mp = _museoPokesTemp[id];
+    var c = colorParaJugador(id);
+    return '<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg-card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-md)">'
+      +'<img src="'+mp.sprite+'" style="width:32px;height:32px;image-rendering:pixelated;flex-shrink:0">'
+      +'<div style="flex:1;min-width:0">'
+        +'<span style="font-family:var(--font-display);font-size:9px;font-weight:700;color:'+c+';text-transform:uppercase">'+escaparHTML(id)+'</span> '
+        +'<span style="font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--blanco)">'+escaparHTML(mp.nombre)+'</span>'
+        +(mp.mote ? ' <span style="font-size:9px;color:var(--txt-muted)">&ldquo;'+escaparHTML(mp.mote)+'&rdquo;</span>' : '')
+      +'</div>'
+      +'<button class="museo-poke-quitar" data-id="'+id+'" style="background:none;border:none;color:var(--neon-ilegal);cursor:pointer;font-size:13px;flex-shrink:0">✕</button>'
+      +'</div>';
+  }).join('');
+  lista.onclick = function(e){
+    var btn = e.target.closest('.museo-poke-quitar');
+    if(!btn) return;
+    delete _museoPokesTemp[btn.getAttribute('data-id')];
+    museoRenderPokesLista();
+  };
+};
 
 window.museoGuardarEntrada = function(){
-  var num    = parseInt(document.getElementById('museo-num').value);
-  var juego  = document.getElementById('museo-juego').value.trim();
-  var tipo   = document.getElementById('museo-tipo').value.trim() || 'EggLocke';
-  var cTorn  = document.getElementById('museo-camp-torneos').value.trim();
-  var cFin   = document.getElementById('museo-camp-final').value.trim();
-  var cVidas = document.getElementById('museo-camp-vidas').value.trim();
-
-  if(!num || num < 1){ mostrarNotificacion('Pon un número de locke válido.','error','📜'); return; }
-  if(!juego){ mostrarNotificacion('Pon el nombre del juego.','error','📜'); return; }
-
-  if(!baseDatos.historialLockes) baseDatos.historialLockes = {};
-
-  var vidasArr = cVidas ? cVidas.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
-
-  baseDatos.historialLockes['locke' + num] = {
-    num:        num,
-    tipo:       tipo,
-    modalidades:[tipo],
-    juego:      juego,
-    juegoIcon:  '🎮',
-    juegoGen:   '',
-    campeones: {
-      torneos:     cTorn  || null,
-      'finalísima':cFin   || null,
-      vidas:       vidasArr.length ? (vidasArr.length === 1 ? vidasArr[0] : vidasArr) : null
-    },
-    pokemon: {}
+  var num = parseInt((document.getElementById('museo-num')||{}).value);
+  if(!num||num<1){ mostrarNotificacion('Pon un número de locke válido.','error','📜'); return; }
+  if(!_museoJuegoSel){ mostrarNotificacion('Selecciona un juego.','error','📜'); return; }
+  var mods = Array.from(document.querySelectorAll('input[name="museo-modal"]:checked')).map(function(cb){ return cb.value; });
+  if(!mods.length) mods=['EggLocke'];
+  var cTorn=(document.getElementById('museo-camp-torneos-val')||{value:''}).value||null;
+  var cFin =(document.getElementById('museo-camp-final-val')  ||{value:''}).value||null;
+  var vidasBtns=document.querySelectorAll('#museo-camp-vidas-btns .museo-btn-activo');
+  var vidasArr=Array.from(vidasBtns).map(function(b){ return b.getAttribute('data-id'); });
+  if(!baseDatos.historialLockes) baseDatos.historialLockes={};
+  baseDatos.historialLockes['locke'+Date.now()]={
+    num:num, tipo:mods[0], modalidades:mods,
+    juego:_museoJuegoSel.n, juegoIcon:_museoJuegoSel.icon, juegoGen:_museoJuegoSel.gen, juegoColor:_museoJuegoSel.color,
+    campeones:{torneos:cTorn||null,'finalísima':cFin||null,
+      vidas:vidasArr.length?(vidasArr.length===1?vidasArr[0]:vidasArr):null},
+    pokemon:JSON.parse(JSON.stringify(_museoPokesTemp))
   };
-
   guardarBD();
-  mostrarNotificacion('Entrada Locke #'+num+' guardada en el museo ✅','exito','📜');
-  // Limpiar campos
-  ['museo-num','museo-juego','museo-tipo','museo-camp-torneos','museo-camp-final','museo-camp-vidas'].forEach(function(id){
-    document.getElementById(id).value = '';
-  });
-  museoRenderAdmin();
+  mostrarNotificacion('Locke #'+num+' guardado ✅','exito','📜');
+  var est=document.getElementById('museo-estado');
+  if(est){ est.textContent='✅ Guardado'; setTimeout(function(){ est.textContent=''; },3000); }
+  museoIniciarPanel();
   renderizarHistorialLockes();
 };
 
 window.museoEliminarEntrada = function(clave){
-  if(!baseDatos.historialLockes || !baseDatos.historialLockes[clave]) return;
+  if(!baseDatos.historialLockes||!baseDatos.historialLockes[clave]) return;
   delete baseDatos.historialLockes[clave];
   guardarBD();
-  mostrarNotificacion('Entrada eliminada del museo.','info','🗑️');
+  mostrarNotificacion('Entrada eliminada.','info','🗑️');
   museoRenderAdmin();
   renderizarHistorialLockes();
 };
 
 window.museoRenderAdmin = function(){
-  var lista = document.getElementById('museo-lista-admin');
+  var lista=document.getElementById('museo-lista-admin');
   if(!lista) return;
-  var hist = baseDatos && baseDatos.historialLockes;
-  if(!hist || !Object.keys(hist).length){
-    lista.innerHTML = '<div style="font-size:11px;color:var(--txt-muted);font-style:italic">Sin entradas todavía.</div>';
-    return;
-  }
-  var entradas = Object.entries(hist).sort(function(a,b){ return b[1].num - a[1].num; });
-  lista.innerHTML = entradas.map(function(kv){
-    var clave = kv[0], e = kv[1];
-    var mods = (e.modalidades && e.modalidades.length) ? e.modalidades.join(' + ') : (e.tipo || '—');
-    var c = e.campeones || {};
-    var camps = [c.torneos, c['finalísima'], Array.isArray(c.vidas) ? c.vidas.join('/') : c.vidas].filter(Boolean).join(' · ') || 'Sin campeones';
-    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);font-size:11px">'
-      +'<span style="font-family:var(--font-display);font-weight:900;color:#818cf8;font-size:13px;min-width:24px">#'+e.num+'</span>'
+  var hist=baseDatos&&baseDatos.historialLockes;
+  if(!hist||!Object.keys(hist).length){ lista.innerHTML='<div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 0">Sin entradas todavía.</div>'; return; }
+  var entradas=Object.entries(hist).sort(function(a,b){ return b[1].num-a[1].num; });
+  lista.innerHTML=entradas.map(function(kv){
+    var clave=kv[0],e=kv[1];
+    var mods=(e.modalidades&&e.modalidades.length)?e.modalidades.map(function(m){ return (NL_TIPOS[m]&&NL_TIPOS[m].label)||m; }).join(' + '):(e.tipo||'—');
+    var c=e.campeones||{};
+    var camps=[c.torneos,c['finalísima'],Array.isArray(c.vidas)?c.vidas.join('/'):c.vidas].filter(Boolean).join(' · ')||'Sin campeones';
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md)">'
+      +'<span style="font-family:var(--font-display);font-weight:900;color:#818cf8;font-size:14px;min-width:26px">#'+e.num+'</span>'
       +'<div style="flex:1;min-width:0">'
-        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--blanco);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escaparHTML(mods)+' · '+escaparHTML(e.juego||'—')+'</div>'
+        +'<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--blanco);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escaparHTML(mods)+' · '+escaparHTML(e.juego||'—')+'</div>'
         +'<div style="font-size:9px;color:var(--txt-muted)">'+escaparHTML(camps)+'</div>'
       +'</div>'
       +'<button class="btn-admin danger" style="padding:3px 8px;font-size:9px;flex-shrink:0" data-clave="'+escaparHTML(clave)+'">🗑️</button>'
       +'</div>';
   }).join('');
-  // Event delegation para borrar
-  lista.onclick = function(e){
-    var btn = e.target.closest('button[data-clave]');
+  lista.onclick=function(e){
+    var btn=e.target.closest('button[data-clave]');
     if(btn) museoEliminarEntrada(btn.getAttribute('data-clave'));
   };
 };
+
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#museo-poke-nombre')&&!e.target.closest('#museo-poke-dropdown')){
+    var dd=document.getElementById('museo-poke-dropdown'); if(dd) dd.style.display='none';
+  }
+});
+
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
 window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');sec.classList.add(`zona-${tab}`);}};
 window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.evento-tab').forEach(t=>t.classList.remove('active-arena','active-camara'));document.querySelectorAll('.evento-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`etab-${tab}`),ve=document.getElementById(`ev-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);if(tab==='camara')renderizarCamaraPublica();};
@@ -3660,12 +4117,12 @@ function actualizarBarraVidasDesdeDB(){if(!userSesion||!baseDatos.jugadores[user
 function _renderBarra(act,ini){let f=document.getElementById('perf-vida-barra-fill'),d=document.getElementById('perf-vidas-display'),pl=document.getElementById('perf-vida-pct');if(!f||!d)return;let pct=ini>0?Math.max(0,Math.min(100,(act/ini)*100)):0;f.style.width=pct+'%';f.className='hp-fill';if(act<=0){f.classList.add('cero');d.style.color='var(--gris-600)';}else if(pct>50){f.classList.add('alta');d.style.color='var(--neon-legal)';}else if(pct>25){f.classList.add('media');d.style.color='var(--amarillo)';}else{f.classList.add('baja');d.style.color='#f87171';}d.textContent=`${act} / ${ini}`;if(pl)pl.textContent=Math.round(pct)+'%';}
 
 /* ═══ SACRIFICIO ═══ */
-window.abrirModalSacrificio=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);document.getElementById('sac-nombre-poke').value='';document.getElementById('sac-mote-poke').value='';document.getElementById('sac-categoria').value='';document.getElementById('sac-preview-vidas-box').classList.add('hidden');document.getElementById('sac-aviso-limite').style.display='none';document.getElementById('btn-confirmar-sacrificio').disabled=true;refrescarSelectsPersonalizados();renderizarHistorialSacrificios();reproducirSonido('abrir');document.getElementById('sacrificio-modal-overlay').style.display='flex';};
+window.abrirModalSacrificio=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);document.getElementById('sac-nombre-poke').value='';document.getElementById('sac-mote-poke').value='';document.getElementById('sac-categoria').value='';document.getElementById('sac-preview-vidas-box').classList.add('hidden');document.getElementById('sac-aviso-limite').style.display='none';document.getElementById('btn-confirmar-sacrificio').disabled=true;if(va>=MAX_VIDAS)document.getElementById('sac-aviso-limite').style.display='block';refrescarSelectsPersonalizados();renderizarHistorialSacrificios();reproducirSonido('abrir');document.getElementById('sacrificio-modal-overlay').style.display='flex';};
 window.cerrarModalSacrificio=function(){reproducirSonido('cerrar');document.getElementById('sacrificio-modal-overlay').style.display='none';};
-window.actualizarPreviewSacrificio=function(){let cat=document.getElementById('sac-categoria').value,n=document.getElementById('sac-nombre-poke').value.trim(),pb=document.getElementById('sac-preview-vidas-box'),bc=document.getElementById('btn-confirmar-sacrificio'),av=document.getElementById('sac-aviso-limite');if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);av.style.display='none';if(!cat||!n){pb.classList.add('hidden');bc.disabled=true;return;}let datos=SACRIFICIO_VALORES[cat];if(!datos)return;let vr=datos.vidas;document.getElementById('sac-preview-nombre-txt').textContent=`${escaparHTML(n)} · ${datos.etiqueta}`;document.getElementById('sac-preview-numero-txt').textContent=`+${vr} ❤️`;pb.classList.remove('hidden');bc.disabled=false;};
-window.confirmarSacrificio=async function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let n=document.getElementById('sac-nombre-poke').value.trim(),m=document.getElementById('sac-mote-poke').value.trim(),cat=document.getElementById('sac-categoria').value;if(!n){mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥");return;}if(!cat){mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;let datos=SACRIFICIO_VALORES[cat];if(!datos){mostrarNotificacion("Categoría inválida.","error","🔥");return;}let vg=datos.vidas,nv=va+vg,nc=m?`${n} "${m}"`:n;let cf=await mostrarConfirmacion({icono:'🔥',titulo:'Sacrificio Pokéinomano',descripcion:`Pokémon: ${nc}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vg} ❤️\nVidas tras el sacrificio: ${nv}/${vt}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,textoConfirmar:'Ejecutar Sacrificio',tipo:'sacrificio',sonidoConfirmar:'revivir'});if(!cf)return;u.vidasActuales=nv;if(u.lockeStatus==='perdido'&&nv>0)u.lockeStatus='jugando';if(!u.sacrificios)u.sacrificios=[];let dobj=new Date(),ts=`${String(dobj.getDate()).padStart(2,'0')}/${String(dobj.getMonth()+1).padStart(2,'0')}/${dobj.getFullYear()} ${String(dobj.getHours()).padStart(2,'0')}:${String(dobj.getMinutes()).padStart(2,'0')}`;u.sacrificios.push({nombre:nc,categoria:datos.etiqueta,vidasObtenidas:vg,vidasTras:nv,timestamp:ts});inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO: '${nc}' [${datos.etiqueta}] ofrecido al Mercader. +${vg} ❤️. Vidas: ${nv}/${vt}.`);guardarBD();cerrarModalSacrificio();destellarPantalla('naranja');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();mostrarInfo({icono:'🔥',titulo:'Sacrificio completado',descripcion:`${nc} descansa en paz.\n❤️ Vidas: +${vg} → ${nv}`,textoConfirmar:'Aceptar'});};
+window.actualizarPreviewSacrificio=function(){let cat=document.getElementById('sac-categoria').value,n=document.getElementById('sac-nombre-poke').value.trim(),pb=document.getElementById('sac-preview-vidas-box'),bc=document.getElementById('btn-confirmar-sacrificio'),av=document.getElementById('sac-aviso-limite');if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>=MAX_VIDAS){av.style.display='block';pb.classList.add('hidden');bc.disabled=true;return;}av.style.display='none';if(!cat||!n){pb.classList.add('hidden');bc.disabled=true;return;}let datos=SACRIFICIO_VALORES[cat];if(!datos)return;let vr=Math.min(datos.vidas,MAX_VIDAS-va),ex=vr<datos.vidas?` (cap: máx. ${MAX_VIDAS})`:'';document.getElementById('sac-preview-nombre-txt').textContent=`${escaparHTML(n)} · ${datos.etiqueta}${ex}`;document.getElementById('sac-preview-numero-txt').textContent=`+${vr} ❤️`;pb.classList.remove('hidden');bc.disabled=false;};
+window.confirmarSacrificio=async function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let n=document.getElementById('sac-nombre-poke').value.trim(),m=document.getElementById('sac-mote-poke').value.trim(),cat=document.getElementById('sac-categoria').value;if(!n){mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥");return;}if(!cat){mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;if(va>=MAX_VIDAS){mostrarNotificacion(`Ya tienes el máximo de ${MAX_VIDAS} vidas.`,"error","⛔");return;}let datos=SACRIFICIO_VALORES[cat];if(!datos){mostrarNotificacion("Categoría inválida.","error","🔥");return;}let vg=Math.min(datos.vidas,MAX_VIDAS-va),nv=va+vg,nc=m?`${n} "${m}"`:n;let cf=await mostrarConfirmacion({icono:'🔥',titulo:'Sacrificio Pokéinomano',descripcion:`Pokémon: ${nc}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vg} ❤️\nVidas tras el sacrificio: ${nv}/${vt}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,textoConfirmar:'Ejecutar Sacrificio',tipo:'sacrificio',sonidoConfirmar:'revivir'});if(!cf)return;u.vidasActuales=nv;if(u.lockeStatus==='perdido'&&nv>0)u.lockeStatus='jugando';if(!u.sacrificios)u.sacrificios=[];let dobj=new Date(),ts=`${String(dobj.getDate()).padStart(2,'0')}/${String(dobj.getMonth()+1).padStart(2,'0')}/${dobj.getFullYear()} ${String(dobj.getHours()).padStart(2,'0')}:${String(dobj.getMinutes()).padStart(2,'0')}`;u.sacrificios.push({nombre:nc,categoria:datos.etiqueta,vidasObtenidas:vg,vidasTras:nv,timestamp:ts});inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO: '${nc}' [${datos.etiqueta}] ofrecido al Mercader. +${vg} ❤️. Vidas: ${nv}/${vt}.`);guardarBD();cerrarModalSacrificio();destellarPantalla('naranja');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();mostrarInfo({icono:'🔥',titulo:'Sacrificio completado',descripcion:`${nc} descansa en paz.\n❤️ Vidas: +${vg} → ${nv}`,textoConfirmar:'Aceptar'});};
 function renderizarHistorialSacrificios(){let box=document.getElementById('sac-historial-lista');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];box.innerHTML='';if(!u.sacrificios||!u.sacrificios.length){box.innerHTML='<div style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display);padding:10px 0;font-style:italic">Ningún compañero sacrificado aún.</div>';return;}[...u.sacrificios].reverse().slice(0,8).forEach(s=>{box.innerHTML+=`<div class="sac-entry"><div class="sac-entry-ts">🕐 ${escaparHTML(s.timestamp)}</div><div style="display:flex;justify-content:space-between;align-items:center"><div><span style="color:var(--neon-sacrificio);font-weight:700;font-family:var(--font-display);font-size:11px">🔥 ${escaparHTML(s.nombre)}</span> <span style="color:var(--txt-muted);font-size:10px">· ${escaparHTML(s.categoria)}</span></div><div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:var(--neon-sacrificio)">+${s.vidasObtenidas}❤️</div></div><div style="font-size:10px;color:var(--txt-muted);margin-top:2px">Vidas tras el canje: ${s.vidasTras}</div></div>`;});}
-function actualizarEstadisticasSacrificioPanel(){let box=document.getElementById('sac-stats-mini-panel');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],t=u.sacrificios?u.sacrificios.length:0,v=u.sacrificios?u.sacrificios.reduce((a,s)=>a+(s.vidasObtenidas||0),0):0;box.innerHTML=`<div class="sac-chip">Sacrificios: <span>${t}</span></div><div class="sac-chip">Vidas recuperadas: <span>${v} ❤️</span></div>`;let btn=document.getElementById('btn-trigger-sacrificio');if(btn){let va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);btn.disabled=false;btn.title='Sacrificar un Pokémon para recuperar vidas';}}
+function actualizarEstadisticasSacrificioPanel(){let box=document.getElementById('sac-stats-mini-panel');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],t=u.sacrificios?u.sacrificios.length:0,v=u.sacrificios?u.sacrificios.reduce((a,s)=>a+(s.vidasObtenidas||0),0):0;box.innerHTML=`<div class="sac-chip">Sacrificios: <span>${t}</span></div><div class="sac-chip">Vidas recuperadas: <span>${v} ❤️</span></div>`;let btn=document.getElementById('btn-trigger-sacrificio');if(btn){let va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);btn.disabled=(va>=MAX_VIDAS);btn.title=va>=MAX_VIDAS?'Ya tienes el máximo de 20 vidas':'Sacrificar un Pokémon para recuperar vidas';}}
 
 /* ═══ DIARIO ═══ */
 window.abrirOverlayDiarioNativo=function(){reproducirSonido('abrir');document.getElementById('diario-overlay-sistema').style.display='flex';redibujarHistorialDiario();};
