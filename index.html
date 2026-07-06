@@ -368,6 +368,11 @@ body.tema-campeon{
   .gen-btns-grid{grid-template-columns:1fr}
   .gen-btn{padding:12px}
   #hof-campeones-grid{grid-template-columns:1fr!important;overflow-x:unset!important}
+  /* Museo lockes — tarjetas más compactas en móvil */
+  .museo-card-header{padding:10px 12px!important}
+  .museo-card-header-icon{width:38px!important;height:38px!important;font-size:17px!important}
+  .museo-card-header-title{font-size:12px!important}
+  #hof-historial-list .museo-card>div:last-child{padding:10px 12px!important;gap:10px!important}
 }
 /* ═══════════════════════════════════════════════
    MEJORAS V2 — MERCADO POKE
@@ -3315,10 +3320,10 @@ function museoCardHTML(e, idx, total){
         var mp = pokes[id];
         var c2 = colorFn(id);
         var imgH = mp.sprite
-          ? '<img src="'+mp.sprite+'" alt="" style="width:56px;height:56px;image-rendering:pixelated;display:block;margin:0 auto;filter:drop-shadow(0 2px 6px '+c2+'44)">'
+          ? '<img src="'+mp.sprite+'" alt="" style="width:clamp(40px,10vw,56px);height:clamp(40px,10vw,56px);image-rendering:pixelated;display:block;margin:0 auto;filter:drop-shadow(0 2px 6px '+c2+'44)">'
           : '<div style="font-size:30px;text-align:center;line-height:56px;opacity:.25">❓</div>';
         var moteH = mp.mote ? '<div style="font-size:9px;color:'+c2+';font-family:var(--font-display);font-weight:700;font-style:italic;margin-top:1px">&ldquo;'+escaparHTML(mp.mote)+'&rdquo;</div>' : '';
-        return '<div style="text-align:center;background:var(--bg-elevated);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:10px 8px;min-width:80px">'
+        return '<div style="text-align:center;background:var(--bg-elevated);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-lg);padding:8px 6px;min-width:70px;max-width:90px">'
           +imgH
           +'<div style="font-size:8px;color:'+c2+';font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:4px">'+escaparHTML(id)+'</div>'
           +'<div style="font-family:var(--font-display);font-size:11px;font-weight:900;color:var(--blanco)">'+escaparHTML(mp.nombre)+'</div>'
@@ -3330,7 +3335,7 @@ function museoCardHTML(e, idx, total){
   return '<div class="museo-card" data-idx="'+idx+'" style="border:1px solid '+borderCol+';border-radius:var(--r-xl);overflow:hidden;background:linear-gradient(145deg,'+cfg.bg+',transparent)">'
     // ── Cabecera ──
     +'<div style="background:linear-gradient(135deg,'+cfg.bg+',rgba(0,0,0,.2));padding:14px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,.06)">'
-      +'<div style="width:50px;height:50px;border-radius:50%;background:'+cfg.bg+';border:2px solid '+borderCol+';display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">'+cfg.icon+'</div>'
+      +'<div style="width:clamp(36px,8vw,50px);height:clamp(36px,8vw,50px);border-radius:50%;background:'+cfg.bg+';border:2px solid '+borderCol+';display:flex;align-items:center;justify-content:center;font-size:clamp(16px,4vw,22px);flex-shrink:0">'+cfg.icon+'</div>'
       +'<div style="flex:1;min-width:0">'
         +'<div style="font-family:var(--font-display);font-size:14px;font-weight:900;color:'+cfgColor+';letter-spacing:.3px">'+escaparHTML(modLabel)+'</div>'
         +'<div style="font-size:11px;color:var(--txt-secondary);font-family:var(--font-display);margin-top:2px">'+escaparHTML(juegoIcon+' '+juegoNombre)+(e.juegoGen?' <span style="color:var(--txt-muted);font-size:9px">('+escaparHTML(e.juegoGen)+')</span>':'')+'</div>'
@@ -3341,7 +3346,7 @@ function museoCardHTML(e, idx, total){
       +'</div>'
     +'</div>'
     // ── Cuerpo ──
-    +'<div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:14px">'
+    +'<div style="padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">'
       // Campeones
       +'<div>'
         +'<div style="font-size:8px;color:var(--txt-muted);font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🏆 Campeones</div>'
@@ -4566,7 +4571,7 @@ function _renderizarMapaSVG(svgEl, leyEl, vacioEl, rutas){
     });
   }
 
-  svgEl.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:340px">'
+  svgEl.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:340px;max-width:'+W+'px;display:block;margin:0 auto">'
     +defs+bg+progBar+paths+nodes+labels+pokebadges+avatars+'</svg>';
 
   if(leyEl){
