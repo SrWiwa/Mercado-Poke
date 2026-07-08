@@ -1050,6 +1050,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
         <button class="dios-tab" id="dtab-museo" onclick="cambiarAdminTab('museo')" style="color:#818cf8;border-color:rgba(129,140,248,.3)">📜 Museo</button>
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#f87171;border-color:rgba(239,68,68,.3)">🔄 Nuevo Locke</button>
+        <button class="dios-tab" id="dtab-rutas" onclick="cambiarAdminTab('rutas')" style="color:#34d399;border-color:rgba(52,211,153,.3)">🗺️ Rutas</button>
         <button class="dios-tab" id="dtab-log" onclick="cambiarAdminTab('log')">📋 Log</button>
       </div>
       <!-- RESETEOS -->
@@ -1525,7 +1526,47 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
       </div>
 
-      <!-- LOG DE ACCIONES ADMIN -->
+      <!-- EDITOR DE RUTAS -->
+      <div id="dv-rutas" class="dios-view">
+        <div class="card" style="max-width:560px;border-color:rgba(52,211,153,.25)">
+          <div class="card-title" style="color:#34d399">🗺️ Editor de Rutas del Locke</div>
+          <div style="font-size:11px;color:var(--txt-muted);margin-bottom:14px;font-family:var(--font-display);line-height:1.5">
+            Modifica las rutas del Locke activo. Los trackers de todos los jugadores se actualizarán al guardar — las rutas ya completadas o con Pokémon asignado se conservarán.
+          </div>
+
+          <!-- Añadir ruta -->
+          <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+            <input id="er-input"
+              style="flex:1;background:var(--bg-card);color:var(--blanco);border:1px solid rgba(52,211,153,.3);padding:8px 12px;border-radius:var(--r-sm);font-family:var(--font-body);font-size:13px;outline:none;min-width:0"
+              placeholder="Nombre de la nueva ruta..."
+              autocomplete="off"
+              onfocus="this.style.borderColor='rgba(52,211,153,.7)'"
+              onblur="this.style.borderColor='rgba(52,211,153,.3)'"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();erAnadirRuta();}">
+            <button onclick="erAnadirRuta()"
+              style="flex-shrink:0;padding:8px 14px;background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.3);border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">
+              ➕ Añadir
+            </button>
+          </div>
+
+          <!-- Lista de rutas -->
+          <div id="er-lista" style="display:flex;flex-direction:column;gap:4px;max-height:380px;overflow-y:auto;margin-bottom:14px"></div>
+          <div id="er-vacio" style="display:none;font-size:10px;color:var(--txt-muted);font-style:italic;padding:8px 2px;font-family:var(--font-display)">
+            No hay rutas definidas en este Locke.
+          </div>
+
+          <!-- Acciones -->
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-admin packs" style="flex:1" onclick="erGuardarRutas()">💾 Guardar cambios</button>
+            <button class="btn-admin" style="flex:1" onclick="erDescartar()">✖ Descartar</button>
+          </div>
+          <div id="er-aviso-cambios" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:var(--r-sm);font-size:10px;color:#34d399;font-family:var(--font-display)">
+            ✅ Rutas guardadas correctamente.
+          </div>
+        </div>
+      </div>
+
+            <!-- LOG DE ACCIONES ADMIN -->
       <div id="dv-log" class="dios-view">
         <div class="card" style="max-width:720px">
           <div class="card-title" style="color:var(--neon-packs)">📋 Log de Acciones de Admin</div>
@@ -3522,7 +3563,7 @@ function guardarBD(){set(ref(db,'silph_co_market'),baseDatos);}
 
 /* ═══ NAVEGACIÓN ═══ */
 window.navegarA=function(s){reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='perfil'){cargarDatosPerfilEnDOM();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='perfil'){cargarMejorPokemonEnPerfil();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='tracker')renderizarTracker();if(s==='inicio')renderizarMapaInicio();var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
 /* ═══ MUSEO ADMIN — estado local ═══ */
@@ -5971,6 +6012,120 @@ window.renderizarDuelosPvP = function(){
     }
   }
 };
+
+/* ═══ EDITOR DE RUTAS (Modo Dios) ═══ */
+var _erRutas = []; // copia de trabajo
+
+function erCargar(){
+  _erRutas = ((baseDatos.lockeActivo && baseDatos.lockeActivo.rutasDefinidas) || []).slice();
+  erRender();
+}
+
+function erRender(){
+  var lista = document.getElementById('er-lista');
+  var vacio = document.getElementById('er-vacio');
+  if(!lista) return;
+  if(!_erRutas.length){
+    lista.innerHTML = '';
+    if(vacio) vacio.style.display = 'block';
+    return;
+  }
+  if(vacio) vacio.style.display = 'none';
+  lista.innerHTML = _erRutas.map(function(r, i){
+    return '<div class="nl-ruta-row" id="er-row-'+i+'">'
+      + '<span class="nl-ruta-orden">'+(i+1)+'</span>'
+      + '<input value="'+escaparHTML(r)+'" data-idx="'+i+'"'
+      +   ' style="flex:1;background:var(--bg-overlay);color:var(--blanco);border:1px solid transparent;border-radius:4px;font-family:var(--font-display);font-size:12px;font-weight:700;outline:none;min-width:0;padding:3px 7px;transition:border-color .15s"'
+      +   ' oninput="_erRutas['+i+']=this.value" onchange="_erRutas['+i+']=this.value.trim()||_erRutas['+i+']">'  
+      + '<button class="nl-ruta-up" onclick="erMover('+i+',-1)" title="Subir" '+(i===0?'disabled style="opacity:.3"':'')+'>▲</button>'
+      + '<button class="nl-ruta-down" onclick="erMover('+i+',1)" title="Bajar" '+(i===_erRutas.length-1?'disabled style="opacity:.3"':'')+'>▼</button>'
+      + '<button class="nl-ruta-del" onclick="erEliminar('+i+')" title="Eliminar">✕</button>'
+      + '</div>';
+  }).join('');
+}
+
+window.erAnadirRuta = function(){
+  var inp = document.getElementById('er-input');
+  var nombre = (inp ? inp.value.trim() : '');
+  if(!nombre){ mostrarNotificacion('Escribe el nombre de la ruta.','error','🗺️'); return; }
+  _erRutas.push(nombre);
+  if(inp) inp.value = '';
+  erRender();
+  // Scroll al final
+  var lista = document.getElementById('er-lista');
+  if(lista) lista.scrollTop = lista.scrollHeight;
+};
+
+window.erMover = function(idx, dir){
+  var dest = idx + dir;
+  if(dest < 0 || dest >= _erRutas.length) return;
+  var tmp = _erRutas[idx];
+  _erRutas[idx] = _erRutas[dest];
+  _erRutas[dest] = tmp;
+  erRender();
+};
+
+window.erEliminar = function(idx){
+  var nombre = _erRutas[idx];
+  mostrarConfirmacion({
+    icono:'🗑️',
+    titulo:'Eliminar ruta',
+    descripcion:'"'+nombre+'" se quitará de la lista. Los trackers de jugadores que ya tengan esta ruta la conservarán hasta que guardes.',
+    textoConfirmar:'Eliminar',
+    tipo:'peligro'
+  }).then(function(cf){
+    if(!cf) return;
+    _erRutas.splice(idx, 1);
+    erRender();
+  });
+};
+
+window.erGuardarRutas = function(){
+  // Limpiar nombres vacíos
+  var limpias = _erRutas.map(function(r){ return r.trim(); }).filter(Boolean);
+  _erRutas = limpias;
+
+  if(!baseDatos.lockeActivo) baseDatos.lockeActivo = {};
+  baseDatos.lockeActivo.rutasDefinidas = limpias.slice();
+
+  // Sincronizar trackers de todos los jugadores:
+  // — rutas nuevas se añaden al final con estado 'pendiente'
+  // — rutas eliminadas se quitan (conservando las que tienen pokemon asignado)
+  // — el orden se actualiza según la nueva lista
+  Object.keys(baseDatos.jugadores || {}).forEach(function(uid){
+    var u = baseDatos.jugadores[uid];
+    if(!u) return;
+    var trackerActual = u.tracker || [];
+
+    var nuevoTracker = limpias.map(function(nombre, i){
+      // Buscar si ya existía esta ruta (por nombre)
+      var existing = trackerActual.find(function(t){ return t.ruta === nombre; });
+      if(existing){
+        return { orden: i, ruta: nombre, estado: existing.estado, pokemon: existing.pokemon||'', mote: existing.mote||'' };
+      }
+      return { orden: i, ruta: nombre, estado: 'pendiente', pokemon: '', mote: '' };
+    });
+
+    u.tracker = nuevoTracker;
+  });
+
+  guardarBD();
+  logAdmin('🗺️','Editor de Rutas','Rutas actualizadas: '+limpias.length+' rutas');
+  erRender();
+
+  var av = document.getElementById('er-aviso-cambios');
+  if(av){
+    av.style.display = 'block';
+    setTimeout(function(){ av.style.display = 'none'; }, 3000);
+  }
+  mostrarNotificacion('Rutas guardadas. Trackers sincronizados.','exito','🗺️');
+};
+
+window.erDescartar = function(){
+  erCargar();
+  mostrarNotificacion('Cambios descartados.','info','↩️');
+};
+
 </script>
 </body>
 </html>
