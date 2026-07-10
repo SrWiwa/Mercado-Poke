@@ -947,8 +947,22 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:12px">Cada cambio queda registrado automáticamente en tu Bitácora.</div>
         <div id="tracker-progreso-resumen" style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:6px">—</div>
         <div class="tracker-progreso-bar"><div id="tracker-progreso-fill" class="tracker-progreso-fill" style="width:0%"></div></div>
-        <div id="tracker-lista" style="display:flex;flex-direction:column;margin-top:10px"></div>
-        <div id="tracker-vacio" style="display:none;text-align:center;padding:20px 10px;color:var(--txt-muted);font-size:11px;font-style:italic">El administrador aún no ha definido rutas para este Locke.</div>
+        <!-- Botones vista lista / mapa -->
+        <div style="display:flex;gap:8px;margin:10px 0 8px">
+          <button id="tracker-btn-lista" class="tracker-vista-btn activo" onclick="trackerCambiarVista('lista')">☰ Lista</button>
+          <button id="tracker-btn-mapa" class="tracker-vista-btn" onclick="trackerCambiarVista('mapa')">🗺️ Mapa</button>
+        </div>
+        <!-- Vista lista -->
+        <div id="tracker-vista-lista">
+          <div id="tracker-lista" style="display:flex;flex-direction:column;margin-top:4px"></div>
+          <div id="tracker-vacio" style="display:none;text-align:center;padding:20px 10px;color:var(--txt-muted);font-size:11px;font-style:italic">El administrador aún no ha definido rutas para este Locke.</div>
+        </div>
+        <!-- Vista mapa -->
+        <div id="tracker-vista-mapa" style="display:none">
+          <div id="tracker-mapa-leyenda" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px"></div>
+          <div id="tracker-mapa-svg" style="width:100%;overflow-x:auto"></div>
+          <div id="tracker-mapa-vacio" style="display:none;text-align:center;padding:20px 10px;color:var(--txt-muted);font-size:11px;font-style:italic">No hay rutas definidas para mostrar el mapa.</div>
+        </div>
       </div>
     </section>
 
@@ -4265,192 +4279,6 @@ window.trackerCambiarVista = function(vista){
   if(vista === 'mapa') renderizarMapaTracker();
 };
 
-window.renderizarMapaTracker = function(){
-  var svgEl   = document.getElementById('tracker-mapa-svg');
-  var vacioEl = document.getElementById('tracker-mapa-vacio');
-  var leyEl   = document.getElementById('tracker-mapa-leyenda');
-  if(!svgEl) return;
-
-  // Rutas definidas del locke (plantilla)
-  var rutas = (baseDatos.lockeActivo && baseDatos.lockeActivo.rutasDefinidas) || [];
-  if(!rutas.length){
-    svgEl.innerHTML = '';
-    if(vacioEl) vacioEl.style.display = 'block';
-    if(leyEl)   leyEl.innerHTML = '';
-    return;
-  }
-  if(vacioEl) vacioEl.style.display = 'none';
-
-  // Recopilar estado de TODOS los jugadores por ruta
-  // rutaEstados[i] = { atrapado:[ids], perdido:[ids], pendiente:[ids] }
-  var jugadores = baseDatos.jugadores || {};
-  var rutaEstados = rutas.map(function(){ return { atrapado:[], perdido:[], pendiente:[] }; });
-  Object.keys(jugadores).forEach(function(jid){
-    var tracker = jugadores[jid].tracker || [];
-    tracker.forEach(function(entrada){
-      var idx = entrada.orden !== undefined ? entrada.orden : -1;
-      if(idx < 0 || idx >= rutas.length) return;
-      (rutaEstados[idx][entrada.estado] || rutaEstados[idx].pendiente).push(jid);
-    });
-  });
-
-  // Jugadores con su color
-  var jugIds = Object.keys(jugadores);
-
-  // Layout serpentina
-  var COLS      = 4;       // nodos por fila
-  var NODE_R    = 28;      // radio del nodo
-  var NODE_GAP  = 84;      // separación centro a centro
-  var ROW_H     = 110;     // altura de fila
-  var PAD_X     = 50;
-  var PAD_Y     = 56;
-  var AVATAR_R  = 10;      // radio de avatares encima del nodo
-
-  var totalRows = Math.ceil(rutas.length / COLS);
-  var W = PAD_X * 2 + (COLS - 1) * NODE_GAP + NODE_R * 2;
-  var H = PAD_Y * 2 + (totalRows - 1) * ROW_H + NODE_R * 2 + 28;
-
-  // Calcular posición de cada nodo en la serpentina
-  function nodoPos(i){
-    var row = Math.floor(i / COLS);
-    var col = i % COLS;
-    // Filas pares: izq→der, filas impares: der→izq
-    if(row % 2 === 1) col = COLS - 1 - col;
-    return {
-      x: PAD_X + NODE_R + col * NODE_GAP,
-      y: PAD_Y + NODE_R + row * ROW_H
-    };
-  }
-
-  // Color de cada nodo según estado mayoritario
-  function nodoColor(estados){
-    var at = estados.atrapado.length;
-    var pe = estados.perdido.length;
-    var pend = estados.pendiente.length;
-    if(at === 0 && pe === 0) return '#1e2e45';   // todos pendiente
-    if(pe > at)  return '#7f1d1d';               // mayoría perdido
-    if(at > 0)   return '#14532d';               // mayoría atrapado
-    return '#1e2e45';
-  }
-  function nodoBorde(estados){
-    var at = estados.atrapado.length;
-    var pe = estados.perdido.length;
-    if(pe > at)  return '#ef4444';
-    if(at > 0)   return '#22c55e';
-    return '#2d3f5a';
-  }
-
-  var defs = '<defs>'
-    + '<filter id="mshadow" x="-20%" y="-20%" width="140%" height="140%">'
-    + '<feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.4"/>'
-    + '</filter>'
-    + '</defs>';
-
-  var paths = '';
-  var nodes = '';
-  var labels = '';
-  var avatars = '';
-
-  // Calcular posición actual de cada jugador (último nodo resuelto)
-  var jugadorPos = {}; // jid -> { x, y, idx }
-  jugIds.forEach(function(jid){
-    var tracker = jugadores[jid].tracker || [];
-    var lastIdx = -1;
-    tracker.forEach(function(e, i){
-      if(e.estado !== 'pendiente'){
-        var idx = e.orden !== undefined ? e.orden : i;
-        if(idx > lastIdx) lastIdx = idx;
-      }
-    });
-    if(lastIdx >= 0 && lastIdx < rutas.length){
-      var pos = nodoPos(lastIdx);
-      jugadorPos[jid] = { x: pos.x, y: pos.y, idx: lastIdx };
-    }
-  });
-
-  // Líneas de conexión entre nodos (camino)
-  for(var i = 0; i < rutas.length - 1; i++){
-    var p1 = nodoPos(i);
-    var p2 = nodoPos(i + 1);
-    var row1 = Math.floor(i / COLS);
-    var row2 = Math.floor((i+1) / COLS);
-
-    var d;
-    if(row1 === row2){
-      // Misma fila: línea recta
-      d = 'M'+p1.x+' '+p1.y+' L'+p2.x+' '+p2.y;
-    } else {
-      // Cambio de fila: curva en U
-      var midY = (p1.y + p2.y) / 2;
-      d = 'M'+p1.x+' '+p1.y+' Q'+p1.x+' '+midY+' '+(p1.x+p2.x)/2+' '+midY+' Q'+p2.x+' '+midY+' '+p2.x+' '+p2.y;
-    }
-
-    // Color del camino según estado de origen
-    var est = rutaEstados[i];
-    var pathColor = (est.atrapado.length > est.perdido.length && est.atrapado.length > 0)
-      ? '#166534' : (est.perdido.length > 0 ? '#991b1b' : '#1e2e45');
-
-    paths += '<path d="'+d+'" stroke="'+pathColor+'" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>';
-  }
-
-  // Nodos
-  for(var i = 0; i < rutas.length; i++){
-    var pos    = nodoPos(i);
-    var est    = rutaEstados[i];
-    var bgCol  = nodoColor(est);
-    var bdCol  = nodoBorde(est);
-    var icono  = est.perdido.length > est.atrapado.length ? '✕'
-               : (est.atrapado.length > 0 ? '✓' : String(i+1));
-    var iconoColor = est.perdido.length > est.atrapado.length ? '#f87171'
-                   : (est.atrapado.length > 0 ? '#4ade80' : '#4a5f78');
-
-    nodes += '<circle cx="'+pos.x+'" cy="'+pos.y+'" r="'+NODE_R+'" fill="'+bgCol+'" stroke="'+bdCol+'" stroke-width="2" filter="url(#mshadow)"/>';
-    nodes += '<text x="'+pos.x+'" y="'+(pos.y+5)+'" text-anchor="middle" font-size="14" font-weight="900" font-family="Orbitron,sans-serif" fill="'+iconoColor+'">'+icono+'</text>';
-
-    // Nombre de la ruta debajo del nodo
-    var nombre = rutas[i] || ('Ruta '+(i+1));
-    if(nombre.length > 12) nombre = nombre.slice(0,11)+'…';
-    labels += '<text x="'+pos.x+'" y="'+(pos.y + NODE_R + 14)+'" text-anchor="middle" font-size="9" font-family="Orbitron,sans-serif" fill="#4a5f78">'+escaparHTML(nombre)+'</text>';
-
-    // Avatares de jugadores posicionados en este nodo
-    var aqui = [];
-    jugIds.forEach(function(jid){
-      if(jugadorPos[jid] && jugadorPos[jid].idx === i) aqui.push(jid);
-    });
-    aqui.forEach(function(jid, ai){
-      var color = colorParaJugador(jid);
-      var ini   = jid.slice(0,2).toUpperCase();
-      var ax    = pos.x - (aqui.length - 1) * (AVATAR_R + 2) + ai * (AVATAR_R * 2 + 4);
-      var ay    = pos.y - NODE_R - AVATAR_R - 4;
-      avatars += '<circle cx="'+ax+'" cy="'+ay+'" r="'+AVATAR_R+'" fill="'+color+'" stroke="#080d14" stroke-width="2"/>';
-      avatars += '<text x="'+ax+'" y="'+(ay+4)+'" text-anchor="middle" font-size="8" font-weight="900" font-family="Orbitron,sans-serif" fill="#fff">'+ini+'</text>';
-    });
-  }
-
-  var svg = '<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:320px">'
-    + defs
-    + '<rect width="'+W+'" height="'+H+'" fill="#06080f" rx="16"/>'
-    + paths + nodes + labels + avatars
-    + '</svg>';
-
-  svgEl.innerHTML = svg;
-
-  // Leyenda de jugadores
-  if(leyEl){
-    leyEl.innerHTML = jugIds.map(function(jid){
-      var color = colorParaJugador(jid);
-      var pos   = jugadorPos[jid];
-      var rutaNombre = pos ? (rutas[pos.idx] || 'Ruta '+(pos.idx+1)) : 'Sin avance';
-      return '<div class="tracker-mapa-leyenda-item">'
-        + '<div class="tracker-mapa-leyenda-dot" style="background:'+color+'"></div>'
-        + '<span style="color:var(--txt-primary);font-weight:700">'+jid.toUpperCase()+'</span>'
-        + '<span style="color:var(--txt-muted)">— '+escaparHTML(rutaNombre)+'</span>'
-        + '</div>';
-    }).join('');
-  }
-};
-
-
 /* Mapa del Inicio — usa los mismos datos pero distinto contenedor */
 window.renderizarMapaInicio = function(){
   var rutas = (baseDatos && baseDatos.lockeActivo && baseDatos.lockeActivo.rutasDefinidas) || [];
@@ -4686,6 +4514,10 @@ window.renderizarTracker = function(){
     fila += '</div></div>';
     return fila;
   }).join('');
+  // Si el mapa está visible, refrescarlo también
+  if(_trackerVista === 'mapa' && window.renderizarMapaTracker) renderizarMapaTracker();
+  // Siempre refrescar el mapa del inicio
+  if(window.renderizarMapaInicio) renderizarMapaInicio();
 };
 
 window.trackerCambiarEstado = function(idx, nuevoEstado){
@@ -4712,6 +4544,7 @@ window.trackerCambiarEstado = function(idx, nuevoEstado){
 
   guardarBD();
   renderizarTracker();
+  if(window.renderizarMapaInicio) renderizarMapaInicio();
 };
 
 window.trackerActualizarPokemon = function(idx, valorCrudo){
@@ -6034,14 +5867,27 @@ function erRender(){
   lista.innerHTML = _erRutas.map(function(r, i){
     return '<div class="nl-ruta-row" id="er-row-'+i+'">'
       + '<span class="nl-ruta-orden">'+(i+1)+'</span>'
-      + '<input value="'+escaparHTML(r)+'" data-idx="'+i+'"'
-      +   ' style="flex:1;background:var(--bg-overlay);color:var(--blanco);border:1px solid transparent;border-radius:4px;font-family:var(--font-display);font-size:12px;font-weight:700;outline:none;min-width:0;padding:3px 7px;transition:border-color .15s"'
-      +   ' oninput="_erRutas['+i+']=this.value" onchange="_erRutas['+i+']=this.value.trim()||_erRutas['+i+']">'  
-      + '<button class="nl-ruta-up" onclick="erMover('+i+',-1)" title="Subir" '+(i===0?'disabled style="opacity:.3"':'')+'>▲</button>'
-      + '<button class="nl-ruta-down" onclick="erMover('+i+',1)" title="Bajar" '+(i===_erRutas.length-1?'disabled style="opacity:.3"':'')+'>▼</button>'
-      + '<button class="nl-ruta-del" onclick="erEliminar('+i+')" title="Eliminar">✕</button>'
+      + '<input value="'+escaparHTML(r)+'" data-idx="'+i+'" data-er-input="1"'
+      +   ' style="flex:1;background:var(--bg-overlay);color:var(--blanco);border:1px solid transparent;border-radius:4px;font-family:var(--font-display);font-size:12px;font-weight:700;outline:none;min-width:0;padding:3px 7px;transition:border-color .15s">'
+      + '<button class="nl-ruta-up" data-er-up="'+i+'" title="Subir" '+(i===0?'disabled style="opacity:.3"':'')+'>▲</button>'
+      + '<button class="nl-ruta-down" data-er-down="'+i+'" title="Bajar" '+(i===_erRutas.length-1?'disabled style="opacity:.3"':'')+'>▼</button>'
+      + '<button class="nl-ruta-del" data-er-del="'+i+'" title="Eliminar">✕</button>'
       + '</div>';
   }).join('');
+  // Event delegation: un solo listener en el contenedor
+  lista.oninput = function(e){
+    var inp = e.target;
+    if(inp.dataset.erInput){
+      var idx = parseInt(inp.dataset.idx, 10);
+      if(!isNaN(idx)) _erRutas[idx] = inp.value;
+    }
+  };
+  lista.onclick = function(e){
+    var btn = e.target;
+    if(btn.dataset.erUp  !== undefined){ erMover(parseInt(btn.dataset.erUp,10), -1); return; }
+    if(btn.dataset.erDown!== undefined){ erMover(parseInt(btn.dataset.erDown,10), 1); return; }
+    if(btn.dataset.erDel !== undefined){ erEliminar(parseInt(btn.dataset.erDel,10)); return; }
+  };
 }
 
 window.erAnadirRuta = function(){
@@ -6056,7 +5902,18 @@ window.erAnadirRuta = function(){
   if(lista) lista.scrollTop = lista.scrollHeight;
 };
 
+// Lee los valores actuales de los inputs del DOM antes de operar
+function erSincronizarInputs(){
+  var lista = document.getElementById('er-lista');
+  if(!lista) return;
+  lista.querySelectorAll('[data-er-input]').forEach(function(inp){
+    var idx = parseInt(inp.dataset.idx, 10);
+    if(!isNaN(idx) && idx < _erRutas.length) _erRutas[idx] = inp.value;
+  });
+}
+
 window.erMover = function(idx, dir){
+  erSincronizarInputs();
   var dest = idx + dir;
   if(dest < 0 || dest >= _erRutas.length) return;
   var tmp = _erRutas[idx];
@@ -6066,11 +5923,12 @@ window.erMover = function(idx, dir){
 };
 
 window.erEliminar = function(idx){
+  erSincronizarInputs();
   var nombre = _erRutas[idx];
   mostrarConfirmacion({
     icono:'🗑️',
     titulo:'Eliminar ruta',
-    descripcion:'"'+nombre+'" se quitará de la lista. Los trackers de jugadores que ya tengan esta ruta la conservarán hasta que guardes.',
+    descripcion:'"'+nombre+'" se quitará de la lista. Los trackers que ya tengan esta ruta la conservarán hasta que guardes.',
     textoConfirmar:'Eliminar',
     tipo:'peligro'
   }).then(function(cf){
@@ -6081,44 +5939,47 @@ window.erEliminar = function(idx){
 };
 
 window.erGuardarRutas = function(){
-  // Limpiar nombres vacíos
-  var limpias = _erRutas.map(function(r){ return r.trim(); }).filter(Boolean);
+  // Capturar últimos valores escritos en los inputs antes de leer _erRutas
+  erSincronizarInputs();
+
+  var limpias = _erRutas.map(function(r){ return (r||'').trim(); }).filter(Boolean);
   _erRutas = limpias;
 
   if(!baseDatos.lockeActivo) baseDatos.lockeActivo = {};
   baseDatos.lockeActivo.rutasDefinidas = limpias.slice();
 
   // Sincronizar trackers de todos los jugadores:
-  // — rutas nuevas se añaden al final con estado 'pendiente'
-  // — rutas eliminadas se quitan (conservando las que tienen pokemon asignado)
-  // — el orden se actualiza según la nueva lista
+  // — rutas existentes (por nombre) conservan su estado y pokémon
+  // — rutas nuevas se añaden como 'pendiente'
+  // — rutas eliminadas desaparecen del tracker
   Object.keys(baseDatos.jugadores || {}).forEach(function(uid){
     var u = baseDatos.jugadores[uid];
     if(!u) return;
     var trackerActual = u.tracker || [];
-
-    var nuevoTracker = limpias.map(function(nombre, i){
-      // Buscar si ya existía esta ruta (por nombre)
+    u.tracker = limpias.map(function(nombre, i){
       var existing = trackerActual.find(function(t){ return t.ruta === nombre; });
       if(existing){
         return { orden: i, ruta: nombre, estado: existing.estado, pokemon: existing.pokemon||'', mote: existing.mote||'' };
       }
       return { orden: i, ruta: nombre, estado: 'pendiente', pokemon: '', mote: '' };
     });
-
-    u.tracker = nuevoTracker;
   });
 
   guardarBD();
   logAdmin('🗺️','Editor de Rutas','Rutas actualizadas: '+limpias.length+' rutas');
   erRender();
 
+  // Refrescar tracker y mapa en tiempo real para todos los que estén viendo
+  if(window.renderizarTracker) renderizarTracker();
+  if(window.renderizarMapaInicio) renderizarMapaInicio();
+  if(window.renderizarMapaTracker) renderizarMapaTracker();
+
   var av = document.getElementById('er-aviso-cambios');
   if(av){
     av.style.display = 'block';
     setTimeout(function(){ av.style.display = 'none'; }, 3000);
   }
-  mostrarNotificacion('Rutas guardadas. Trackers sincronizados.','exito','🗺️');
+  mostrarNotificacion('Rutas guardadas. Trackers y mapa sincronizados.','exito','🗺️');
 };
 
 window.erDescartar = function(){
