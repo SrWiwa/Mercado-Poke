@@ -2893,73 +2893,276 @@ var DB_ITEMS = [
 // Starter Pack: Super Potion×3(2100) + Great Ball×3(1800) + Lum Berry×2(400) + Repel(350) = 4650 × 1.8 = ~8370 → 15000
 // Vitamin Pack: 6×9800 = 58800 × 1.8 = ~105840 → 160000
 var DB_PACKS = [
-  // ── Gimnasio 1–2: Básicos ────────────────────────────────────────
-  {n:'Survival Pack',    i:'🎒',tier:0,gen:1,precio:6000,  pf:2,rareza:1,
+
+  // ══ TIER 0 — Primeros pasos (Gimnasios 1-2) ══════════════════════
+  {n:'Survival Pack',      i:'🎒',tier:0,gen:1,precio:6000,   pf:2,rareza:1,
    desc:'Potion x2, Poké Ball x2, Antidote x2, Escape Rope',
    estrategia:'Lo esencial para empezar la aventura. Pack de salida.'},
-  {n:'Explorer Pack',    i:'🗺️',tier:0,gen:1,precio:7500,  pf:2,rareza:1,
+  {n:'Explorer Pack',      i:'🗺️',tier:0,gen:1,precio:7500,   pf:2,rareza:1,
    desc:'Repel x2, Escape Rope, Potion x2, Poké Ball x3',
    estrategia:'Explora rutas con seguridad sin gastar de más.'},
-  {n:'Status Pack',      i:'🩹',tier:0,gen:1,precio:4500,  pf:1,rareza:1,
+  {n:'Status Pack',        i:'🩹',tier:0,gen:1,precio:4500,   pf:1,rareza:1,
    desc:'Antidote x2, Burn Heal x2, Awakening x2, Parlyz Heal x2',
    estrategia:'Cura cualquier estado alterado al instante.'},
-  {n:'Starter Pack',     i:'📦',tier:1,gen:1,precio:15000, pf:3,rareza:2,
+  {n:'Poké Ball Pack',     i:'🔴',tier:0,gen:1,precio:5000,   pf:1,rareza:1,
+   desc:'Poké Ball x8, Antidote x2, Potion x2',
+   estrategia:'Munición básica para las primeras capturas.'},
+  {n:'Nursery Pack',       i:'🥚',tier:0,gen:2,precio:5500,   pf:1,rareza:1,
+   desc:'Oran Berry x4, Potion x3, Repel x2',
+   estrategia:'Cuida a tus Pokémon en las primeras rutas.'},
+  {n:'Budget Pack',        i:'💸',tier:0,gen:1,precio:3500,   pf:1,rareza:1,
+   desc:'Potion x3, Poké Ball x2, Repel x1',
+   estrategia:'El pack más económico. Poco pero suficiente.'},
+  {n:'First Aid Pack',     i:'💊',tier:0,gen:1,precio:4000,   pf:1,rareza:1,
+   desc:'Potion x4, Antidote x2, Burn Heal x2',
+   estrategia:'Medicina básica para las primeras rutas.'},
+  {n:'Forest Pack',        i:'🌲',tier:0,gen:1,precio:5200,   pf:1,rareza:1,
+   desc:'Repel x3, Antidote x3, Pecha Berry x3, Escape Rope',
+   estrategia:'Perfecto para rutas con Pokémon venenosos.'},
+  {n:'Cave Pack',          i:'🕯️',tier:0,gen:1,precio:5800,   pf:1,rareza:1,
+   desc:'Escape Rope x2, Repel x2, Potion x2, Awakening x2',
+   estrategia:'Sobrevive en cuevas oscuras y laberínticas.'},
+
+  // ══ TIER 1 — En marcha ═══════════════════════════════════════════
+  {n:'Starter Pack',       i:'📦',tier:1,gen:1,precio:15000,  pf:3,rareza:2,
    desc:'Super Potion x3, Great Ball x3, Lum Berry x2, Repel',
    estrategia:'Tu primer gran salto de calidad en la aventura.'},
-  {n:'Catcher Pack',     i:'🔵',tier:1,gen:1,precio:13000, pf:3,rareza:2,
+  {n:'Catcher Pack',       i:'🔵',tier:1,gen:1,precio:13000,  pf:3,rareza:2,
    desc:'Great Ball x5, Net Ball x2, Nest Ball x2, Super Repel x2',
    estrategia:'Maximiza capturas en cualquier ruta.'},
+  {n:'Heal Pack',          i:'🧪',tier:1,gen:1,precio:12000,  pf:2,rareza:2,
+   desc:'Super Potion x4, Full Heal x3, Sitrus Berry x2',
+   estrategia:'Curación sostenida para batallas largas.'},
+  {n:'Type Pack Fire',     i:'🔥',tier:1,gen:1,precio:11500,  pf:2,rareza:2,
+   desc:'Burn Heal x4, Rawst Berry x4, Great Ball x2, Repel x2',
+   estrategia:'Equipado para zonas volcánicas y entrenadores de fuego.'},
+  {n:'Type Pack Water',    i:'💧',tier:1,gen:1,precio:11500,  pf:2,rareza:2,
+   desc:'Super Potion x3, Great Ball x3, Net Ball x2, Super Repel',
+   estrategia:'Para rutas acuáticas y gimnasios de agua.'},
+  {n:'Type Pack Electric', i:'⚡',tier:1,gen:1,precio:11500,  pf:2,rareza:2,
+   desc:'Parlyz Heal x4, Cheri Berry x4, Great Ball x2, Repel x2',
+   estrategia:'No te quedes paralizado ante el Gimnasio Eléctrico.'},
+  {n:'Type Pack Grass',    i:'🍃',tier:1,gen:2,precio:11500,  pf:2,rareza:2,
+   desc:'Antidote x4, Pecha Berry x4, Great Ball x2, Super Repel',
+   estrategia:'Contra entrenadores de tipo planta y sus venenos.'},
+  {n:'Scout Pack',         i:'🧭',tier:1,gen:1,precio:14000,  pf:3,rareza:2,
+   desc:'Super Repel x3, Escape Rope x2, Super Potion x2, Awakening x2',
+   estrategia:'Para explorar sin sorpresas ni interrupciones.'},
+  {n:'Rookie Pack',        i:'🎓',tier:1,gen:1,precio:16000,  pf:3,rareza:2,
+   desc:'Super Potion x3, Great Ball x4, Lum Berry x2, Super Repel x2',
+   estrategia:'El kit del entrenador que ya sabe lo que hace.'},
+  {n:'Berry Basics Pack',  i:'🍒',tier:1,gen:2,precio:9000,   pf:2,rareza:2,
+   desc:'Oran Berry x4, Pecha Berry x3, Cheri Berry x3, Chesto Berry x3',
+   estrategia:'Un surtido de bayas básicas para cada situación.'},
 
-  // ── Gimnasio 3–5: Medios ─────────────────────────────────────────
-  {n:'Traveler Pack',    i:'🌍',tier:2,gen:1,precio:28000, pf:4,rareza:2,
+  // ══ TIER 2 — Curtido en camino ═══════════════════════════════════
+  {n:'Traveler Pack',      i:'🌍',tier:2,gen:1,precio:28000,  pf:4,rareza:2,
    desc:'Hyper Potion x3, Ultra Ball x3, Sitrus Berry x3, Super Repel',
    estrategia:'Para el entrenador ya curtido en el camino.'},
-  {n:'Berry Pack',       i:'🌿',tier:2,gen:2,precio:22000, pf:4,rareza:2,
+  {n:'Berry Pack',         i:'🌿',tier:2,gen:2,precio:22000,  pf:4,rareza:2,
    desc:'Sitrus Berry x3, Lum Berry x3, Oran Berry x4, Max Repel x2',
    estrategia:'Soporte natural para expediciones largas.'},
-  {n:'Evolution Pack',   i:'💎',tier:3,gen:1,precio:35000, pf:5,rareza:3,
+  {n:'Ultra Catcher Pack', i:'🟡',tier:2,gen:1,precio:26000,  pf:4,rareza:2,
+   desc:'Ultra Ball x5, Dusk Ball x2, Quick Ball x2, Timer Ball x2, Max Repel',
+   estrategia:'Arsenal de captura avanzado para Pokémon difíciles.'},
+  {n:'Mid-Game Pack',      i:'🏕️',tier:2,gen:1,precio:30000,  pf:4,rareza:2,
+   desc:'Hyper Potion x4, Ultra Ball x3, Elixir x2, Max Repel x2',
+   estrategia:'Soporte completo para la mitad del juego.'},
+  {n:'Type Pack Ice',      i:'🧊',tier:2,gen:1,precio:24000,  pf:3,rareza:2,
+   desc:'Ice Heal x4, Aspear Berry x4, Ultra Ball x2, Max Repel',
+   estrategia:'Para el Gimnasio de Hielo y rutas nevadas.'},
+  {n:'Type Pack Ground',   i:'🏜️',tier:2,gen:1,precio:24000,  pf:3,rareza:2,
+   desc:'Escape Rope x2, Max Repel x3, Hyper Potion x3, Ultra Ball x2',
+   estrategia:'Supera desiertos y cuevas sin perderte.'},
+  {n:'Type Pack Psychic',  i:'🔮',tier:2,gen:1,precio:25000,  pf:3,rareza:2,
+   desc:'Full Heal x3, Persim Berry x3, Ultra Ball x3, Elixir x2',
+   estrategia:'Contra el Gimnasio Psíquico y sus confusiones.'},
+  {n:'Elixir Pack',        i:'🫙',tier:2,gen:1,precio:27000,  pf:4,rareza:3,
+   desc:'Elixir x4, Max Repel x2, Hyper Potion x2',
+   estrategia:'PP restaurados para batallas de larga duración.'},
+  {n:'Repel Deluxe Pack',  i:'🌀',tier:2,gen:1,precio:20000,  pf:3,rareza:2,
+   desc:'Max Repel x5, Escape Rope x3, Full Heal x2',
+   estrategia:'Explora sin encuentros. Ideal para dungeons.'},
+  {n:'Double Battle Pack', i:'👥',tier:2,gen:3,precio:29000,  pf:4,rareza:3,
+   desc:'X Attack x2, X Speed x2, Elixir x2, Hyper Potion x3, Guard Spec. x2',
+   estrategia:'Potencia a dos Pokémon a la vez en combates dobles.'},
+
+  // ══ TIER 3 — Mitad de juego ══════════════════════════════════════
+  {n:'Evolution Pack',     i:'💎',tier:3,gen:1,precio:35000,  pf:5,rareza:3,
    desc:'Fire Stone, Water Stone, Thunder Stone, Leaf Stone, PP Up x2',
    estrategia:'Evoluciona a tu equipo entero de una sola vez.'},
-  {n:'Vitamin Pack',     i:'💪',tier:3,gen:1,precio:160000,pf:5,rareza:3,
+  {n:'Vitamin Pack',       i:'💪',tier:3,gen:1,precio:160000, pf:5,rareza:3,
    desc:'HP Up, Protein, Iron, Calcium, Carbos, Zinc',
    estrategia:'Las seis vitaminas de una vez. Prepara los EVs completos.'},
-  {n:'Battle Pack',      i:'⚔️',tier:4,gen:1,precio:32000, pf:6,rareza:3,
+  {n:'Stone Pack',         i:'🪨',tier:3,gen:1,precio:32000,  pf:5,rareza:3,
+   desc:'Fire Stone, Water Stone, Leaf Stone, Thunder Stone',
+   estrategia:'Las cuatro piedras elementales. Evoluciona sin límites.'},
+  {n:'Moon & Sun Pack',    i:'🌙',tier:3,gen:1,precio:28000,  pf:4,rareza:3,
+   desc:'Moon Stone x2, Sun Stone x2, Full Restore x2',
+   estrategia:'Para las evoluciones nocturnas y diurnas.'},
+  {n:'Held Item Starter',  i:'🎽',tier:3,gen:2,precio:38000,  pf:5,rareza:3,
+   desc:'Leftovers, Lum Berry x2, Sitrus Berry x2, Oran Berry x3',
+   estrategia:'Tu primer objeto equipable de verdad.'},
+  {n:'Max Potion Pack',    i:'❤️',tier:3,gen:1,precio:45000,  pf:5,rareza:3,
+   desc:'Max Potion x4, Full Heal x3, Max Repel x2',
+   estrategia:'Curación total garantizada cuando más lo necesitas.'},
+  {n:'Anti-Status Pack',   i:'🛡️',tier:3,gen:2,precio:30000,  pf:4,rareza:3,
+   desc:'Lum Berry x4, Full Heal x4, Pecha Berry x3, Persim Berry x3',
+   estrategia:'Inmune a cualquier estado alterado.'},
+  {n:'Evo Stone Rare Pack',i:'✨',tier:3,gen:2,precio:42000,  pf:5,rareza:3,
+   desc:'Shiny Stone, Dusk Stone, Dawn Stone, Ice Stone',
+   estrategia:'Las piedras raras para evoluciones especiales de Gen 4+.'},
+  {n:'Power Item Pack',    i:'⚙️',tier:3,gen:4,precio:36000,  pf:5,rareza:3,
+   desc:'Power Bracer, Power Belt, Power Lens, PP Up x2',
+   estrategia:'Items de entrenamiento para subir EVs a toda velocidad.'},
+  {n:'Refresh Pack',       i:'🔄',tier:3,gen:1,precio:33000,  pf:4,rareza:3,
+   desc:'Max Elixir x2, Full Restore x2, Max Repel x2, PP Up x2',
+   estrategia:'Recupérate por completo antes del siguiente reto.'},
+
+  // ══ TIER 4 — Avanzando ═══════════════════════════════════════════
+  {n:'Battle Pack',        i:'⚔️',tier:4,gen:1,precio:32000,  pf:6,rareza:3,
    desc:'X Attack x3, X Speed x3, X Accuracy x2, Dire Hit x2',
    estrategia:'Domina el combate desde el primer turno.'},
-  {n:'Tank Pack',        i:'🛡️',tier:4,gen:2,precio:48000, pf:6,rareza:3,
+  {n:'Tank Pack',          i:'🛡️',tier:4,gen:2,precio:48000,  pf:6,rareza:3,
    desc:'Leftovers, X Defense x3, X Sp. Def x3, Max Potion x2',
    estrategia:'Aguanta cualquier golpe que te lancen.'},
+  {n:'Speed Pack',         i:'💨',tier:4,gen:1,precio:44000,  pf:6,rareza:3,
+   desc:'Salac Berry, X Speed x3, Quick Claw, Sitrus Berry x2',
+   estrategia:'Ataca siempre primero. La velocidad es poder.'},
+  {n:'Offense Pack',       i:'💢',tier:4,gen:1,precio:50000,  pf:6,rareza:3,
+   desc:'X Attack x4, Dire Hit x3, X Sp. Atk x3, Sitrus Berry x2',
+   estrategia:'Daño máximo desde el primer movimiento.'},
+  {n:'Defense Pack',       i:'🪨',tier:4,gen:1,precio:50000,  pf:6,rareza:3,
+   desc:'X Defense x4, X Sp. Def x4, Max Potion x3, Full Heal x2',
+   estrategia:'Blindaje total para cualquier tipo de ataque.'},
+  {n:'Luxury Ball Pack',   i:'✨',tier:4,gen:3,precio:46000,  pf:6,rareza:3,
+   desc:'Luxury Ball x4, Dusk Ball x3, Timer Ball x3, Quick Ball x3',
+   estrategia:'Las mejores Poké Balls del mercado.'},
+  {n:'Mint Starter Pack',  i:'🌿',tier:4,gen:8,precio:42000,  pf:6,rareza:3,
+   desc:'Adamant Mint, Modest Mint, Timid Mint, Jolly Mint',
+   estrategia:'Las cuatro naturalezas más competitivas en mentas.'},
+  {n:'Full Restore Pack',  i:'💉',tier:4,gen:1,precio:55000,  pf:7,rareza:3,
+   desc:'Full Restore x4, Max Elixir x2, Lum Berry x3',
+   estrategia:'Curación total para el tramo final de la aventura.'},
+  {n:'Held Item Pack',     i:'🎽',tier:4,gen:3,precio:58000,  pf:7,rareza:4,
+   desc:'Choice Band, Rocky Helmet, Air Balloon, White Herb',
+   estrategia:'Cuatro held items estratégicos en un solo pack.'},
+  {n:'Type Coverage Pack', i:'🗂️',tier:4,gen:1,precio:52000,  pf:6,rareza:3,
+   desc:'TM Ice Beam, TM Thunderbolt, TM Flamethrower, Elixir x2',
+   estrategia:'Cobertura de tipos para no ser predecible.'},
 
-  // ── Gimnasio 6–8: Avanzados ──────────────────────────────────────
-  {n:'Choice Pack',      i:'🎗️',tier:5,gen:3,precio:75000, pf:8,rareza:4,
+  // ══ TIER 5 — Élite ═══════════════════════════════════════════════
+  {n:'Choice Pack',        i:'🎗️',tier:5,gen:3,precio:75000,  pf:8,rareza:4,
    desc:'Choice Band, Salac Berry, Elixir x2, PP Max',
    estrategia:'Setup ofensivo de alta gama. Solo para élite.'},
-  {n:'Combat Berry Pack',i:'🍓',tier:5,gen:3,precio:58000, pf:8,rareza:4,
+  {n:'Combat Berry Pack',  i:'🍓',tier:5,gen:3,precio:58000,  pf:8,rareza:4,
    desc:'Petaya Berry, Liechi Berry, Salac Berry, Apicot Berry, Ganlon Berry',
    estrategia:'Arsenal completo de Berries de combate.'},
-  {n:'PP Pack',          i:'⏫',tier:5,gen:1,precio:90000, pf:8,rareza:4,
+  {n:'PP Pack',            i:'⏫',tier:5,gen:1,precio:90000,  pf:8,rareza:4,
    desc:'PP Max x5, Max Elixir x3',
    estrategia:'PP al máximo para el tramo final del juego.'},
-  {n:'Elite Pack',       i:'⚡',tier:6,gen:4,precio:115000,pf:10,rareza:4,
+  {n:'Defensive Held Pack',i:'🦺',tier:5,gen:5,precio:80000,  pf:8,rareza:4,
+   desc:'Assault Vest, Eviolite, Rocky Helmet, Leftovers',
+   estrategia:'Cuatro items defensivos de alta gama.'},
+  {n:'Orb Pack',           i:'🔴',tier:5,gen:4,precio:72000,  pf:8,rareza:4,
+   desc:'Flame Orb, Toxic Orb, Power Herb, White Herb',
+   estrategia:'Orbs para estrategias de gimmick avanzadas.'},
+  {n:'Mint Deluxe Pack',   i:'🍵',tier:5,gen:8,precio:68000,  pf:8,rareza:4,
+   desc:'Adamant Mint, Modest Mint, Timid Mint, Jolly Mint, Bold Mint, Calm Mint',
+   estrategia:'Las seis mentas más usadas en competitivo.'},
+  {n:'Coverage TM Pack',   i:'📀',tier:5,gen:4,precio:85000,  pf:8,rareza:4,
+   desc:'TM Earthquake, TM Stone Edge, TM Close Combat, TM Shadow Ball',
+   estrategia:'Las mejores TMs de cobertura ofensiva.'},
+  {n:'Speed Control Pack', i:'⚡',tier:5,gen:4,precio:78000,  pf:8,rareza:4,
+   desc:'Choice Scarf, Salac Berry, TM Thunder Wave, TM Taunt',
+   estrategia:'Controla quién actúa primero en cada combate.'},
+  {n:'Vitamin Deluxe Pack',i:'🧬',tier:5,gen:1,precio:200000, pf:9,rareza:4,
+   desc:'HP Up x2, Protein x2, Iron x2, Calcium x2, Carbos x2, Zinc x2',
+   estrategia:'Doble dosis de vitaminas. Máximos EVs de golpe.'},
+  {n:'Stall Pack',         i:'⏳',tier:5,gen:2,precio:70000,  pf:8,rareza:4,
+   desc:'Leftovers, Toxic Orb, Rocky Helmet, Full Restore x2, TM Protect',
+   estrategia:'Todo lo que necesitas para aguantar eternamente.'},
+
+  // ══ TIER 6 — Alto nivel ══════════════════════════════════════════
+  {n:'Elite Pack',         i:'💫',tier:6,gen:4,precio:115000, pf:10,rareza:4,
    desc:'Choice Specs, Wise Glasses, Max Elixir x2, Custap Berry x2',
    estrategia:'Equipamiento de élite completo en un solo pack.'},
-  {n:'Plates Pack',      i:'🪬',tier:6,gen:4,precio:96000, pf:10,rareza:4,
+  {n:'Plates Pack',        i:'🪬',tier:6,gen:4,precio:96000,  pf:10,rareza:4,
    desc:'Draco Plate, Flame Plate, Splash Plate, Zap Plate',
    estrategia:'Potencia el tipo que necesitas para cada batalla.'},
-  {n:'Champion Pack',    i:'🌟',tier:7,gen:4,precio:145000,pf:12,rareza:4,
+  {n:'Weakness Policy Pack',i:'📜',tier:6,gen:6,precio:108000,pf:10,rareza:4,
+   desc:'Weakness Policy, Sitrus Berry x2, Full Restore x2, PP Max x2',
+   estrategia:'Convierte los golpes del rival en tu ventaja.'},
+  {n:'Mega Prep Pack',     i:'🔷',tier:6,gen:6,precio:120000, pf:10,rareza:4,
+   desc:'Lucarionite, Gardevoirite, Sitrus Berry x2, PP Max x2, Full Restore x2',
+   estrategia:'Prepara la Mega Evolución para la recta final.'},
+  {n:'Bottle Cap Pack',    i:'🔘',tier:6,gen:7,precio:130000, pf:10,rareza:4,
+   desc:'Bottle Cap x3, PP Max x3, Max Elixir x2',
+   estrategia:'Maximiza IVs de tus Pokémon más valiosos.'},
+  {n:'Move Power Pack',    i:'💥',tier:6,gen:4,precio:110000, pf:10,rareza:4,
+   desc:'TM Earthquake, TM Outrage, TM Close Combat, PP Max x2',
+   estrategia:'Los movimientos más potentes del juego en un pack.'},
+  {n:'Starf Pack',         i:'⭐',tier:6,gen:3,precio:98000,  pf:10,rareza:4,
+   desc:'Starf Berry, Lansat Berry, Enigma Berry, PP Max x3',
+   estrategia:'Las bayas más raras y valiosas del mundo Pokémon.'},
+  {n:'All-Mint Pack',      i:'🌱',tier:6,gen:8,precio:105000, pf:10,rareza:4,
+   desc:'Adamant Mint, Modest Mint, Timid Mint, Jolly Mint, Bold Mint, Calm Mint, Impish Mint, Careful Mint',
+   estrategia:'Ocho mentas. Cambia las naturalezas de todo tu equipo.'},
+  {n:'Ability Advance Pack',i:'💊',tier:6,gen:6,precio:125000,pf:11,rareza:4,
+   desc:'Ability Capsule x3, Lum Berry x3, Full Restore x2, PP Max x2',
+   estrategia:'Cambia habilidades estratégicamente a tus Pokémon.'},
+  {n:'Choice Triple Pack', i:'🎯',tier:6,gen:4,precio:140000, pf:11,rareza:4,
+   desc:'Choice Band, Choice Specs, Choice Scarf',
+   estrategia:'Los tres Choice Items. Elige tu rol y márcalo.'},
+
+  // ══ TIER 7 — Pre-Liga ════════════════════════════════════════════
+  {n:'Champion Pack',      i:'🌟',tier:7,gen:4,precio:145000, pf:12,rareza:4,
    desc:'Choice Scarf, PP Max x4, Full Restore x3, Max Elixir x2',
    estrategia:'Preparación total de campeón. Lo mejor del juego.'},
+  {n:'Gold Bottle Cap Pack',i:'🏅',tier:7,gen:7,precio:200000,pf:13,rareza:5,
+   desc:'Gold Bottle Cap x2, PP Max x3, Full Restore x3',
+   estrategia:'IVs perfectos para tus mejores Pokémon.'},
+  {n:'Mega Stones Pack',   i:'🔷',tier:7,gen:6,precio:175000, pf:12,rareza:5,
+   desc:'Gengarite, Tyranitarite, Salamencite, Metagrossite',
+   estrategia:'Las Mega Stones más poderosas reunidas.'},
+  {n:'Final TM Pack',      i:'📀',tier:7,gen:4,precio:165000, pf:12,rareza:4,
+   desc:'TM Earthquake, TM Outrage, TM Nasty Plot, TM Shell Smash, TM Quiver Dance',
+   estrategia:'Las TMs de los movimientos más devastadores.'},
+  {n:'Endgame Berry Pack', i:'🍇',tier:7,gen:3,precio:155000, pf:12,rareza:5,
+   desc:'Starf Berry x2, Enigma Berry x2, Petaya Berry x2, Liechi Berry x2',
+   estrategia:'El mejor arsenal de bayas para el tramo final.'},
+  {n:'Pre-Liga Pack',      i:'🏟️',tier:7,gen:4,precio:180000, pf:13,rareza:4,
+   desc:'Full Restore x5, Max Elixir x4, PP Max x3, Lum Berry x4',
+   estrategia:'Abastecimiento completo antes de la Liga.'},
+  {n:'Assault Pack',       i:'🦺',tier:7,gen:5,precio:160000, pf:12,rareza:4,
+   desc:'Assault Vest, Weakness Policy, Choice Scarf, PP Max x3, Full Restore x2',
+   estrategia:'Setup ofensivo y defensivo combinado de alto nivel.'},
+  {n:'Ability Master Pack',i:'🏅',tier:7,gen:8,precio:195000, pf:13,rareza:5,
+   desc:'Ability Patch, Ability Capsule x2, Adamant Mint, Timid Mint, Gold Bottle Cap',
+   estrategia:'Perfecciona habilidades, naturalezas e IVs de golpe.'},
 
-  // ── Liga Pokémon: Endgame ────────────────────────────────────────
-  {n:'League Pack',      i:'👑',tier:8,gen:4,precio:250000,pf:18,rareza:5,
+  // ══ TIER 8 — Endgame y Liga Pokémon ══════════════════════════════
+  {n:'League Pack',        i:'👑',tier:8,gen:4,precio:250000, pf:18,rareza:5,
    desc:'Assault Vest, Max Elixir x4, Full Restore x4, PP Max x4',
    estrategia:'Solo para los mejores entrenadores de la Liga.'},
-  {n:'Master Ball Pack', i:'🟣',tier:8,gen:1,precio:500000,pf:20,rareza:5,
+  {n:'Master Ball Pack',   i:'🟣',tier:8,gen:1,precio:500000, pf:20,rareza:5,
    desc:'Master Ball, PP Max x6, Full Restore x5, Max Elixir x5',
    estrategia:'El pack definitivo. Solo existe uno. Irrepetible.'},
-  {n:'Ability Pack',     i:'🏅',tier:8,gen:5,precio:350000,pf:20,rareza:5,
+  {n:'Ability Pack',       i:'🏅',tier:8,gen:5,precio:350000, pf:20,rareza:5,
    desc:'Ability Patch, Ability Capsule x3, Adamant Mint, Timid Mint, Modest Mint',
    estrategia:'Dominio absoluto sobre habilidades y naturalezas.'},
+  {n:'Perfect IV Pack',    i:'💠',tier:8,gen:7,precio:400000, pf:20,rareza:5,
+   desc:'Gold Bottle Cap x4, PP Max x5, Full Restore x4',
+   estrategia:'IVs perfectos para todo tu equipo. El techo del juego.'},
+  {n:'Legendary Pack',     i:'🌌',tier:8,gen:1,precio:450000, pf:20,rareza:5,
+   desc:'Master Ball, Gold Bottle Cap x2, Ability Patch, PP Max x5, Full Restore x5',
+   estrategia:'Para capturar y perfeccionar un legendario. Sin igual.'},
+  {n:'Hall of Fame Pack',  i:'🏆',tier:8,gen:1,precio:600000, pf:20,rareza:5,
+   desc:'Choice Band, Choice Specs, Choice Scarf, Assault Vest, Gold Bottle Cap x2, PP Max x6',
+   estrategia:'El pack del Campeón. Solo los mejores llegan aquí.'},
+  {n:'Nuzlocke Champion Pack',i:'💀',tier:8,gen:1,precio:550000,pf:20,rareza:5,
+   desc:'Full Restore x6, Max Elixir x6, Lum Berry x6, PP Max x6, Master Ball',
+   estrategia:'Para completar el Nuzlocke más brutal. Todo o nada.'},
 ];
 
 var GYM_LABELS = [
@@ -2977,22 +3180,25 @@ function generarProductosParaTier(db, tier, maxGen, cantidad){
   pool = pool.filter(function(o){ return o.tier <= tier; });
   if(!pool.length) return [];
   // 3. Ponderar por rareza (items más raros tienen menos probabilidad en tiers bajos)
-  // En tiers bajos los de alta rareza tienen peso muy bajo
   var pesados = [];
   pool.forEach(function(o){
-    var maxRarezaPermitida = Math.min(5, tier + 2); // tier 0 permite rareza 1-2 max
-    if(o.rareza > maxRarezaPermitida + 1) return; // excluir demasiado raros
-    var peso = Math.max(1, (6 - o.rareza) * 2); // rareza 1 = peso 10, rareza 5 = peso 2
-    // En tiers altos (5+), subir peso de items raros
+    var maxRarezaPermitida = Math.min(5, tier + 2);
+    if(o.rareza > maxRarezaPermitida + 1) return;
+    var peso = Math.max(1, (6 - o.rareza) * 2);
     if(tier >= 5 && o.rareza >= 4) peso = o.rareza * 3;
     for(var w=0;w<peso;w++) pesados.push(o);
   });
+  // Si el pool ponderado quedó vacío (tier muy bajo, pocos items), usar todos sin filtro de rareza
+  if(!pesados.length){
+    pool.forEach(function(o){ pesados.push(o); });
+  }
   // 4. Shuffle y tomar únicos
   shuffle(pesados);
   var vistos = {}, resultado = [];
   for(var i=0;i<pesados.length && resultado.length<cantidad;i++){
     if(!vistos[pesados[i].n]){ vistos[pesados[i].n]=true; resultado.push(pesados[i]); }
   }
+  // Si aún faltan items (pool total < cantidad pedida), devolver lo que hay
   return resultado;
 }
 
@@ -3059,8 +3265,7 @@ window.generarTiendasAutomaticas = function(cual){
 
   // ── Generar Pack ──
   if(cual==='pack' || cual==='ambas'){
-    var packCant = Math.ceil(cantidad * 0.6); // packs son menos
-    var packs = generarProductosParaTier(DB_PACKS, tier, maxGen, packCant);
+    var packs = generarProductosParaTier(DB_PACKS, tier, maxGen, cantidad);
     packs.forEach(function(o, idx){
       var escalaP = [1,1.05,1.1,1.15,1.25,1.35,1.5,1.7,2.0][tier]||1;
       var packPrecio = Math.round(o.precio * escalaP);
