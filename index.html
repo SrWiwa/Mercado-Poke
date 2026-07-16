@@ -4343,6 +4343,9 @@ window.comprarObjetoGamer=async function(id){
       be=window.event&&window.event.target?window.event.target.closest('.item-card'):null;
   if(!p||p.stock<=0){mostrarNotificacion("Ese objeto ya no está disponible.","error","📦");return;}
 
+  const _qty=p.qty&&p.qty>1?p.qty:1;
+  const _nombreQty=_qty>1?'x'+_qty+' '+p.nombre:p.nombre;
+
   // ── GASTOS DIARIOS ──────────────────────────────────────────────
   // Pool global de 3 créditos/día: Legal gasta 1, Pack gasta 2
   // Ilegalidades: contador propio independiente (1/día)
@@ -4407,7 +4410,7 @@ window.comprarObjetoGamer=async function(id){
   }
   p.stock--;
   if(!u.inventario)u.inventario=[];
-  const _qty=p.qty&&p.qty>1?p.qty:1;const _nombreQty=_qty>1?'x'+_qty+' '+p.nombre:p.nombre;u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:_nombreQty,icon:p.icon,qty:_qty,desc:p.desc||'',beneficio:p.beneficio||'',castigo:p.castigo||'',tienda:tienda,fecha:new Date().toLocaleDateString()});
+  u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:_nombreQty,icon:p.icon,qty:_qty,desc:p.desc||'',beneficio:p.beneficio||'',castigo:p.castigo||'',tienda:tienda,fecha:new Date().toLocaleDateString()});
   _checkCompraTemaTienda(p.nombre);
   guardarBD();
   if(be){
