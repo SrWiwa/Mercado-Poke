@@ -1072,24 +1072,21 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div class="dios-grid-2">
           <div class="admin-panel"><div class="admin-section-title">🔄 Reiniciar Compras</div><select id="adm-reset-usuario" class="admin-select"></select><button class="btn-admin packs" onclick="restablecerComprasDiariasDesdeMercader()">🔄 Forzar Reinicio 3/3</button></div>
           <div class="admin-panel"><div class="admin-section-title">⚡ Reiniciar Gacha</div><select id="adm-reset-gacha-usuario" class="admin-select"></select><button class="btn-admin arena" onclick="restablecerGachaDiarioDesdeMercader()">⚡ Reiniciar Gacha</button></div>
-          <div class="admin-panel" style="grid-column:1/-1">
-            <div class="admin-section-title">🛒 Ajustar Compras de Jugador</div>
+          <div class="admin-panel">
+            <div class="admin-section-title">🛒 Ajustar Compras Legales</div>
             <select id="adm-ajustar-compras-usuario" class="admin-select"></select>
-            <div class="adm-label" style="color:var(--neon-legal);margin-top:2px">✅ Compras Legales (créditos usados de 3)</div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px">
-              <button class="btn-admin legal" style="margin-bottom:0" onclick="ajustarComprasJugador('global',1)">➕1</button>
-              <button class="btn-admin legal" style="margin-bottom:0" onclick="ajustarComprasJugador('global',2)">➕2</button>
-              <button class="btn-admin legal" style="margin-bottom:0" onclick="ajustarComprasJugador('global',3)">➕3</button>
+            <input type="number" id="adm-compras-cantidad" class="admin-input" placeholder="Cantidad (1-3)" min="1" max="3">
+            <div style="display:flex;gap:8px">
+              <button class="btn-admin legal" style="margin-bottom:0" onclick="ajustarComprasLegales('SUMAR')">➕ Añadir</button>
+              <button class="btn-admin danger" style="margin-bottom:0" onclick="ajustarComprasLegales('RESTAR')">➖ Quitar</button>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
-              <button class="btn-admin danger" style="margin-bottom:0" onclick="ajustarComprasJugador('global',-1)">➖1</button>
-              <button class="btn-admin danger" style="margin-bottom:0" onclick="ajustarComprasJugador('global',-2)">➖2</button>
-              <button class="btn-admin danger" style="margin-bottom:0" onclick="ajustarComprasJugador('global',-3)">➖3</button>
-            </div>
-            <div class="adm-label" style="color:var(--neon-ilegal)">🟣 Ilegalidad del día (límite 1/1)</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-              <button class="btn-admin arena" style="margin-bottom:0" onclick="ajustarComprasJugador('illegal',1)">➕1</button>
-              <button class="btn-admin danger" style="margin-bottom:0" onclick="ajustarComprasJugador('illegal',-1)">➖1</button>
+          </div>
+          <div class="admin-panel">
+            <div class="admin-section-title">🟣 Ajustar Ilegalidad del Día</div>
+            <select id="adm-ajustar-ilegal-usuario" class="admin-select"></select>
+            <div style="display:flex;gap:8px">
+              <button class="btn-admin arena" style="margin-bottom:0" onclick="ajustarComprasIlegal('SUMAR')">➕ Marcar usada</button>
+              <button class="btn-admin danger" style="margin-bottom:0" onclick="ajustarComprasIlegal('RESTAR')">➖ Liberar</button>
             </div>
           </div>
         </div>
@@ -4810,6 +4807,9 @@ window.renderizarTracker = function(){
 
   lista.innerHTML = tracker.map(function(e, idx){
     var fila = '<div class="tracker-row estado-'+e.estado+'" data-idx="'+idx+'">';
+    if(e.estado !== 'pendiente'){
+      fila += '<button class="tracker-btn-reset" onclick="trackerCambiarEstado('+idx+',\'pendiente\')" title="Resetear ruta">🔄</button>';
+    }
     fila += '<span class="tracker-orden">'+(e.orden!==undefined?e.orden+1:idx+1)+'.</span>';
     fila += '<div class="tracker-info">';
     fila += '<span class="tracker-ruta-nombre">'+escaparHTML(e.ruta)+'</span>';
@@ -4821,14 +4821,13 @@ window.renderizarTracker = function(){
       fila += '<div class="tracker-sugerencias" id="tracker-sug-'+idx+'" style="position:relative"></div>';
     }
     fila += '</div>';
-    fila += '<div class="tracker-actions">';
     if(e.estado === 'pendiente'){
+      fila += '<div class="tracker-actions">';
       fila += '<button class="tracker-btn-captura" onclick="trackerCambiarEstado('+idx+',\'atrapado\')">🟢 Captura</button>';
       fila += '<button class="tracker-btn-perdido" onclick="trackerCambiarEstado('+idx+',\'perdido\')">🔴 F</button>';
-    } else {
-      fila += '<button class="tracker-btn-reset" onclick="trackerCambiarEstado('+idx+',\'pendiente\')" title="Resetear ruta">🔄</button>';
+      fila += '</div>';
     }
-    fila += '</div></div>';
+    fila += '</div>';
     return fila;
   }).join('');
   // Si el mapa está visible, refrescarlo también
@@ -5742,31 +5741,35 @@ function renderizarAdminCamara(){let box=document.getElementById('adm-camara-tru
 
 /* ═══ ADMIN ═══ */
 window.restablecerComprasDiariasDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-usuario').value;if(!t){mostrarNotificacion("Selecciona un entrenador.","error","🔄");return;}baseDatos.jugadores[t].comprasDisponibles=MAX_COMPRAS;baseDatos.jugadores[t].comprasHoy={};baseDatos.jugadores[t].ultimaRecarga=Date.now();logAdmin('Resetear compras diarias',`${t.toUpperCase()}`);reproducirSonido('exito');mostrarNotificacion("Compras reiniciadas.","exito","🔄");};
-window.ajustarComprasJugador=function(tipo,delta){
+window.ajustarComprasLegales=function(op){
   if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}
-  let t=document.getElementById('adm-ajustar-compras-usuario').value;
-  if(!t||!baseDatos.jugadores[t]){mostrarNotificacion("Entrenador no encontrado.","error","🛒");return;}
-  let u=baseDatos.jugadores[t],hoy=new Date().toDateString();
+  let uid=document.getElementById('adm-ajustar-compras-usuario').value,cant=parseInt(document.getElementById('adm-compras-cantidad').value)||0;
+  if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","🛒");return;}
+  let u=baseDatos.jugadores[uid],hoy=new Date().toDateString();
   if(!u.comprasHoy||u.comprasHoy._fecha!==hoy)u.comprasHoy={_fecha:hoy};
-  let etiqueta,valorFinal;
-  if(tipo==='illegal'){
-    let actual=u.comprasHoy._illegal||0,nuevo=Math.max(0,Math.min(1,actual+delta));
-    u.comprasHoy._illegal=nuevo;
-    valorFinal=`${nuevo}/1 ilegal`;
-    etiqueta=(delta>0?'Añadir':'Quitar')+` ${Math.abs(delta)} compra(s) ilegal(es)`;
-  }else{
-    let actual=u.comprasHoy._global||0,nuevo=Math.max(0,Math.min(MAX_COMPRAS,actual+delta));
-    u.comprasHoy._global=nuevo;
-    u.comprasDisponibles=Math.max(0,MAX_COMPRAS-nuevo);
-    valorFinal=`${nuevo}/${MAX_COMPRAS} legales`;
-    etiqueta=(delta>0?'Añadir':'Quitar')+` ${Math.abs(delta)} compra(s) legal(es)`;
-  }
-  logAdmin('Ajustar compras',`${t.toUpperCase()}: ${etiqueta} → ahora ${valorFinal}`);
+  let delta=(op==='SUMAR'?cant:-cant),nuevo=Math.max(0,Math.min(MAX_COMPRAS,(u.comprasHoy._global||0)+delta));
+  u.comprasHoy._global=nuevo;
+  u.comprasDisponibles=Math.max(0,MAX_COMPRAS-nuevo);
+  logAdmin('Ajustar compras legales',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} → ahora ${nuevo}/${MAX_COMPRAS}`);
+  document.getElementById('adm-compras-cantidad').value='';
   reproducirSonido('exito');
-  mostrarNotificacion(`${t.toUpperCase()}: ahora ${valorFinal}.`,"exito","🛒");
+  mostrarNotificacion(`${uid.toUpperCase()}: ahora ${nuevo}/${MAX_COMPRAS} compras legales.`,"exito","🛒");
   guardarBD();
-  actualizarSelectorUsuariosBanco();
-  if(userSesion===t){actualizarComprasPorTiempo();refrescarPantallaGamer();renderInitializeLoaders();}
+  if(userSesion===uid){actualizarComprasPorTiempo();refrescarPantallaGamer();renderInitializeLoaders();}
+};
+window.ajustarComprasIlegal=function(op){
+  if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}
+  let uid=document.getElementById('adm-ajustar-ilegal-usuario').value;
+  if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🟣");return;}
+  let u=baseDatos.jugadores[uid],hoy=new Date().toDateString();
+  if(!u.comprasHoy||u.comprasHoy._fecha!==hoy)u.comprasHoy={_fecha:hoy};
+  let nuevo=Math.max(0,Math.min(1,(u.comprasHoy._illegal||0)+(op==='SUMAR'?1:-1)));
+  u.comprasHoy._illegal=nuevo;
+  logAdmin('Ajustar ilegalidad',`${uid.toUpperCase()}: ahora ${nuevo}/1 ilegal`);
+  reproducirSonido('exito');
+  mostrarNotificacion(`${uid.toUpperCase()}: ahora ${nuevo}/1 ilegalidad usada.`,"exito","🟣");
+  guardarBD();
+  if(userSesion===uid){actualizarComprasPorTiempo();refrescarPantallaGamer();renderInitializeLoaders();}
 };
 window.restablecerGachaDiarioDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-gacha-usuario').value;if(!t||!baseDatos.jugadores[t]){mostrarNotificacion("Entrenador no encontrado.","error","⚡");return;}baseDatos.jugadores[t].ultimoHackeo=0;logAdmin('Resetear gacha diario',`${t.toUpperCase()}`);reproducirSonido('exito');mostrarNotificacion(`Gacha de ${t.toUpperCase()} reiniciado.`,"exito","⚡");};
 window.emitirOrdenEconomicaGlobal=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}baseDatos.eventoSistema=document.getElementById('adm-evento-economico').value;logAdmin('Orden económica global',`${baseDatos.eventoSistema}`);reproducirSonido('exito');mostrarNotificacion("Orden de Red distribuida.","exito","📢");};
@@ -5784,7 +5787,7 @@ window.actualizarPropertyProducto=function(id,prop,val){if(!userSesion||userSesi
 window.actualizarPropertyProductoTexto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=val;guardarBD();}};
 window.eliminarTodosLosProductosDeTienda=async function(tienda){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let cf=await mostrarConfirmacion({icono:'🗑️',titulo:`¿Vaciar ${tienda==='legal'?'Tienda Legal':tienda==='pack'?'Shop PF Pack':'Ilegalidades'}?`,descripcion:'Se eliminarán todos los productos publicados en esta tienda. Esta acción no se puede deshacer.',textoConfirmar:'Vaciar tienda',tipo:'sacrificio'});if(!cf)return;baseDatos.productos=baseDatos.productos.filter(p=>p.tienda!==tienda);logAdmin('Vaciar tienda',`${tienda}`);redibujarConsolaAdminMaster();mostrarNotificacion('Tienda vaciada.','exito','🗑️');};
 window.eliminarProductoMaster=async function(id){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Eliminar producto',descripcion:'Esta acción no se puede deshacer.',textoConfirmar:'Eliminar',tipo:'peligro'});if(cf){let pd=baseDatos.productos&&baseDatos.productos.find(p=>p.id===id);logAdmin('🛒','Eliminar producto',pd?(pd.icon+' '+pd.nombre):'ID '+id);baseDatos.productos=baseDatos.productos.filter(p=>p.id!==id);guardarBD();mostrarNotificacion("Producto eliminado.","info","🗑️",null,true);}};
-function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sac=document.getElementById('adm-ajustar-compras-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b'),sp=document.getElementById('adm-pf-usuario'),st=document.getElementById('adm-titulo-usuario'),spa=document.getElementById('pvp-jugador-a'),spb=document.getElementById('pvp-jugador-b');if(!sb||!sr)return;let _sacVal=sac?sac.value:'';[sb,sr,sg,sac,sa,sb2,sv,scA,scB,sp,st,spa,spb].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sac){let cH=u.comprasHoy&&u.comprasHoy._fecha===new Date().toDateString()?u.comprasHoy:{};sac.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${cH._global||0}/${MAX_COMPRAS} legal · ${cH._illegal||0}/1 ilegal)</option>`;}if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(sp)sp.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(st)st.innerHTML+=`<option value="${id}">${id.toUpperCase()}${u.tituloManual?' (🏷️ '+u.tituloManual+')':''}</option>`;if(spa)spa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(spb)spb.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;});if(sac&&_sacVal)sac.value=_sacVal;if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();if(st&&st.value)window.cargarTituloManualEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});
+function actualizarSelectorUsuariosBanco(){let sb=document.getElementById('adm-banco-usuario'),sr=document.getElementById('adm-reset-usuario'),sg=document.getElementById('adm-reset-gacha-usuario'),sac=document.getElementById('adm-ajustar-compras-usuario'),sil=document.getElementById('adm-ajustar-ilegal-usuario'),sa=document.getElementById('adm-arena-jugador-a'),sb2=document.getElementById('adm-arena-jugador-b'),sv=document.getElementById('adm-vidas-usuario'),scA=document.getElementById('adm-camara-jugador-a'),scB=document.getElementById('adm-camara-jugador-b'),sp=document.getElementById('adm-pf-usuario'),st=document.getElementById('adm-titulo-usuario'),spa=document.getElementById('pvp-jugador-a'),spb=document.getElementById('pvp-jugador-b');if(!sb||!sr)return;let _sacVal=sac?sac.value:'',_silVal=sil?sil.value:'';[sb,sr,sg,sac,sil,sa,sb2,sv,scA,scB,sp,st,spa,spb].forEach(el=>{if(el)el.innerHTML='';});Object.keys(baseDatos.jugadores).forEach(id=>{let u=baseDatos.jugadores[id],vi=`❤️ ${u.vidasActuales??u.vidasTotales??20}/${u.vidasTotales??20}`;if(sb)sb.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.dinero} P₠)</option>`;if(sr)sr.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sg)sg.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sac){let cH=u.comprasHoy&&u.comprasHoy._fecha===new Date().toDateString()?u.comprasHoy:{};sac.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${cH._global||0}/${MAX_COMPRAS} legal)</option>`;}if(sil){let cH=u.comprasHoy&&u.comprasHoy._fecha===new Date().toDateString()?u.comprasHoy:{};sil.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${cH._illegal||0}/1 ilegal)</option>`;}if(sa)sa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sb2)sb2.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(sv)sv.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${vi})</option>`;if(scA)scA.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(scB)scB.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(sp)sp.innerHTML+=`<option value="${id}">${id.toUpperCase()} (${u.pf||0} PF)</option>`;if(st)st.innerHTML+=`<option value="${id}">${id.toUpperCase()}${u.tituloManual?' (🏷️ '+u.tituloManual+')':''}</option>`;if(spa)spa.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;if(spb)spb.innerHTML+=`<option value="${id}">${id.toUpperCase()}</option>`;});if(sac&&_sacVal)sac.value=_sacVal;if(sil&&_silVal)sil.value=_silVal;if(sv)sv.onchange=window.cargarVidasEnAdmin;if(sv&&sv.value)window.cargarVidasEnAdmin();if(st&&st.value)window.cargarTituloManualEnAdmin();var c=(baseDatos&&baseDatos.campeones)||{};['adm-campeon-torneos','adm-campeon-finalísima'].forEach(function(sid,i){var el=document.getElementById(sid);if(!el)return;var val=[c.torneos,c.finalísima][i]||'';el.innerHTML='<option value="">— Sin campeón —</option>'+Object.keys(baseDatos.jugadores).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id.toUpperCase()+'</option>';}).join('');});
   // Poblar lista dinámica de campeones por vidas
   var vidasLista=document.getElementById('adm-campeon-vidas-lista');
   if(vidasLista){
