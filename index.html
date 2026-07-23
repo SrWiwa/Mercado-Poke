@@ -192,15 +192,20 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .drawer-backdrop{transition:opacity .25s ease;opacity:0}.drawer-backdrop.active{opacity:1}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 @media(max-width:900px){.sidebar{transform:translateX(-240px);width:240px;box-shadow:none}.sidebar.open{transform:translateX(0);box-shadow:var(--shadow-xl)}.sidebar-close-btn{display:flex}.topbar{padding-left:16px;padding-right:16px}.btn-hamburguesa{display:none}.main-content{margin-left:0;padding:16px;padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}.dios-grid-2{grid-template-columns:1fr}.red-visor-grid{grid-template-columns:1fr}.inicio-stats-row{grid-template-columns:1fr 1fr}.tiendas-acceso-grid{grid-template-columns:1fr 1fr}.medallas-grid-outer{grid-template-columns:1fr}#section-admin{max-width:100%}.bottom-nav{display:flex}
-/* — TIENDA en móvil: de rejilla de tarjetas a lista tipo "recibo" — */
-.items-grid{display:flex;flex-direction:column;gap:10px}
-.item-card{flex-direction:row;align-items:stretch;text-align:left;padding:14px;gap:12px}
+/* — TIENDA en móvil: de rejilla de tarjetas a lista tipo "recibo" (compacta) — */
+.items-grid{display:flex;flex-direction:column;gap:8px}
+.item-card{flex-direction:row;align-items:stretch;text-align:left;padding:10px;gap:8px;border-radius:var(--r-md)}
 .item-card>div:first-child{flex:1;min-width:0;text-align:left}
-.item-card>div:last-child{flex-shrink:0;width:118px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
-.item-emoji{font-size:24px;margin-bottom:4px}
-.item-categoria-tag{text-align:left}
-.item-precio-row{flex-direction:column;align-items:flex-end;gap:4px;margin-bottom:5px}
-.stock-badge-v2{font-size:9px}
+.item-card>div:last-child{flex-shrink:0;width:92px;display:flex;flex-direction:column;justify-content:flex-end;gap:4px}
+.item-emoji{font-size:19px;margin-bottom:2px}
+.item-nombre{font-size:10px;margin-bottom:3px}
+.item-categoria-tag{text-align:left;font-size:8px;margin-bottom:4px}
+.item-descripcion{font-size:9.5px;padding:5px 7px;margin-bottom:4px}
+.item-estrategia{font-size:9px;margin-bottom:4px}
+.item-precio-row{flex-direction:column;align-items:flex-end;gap:2px;margin-bottom:3px}
+.item-precio{font-size:11px}
+.stock-badge-v2{font-size:8px}
+.btn-comprar{padding:6px;font-size:8.5px}
 /* — RED DE ENTRENADORES en móvil: de lista vertical a carrusel de avatares circulares — */
 .red-roster-grid{display:flex;overflow-x:auto;gap:14px;padding:4px 2px 12px;grid-template-columns:unset;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
 .red-roster-card{flex-direction:column;flex:0 0 86px;text-align:center;border-left-width:0!important;border-radius:var(--r-lg);padding:12px 6px;gap:7px;scroll-snap-align:start}
@@ -211,7 +216,11 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .red-roster-meta{text-align:center;font-size:8px;white-space:normal;line-height:1.35}
 /* — INICIO en móvil: tarjetas de pulso en carrusel deslizable — */
 .inicio-stats-row{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
-.inicio-stat-card{flex:0 0 78%;scroll-snap-align:start}
+.inicio-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.inicio-stat-card{padding:10px;gap:8px}
+.inicio-stat-icon{width:32px;height:32px;font-size:15px;border-radius:8px}
+.inicio-stat-label{font-size:8.5px;white-space:normal;line-height:1.25}
+.inicio-stat-value{font-size:12px!important;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis}
 }
 @media(max-width:700px){.dios-grid-2{grid-template-columns:1fr}#gen-gimnasio,#gen-generacion,#gen-cantidad{font-size:10px}}
 @media(max-width:600px){.inicio-stats-row{grid-template-columns:1fr}.tiendas-acceso-grid{grid-template-columns:1fr}.items-grid{grid-template-columns:1fr 1fr}.arena-vs-row{gap:5px}.arena-apostar-row{flex-direction:column}.arena-input-apuesta{width:100%}.topbar-stat-divider{display:none}.topbar-resources{gap:8px}.topbar-stat .value{font-size:13px}.sac-tabla{grid-template-columns:1fr 1fr}.modal-box{padding:18px}.toast-container{right:8px;left:8px;max-width:none;width:auto}:root{--topbar-h:100px}.topbar{flex-wrap:wrap;align-content:center;row-gap:8px;padding:10px 12px}.topbar-left{order:1}.topbar-radio-mini{order:2}#btn-sonido-toggle{order:3}.topbar-gacha-btn{order:4;margin-left:auto;padding:7px 10px;font-size:9px}.topbar-resources{order:5;flex-basis:100%;justify-content:space-between}}
@@ -679,7 +688,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
         <div class="inicio-stat-card">
           <div class="inicio-stat-icon" style="background:rgba(201,154,46,.1)">⏳</div>
-          <div style="min-width:0"><div class="inicio-stat-label">Próxima Recarga de Compras</div><div class="inicio-stat-value" id="pulso-recarga-texto" style="font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">--</div></div>
+          <div style="min-width:0"><div class="inicio-stat-label">Recarga de Compras</div><div class="inicio-stat-value" id="pulso-recarga-texto" style="font-size:15px;white-space:nowrap">--</div></div>
         </div>
       </div>
       <div class="inicio-ticker" id="inicio-ticker-vivo"><span>📡</span><span id="inicio-ticker-texto">Cargando pulso de la red…</span></div>
