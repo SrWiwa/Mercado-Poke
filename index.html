@@ -206,14 +206,44 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .item-precio{font-size:11px}
 .stock-badge-v2{font-size:8px}
 .btn-comprar{padding:6px;font-size:8.5px}
-/* — RED DE ENTRENADORES en móvil: de lista vertical a carrusel de avatares circulares — */
-.red-roster-grid{display:flex;overflow-x:auto;gap:14px;padding:4px 2px 12px;grid-template-columns:unset;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
-.red-roster-card{flex-direction:column;flex:0 0 86px;text-align:center;border-left-width:0!important;border-radius:var(--r-lg);padding:12px 6px;gap:7px;scroll-snap-align:start}
-.red-roster-avatar{width:56px;height:56px;font-size:16px;margin:0 auto}
-.red-roster-info{width:100%}
-.red-roster-nombre{text-align:center;font-size:10px}
-.red-roster-titulo{display:none}
-.red-roster-meta{text-align:center;font-size:8px;white-space:normal;line-height:1.35}
+/* — RED DE ENTRENADORES en móvil: lista compacta de filas (sin carrusel) — */
+.red-roster-grid{display:flex;flex-direction:column;gap:8px}
+.red-roster-card{flex-direction:row;text-align:left;padding:10px;gap:10px;flex:unset}
+.red-roster-avatar{width:42px;height:42px;font-size:13px;margin:0}
+.red-roster-info{width:auto;text-align:left}
+.red-roster-nombre{text-align:left;font-size:11px}
+.red-roster-titulo{display:block;font-size:8px}
+.red-roster-meta{text-align:left;font-size:8.5px;white-space:normal}
+/* — EVENTOS en móvil: combates y truques más compactos — */
+.arena-combate-card{padding:12px;margin-bottom:10px}
+.arena-vs-row{gap:5px;margin:8px 0}
+.arena-lado{padding:8px 5px}
+.arena-jugador{font-size:11px}
+.arena-bote-num{font-size:15px}
+.arena-bote-pct{font-size:9px}
+.arena-vs-badge{font-size:13px}
+/* — DUELOS PVP en móvil: fila de ranking más compacta — */
+.pvp-ranking-row{padding:8px 10px;gap:8px}
+/* — HALL OF FAME en móvil: tarjetas de campeón e icono más pequeños (llevan estilo inline) — */
+#hof-campeones-grid{grid-template-columns:repeat(3,minmax(74px,1fr))!important;gap:6px!important}
+.medallas-card{padding:10px 5px!important}
+.medallas-card div[style*="font-size:36px"]{font-size:22px!important;margin-bottom:4px!important}
+#hof-locke-icon{font-size:34px!important}
+#hof-locke-nombre{font-size:16px!important}
+#hof-locke-banner>div{padding:14px 16px!important;gap:12px!important}
+/* — TABLA DE TIPOS en móvil: chips y panel más compactos — */
+.calculadora-layout{gap:12px}
+.tpk-chip{font-size:9px;padding:3px 8px 3px 6px}
+/* — PERFIL en móvil: pestañas más compactas — */
+.perfil-tabs{gap:5px;margin-bottom:16px;padding-bottom:10px}
+.perfil-tab{padding:6px 11px;font-size:9px}
+/* — TRACKER en móvil: filas más compactas — */
+.tracker-row{padding:8px 10px;gap:8px}
+/* — MODO DIOS en móvil: pestañas y paneles más compactos — */
+.dios-tabs{gap:5px;margin-bottom:14px}
+.dios-tab{padding:7px 11px;font-size:8.5px}
+.admin-panel{padding:12px}
+.admin-select{font-size:12px}
 /* — INICIO en móvil: tarjetas de pulso en carrusel deslizable — */
 .inicio-stats-row{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
 .inicio-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
