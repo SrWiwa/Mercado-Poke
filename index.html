@@ -191,7 +191,19 @@ body{font-family:var(--font-body);background-color:var(--bg-base);background-ima
 button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),box-shadow .2s ease,background .2s ease,border-color .2s ease,color .2s ease,border-color .18s ease,box-shadow .18s ease}button:not(:disabled):active{transform:scale(.96)}
 .drawer-backdrop{transition:opacity .25s ease;opacity:0}.drawer-backdrop.active{opacity:1}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
-@media(max-width:900px){.sidebar{transform:translateX(-240px);width:240px;box-shadow:none}.sidebar.open{transform:translateX(0);box-shadow:var(--shadow-xl)}.sidebar-close-btn{display:flex}.topbar{padding-left:16px;padding-right:16px}.btn-hamburguesa{display:none}.main-content{margin-left:0;padding:16px;padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}.dios-grid-2{grid-template-columns:1fr}.red-visor-grid{grid-template-columns:1fr}.inicio-stats-row{grid-template-columns:1fr 1fr}.tiendas-acceso-grid{grid-template-columns:1fr 1fr}.medallas-grid-outer{grid-template-columns:1fr}#section-admin{max-width:100%}.bottom-nav{display:flex}
+@media(max-width:900px){
+:root{color-scheme:light;--bg-base:#f0eee9;--bg-surface:#ffffff;--bg-elevated:#ffffff;--bg-overlay:#eeebe5;--bg-card:#ffffff;--blanco:#201c18;--gris-300:#4b463f;--gris-400:#6b665f;--gris-600:#8f8a82;--gris-700:#c9c3ba;--gris-800:#e4dfd8;--borde:rgba(32,28,24,.1);--borde-hover:rgba(32,28,24,.22);--txt-primary:#201c18;--txt-secondary:#665f57;--txt-muted:#948c82;--shadow-sm:0 1px 3px rgba(32,20,10,.08);--shadow-md:0 4px 14px rgba(32,20,10,.1);--shadow-lg:0 8px 24px rgba(32,20,10,.14);--shadow-xl:0 16px 40px rgba(32,20,10,.18)}
+body{background-image:none!important;background-color:var(--bg-base)!important}
+.login-screen{background-image:none!important;background-color:var(--bg-base)!important}
+.sidebar{display:none!important}
+.card,.admin-panel,.item-card,.red-roster-card,.arena-combate-card,.pvp-ranking-row,.tracker-row,.inicio-stat-card{box-shadow:var(--shadow-sm)}
+.card:hover,.admin-panel:hover{box-shadow:var(--shadow-md)}
+.topbar{background:var(--bg-surface)}
+.bottom-nav{background:#ffffff}
+.more-sheet{background:#ffffff}
+.stock-badge-v2,.item-descripcion{filter:none}
+.item-descripcion{background:rgba(32,28,24,.05)}
+.sidebar{transform:translateX(-240px);width:240px;box-shadow:none}.sidebar.open{transform:translateX(0);box-shadow:var(--shadow-xl)}.sidebar-close-btn{display:flex}.topbar{padding-left:16px;padding-right:16px}.btn-hamburguesa{display:none}.main-content{margin-left:0;padding:16px;padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}.dios-grid-2{grid-template-columns:1fr}.red-visor-grid{grid-template-columns:1fr}.inicio-stats-row{grid-template-columns:1fr 1fr}.tiendas-acceso-grid{grid-template-columns:1fr 1fr}.medallas-grid-outer{grid-template-columns:1fr}#section-admin{max-width:100%}.bottom-nav{display:flex}
 /* — TIENDA en móvil: de rejilla de tarjetas a lista tipo "recibo" (compacta) — */
 .items-grid{display:flex;flex-direction:column;gap:8px}
 .item-card{flex-direction:row;align-items:stretch;text-align:left;padding:10px;gap:8px;border-radius:var(--r-md)}
@@ -239,13 +251,13 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .perfil-tab{padding:6px 11px;font-size:9px}
 /* — TRACKER en móvil: filas más compactas — */
 .tracker-row{padding:8px 10px;gap:8px}
-/* — MODO DIOS en móvil: pestañas y paneles más compactos — */
-.dios-tabs{gap:5px;margin-bottom:14px}
-.dios-tab{padding:7px 11px;font-size:8.5px}
-.admin-panel{padding:12px}
+/* — MODO DIOS en móvil: rejilla ordenada de pestañas en vez de fila que se rompe irregular — */
+.dios-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px}
+.dios-tab{padding:9px 4px;font-size:8.5px;text-align:center}
+.dios-grid-2{gap:12px}
+.admin-panel{padding:14px;margin-bottom:2px}
 .admin-select{font-size:12px}
-/* — INICIO en móvil: tarjetas de pulso en carrusel deslizable — */
-.inicio-stats-row{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+/* — INICIO en móvil: rejilla fija de 2 columnas, sin desbordar la pantalla — */
 .inicio-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .inicio-stat-card{padding:10px;gap:8px}
 .inicio-stat-icon{width:32px;height:32px;font-size:15px;border-radius:8px}
