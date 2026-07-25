@@ -260,8 +260,7 @@ body{background-image:none!important;background-color:var(--bg-base)!important}
 .topbar-stat{background:var(--bg-overlay);padding:4px 9px;border-radius:99px;gap:4px;font-size:9px}
 .topbar-stat .value{font-size:11px}
 .topbar-stat-divider{display:none}
-.topbar-gacha-btn{padding:6px 10px;font-size:0;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center}
-.topbar-gacha-btn::before{content:'⚡';font-size:14px}
+.topbar-gacha-btn{padding:7px 12px;font-size:10px;border-radius:99px;white-space:nowrap}
 /* — MOCHILA en móvil: barra compacta de iconos, sin tarjeta pesada — */
 .mochila-bar{background:transparent;border:none;border-bottom:1px solid var(--borde);border-radius:0;padding:8px 2px;margin-bottom:14px;overflow-x:auto;flex-wrap:nowrap}
 .mochila-label{font-size:8px}
@@ -452,7 +451,6 @@ body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#b86
   .gen-field-full{grid-column:1/-1}
   .gen-btns-grid{grid-template-columns:1fr}
   .gen-btn{padding:12px}
-  #hof-campeones-grid{grid-template-columns:1fr!important;overflow-x:unset!important}
   /* Museo lockes — tarjetas más compactas en móvil */
   .museo-card-header{padding:10px 12px!important}
   .museo-card-header-icon{width:38px!important;height:38px!important;font-size:17px!important}
@@ -982,21 +980,10 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:12px">Cada cambio queda registrado automáticamente en tu Bitácora.</div>
         <div id="tracker-progreso-resumen" style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:6px">—</div>
         <div class="tracker-progreso-bar"><div id="tracker-progreso-fill" class="tracker-progreso-fill" style="width:0%"></div></div>
-        <!-- Botones vista lista / mapa -->
-        <div style="display:flex;gap:8px;margin:10px 0 8px">
-          <button id="tracker-btn-lista" class="tracker-vista-btn activo" onclick="trackerCambiarVista('lista')">☰ Lista</button>
-          <button id="tracker-btn-mapa" class="tracker-vista-btn" onclick="trackerCambiarVista('mapa')">🗺️ Mapa</button>
-        </div>
         <!-- Vista lista -->
         <div id="tracker-vista-lista">
           <div id="tracker-lista" style="display:flex;flex-direction:column;margin-top:4px"></div>
           <div id="tracker-vacio" style="display:none;text-align:center;padding:20px 10px;color:var(--txt-muted);font-size:11px;font-style:italic">El administrador aún no ha definido rutas para este Locke.</div>
-        </div>
-        <!-- Vista mapa -->
-        <div id="tracker-vista-mapa" style="display:none;background:linear-gradient(135deg,var(--bg-elevated),rgba(30,158,115,.05));border:1px solid rgba(30,158,115,.25);border-radius:var(--r-xl);padding:16px">
-          <div id="tracker-mapa-leyenda" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px"></div>
-          <div id="tracker-mapa-svg" style="width:100%;overflow-x:auto"></div>
-          <div id="tracker-mapa-vacio" style="display:none;text-align:center;padding:20px 10px;color:var(--txt-muted);font-size:11px;font-style:italic">No hay rutas definidas para mostrar el mapa.</div>
         </div>
       </div>
     </section>
@@ -1027,10 +1014,11 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--neon-packs);margin-bottom:8px">Campeón Torneos</div>
             <div id="hof-torneos" style="font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--blanco);display:flex;flex-direction:column;gap:4px;align-items:center">—</div>
           </div>
-          <div class="medallas-card" style="text-align:center;padding:26px 14px;border-color:rgba(245,197,24,.4);background:linear-gradient(135deg,rgba(245,197,24,.08),transparent);box-shadow:0 8px 28px -6px rgba(245,197,24,.25);transform:translateY(-10px)">
-            <div style="font-size:44px;margin-bottom:8px">👑</div>
+          <div class="medallas-card" style="text-align:center;padding:26px 14px;border-color:rgba(245,197,24,.5);background:linear-gradient(135deg,rgba(245,197,24,.1),transparent);box-shadow:0 10px 32px -6px rgba(245,197,24,.35);transform:translateY(-16px);position:relative">
+            <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amarillo);color:#160e02;font-family:var(--font-display);font-size:8px;font-weight:900;padding:2px 10px;border-radius:99px;letter-spacing:.5px">1º LUGAR</div>
+            <div style="font-size:50px;margin-bottom:8px">👑</div>
             <div style="font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--amarillo);margin-bottom:8px">Campeón Finalísima</div>
-            <div id="hof-finalísima" style="font-family:var(--font-display);font-size:17px;font-weight:900;color:var(--blanco)">—</div>
+            <div id="hof-finalísima" style="font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--blanco)">—</div>
           </div>
           <div class="medallas-card" style="text-align:center;padding:16px 10px;border-color:rgba(216,41,63,.2)">
             <div style="font-size:30px;margin-bottom:6px">❤️</div>
@@ -1453,6 +1441,8 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
               <div style="display:flex;flex-wrap:wrap;gap:6px" id="museo-modal-list">
                 <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="EggLocke"> 🥚 EggLocke</label>
                 <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="Randomlocke"> 🎲 Randomlocke</label>
+                <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="SuperRandomlocke"> 🎰 Super RandomLocke</label>
+                <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="EvoLocke"> 🧬 EvoLocke</label>
                 <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="Shinylocke"> ✨ Shinylocke</label>
                 <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="SoulLink"> ⚡ Soul-Link</label>
               </div>
@@ -1537,6 +1527,8 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
               <div style="display:flex;flex-direction:column;gap:6px" id="nl-tipo-list">
                 <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="EggLocke"> 🥚 EggLocke</label>
                 <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="Randomlocke"> 🎲 Randomlocke</label>
+                <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="SuperRandomlocke"> 🎰 Super RandomLocke</label>
+                <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="EvoLocke"> 🧬 EvoLocke</label>
                 <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="Shinylocke"> ✨ Shinylocke</label>
                 <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="SoulLink"> ⚡ Soul-Link</label>
               </div>
@@ -3361,6 +3353,8 @@ var NL_JUEGOS = [
   // 3DS - Gen 7
   {n:'Pokémon Sol / Luna',             gen:'3DS',  icon:'☀️', color:'#c99a2e'},
   {n:'Pokémon Ultra Sol / Ultra Luna', gen:'3DS',  icon:'🌞', color:'#ea580c'},
+  // FanGame
+  {n:'Pokémon Añil (FanGame)',         gen:'FAN',  icon:'🟦', color:'#3e6fa6'},
 ];
 
 // Grupos para el selector visual por generación
@@ -3377,11 +3371,14 @@ var NL_GRUPOS = [
   { label:'Gen VI · X/Y', gen:'3DS', juego: 'Pokémon X / Y' },
   { label:'Gen VII · Sol/Luna', gen:'3DS', juego: 'Pokémon Sol / Luna' },
   { label:'Gen VII · US/UL', gen:'3DS', juego: 'Pokémon Ultra Sol / Ultra Luna' },
+  { label:'FanGame · Añil', gen:'FAN', juego: 'Pokémon Añil (FanGame)' },
 ];
 
 var NL_TIPOS = {
   'EggLocke':    {icon:'🥚', color:'#fbbf24', bg:'rgba(251,191,36,.06)',  tema:'egglocke',    label:'EggLocke'},
   'Randomlocke': {icon:'🎲', color:'#34d399', bg:'rgba(52,211,153,.06)', tema:'randomlocke', label:'Randomlocke'},
+  'SuperRandomlocke': {icon:'🎰', color:'#22d3ee', bg:'rgba(34,211,238,.06)', tema:'randomlocke', label:'Super RandomLocke'},
+  'EvoLocke':    {icon:'🧬', color:'#a3e635', bg:'rgba(163,230,53,.06)', tema:'egglocke', label:'EvoLocke'},
   'Shinylocke':  {icon:'✨', color:'#c084fc', bg:'rgba(192,132,252,.06)', tema:'shinylocke',  label:'Shinylocke'},
   'SoulLink':    {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks',   label:'Soul-Link'},
   'DualLinks':   {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks',   label:'Soul-Link'},
@@ -4902,11 +4899,25 @@ function _renderizarMapaSVG(svgEl, leyEl, vacioEl, rutas){
     var aqui=jugIds.filter(function(jid){return jugadorPos[jid]&&jugadorPos[jid].idx===i;});
     aqui.forEach(function(jid,ai){
       var color2=colorParaJugador(jid);
+      var esYo=(jid===userSesion);
+      var rAv=esYo?(AVR+4):AVR;
       var ax=pos.x-(aqui.length-1)*(AVR+3)+ai*(AVR*2+6);
       var ay=pos.y+NR+30;
-      avatars+='<circle cx="'+ax+'" cy="'+ay+'" r="'+AVR+'" fill="'+color2+'" stroke="#06080f" stroke-width="2"/>';
-      avatars+='<text x="'+ax+'" y="'+(ay+4)+'" text-anchor="middle" font-size="7" font-weight="700" font-family="'+FONT+'" fill="#fff">'+jid.slice(0,2).toUpperCase()+'</text>';
+      if(esYo){
+        avatars+='<circle cx="'+ax+'" cy="'+ay+'" r="'+(rAv+5)+'" fill="none" stroke="#f5b915" stroke-width="2" opacity="0.9"><animate attributeName="r" values="'+(rAv+4)+';'+(rAv+8)+';'+(rAv+4)+'" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0.2;0.9" dur="1.8s" repeatCount="indefinite"/></circle>';
+      }
+      avatars+='<circle cx="'+ax+'" cy="'+ay+'" r="'+rAv+'" fill="'+color2+'" stroke="'+(esYo?'#f5b915':'#06080f')+'" stroke-width="'+(esYo?3:2)+'"/>';
+      avatars+='<text x="'+ax+'" y="'+(ay+4)+'" text-anchor="middle" font-size="'+(esYo?7.5:7)+'" font-weight="900" font-family="'+FONT+'" fill="#fff">'+(esYo?'TÚ':jid.slice(0,2).toUpperCase())+'</text>';
     });
+  }
+
+  // Marcador "estás aquí" flotante sobre tu nodo actual
+  var miPos = jugadorPos[userSesion];
+  if(miPos){
+    var mp = nodoPos(miPos.idx);
+    nodes += '<g><path d="M'+mp.x+' '+(mp.y-NR-38)+' l-7 12 h14 z" fill="#f5b915"/>'
+      +'<rect x="'+(mp.x-30)+'" y="'+(mp.y-NR-64)+'" width="60" height="20" rx="10" fill="#f5b915"/>'
+      +'<text x="'+mp.x+'" y="'+(mp.y-NR-50)+'" text-anchor="middle" font-size="9" font-weight="900" font-family="'+FONT+'" fill="#160e02">📍 ESTÁS AQUÍ</text></g>';
   }
 
   svgEl.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:340px;max-width:'+W+'px;display:block;margin:0 auto">'
@@ -4915,6 +4926,14 @@ function _renderizarMapaSVG(svgEl, leyEl, vacioEl, rutas){
   if(leyEl){
     var jugConPos=jugIds.filter(function(jid){return jugadorPos[jid];});
     var jugSinPos=jugIds.filter(function(jid){return !jugadorPos[jid];});
+    var miResumenHTML='';
+    if(jugadorPos[userSesion]){
+      var miIdx=jugadorPos[userSesion].idx;
+      var miRutaNombre=rutas[miIdx]||('Ruta '+(miIdx+1));
+      miResumenHTML='<div style="width:100%;background:rgba(245,185,21,.08);border:1px solid rgba(245,185,21,.3);border-radius:var(--r-md);padding:8px 12px;margin-bottom:8px;font-family:var(--font-display);font-size:11px;color:var(--txt-primary)">📍 Estás en <strong style="color:#f5b915">'+escaparHTML(miRutaNombre)+'</strong> · Ruta '+(miIdx+1)+' de '+rutas.length+'</div>';
+    } else {
+      miResumenHTML='<div style="width:100%;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-md);padding:8px 12px;margin-bottom:8px;font-family:var(--font-display);font-size:11px;color:var(--txt-muted)">📍 Todavía no has avanzado ninguna ruta.</div>';
+    }
     var items=jugConPos.map(function(jid){
       var color2=colorParaJugador(jid);
       var ruta2=rutas[jugadorPos[jid].idx]||('Ruta '+(jugadorPos[jid].idx+1));
@@ -4927,7 +4946,7 @@ function _renderizarMapaSVG(svgEl, leyEl, vacioEl, rutas){
       var color2=colorParaJugador(jid);
       items.push('<div class="tracker-mapa-leyenda-item"><div class="tracker-mapa-leyenda-dot" style="background:'+color2+';opacity:.4"></div><span style="color:var(--txt-muted)">'+jid.toUpperCase()+' — Sin avance</span></div>');
     });
-    leyEl.innerHTML=items.join('');
+    leyEl.innerHTML=miResumenHTML+items.join('');
   }
 }
 
