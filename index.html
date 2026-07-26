@@ -603,6 +603,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   <div class="more-sheet-item" onclick="cerrarMasSheet();abrirOverlayDiarioNativo()"><span class="ms-icon">📖</span> Bitácora</div>
   <div class="more-sheet-item" onclick="navegarA('hall-of-fame');cerrarMasSheet()"><span class="ms-icon">✨</span> Hall of Fame</div>
   <div class="more-sheet-item" onclick="navegarA('museo');cerrarMasSheet()"><span class="ms-icon">🏛️</span> Museo de Lockes</div>
+  <div class="more-sheet-item" onclick="navegarA('ruletas');cerrarMasSheet()"><span class="ms-icon">🎡</span> Ruletas</div>
   <div class="more-sheet-item" id="more-sheet-admin" style="display:none" onclick="navegarA('admin');cerrarMasSheet()"><span class="ms-icon">🧿</span> Modo Dios</div>
   <div class="more-sheet-item danger" onclick="cerrarMasSheet();cerrarSesionOperador()"><span class="ms-icon">🔓</span> Cerrar Sesión</div>
 </div>
@@ -659,6 +660,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-medallas-torneos" onclick="navegarA('medallas-torneos')"><span class="nav-icon">🏆</span> Medallas y Torneos</div>
       <div class="nav-item" onclick="abrirOverlayDiarioNativo()"><span class="nav-icon">📖</span> Bitácora</div>
       <div class="nav-item" id="nav-tracker" onclick="navegarA('tracker')"><span class="nav-icon">🗺️</span> Tracker</div>
+      <div class="nav-item" id="nav-ruletas" onclick="navegarA('ruletas')"><span class="nav-icon">🎡</span> Ruletas</div>
       <div class="nav-item" id="nav-hall-of-fame" onclick="navegarA('hall-of-fame')"><span class="nav-icon">✨</span> Hall of Fame</div>
       <div class="nav-item" id="nav-museo" onclick="navegarA('museo')"><span class="nav-icon">🏛️</span> Museo de Lockes</div>
       <div class="nav-item nav-item-danger" onclick="cerrarSesionOperador()" style="margin-top:6px"><span class="nav-icon">🔓</span> Cerrar Sesión</div>
@@ -984,6 +986,57 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
       </div>
     </section>
+
+    <section id="section-ruletas" class="page-section">
+      <div class="section-header">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div><div class="section-title">🎡 Ruletas</div><div class="section-subtitle">Crea, guarda y gira ruletas temáticas para tu Locke</div></div>
+          <button class="btn-carnet-trigger" onclick="abrirEditorRuleta(null)">➕ Nueva Ruleta</button>
+        </div>
+      </div>
+      <div id="ruletas-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px"></div>
+      <div id="ruletas-vacio" style="display:none;text-align:center;padding:50px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated)">
+        <div style="font-size:38px;margin-bottom:10px">🎡</div>
+        <div style="font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:1.5px">Sin ruletas todavía</div>
+        <div style="font-size:11px;margin-top:6px">Crea la primera — puede ser de encuentros, castigos, retos, lo que quieras.</div>
+      </div>
+    </section>
+
+    <!-- OVERLAY: girar ruleta -->
+    <div id="ruleta-girar-overlay" class="overlay-modal">
+      <div class="modal-box" style="max-width:420px;text-align:center;position:relative">
+        <button onclick="cerrarGirarRuleta()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--txt-muted);font-size:16px;cursor:pointer">✕</button>
+        <div id="ruleta-girar-nombre" style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--amarillo);margin-bottom:16px">—</div>
+        <div style="position:relative;width:260px;height:260px;margin:0 auto 18px">
+          <div style="position:absolute;top:-6px;left:50%;transform:translateX(-50%);z-index:5;font-size:26px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))">🔻</div>
+          <div id="ruleta-rueda" style="width:260px;height:260px;border-radius:50%;position:relative;border:6px solid #2c2620;box-shadow:0 0 0 3px var(--amarillo),0 10px 30px rgba(0,0,0,.5);transition:transform 4.5s cubic-bezier(.17,.67,.16,.99);overflow:hidden">
+            <div id="ruleta-segmentos" style="width:100%;height:100%;position:relative"></div>
+          </div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d8293f 55%,#8f0815);border:3px solid #160e02;z-index:4;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>
+        </div>
+        <button class="btn-admin packs" id="ruleta-btn-girar" style="max-width:200px;margin:0 auto" onclick="ejecutarGiroRuleta()">🎡 ¡Girar!</button>
+        <div id="ruleta-resultado" style="display:none;margin-top:16px;background:rgba(245,185,21,.1);border:1px solid rgba(245,185,21,.35);border-radius:var(--r-lg);padding:14px">
+          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Ha salido...</div>
+          <div id="ruleta-resultado-texto" style="font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--amarillo)">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OVERLAY: crear/editar ruleta -->
+    <div id="ruleta-editor-overlay" class="overlay-modal">
+      <div class="modal-box" style="max-width:480px;position:relative">
+        <button onclick="cerrarEditorRuleta()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--txt-muted);font-size:16px;cursor:pointer">✕</button>
+        <div style="font-family:var(--font-display);font-size:15px;font-weight:900;color:var(--amarillo);margin-bottom:16px" id="ruleta-editor-titulo">🎡 Nueva Ruleta</div>
+        <input type="hidden" id="ruleta-editor-id">
+        <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Nombre de la ruleta</label>
+        <input type="text" id="ruleta-editor-nombre" class="admin-input" placeholder="Ej: ¿Qué Pokémon capturo?" style="font-family:var(--font-body)">
+        <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">Opciones (mínimo 2)</label>
+        <div id="ruleta-editor-opciones" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:280px;overflow-y:auto;padding-right:4px"></div>
+        <button type="button" class="btn-admin-sm packs" style="width:100%;margin-bottom:14px;padding:8px" onclick="anadirOpcionRuleta()">➕ Añadir opción</button>
+        <button class="btn-admin legal" onclick="guardarRuleta()">💾 Guardar Ruleta</button>
+      </div>
+    </div>
+
 
     <!-- HALL OF FAME -->
     <section id="section-hall-of-fame" class="page-section">
@@ -3917,7 +3970,7 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -3953,7 +4006,7 @@ window.navegarA=function(s){
     mostrarNotificacion(`🚫 Estás baneado de esta sección. Motivo: ${mot}`,'error','🚫','Acceso restringido');
     s='inicio';
   }
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='tracker')renderizarTracker();if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
@@ -5017,6 +5070,172 @@ window.renderizarTracker = function(){
   if(_trackerVista === 'mapa' && window.renderizarMapaTracker) renderizarMapaTracker();
   // Siempre refrescar el mapa del inicio
   if(window.renderizarMapaInicio) renderizarMapaInicio();
+};
+
+/* ═══════════ RULETAS ═══════════ */
+var RULETA_COLORES = ['#d8293f','#3e6fa6','#c99a2e','#1e9e73','#8e4fc7','#5b52c7','#b8602e','#e2646f'];
+var _ruletaEditorOpciones = [];
+var _ruletaActivaId = null;
+var _ruletaGirando = false;
+
+window.renderizarRuletas = function(){
+  var grid = document.getElementById('ruletas-grid');
+  var vacio = document.getElementById('ruletas-vacio');
+  if(!grid) return;
+  var ruletas = baseDatos.ruletas || {};
+  var ids = Object.keys(ruletas);
+  if(!ids.length){
+    grid.innerHTML = '';
+    if(vacio) vacio.style.display = 'block';
+    return;
+  }
+  if(vacio) vacio.style.display = 'none';
+  grid.innerHTML = ids.map(function(id){
+    var r = ruletas[id];
+    var opts = r.opciones || [];
+    return '<div class="card" style="padding:16px">'
+      + '<div style="font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--blanco);margin-bottom:4px">🎡 '+escaparHTML(r.nombre)+'</div>'
+      + '<div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:12px">'+opts.length+' opciones · por '+escaparHTML((r.autor||'?').toUpperCase())+'</div>'
+      + '<div style="display:flex;gap:6px">'
+      + '<button class="btn-admin packs" style="margin-bottom:0;flex:1" onclick="abrirGirarRuleta(\''+id+'\')">🎡 Girar</button>'
+      + '<button class="btn-admin-sm" style="border:1px solid var(--borde);background:var(--bg-overlay);color:var(--txt-secondary)" onclick="abrirEditorRuleta(\''+id+'\')">✏️</button>'
+      + '<button class="btn-admin-sm danger" onclick="eliminarRuleta(\''+id+'\')">🗑️</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+};
+
+window.abrirEditorRuleta = function(id){
+  var overlay = document.getElementById('ruleta-editor-overlay');
+  var titulo = document.getElementById('ruleta-editor-titulo');
+  var nombreInput = document.getElementById('ruleta-editor-nombre');
+  var idInput = document.getElementById('ruleta-editor-id');
+  if(id && baseDatos.ruletas && baseDatos.ruletas[id]){
+    var r = baseDatos.ruletas[id];
+    titulo.textContent = '✏️ Editar Ruleta';
+    nombreInput.value = r.nombre;
+    idInput.value = id;
+    _ruletaEditorOpciones = (r.opciones||[]).slice();
+  } else {
+    titulo.textContent = '🎡 Nueva Ruleta';
+    nombreInput.value = '';
+    idInput.value = '';
+    _ruletaEditorOpciones = ['',''];
+  }
+  _renderOpcionesEditorRuleta();
+  overlay.style.display = 'flex';
+};
+window.cerrarEditorRuleta = function(){
+  document.getElementById('ruleta-editor-overlay').style.display = 'none';
+};
+function _renderOpcionesEditorRuleta(){
+  var box = document.getElementById('ruleta-editor-opciones');
+  box.innerHTML = _ruletaEditorOpciones.map(function(texto, idx){
+    return '<div style="display:flex;gap:6px;align-items:center">'
+      + '<input type="text" class="admin-input" style="margin-bottom:0;flex:1" value="'+escaparHTML(texto)+'" placeholder="Opción '+(idx+1)+'" oninput="_ruletaEditorOpciones['+idx+']=this.value">'
+      + '<button type="button" onclick="quitarOpcionRuleta('+idx+')" style="background:rgba(216,41,63,.1);border:1px solid rgba(216,41,63,.3);color:#e2646f;border-radius:var(--r-sm);padding:8px 10px;cursor:pointer;flex-shrink:0">✕</button>'
+      + '</div>';
+  }).join('');
+}
+window.anadirOpcionRuleta = function(){
+  _ruletaEditorOpciones.push('');
+  _renderOpcionesEditorRuleta();
+};
+window.quitarOpcionRuleta = function(idx){
+  _ruletaEditorOpciones.splice(idx,1);
+  _renderOpcionesEditorRuleta();
+};
+window.guardarRuleta = function(){
+  if(!userSesion) return;
+  var nombre = document.getElementById('ruleta-editor-nombre').value.trim();
+  var id = document.getElementById('ruleta-editor-id').value;
+  var opciones = Array.prototype.map.call(document.querySelectorAll('#ruleta-editor-opciones input'), function(inp){ return inp.value; });
+  if(!nombre){ mostrarNotificacion('Ponle un nombre a la ruleta.','error','🎡'); return; }
+  if(!baseDatos.ruletas) baseDatos.ruletas = {};
+  var esNueva = !id;
+  if(!id) id = 'rul_'+Date.now();
+  var autorFinal = (baseDatos.ruletas[id] && baseDatos.ruletas[id].autor) || userSesion;
+  baseDatos.ruletas[id] = { nombre: nombre, opciones: opciones, autor: autorFinal, fecha: new Date().toLocaleDateString() };
+  registrarActividadGlobal(userSesion, (esNueva?'creó':'editó')+' la ruleta 🎡 "'+nombre+'"');
+  guardarBD();
+  reproducirSonido('exito');
+  mostrarNotificacion(esNueva?'Ruleta creada 🎡':'Ruleta actualizada 🎡','exito','🎡');
+  cerrarEditorRuleta();
+  renderizarRuletas();
+};
+window.eliminarRuleta = function(id){
+  if(!baseDatos.ruletas || !baseDatos.ruletas[id]) return;
+  var nombre = baseDatos.ruletas[id].nombre;
+  mostrarConfirmacion({icono:'🗑️',titulo:'¿Eliminar ruleta?',descripcion:'Se borrará "'+nombre+'" para todo el mundo. Esta acción no se puede deshacer.',tipo:'peligro',textoConfirmar:'Eliminar'}).then(function(ok){
+    if(!ok) return;
+    delete baseDatos.ruletas[id];
+    guardarBD();
+    reproducirSonido('cerrar');
+    mostrarNotificacion('Ruleta eliminada.','info','🗑️');
+    renderizarRuletas();
+  });
+};
+
+window.abrirGirarRuleta = function(id){
+  var r = baseDatos.ruletas && baseDatos.ruletas[id];
+  if(!r) return;
+  if(!r.opciones || !r.opciones.length){ mostrarNotificacion('Esta ruleta todavía no tiene opciones. Edítala para añadir alguna.','error','🎡'); return; }
+  _ruletaActivaId = id;
+  document.getElementById('ruleta-girar-nombre').textContent = r.nombre;
+  document.getElementById('ruleta-resultado').style.display = 'none';
+  var rueda = document.getElementById('ruleta-rueda');
+  rueda.style.transition = 'none';
+  rueda.style.transform = 'rotate(0deg)';
+  void rueda.offsetWidth;
+  rueda.style.transition = '';
+  _pintarSegmentosRuleta(r.opciones);
+  var btn = document.getElementById('ruleta-btn-girar');
+  btn.disabled = false; btn.style.opacity = '1';
+  document.getElementById('ruleta-girar-overlay').style.display = 'flex';
+};
+window.cerrarGirarRuleta = function(){
+  document.getElementById('ruleta-girar-overlay').style.display = 'none';
+};
+function _pintarSegmentosRuleta(opciones){
+  var n = opciones.length;
+  var anguloSeg = 360/n;
+  var partes = [];
+  for(var i=0;i<n;i++){
+    var color = RULETA_COLORES[i % RULETA_COLORES.length];
+    partes.push(color+' '+(i*anguloSeg)+'deg '+((i+1)*anguloSeg)+'deg');
+  }
+  document.getElementById('ruleta-rueda').style.background = 'conic-gradient(from 0deg, '+partes.join(', ')+')';
+  var segBox = document.getElementById('ruleta-segmentos');
+  segBox.innerHTML = opciones.map(function(texto, i){
+    var mid = anguloSeg*i + anguloSeg/2;
+    var txtShort = texto.length>13 ? texto.slice(0,12)+'…' : texto;
+    return '<div style="position:absolute;top:50%;left:50%;width:0;height:0;transform:rotate('+mid+'deg)">'
+      + '<span style="position:absolute;left:-45px;top:-100px;width:90px;text-align:center;font-size:10px;font-weight:800;font-family:var(--font-display);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escaparHTML(txtShort)+'</span>'
+      + '</div>';
+  }).join('');
+}
+window.ejecutarGiroRuleta = function(){
+  if(_ruletaGirando) return;
+  var r = baseDatos.ruletas && baseDatos.ruletas[_ruletaActivaId];
+  if(!r) return;
+  var n = r.opciones.length;
+  var anguloSeg = 360/n;
+  var idxGanador = Math.floor(Math.random()*n);
+  var centroSeg = idxGanador*anguloSeg + anguloSeg/2;
+  var vueltas = 5 + Math.floor(Math.random()*3);
+  var rotacionFinal = vueltas*360 + (360 - centroSeg);
+  _ruletaGirando = true;
+  reproducirSonido('abrir');
+  document.getElementById('ruleta-rueda').style.transform = 'rotate('+rotacionFinal+'deg)';
+  var btn = document.getElementById('ruleta-btn-girar');
+  btn.disabled = true; btn.style.opacity = '.5';
+  setTimeout(function(){
+    _ruletaGirando = false;
+    btn.disabled = false; btn.style.opacity = '1';
+    reproducirSonido('exito');
+    document.getElementById('ruleta-resultado-texto').textContent = r.opciones[idxGanador];
+    document.getElementById('ruleta-resultado').style.display = 'block';
+  }, 4600);
 };
 
 window.trackerCambiarEstado = function(idx, nuevoEstado){
