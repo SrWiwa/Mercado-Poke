@@ -1009,7 +1009,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div id="ruleta-girar-nombre" style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--amarillo);margin-bottom:16px">—</div>
         <div style="position:relative;width:260px;height:260px;margin:0 auto 18px">
           <div style="position:absolute;top:-6px;left:50%;transform:translateX(-50%);z-index:5;font-size:26px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))">🔻</div>
-          <div id="ruleta-rueda" style="width:260px;height:260px;border-radius:50%;position:relative;border:6px solid #2c2620;box-shadow:0 0 0 3px var(--amarillo),0 10px 30px rgba(0,0,0,.5);transition:transform 4.5s cubic-bezier(.17,.67,.16,.99);overflow:hidden">
+          <div id="ruleta-rueda" style="width:260px;height:260px;border-radius:50%;position:relative;border:6px solid #2c2620;box-shadow:0 0 0 3px var(--amarillo),0 10px 30px rgba(0,0,0,.5);overflow:hidden">
             <div id="ruleta-segmentos" style="width:100%;height:100%;position:relative"></div>
           </div>
           <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d8293f 55%,#8f0815);border:3px solid #160e02;z-index:4;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>
@@ -5239,26 +5239,63 @@ window.ejecutarGiroRuleta = function(){
   var n = r.opciones.length;
   var anguloSeg = 360/n;
   var idxGanador = Math.floor(Math.random()*n);
-  var centroSeg = idxGanador*anguloSeg + anguloSeg/2;
-  var vueltas = 5 + Math.floor(Math.random()*3);
-  var rotacionFinal = vueltas*360 + (360 - centroSeg);
-  _ruletaGirando = true;
-  reproducirSonido('abrir');
-  document.getElementById('ruleta-rueda').style.transform = 'rotate('+rotacionFinal+'deg)';
+  // El puntero está arriba (0°). Queremos que el CENTRO del segmento ganador quede en 0°.
+  // La rueda gira en sentido horario: para que el segmento i quede arriba
+  // hay que rotar (360 - (i*anguloSeg + anguloSeg/2)) grados más las vueltas completas.
+  var centroSeg = idxGanador * anguloSeg + anguloSeg / 2;
+  var vueltas = 6 + Math.floor(Math.random() * 4);
+  var totalGrados = vueltas * 360 + (360 - centroSeg);
+  var rueda = document.getElementById('ruleta-rueda');
   var btn = document.getElementById('ruleta-btn-girar');
+  _ruletaGirando = true;
   btn.disabled = true; btn.style.opacity = '.5';
-  setTimeout(function(){
-    _ruletaGirando = false;
-    btn.disabled = false; btn.style.opacity = '1';
-    reproducirSonido('exito');
-    var resultado = r.opciones[idxGanador];
-    document.getElementById('ruleta-resultado-texto').textContent = resultado;
-    document.getElementById('ruleta-resultado').style.display = 'block';
-    var textoLog = '🎡 Tiró la ruleta "'+r.nombre+'" → '+resultado;
-    inyectarEntradaDiarioAutomaticaPara(jugadorTiro, textoLog);
-    guardarBD();
-    renderizarActividadGlobalInicio();
-  }, 4600);
+  reproducirSonido('abrir');
+  var _anguloActual = 0;
+  var _velocidad = 18 + Math.random() * 6; // grados por frame al inicio
+  var _velocidadMax = _velocidad;
+  var _fase = 'acelerando'; // acelerando → girando → frenando
+  var _gradosAcum = 0;
+  var _umbralAceleracion = totalGrados * 0.15;
+  var _umbralFreno = totalGrados * 0.60;
+  var _sonidoTick = false;
+  function _tick(){
+    if(!_ruletaGirando) return;
+    if(_fase === 'acelerando'){
+      _velocidad = Math.min(_velocidadMax, _velocidad + 0.6);
+      if(_gradosAcum >= _umbralAceleracion) _fase = 'girando';
+    } else if(_fase === 'girando'){
+      if(_gradosAcum >= _umbralFreno) _fase = 'frenando';
+    } else {
+      // frenado con easing exponencial
+      var restantes = totalGrados - _gradosAcum;
+      _velocidad = Math.max(0.25, restantes * 0.018 + 0.25);
+    }
+    _gradosAcum += _velocidad;
+    _anguloActual += _velocidad;
+    rueda.style.transform = 'rotate(' + _anguloActual + 'deg)';
+    // tick sonoro cada vuelta
+    var vueltaActual = Math.floor(_gradosAcum / 360);
+    var vueltaAnterior = Math.floor((_gradosAcum - _velocidad) / 360);
+    if(vueltaActual > vueltaAnterior && _sonidoTick){ /* silencio para no saturar */ }
+    _sonidoTick = !_sonidoTick;
+    if(_gradosAcum < totalGrados){
+      requestAnimationFrame(_tick);
+    } else {
+      // ajuste fino al ángulo exacto
+      rueda.style.transform = 'rotate(' + ((_anguloActual - _gradosAcum) + totalGrados) + 'deg)';
+      _ruletaGirando = false;
+      btn.disabled = false; btn.style.opacity = '1';
+      reproducirSonido('exito');
+      var resultado = r.opciones[idxGanador];
+      document.getElementById('ruleta-resultado-texto').textContent = resultado;
+      document.getElementById('ruleta-resultado').style.display = 'block';
+      var textoLog = '🎡 Tiró la ruleta "'+r.nombre+'" → '+resultado;
+      inyectarEntradaDiarioAutomaticaPara(jugadorTiro, textoLog);
+      guardarBD();
+      renderizarActividadGlobalInicio();
+    }
+  }
+  requestAnimationFrame(_tick);
 };
 
 window.trackerCambiarEstado = function(idx, nuevoEstado){
