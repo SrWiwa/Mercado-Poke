@@ -1014,6 +1014,10 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
           </div>
           <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d8293f 55%,#8f0815);border:3px solid #160e02;z-index:4;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>
         </div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">¿Quién tira la ruleta?</label>
+          <select id="ruleta-jugador-selector" class="admin-input" style="margin-bottom:0;font-family:var(--font-body)"></select>
+        </div>
         <button class="btn-admin packs" id="ruleta-btn-girar" style="max-width:200px;margin:0 auto" onclick="ejecutarGiroRuleta()">🎡 ¡Girar!</button>
         <div id="ruleta-resultado" style="display:none;margin-top:16px;background:rgba(245,185,21,.1);border:1px solid rgba(245,185,21,.35);border-radius:var(--r-lg);padding:14px">
           <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Ha salido...</div>
@@ -5156,7 +5160,8 @@ window.guardarRuleta = function(){
   if(!id) id = 'rul_'+Date.now();
   var autorFinal = (baseDatos.ruletas[id] && baseDatos.ruletas[id].autor) || userSesion;
   baseDatos.ruletas[id] = { nombre: nombre, opciones: opciones, autor: autorFinal, fecha: new Date().toLocaleDateString() };
-  registrarActividadGlobal(userSesion, (esNueva?'creó':'editó')+' la ruleta 🎡 "'+nombre+'"');
+  var _dRul=new Date(),_tsRul=String(_dRul.getDate()).padStart(2,'0')+'/'+String(_dRul.getMonth()+1).padStart(2,'0')+'/'+_dRul.getFullYear()+' '+String(_dRul.getHours()).padStart(2,'0')+':'+String(_dRul.getMinutes()).padStart(2,'0')+':'+String(_dRul.getSeconds()).padStart(2,'0');
+  registrarActividadGlobal(userSesion, (esNueva?'creó':'editó')+' la ruleta 🎡 "'+nombre+'"', _tsRul);
   guardarBD();
   reproducirSonido('exito');
   mostrarNotificacion(esNueva?'Ruleta creada 🎡':'Ruleta actualizada 🎡','exito','🎡');
@@ -5189,6 +5194,17 @@ window.abrirGirarRuleta = function(id){
   void rueda.offsetWidth;
   rueda.style.transition = '';
   _pintarSegmentosRuleta(r.opciones);
+  var sel = document.getElementById('ruleta-jugador-selector');
+  if(sel){
+    sel.innerHTML = '';
+    Object.keys(baseDatos.jugadores||{}).forEach(function(uid){
+      var opt = document.createElement('option');
+      opt.value = uid;
+      opt.textContent = uid.toUpperCase();
+      if(uid === userSesion) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
   var btn = document.getElementById('ruleta-btn-girar');
   btn.disabled = false; btn.style.opacity = '1';
   document.getElementById('ruleta-girar-overlay').style.display = 'flex';
@@ -5218,6 +5234,8 @@ window.ejecutarGiroRuleta = function(){
   if(_ruletaGirando) return;
   var r = baseDatos.ruletas && baseDatos.ruletas[_ruletaActivaId];
   if(!r) return;
+  var sel = document.getElementById('ruleta-jugador-selector');
+  var jugadorTiro = (sel && sel.value) ? sel.value : userSesion;
   var n = r.opciones.length;
   var anguloSeg = 360/n;
   var idxGanador = Math.floor(Math.random()*n);
@@ -5233,8 +5251,13 @@ window.ejecutarGiroRuleta = function(){
     _ruletaGirando = false;
     btn.disabled = false; btn.style.opacity = '1';
     reproducirSonido('exito');
-    document.getElementById('ruleta-resultado-texto').textContent = r.opciones[idxGanador];
+    var resultado = r.opciones[idxGanador];
+    document.getElementById('ruleta-resultado-texto').textContent = resultado;
     document.getElementById('ruleta-resultado').style.display = 'block';
+    var textoLog = '🎡 Tiró la ruleta "'+r.nombre+'" → '+resultado;
+    inyectarEntradaDiarioAutomaticaPara(jugadorTiro, textoLog);
+    guardarBD();
+    renderizarActividadGlobalInicio();
   }, 4600);
 };
 
