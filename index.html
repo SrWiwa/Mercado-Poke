@@ -711,6 +711,18 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div id="inicio-actividad" class="actividad-feed"><div class="actividad-empty">Sin actividad reciente.</div></div>
       </div>
       <div class="card" style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(30,158,115,.25)">
+          <div class="card-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none;color:var(--neon-legal)">🔥 Top Rachas de Captura</div>
+        </div>
+        <div id="ranking-rachas-capturas" style="display:flex;flex-direction:column;gap:6px"></div>
+        <div id="ranking-rachas-capturas-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:12px 0">Sin rachas de captura todavía.</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 12px;padding-bottom:10px;border-bottom:1px solid rgba(216,41,63,.25)">
+          <div class="card-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none;color:#e2646f">💀 Top Rachas de Pokémon Perdidos</div>
+        </div>
+        <div id="ranking-rachas-perdidas" style="display:flex;flex-direction:column;gap:6px"></div>
+        <div id="ranking-rachas-perdidas-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:12px 0">Sin rachas negativas todavía.</div>
+      </div>
+      <div class="card" style="margin-bottom:14px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(91,82,199,.25)">
           <div class="card-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none;color:var(--neon-arena)">🥊 Historial de Duelos PvP</div>
         </div>
@@ -4451,6 +4463,7 @@ function renderizarActividadGlobalInicio(){
     }).join('');
     actualizarPulsoRedInicio();
     actualizarTickerInicio();
+    renderizarRankingRachas();
 }
 function actualizarPulsoRedInicio(){
     let elIcon=document.getElementById('pulso-mercado-icon'),elTxt=document.getElementById('pulso-mercado-texto'),elRec=document.getElementById('pulso-recarga-texto');
@@ -5311,9 +5324,11 @@ window.trackerCambiarEstado = function(idx, nuevoEstado){
     entrada.mote = entrada.mote || '';
     inyectarEntradaDiarioAutomatica(`🟢 ${entrada.ruta} - ¡Encuentro Atrapado!`);
     reproducirSonido('exito');
+    actualizarRachaCapturas(u,'atrapado');
   } else if(nuevoEstado === 'perdido' && estadoAnterior !== 'perdido'){
     inyectarEntradaDiarioAutomatica(`🔴 ${entrada.ruta} - ¡Encuentro Perdido (F)!`);
     reproducirSonido('muerte');
+    actualizarRachaCapturas(u,'perdido');
   } else if(nuevoEstado === 'pendiente'){
     entrada.pokemon = '';
     entrada.mote = '';
@@ -5323,7 +5338,73 @@ window.trackerCambiarEstado = function(idx, nuevoEstado){
   guardarBD();
   renderizarTracker();
   if(window.renderizarMapaInicio) renderizarMapaInicio();
+  renderizarRankingRachas();
 };
+
+/* ═══ RACHAS DE CAPTURA / PÉRDIDA (premio y castigo en PF) ═══
+   Cada 3 capturas seguidas (3,6,9,...72) otorga esa misma cantidad de PF.
+   Cada 3 pérdidas seguidas (−3,−6,−9,...−72) resta esa misma cantidad de PF
+   (nunca por debajo de 0 PF). Al romper la racha, el contador vuelve a 0. */
+const RACHA_MAX = 72;
+function actualizarRachaCapturas(u, tipo){
+  if(typeof u.rachaActual !== 'number') u.rachaActual = 0;
+  if(typeof u.mejorRachaCapturas !== 'number') u.mejorRachaCapturas = 0;
+  if(typeof u.mejorRachaPerdida !== 'number') u.mejorRachaPerdida = 0;
+
+  if(tipo === 'atrapado'){
+    if(u.rachaActual < 0) u.rachaActual = 0; // se rompe la racha negativa
+    u.rachaActual = Math.min(RACHA_MAX, u.rachaActual + 1);
+    if(u.rachaActual > u.mejorRachaCapturas) u.mejorRachaCapturas = u.rachaActual;
+    if(u.rachaActual % 3 === 0){
+      let bono = u.rachaActual;
+      u.pf = (u.pf||0) + bono;
+      inyectarEntradaDiarioAutomatica(`🔥 ¡Racha de ${u.rachaActual} capturas seguidas! +${bono} PF de bonificación.`);
+    }
+  } else if(tipo === 'perdido'){
+    if(u.rachaActual > 0) u.rachaActual = 0; // se rompe la racha positiva
+    u.rachaActual = Math.max(-RACHA_MAX, u.rachaActual - 1);
+    let magnitud = Math.abs(u.rachaActual);
+    if(magnitud > u.mejorRachaPerdida) u.mejorRachaPerdida = magnitud;
+    if(magnitud % 3 === 0){
+      let penal = Math.min(u.pf||0, magnitud);
+      if(penal > 0){
+        u.pf = (u.pf||0) - penal;
+        inyectarEntradaDiarioAutomatica(`💀 Racha de ${magnitud} Pokémon perdidos seguidos... −${penal} PF.`);
+      } else {
+        inyectarEntradaDiarioAutomatica(`💀 Racha de ${magnitud} Pokémon perdidos seguidos, pero no te quedan PF que perder.`);
+      }
+    }
+  }
+}
+function renderizarRankingRachas(){
+  let boxC = document.getElementById('ranking-rachas-capturas'), vacC = document.getElementById('ranking-rachas-capturas-vacio');
+  let boxP = document.getElementById('ranking-rachas-perdidas'), vacP = document.getElementById('ranking-rachas-perdidas-vacio');
+  if(!boxC || !boxP) return;
+  let jugadores = baseDatos.jugadores || {};
+  let topCapturas = Object.keys(jugadores)
+    .map(id => ({id, valor: jugadores[id].mejorRachaCapturas || 0}))
+    .filter(e => e.valor > 0)
+    .sort((a,b) => b.valor - a.valor)
+    .slice(0,3);
+  let topPerdidas = Object.keys(jugadores)
+    .map(id => ({id, valor: jugadores[id].mejorRachaPerdida || 0}))
+    .filter(e => e.valor > 0)
+    .sort((a,b) => b.valor - a.valor)
+    .slice(0,3);
+  const medalla = ['oro','plata','bronce'];
+  if(!topCapturas.length){
+    boxC.innerHTML=''; vacC.style.display='block';
+  } else {
+    vacC.style.display='none';
+    boxC.innerHTML = topCapturas.map((e,i)=>`<div class="pvp-ranking-row"><span class="pvp-ranking-pos ${medalla[i]}">${i+1}º</span><span class="pvp-ranking-nombre">${escaparHTML(e.id.toUpperCase())}</span><span class="pvp-ranking-elo" style="color:var(--neon-legal)">🔥 ${e.valor}</span></div>`).join('');
+  }
+  if(!topPerdidas.length){
+    boxP.innerHTML=''; vacP.style.display='block';
+  } else {
+    vacP.style.display='none';
+    boxP.innerHTML = topPerdidas.map((e,i)=>`<div class="pvp-ranking-row"><span class="pvp-ranking-pos ${medalla[i]}">${i+1}º</span><span class="pvp-ranking-nombre">${escaparHTML(e.id.toUpperCase())}</span><span class="pvp-ranking-elo" style="color:#e2646f">💀 ${e.valor}</span></div>`).join('');
+  }
+}
 
 window.trackerActualizarPokemon = function(idx, valorCrudo){
   if(!userSesion||!baseDatos.jugadores[userSesion]) return;
