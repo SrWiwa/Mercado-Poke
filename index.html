@@ -386,7 +386,7 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .tracker-row.estado-atrapado{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.06)}
 .tracker-row.estado-perdido{border-color:rgba(216,41,63,.5);background:rgba(216,41,63,.06)}
 .tracker-row .tracker-orden{font-family:var(--font-display);font-size:10px;color:var(--txt-muted);font-weight:900;min-width:20px;flex-shrink:0}
-.tracker-row .tracker-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tracker-row .tracker-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;position:relative}
 .tracker-row .tracker-ruta-nombre{font-family:var(--font-display);font-size:12px;font-weight:800;color:var(--txt-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tracker-row.estado-perdido .tracker-ruta-nombre{text-decoration:line-through;color:var(--txt-muted)}
 .tracker-row .tracker-poke-input{background:var(--bg-overlay);color:var(--blanco);border:1px solid rgba(34,197,94,.3);padding:5px 9px;border-radius:var(--r-sm);font-family:var(--font-body);font-size:11px;width:100%;margin-top:2px}
@@ -5459,7 +5459,9 @@ window.trackerActualizarPokemon = function(idx, valorCrudo){
   }
 };
 
-/* Autocomplete reutilizando la lista de nombres ya cargada por el Hall of Fame (_mipokeNombres) */
+/* Autocomplete de Pokémon para el tracker, reutilizando el mismo sistema robusto (con sprites y carga con reintento)
+   que ya usan los buscadores de Pokémon del Museo y del PvP: _museoPokeListaCompleta / museoCargarListaCompleta.
+   Usa delegación de eventos (igual que el selector de PvP) en vez de onclick inline, para evitar fallos de escape. */
 window.trackerSugerirPokemon = function(inputEl, idx){
   var sugBox = document.getElementById('tracker-sug-'+idx);
   if(!sugBox) return;
@@ -5468,20 +5470,47 @@ window.trackerSugerirPokemon = function(inputEl, idx){
   var mQuote = raw.match(/^(.*?)"(.*)$/);
   var basePart = raw;
   if(mQuote){ basePart = mQuote[1]; motePart = mQuote[2]; }
-  var val = basePart.trim().toLowerCase().replace(/\s+/g,'-');
-  if(val.length < 2 || typeof _mipokeNombres === 'undefined' || !_mipokeNombres.length){
-    sugBox.innerHTML=''; sugBox.style.display='none'; return;
+  var rawQ = basePart.trim().toLowerCase();
+  var q = rawQ.replace(/\s+/g,'-');
+  if(rawQ.length < 1){ sugBox.innerHTML=''; sugBox.style.display='none'; return; }
+
+  function doSearch(){
+    var matches = _museoPokeListaCompleta.filter(function(p){
+      if(p.name.indexOf(q) !== -1) return true;
+      return museoPokeLabel(p.name).toLowerCase().indexOf(rawQ) !== -1;
+    }).slice(0,8);
+    if(!matches.length){ sugBox.innerHTML=''; sugBox.style.display='none'; return; }
+    sugBox.style.cssText = 'position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:0 0 var(--r-sm) var(--r-sm);z-index:60;max-height:220px;overflow-y:auto;display:block;box-shadow:var(--shadow-xl)';
+    sugBox.innerHTML = matches.map(function(m){
+      var id = museoPokeIdDesdeUrl(m.url);
+      var sprite = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png' : '';
+      var label = museoPokeLabel(m.name);
+      var motSuffix = motePart ? (' "'+motePart+'"') : '';
+      var valorFinal = label+motSuffix;
+      return '<div class="tracker-poke-opt" data-valor="'+escaparHTML(valorFinal)+'" '
+        +'style="padding:7px 10px;cursor:pointer;font-size:11px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)" '
+        +'onmouseover="this.style.background=\'var(--bg-overlay)\'" onmouseout="this.style.background=\'\'">'
+        +'<img src="'+sprite+'" style="width:24px;height:24px;image-rendering:pixelated;flex-shrink:0" onerror="this.style.opacity=\'0.25\'">'
+        +'<span>'+escaparHTML(valorFinal)+'</span>'
+        +(id ? '<span style="color:var(--txt-muted);font-size:9px;margin-left:auto">#'+id+'</span>' : '')
+        +'</div>';
+    }).join('');
+    sugBox.onmousedown = function(ev){
+      var opt = ev.target.closest('.tracker-poke-opt');
+      if(!opt) return;
+      ev.preventDefault(); // evita que el input pierda el foco (blur) antes de completar la selección
+      var valor = opt.getAttribute('data-valor') || '';
+      trackerSeleccionarSugerencia(idx, valor);
+    };
   }
-  var matches = _mipokeNombres.filter(function(n){ return n.indexOf(val)!==-1; }).slice(0,6);
-  if(!matches.length){ sugBox.innerHTML=''; sugBox.style.display='none'; return; }
-  sugBox.style.cssText = 'position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:0 0 var(--r-sm) var(--r-sm);z-index:60;max-height:160px;overflow-y:auto;display:block';
-  sugBox.innerHTML = matches.map(function(n){
-    var label = n.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
-    var motSuffix = motePart ? (' "'+motePart+'"') : '';
-    return '<div onclick="trackerSeleccionarSugerencia('+idx+',\''+label.replace(/'/g,"\\'")+'\')" '
-      +'style="padding:7px 10px;cursor:pointer;font-size:11px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)" '
-      +'onmouseover="this.style.background=\'var(--bg-overlay)\'" onmouseout="this.style.background=\'\'">'+escaparHTML(label+motSuffix)+'</div>';
-  }).join('');
+
+  if(_museoPokeListaCargada){
+    doSearch();
+  } else {
+    sugBox.innerHTML = '<div style="padding:8px 10px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">⏳ Cargando lista...</div>';
+    sugBox.style.cssText = 'position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:0 0 var(--r-sm) var(--r-sm);z-index:60;display:block';
+    museoCargarListaCompleta(doSearch);
+  }
 };
 
 window.trackerSeleccionarSugerencia = function(idx, labelConMote){
