@@ -37,6 +37,11 @@ body{font-family:var(--font-body);background-color:var(--bg-base);background-ima
 .topbar-gacha-btn{background:linear-gradient(135deg,rgba(91,82,199,.15),rgba(91,82,199,.05));border:1px solid rgba(91,82,199,.3);color:var(--neon-arena);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:7px 14px;border-radius:99px;cursor:pointer;transition:all .2s ease;white-space:nowrap;flex-shrink:0;position:relative;overflow:hidden}.topbar-gacha-btn:hover{background:linear-gradient(135deg,rgba(91,82,199,.3),rgba(91,82,199,.1));box-shadow:0 0 20px rgba(91,82,199,.2)}.topbar-gacha-btn::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent);transform:skewX(-20deg);animation:gachaShimmer 3.6s ease-in-out infinite}
 .topbar-radio-mini{display:flex;align-items:center;gap:6px;flex-shrink:0}
 @keyframes gachaShimmer{0%{left:-60%}50%{left:130%}100%{left:130%}}
+.gacha-listo-dot{display:none;position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#34d399;border:2px solid var(--bg-base);z-index:2}
+.gacha-listo-dot.activo{display:block;animation:gachaListoPulso 1.4s ease-out infinite}
+@keyframes gachaListoPulso{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}70%{box-shadow:0 0 0 8px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+.topbar-gacha-btn.gacha-btn-listo{box-shadow:0 0 14px rgba(52,211,153,.35)}
+.topbar-gacha-btn.gacha-btn-listo:hover{box-shadow:0 0 22px rgba(52,211,153,.5)}
 .sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--bg-surface);border-right:1px solid rgba(255,255,255,.1);box-shadow:4px 0 20px rgba(0,0,0,.45);display:flex;flex-direction:column;z-index:300;transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;will-change:transform}
 .sidebar-logo{padding:18px 20px 16px;border-bottom:1px solid var(--borde);display:flex;align-items:center;gap:10px;flex-shrink:0}
 .sidebar-logo-mark{width:32px;height:32px;border-radius:50%;background:var(--rojo);position:relative;flex-shrink:0;box-shadow:0 0 16px rgba(216,41,63,.3)}.sidebar-logo-mark::before{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:rgba(0,0,0,.4);border-radius:16px 16px 0 0}.sidebar-logo-mark::after{content:'';position:absolute;top:calc(50% - 5px);left:calc(50% - 5px);width:10px;height:10px;background:#fff;border:2px solid #000;border-radius:50%}
@@ -4544,6 +4549,7 @@ function animarValorNumerico(el,nuevoValor){
 function refrescarPantallaGamer(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];animarValorNumerico(document.getElementById('usr-dinero'),u.dinero);animarValorNumerico(document.getElementById('usr-pf'),u.pf);
   let _gb=document.getElementById('topbar-gacha-btn');
   if(_gb){if(jugadorBaneado(userSesion)){_gb.style.opacity='.4';_gb.style.filter='grayscale(1)';_gb.style.cursor='not-allowed';_gb.title='Baneado: '+(u.baneado.motivo||'');}else{_gb.style.opacity='';_gb.style.filter='';_gb.style.cursor='';_gb.title='';}}
+  actualizarAvisoGachaDisponible();
   const _cHoy=u.comprasHoy&&u.comprasHoy._fecha===new Date().toDateString()?u.comprasHoy:{};
   const _usados=_cHoy._global||0;
   const _ilUsados=_cHoy._illegal||0;
@@ -4553,6 +4559,31 @@ function refrescarPantallaGamer(){if(!userSesion||!baseDatos.jugadores[userSesio
   actualizarHeroStrip();
   let va=u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;
   let tv=document.getElementById('usr-vidas-top');if(tv)animarValorNumerico(tv,`${va}/${vt}`);let ib=document.getElementById('lista-inventario');ib.innerHTML='';let items=u.inventario?u.inventario.filter(i=>i.uid!=="init"):[];if(!items.length){ib.innerHTML='<span style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display)">Vacía</span>';}else{items.forEach(i=>{let descHtml=i.desc?`<div class="mochila-tag-desc">🎁 ${escaparHTML(i.desc)}</div>`:'';ib.innerHTML+=`<div class="mochila-tag${i.desc?' mochila-tag-pack':''}" title="Adquirido: ${escaparHTML(i.fecha)}${i.desc?' — Contiene: '+escaparHTML(i.desc):''}"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span>${escaparHTML(i.icon)||'📦'} ${escaparHTML(i.nombre)}</span>${descHtml}</div><button class="btn-usar" onclick="consumirObjetoMochilaGamer('${i.uid}','${escaparHTML(i.nombre)}','${escaparHTML(i.icon)||'📦'}')">Usar</button></div>`;});}renderInitializeLoaders();renderizarActividadGlobalInicio();}
+
+/* ═══ AVISO DE GACHA DISPONIBLE (ambos: Gacha normal y PF Gacha) ═══ */
+function _marcarAvisoBotonGacha(btnId, dotId, ultimo, umMs){
+  let btn = document.getElementById(btnId);
+  if(!btn) return;
+  let dot = document.getElementById(dotId);
+  if(!dot){
+    dot = document.createElement('span');
+    dot.id = dotId;
+    dot.className = 'gacha-listo-dot';
+    btn.appendChild(dot);
+  }
+  let disponible = (Date.now() - (ultimo||0)) >= umMs;
+  dot.classList.toggle('activo', disponible);
+  dot.title = disponible ? '¡Recompensa disponible!' : 'En recarga';
+  btn.classList.toggle('gacha-btn-listo', disponible);
+}
+function actualizarAvisoGachaDisponible(){
+  if(!userSesion || !baseDatos.jugadores[userSesion]) return;
+  let u = baseDatos.jugadores[userSesion], um = 24*60*60*1000;
+  _marcarAvisoBotonGacha('topbar-gacha-btn','gacha-dot-normal', u.ultimoHackeo||0, um);
+  _marcarAvisoBotonGacha('topbar-gacha-pf-btn','gacha-dot-pf', u.ultimoGachaPF||0, um);
+}
+setInterval(function(){ if(userSesion) actualizarAvisoGachaDisponible(); }, 30000);
+
 
 /* ═══ TIENDAS ═══ */
 window.aplicarFiltroCategoriaLegal=function(){filtroCategoriaGlobal=document.getElementById('filtro-categoria-legal').value;renderInitializeLoaders();};
@@ -6237,7 +6268,7 @@ function renderizarCementerioDOM(){if(!userSesion||!baseDatos.jugadores[userSesi
 function actualizarBannerAlertasVisuales(){let b=document.getElementById('alertas-sistema-marquee');if(!b)return;let ev=baseDatos.eventoSistema||"normal";if(ev==="normal"){b.classList.remove('active');b.innerHTML='';return;}b.classList.add('active');if(ev==="rebajas"){b.style.borderColor='rgba(30,158,115,.3)';b.style.color='var(--neon-legal)';b.innerHTML='📉 RED ESTABLE: −25% de descuento en Tienda Legal y Packs.';}if(ev==="inflacion"){b.style.borderColor='rgba(216,41,63,.3)';b.style.color='#e2646f';b.innerHTML='⚠️ RED INESTABLE: +50% de recargo en costes P₠.';}if(ev==="bonus_pf"){b.style.borderColor='rgba(201,154,46,.3)';b.style.color='var(--neon-packs)';b.innerHTML='🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!';}}
 
 /* ═══ GACHA ═══ */
-window.reclamarHackeoDiario=function(){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado del Gacha. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);guardarBD();mostrarRevelacionGacha(reveal);};
+window.reclamarHackeoDiario=function(){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado del Gacha. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);guardarBD();mostrarRevelacionGacha(reveal);actualizarAvisoGachaDisponible();};
 
 /* ═══ PF GACHA (solo entrega de 1 a 20 PF, cooldown propio de 24h) ═══ */
 window.reclamarGachaPF=function(){
@@ -6258,6 +6289,7 @@ window.reclamarGachaPF=function(){
   inyectarEntradaDiarioAutomatica(`[PF GACHA] Transferencia recibida: +${pfg} PF.`);
   guardarBD();
   mostrarRevelacionGacha({rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'PF Gacha · Puntos de Favor transferidos',especial:pfg>=17});
+  actualizarAvisoGachaDisponible();
 };
 
 /* ═══ RED ENTRENADORES ═══ */
