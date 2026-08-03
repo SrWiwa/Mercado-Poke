@@ -6079,6 +6079,35 @@ function generarConsejosAsistente(u){
     add('consejo','🛍️','Compras agotadas por hoy', `Ya has usado tus compras disponibles. Se recargan automáticamente cada 6 horas.`);
   }
 
+  // ── MISIONES DIARIAS ──
+  if(userSesion && typeof obtenerRotacionMisiones==='function'){
+    var _rotMis = obtenerRotacionMisiones();
+    var _mjMis = obtenerMisionesJugador(userSesion);
+    var _completadasMis = 0, _pendientesReclamarMis = 0, _enProgresoMis = 0;
+    _rotMis.misiones.forEach(function(m){
+      var p = misionGetProgreso(userSesion, u, m);
+      if(p>=m.meta){
+        _completadasMis++;
+        if(_mjMis.reclamadas.indexOf(m.id)===-1) _pendientesReclamarMis++;
+      } else if(p>0){
+        _enProgresoMis++;
+      }
+    });
+    var _restanteMis = Math.max(0, _rotMis.rotationEnd-Date.now());
+    var _horasRestMis = _restanteMis/(60*60*1000);
+    if(_pendientesReclamarMis>0){
+      add('importante','🎁','Misiones listas para reclamar', `Tienes ${_pendientesReclamarMis} misión${_pendientesReclamarMis===1?'':'es'} diaria${_pendientesReclamarMis===1?'':'s'} completada${_pendientesReclamarMis===1?'':'s'} esperando su recompensa.`);
+    } else if(_completadasMis===_rotMis.misiones.length){
+      add('consejo','📋','Misiones diarias completas', `Has completado y reclamado las ${_rotMis.misiones.length} misiones de esta rotación. ¡Buen trabajo!`);
+    } else if(_horasRestMis<=2){
+      add('importante','⏳','Poco tiempo para las misiones', `Quedan menos de 2 horas para que roten las misiones diarias y te faltan ${_rotMis.misiones.length-_completadasMis} por completar.`);
+    } else if(_enProgresoMis===0 && _completadasMis===0){
+      add('consejo','📋','Misiones diarias sin empezar', `Todavía no has avanzado en ninguna de tus misiones diarias. Échales un vistazo, se renuevan cada 12 horas.`);
+    } else {
+      add('consejo','📋','Misiones diarias en marcha', `Llevas ${_completadasMis}/${_rotMis.misiones.length} misiones completadas en esta rotación.`);
+    }
+  }
+
   // ── ACTIVIDAD GENERAL ──
   var d = new Date();
   var hoyStr = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
