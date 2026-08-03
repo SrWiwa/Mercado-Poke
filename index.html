@@ -529,6 +529,20 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 .torneo-match-jugador.no-clicable{cursor:default}
 .torneo-match-check{opacity:0;color:var(--neon-legal);font-size:11px;margin-left:auto}
 .torneo-match-vacio{color:var(--txt-muted);font-style:italic}
+
+/* ═══ ASISTENTE ═══ */
+.asis-msg{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--bg-card);border:1px solid var(--borde);border-left:3px solid var(--borde);border-radius:var(--r-md)}
+.asis-msg.nivel-critico{border-left-color:#e2646f;background:linear-gradient(135deg,rgba(226,100,111,.08),transparent)}
+.asis-msg.nivel-importante{border-left-color:#c99a2e;background:linear-gradient(135deg,rgba(201,154,46,.07),transparent)}
+.asis-msg.nivel-consejo{border-left-color:var(--neon-legal)}
+.asis-msg-icono{font-size:20px;line-height:1;flex-shrink:0;margin-top:1px}
+.asis-msg-cuerpo{flex:1;min-width:0}
+.asis-msg-titulo{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--blanco);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.asis-msg-desc{font-size:11.5px;color:var(--txt-secondary);margin-top:4px;line-height:1.5}
+.asis-msg-badge{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.asis-msg-badge.nivel-critico{background:rgba(226,100,111,.15);color:#e2646f}
+.asis-msg-badge.nivel-importante{background:rgba(201,154,46,.15);color:#c99a2e}
+.asis-msg-badge.nivel-consejo{background:rgba(34,197,94,.12);color:var(--neon-legal)}
 .pvp-historial-meta{font-size:10px;color:var(--txt-muted)}
 .pvp-racha{font-size:10px;color:#c99a2e;font-family:var(--font-display)}
 #section-hall-of-fame::after{content:'🏆';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
@@ -642,6 +656,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
   <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
   <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
+  <div class="more-sheet-item" onclick="navegarA('asistente');cerrarMasSheet()"><span class="ms-icon">🤖</span> Asistente</div>
   <div class="more-sheet-item" onclick="navegarA('vidas-sacrificios');cerrarMasSheet()"><span class="ms-icon">❤️</span> Vidas y Sacrificios</div>
   <div class="more-sheet-item" onclick="navegarA('medallas-torneos');cerrarMasSheet()"><span class="ms-icon">🏆</span> Medallas y Torneos</div>
   <div class="more-sheet-item" onclick="cerrarMasSheet();abrirOverlayDiarioNativo()"><span class="ms-icon">📖</span> Bitácora</div>
@@ -699,6 +714,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span> Eventos</div>
       <div class="nav-item" id="nav-duelos" onclick="navegarA('duelos')"><span class="nav-icon">🥊</span> Duelos PvP</div>
       <div class="nav-item" id="nav-torneos" onclick="navegarA('torneos')"><span class="nav-icon">🏟️</span> Torneos</div>
+      <div class="nav-item" id="nav-asistente" onclick="navegarA('asistente')"><span class="nav-icon">🤖</span> Asistente</div>
       <div class="nav-section-label">Personal</div>
       <div class="nav-item" id="nav-perfil" onclick="navegarA('perfil')"><span class="nav-icon">👤</span> Perfil</div>
       <div class="nav-item" id="nav-vidas-sacrificios" onclick="navegarA('vidas-sacrificios')"><span class="nav-icon">❤️</span> Vidas y Sacrificios</div>
@@ -1071,6 +1087,20 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div id="torneos-vista-detalle" style="display:none">
         <button class="btn-admin" onclick="torneoVolverALista()" style="margin-bottom:14px">← Volver a Torneos</button>
         <div id="torneo-detalle-contenido"></div>
+      </div>
+    </section>
+
+    <!-- ASISTENTE -->
+    <section id="section-asistente" class="page-section">
+      <div class="hero-strip">
+        <div class="section-title">🤖 Asistente</div>
+        <div class="section-subtitle">Consejos y avisos generados a partir de tu propia partida</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🤖 Asistente</div>
+        <div id="asistente-lista" style="display:flex;flex-direction:column;gap:10px"></div>
+        <div id="asistente-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:16px 0">Todo en orden por ahora. Vuelve más tarde.</div>
       </div>
     </section>
 
@@ -4108,7 +4138,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
         return;
     }
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();renderizarMapaInicio();}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
@@ -4156,7 +4186,7 @@ window.navegarA=function(s){
     mostrarNotificacion(`🚫 Estás baneado de esta sección. Motivo: ${mot}`,'error','🚫','Acceso restringido');
     s='inicio';
   }
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
@@ -4685,7 +4715,7 @@ function refrescarPantallaGamer(){if(!userSesion||!baseDatos.jugadores[userSesio
   animarValorNumerico(document.getElementById('usr-compras'),`${_restGlob}/${MAX_COMPRAS}${_ilStr}`);
   actualizarHeroStrip();
   let va=u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20),vt=u.vidasTotales||20;
-  let tv=document.getElementById('usr-vidas-top');if(tv)animarValorNumerico(tv,`${va}/${vt}`);let ib=document.getElementById('lista-inventario');ib.innerHTML='';let items=u.inventario?u.inventario.filter(i=>i.uid!=="init"):[];if(!items.length){ib.innerHTML='<span style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display)">Vacía</span>';}else{items.forEach(i=>{let descHtml=i.desc?`<div class="mochila-tag-desc">🎁 ${escaparHTML(i.desc)}</div>`:'';ib.innerHTML+=`<div class="mochila-tag${i.desc?' mochila-tag-pack':''}" title="Adquirido: ${escaparHTML(i.fecha)}${i.desc?' — Contiene: '+escaparHTML(i.desc):''}"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span>${escaparHTML(i.icon)||'📦'} ${escaparHTML(i.nombre)}</span>${descHtml}</div><button class="btn-usar" onclick="consumirObjetoMochilaGamer('${i.uid}','${escaparHTML(i.nombre)}','${escaparHTML(i.icon)||'📦'}')">Usar</button></div>`;});}renderInitializeLoaders();renderizarActividadGlobalInicio();}
+  let tv=document.getElementById('usr-vidas-top');if(tv)animarValorNumerico(tv,`${va}/${vt}`);let ib=document.getElementById('lista-inventario');ib.innerHTML='';let items=u.inventario?u.inventario.filter(i=>i.uid!=="init"):[];if(!items.length){ib.innerHTML='<span style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display)">Vacía</span>';}else{items.forEach(i=>{let descHtml=i.desc?`<div class="mochila-tag-desc">🎁 ${escaparHTML(i.desc)}</div>`:'';ib.innerHTML+=`<div class="mochila-tag${i.desc?' mochila-tag-pack':''}" title="Adquirido: ${escaparHTML(i.fecha)}${i.desc?' — Contiene: '+escaparHTML(i.desc):''}"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span>${escaparHTML(i.icon)||'📦'} ${escaparHTML(i.nombre)}</span>${descHtml}</div><button class="btn-usar" onclick="consumirObjetoMochilaGamer('${i.uid}','${escaparHTML(i.nombre)}','${escaparHTML(i.icon)||'📦'}')">Usar</button></div>`;});}renderInitializeLoaders();renderizarActividadGlobalInicio();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();}
 
 /* ═══ AVISO DE GACHA DISPONIBLE (ambos: Gacha normal y PF Gacha) ═══ */
 function _marcarAvisoBotonGacha(btnId, dotId, ultimo, umMs){
@@ -5527,6 +5557,168 @@ window.torneoSeleccionarGanador = function(torneoId, rondaIdx, matchIdx, ganador
   renderizarTorneoDetalle(torneoId);
   renderizarTorneos();
 };
+
+/* ══════════════════════════════════════
+   ASISTENTE — consejos y avisos generados a partir de los
+   datos reales del jugador. Nada de mensajes al azar: cada
+   regla mira un dato concreto (dinero, PF, vidas, tracker,
+   medallas, gacha, inventario, torneos, compras, actividad).
+   ══════════════════════════════════════ */
+function generarConsejosAsistente(u){
+  var msgs = [];
+  function add(nivel, icono, titulo, desc){ msgs.push({nivel:nivel, icono:icono, titulo:titulo, desc:desc}); }
+
+  var vidasAct = u.vidasActuales!==undefined ? u.vidasActuales : (u.vidasTotales||20);
+  var vidasTot = u.vidasTotales || 20;
+  var dinero = u.dinero || 0;
+  var pf = u.pf || 0;
+  var tracker = u.tracker || [];
+  var pendientes = tracker.filter(function(e){ return e.estado==='pendiente'; }).length;
+  var perdidos = tracker.filter(function(e){ return e.estado==='perdido'; }).length;
+  var totalRutas = tracker.length;
+  var numMed = u.numMedallas || 0;
+  var tipoMed = u.tipoMedallas === 'kahunas' ? 'pruebas' : 'medallas';
+  var inventario = (u.inventario||[]).filter(function(i){ return i.uid!=='init'; });
+  var ahora = Date.now(), unDia = 24*60*60*1000;
+  var gachaListo = (ahora-(u.ultimoHackeo||0)) >= unDia;
+  var gachaPFListo = (ahora-(u.ultimoGachaPF||0)) >= unDia;
+  var rachaActual = u.rachaActual || 0;
+  var torneosGanados = u.torneos || 0;
+
+  var torneosJugados = 0, torneoEnCursoParticipando = null;
+  if(baseDatos.torneos && userSesion){
+    Object.keys(baseDatos.torneos).forEach(function(id){
+      var t = baseDatos.torneos[id];
+      if(!t.participantes || t.participantes.indexOf(userSesion)===-1) return;
+      torneosJugados++;
+      if(t.estado !== 'finalizado') torneoEnCursoParticipando = t;
+    });
+  }
+
+  // ── SUPERVIVENCIA ──
+  if(vidasTot>0 && vidasAct===1){
+    add('critico','💀','¡Última vida en juego!', `Solo te queda 1 vida de ${vidasTot}. Un fallo más y toca hablar con el Cementerio.`);
+  } else if(vidasTot>0 && vidasAct<=Math.max(1,Math.ceil(vidasTot*0.25))){
+    add('importante','❤️‍🩹','Vidas bajo mínimos', `Te quedan ${vidasAct}/${vidasTot} vidas. Puede ser buen momento para jugar sobre seguro.`);
+  }
+  if(rachaActual<=-3){
+    add('importante','📉','Racha de pérdidas', `Llevas ${Math.abs(rachaActual)} capturas perdidas seguidas. Respira antes de la siguiente ruta.`);
+  } else if(rachaActual>=6){
+    add('consejo','🔥','¡Buena racha!', `Llevas ${rachaActual} capturas seguidas sin fallar. ¡Sigue así!`);
+  }
+  if(perdidos>=5 && rachaActual>-3){
+    add('consejo','⚰️','Bajas en el Locke', `Llevas ${perdidos} Pokémon perdidos en total en esta partida.`);
+  }
+
+  // ── PROGRESO (tracker) ──
+  if(totalRutas>0){
+    if(pendientes===0){
+      add('consejo','✅','Tracker al día', `Has resuelto las ${totalRutas} rutas asignadas. Buen ritmo.`);
+    } else if(pendientes<=3){
+      add('importante','🗺️','Rutas por decidir', `Tienes ${pendientes} ruta${pendientes===1?'':'s'} pendiente${pendientes===1?'':'s'} de capturar o marcar como perdida.`);
+    } else {
+      add('consejo','🗺️','Quedan rutas por delante', `Aún tienes ${pendientes} rutas sin resolver en el tracker.`);
+    }
+  }
+
+  // ── GIMNASIOS / KAHUNAS ──
+  if(numMed<8){
+    add('consejo', tipoMed==='pruebas'?'🌺':'🏅', 'Camino a la Liga', `Llevas ${numMed}/8 ${tipoMed}. Te quedan ${8-numMed} para completarlas todas.`);
+  } else {
+    add('consejo','🏆','¡Insignias completas!', `Has conseguido las 8 ${tipoMed}. ¿Ya vas por la Liga o el Alto Mando?`);
+  }
+
+  // ── ECONOMÍA (siempre aporta 2 mensajes, cubriendo todos los rangos) ──
+  if(dinero<500){
+    add('importante','💸','Fondos bajos', `Solo te quedan ${dinero.toLocaleString('es-ES')} P₠. Ahorra antes del próximo gasto grande.`);
+  } else if(dinero>=5000){
+    add('consejo','💰','Buena economía', `Tienes ${dinero.toLocaleString('es-ES')} P₠ acumulados. Casi cualquier objeto está a tu alcance.`);
+  } else {
+    add('consejo','💵','Economía estable', `Llevas ${dinero.toLocaleString('es-ES')} P₠ en el bolsillo.`);
+  }
+  if(pf>=30){
+    add('consejo','🔮','PF acumulados', `Tienes ${pf} PF sin gastar. Podrías invertirlos en la tienda o en el PF Gacha.`);
+  } else if(pf===0){
+    add('consejo','🔮','Sin PF ahora mismo', `No te queda ningún PF disponible. El Gacha o el PF Gacha pueden darte algunos.`);
+  } else {
+    add('consejo','🔮','PF disponibles', `Tienes ${pf} PF listos para gastar cuando quieras.`);
+  }
+
+  // ── GACHA ──
+  if(gachaListo && gachaPFListo){
+    add('importante','🎁','2 recompensas esperando', `Tienes el Gacha normal Y el PF Gacha disponibles para reclamar hoy.`);
+  } else if(gachaListo){
+    add('consejo','⚡','Gacha disponible', `Ya puedes reclamar tu recompensa diaria del Gacha.`);
+  } else if(gachaPFListo){
+    add('consejo','🔮','PF Gacha disponible', `Ya puedes reclamar tu PF Gacha de hoy.`);
+  }
+
+  // ── INVENTARIO ──
+  if(inventario.length===0){
+    add('consejo','🎒','Mochila vacía', `No tienes ningún objeto en la mochila. Revisa la tienda o prueba suerte en el Gacha.`);
+  } else if(inventario.length>=8){
+    add('consejo','🎒','Mochila cargada', `Tienes ${inventario.length} objetos guardados. Puede que alguno te sirva ya mismo.`);
+  } else {
+    add('consejo','🎒','Tu mochila', `Llevas ${inventario.length} objeto${inventario.length===1?'':'s'} guardado${inventario.length===1?'':'s'}.`);
+  }
+
+  // ── TORNEOS ──
+  if(torneoEnCursoParticipando){
+    add('importante','🏟️','Torneo en curso', `Estás participando en "${torneoEnCursoParticipando.nombre}". Consulta el cuadro para ver tu ronda.`);
+  }
+  if(torneosGanados>=3){
+    add('consejo','🏆','Racha de campeón', `Has ganado ${torneosGanados} torneos. ¡Eres toda una leyenda de la Liga!`);
+  } else if(torneosJugados>0 && torneosGanados===0){
+    add('consejo','🥈','Cerca de tu primer título', `Has competido en ${torneosJugados} torneo${torneosJugados===1?'':'s'} pero aún no has ganado ninguno.`);
+  } else if(torneosJugados===0){
+    add('consejo','🏟️','Sin torneos todavía', `Aún no has participado en ningún torneo. Anímate a apuntarte al próximo.`);
+  }
+
+  // ── COMPRAS ──
+  if((u.comprasDisponibles||0)===0){
+    add('consejo','🛍️','Compras agotadas por hoy', `Ya has usado tus compras disponibles. Se recargan automáticamente cada 6 horas.`);
+  }
+
+  // ── ACTIVIDAD GENERAL ──
+  var d = new Date();
+  var hoyStr = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+  var ultimoLog = (u.diarioLogs && u.diarioLogs.length) ? u.diarioLogs[u.diarioLogs.length-1] : null;
+  var actividadHoy = ultimoLog && ultimoLog.timestamp && ultimoLog.timestamp.indexOf(hoyStr)===0;
+  if(!actividadHoy){
+    add('importante','📓','Sin actividad hoy', `Todavía no has registrado ninguna acción hoy en tu Locke.`);
+  }
+
+  if(baseDatos.eventoSistema && baseDatos.eventoSistema !== 'normal'){
+    add('consejo','🌟','Evento activo', `Hay un evento especial en marcha ahora mismo: ${baseDatos.eventoSistema}.`);
+  }
+
+  var orden = {critico:0, importante:1, consejo:2};
+  msgs.sort(function(a,b){ return orden[a.nivel]-orden[b.nivel]; });
+  return msgs;
+}
+
+function renderizarAsistente(){
+  var lista = document.getElementById('asistente-lista');
+  var vacio = document.getElementById('asistente-vacio');
+  if(!lista) return;
+  if(!userSesion || !baseDatos.jugadores[userSesion]){
+    lista.innerHTML=''; if(vacio) vacio.style.display='block';
+    return;
+  }
+  var u = baseDatos.jugadores[userSesion];
+  var msgs = generarConsejosAsistente(u).slice(0,8);
+  if(!msgs.length){ lista.innerHTML=''; vacio.style.display='block'; return; }
+  vacio.style.display='none';
+  var etiquetas = {critico:'Crítico', importante:'Importante', consejo:'Consejo'};
+  lista.innerHTML = msgs.map(function(m){
+    return '<div class="asis-msg nivel-'+m.nivel+'">'
+      +'<div class="asis-msg-icono">'+m.icono+'</div>'
+      +'<div class="asis-msg-cuerpo">'
+      +'<div class="asis-msg-titulo">'+escaparHTML(m.titulo)+' <span class="asis-msg-badge nivel-'+m.nivel+'">'+etiquetas[m.nivel]+'</span></div>'
+      +'<div class="asis-msg-desc">'+escaparHTML(m.desc)+'</div>'
+      +'</div></div>';
+  }).join('');
+}
 
 /* ═══════════ RULETAS ═══════════ */
 var RULETA_COLORES = ['#d8293f','#3e6fa6','#c99a2e','#1e9e73','#8e4fc7','#5b52c7','#b8602e','#e2646f'];
