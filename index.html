@@ -493,6 +493,42 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 .pvp-historial-card.victoria-a{border-left-color:#22c55e}
 .pvp-historial-card.victoria-b{border-left-color:#3e6fa6}
 .pvp-historial-ganador{font-family:var(--font-display);font-size:11px;font-weight:700;flex:1}
+
+/* ═══ TORNEOS ═══ */
+.torneo-jugador-chip{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--bg-card);border:1px solid var(--borde);border-radius:99px;cursor:pointer;font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-secondary);transition:all .15s ease;user-select:none}
+.torneo-jugador-chip:hover{border-color:var(--borde-hover)}
+.torneo-jugador-chip.activo{border-color:var(--neon-arena);background:rgba(91,82,199,.12);color:var(--blanco)}
+.torneo-jugador-chip input{display:none}
+.torneo-item-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg-card);border:1px solid var(--borde);border-left:3px solid var(--neon-arena);border-radius:var(--r-md);cursor:pointer;transition:border-color .15s ease}
+.torneo-item-card:hover{border-color:var(--borde-hover)}
+.torneo-item-card.finalizado{border-left-color:#c99a2e}
+.torneo-item-nombre{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--blanco)}
+.torneo-item-meta{font-size:10px;color:var(--txt-muted);margin-top:2px}
+.torneo-item-badge{margin-left:auto;font-family:var(--font-display);font-size:9px;font-weight:700;padding:4px 9px;border-radius:99px;white-space:nowrap}
+.torneo-item-badge.en-curso{background:rgba(91,82,199,.15);color:var(--neon-arena)}
+.torneo-item-badge.finalizado{background:rgba(201,154,46,.15);color:#c99a2e}
+.torneo-cabecera{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.torneo-cabecera-nombre{font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--blanco)}
+.torneo-cabecera-meta{font-size:11px;color:var(--txt-muted);margin-top:4px}
+.torneo-campeon-banner{text-align:center;padding:22px 16px;background:linear-gradient(135deg,rgba(201,154,46,.14),rgba(201,154,46,.03));border:1px solid rgba(201,154,46,.35);border-radius:var(--r-lg);margin-bottom:20px}
+.torneo-campeon-trofeo{font-size:44px;filter:drop-shadow(0 0 18px rgba(245,197,24,.35))}
+.torneo-campeon-nombre{font-family:var(--font-display);font-size:20px;font-weight:900;color:#f5c518;margin-top:6px}
+.torneo-campeon-sub{font-size:11px;color:var(--txt-muted);margin-top:6px}
+.torneo-bracket-scroll{overflow-x:auto;padding-bottom:10px}
+.torneo-bracket-track{display:flex;gap:34px;min-width:max-content;padding:6px 2px}
+.torneo-ronda-col{display:flex;flex-direction:column;justify-content:space-around;gap:16px;min-width:200px}
+.torneo-ronda-titulo{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--neon-arena);text-align:center;margin-bottom:4px}
+.torneo-match-card{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);overflow:hidden}
+.torneo-match-jugador{display:flex;align-items:center;gap:8px;padding:9px 10px;font-family:var(--font-body);font-size:12px;color:var(--txt-secondary);cursor:pointer;transition:background .15s ease;border-bottom:1px solid var(--borde)}
+.torneo-match-jugador:last-child{border-bottom:none}
+.torneo-match-jugador:hover{background:var(--bg-overlay)}
+.torneo-match-jugador.ganador{background:rgba(34,197,94,.1);color:var(--blanco);font-weight:700}
+.torneo-match-jugador.ganador .torneo-match-check{opacity:1}
+.torneo-match-jugador.perdedor{opacity:.45;text-decoration:line-through}
+.torneo-match-jugador.bye{opacity:.4;cursor:default;font-style:italic}
+.torneo-match-jugador.no-clicable{cursor:default}
+.torneo-match-check{opacity:0;color:var(--neon-legal);font-size:11px;margin-left:auto}
+.torneo-match-vacio{color:var(--txt-muted);font-style:italic}
 .pvp-historial-meta{font-size:10px;color:var(--txt-muted)}
 .pvp-racha{font-size:10px;color:#c99a2e;font-family:var(--font-display)}
 #section-hall-of-fame::after{content:'🏆';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
@@ -605,6 +641,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   <div class="more-sheet-handle"></div>
   <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
   <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
+  <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
   <div class="more-sheet-item" onclick="navegarA('vidas-sacrificios');cerrarMasSheet()"><span class="ms-icon">❤️</span> Vidas y Sacrificios</div>
   <div class="more-sheet-item" onclick="navegarA('medallas-torneos');cerrarMasSheet()"><span class="ms-icon">🏆</span> Medallas y Torneos</div>
   <div class="more-sheet-item" onclick="cerrarMasSheet();abrirOverlayDiarioNativo()"><span class="ms-icon">📖</span> Bitácora</div>
@@ -661,6 +698,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-section-label">Actividad</div>
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span> Eventos</div>
       <div class="nav-item" id="nav-duelos" onclick="navegarA('duelos')"><span class="nav-icon">🥊</span> Duelos PvP</div>
+      <div class="nav-item" id="nav-torneos" onclick="navegarA('torneos')"><span class="nav-icon">🏟️</span> Torneos</div>
       <div class="nav-section-label">Personal</div>
       <div class="nav-item" id="nav-perfil" onclick="navegarA('perfil')"><span class="nav-icon">👤</span> Perfil</div>
       <div class="nav-item" id="nav-vidas-sacrificios" onclick="navegarA('vidas-sacrificios')"><span class="nav-icon">❤️</span> Vidas y Sacrificios</div>
@@ -986,6 +1024,53 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div class="card-title">📋 Historial de Duelos</div>
         <div id="pvp-historial" style="display:flex;flex-direction:column;gap:8px"></div>
         <div id="pvp-historial-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:16px 0">Aún no se ha disputado ningún duelo.</div>
+      </div>
+    </section>
+
+    <!-- TORNEOS -->
+    <section id="section-torneos" class="page-section">
+      <div class="hero-strip">
+        <div class="section-title">🏟️ Torneos</div>
+        <div class="section-subtitle">Copas de eliminación directa entre entrenadores</div>
+      </div>
+
+      <div id="torneos-vista-lista">
+        <div class="card" style="margin-bottom:16px" id="torneo-card-crear">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:0">
+            <div class="card-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none">➕ Crear Torneo</div>
+            <button class="btn-admin arena" onclick="torneoAlternarCreacion()" id="torneo-btn-toggle-crear">➕ Nuevo Torneo</button>
+          </div>
+          <div id="torneo-form-crear" style="display:none;margin-top:16px;padding-top:14px;border-top:1px solid var(--borde)">
+            <div style="margin-bottom:14px">
+              <label class="form-label">Nombre del Torneo</label>
+              <input type="text" id="torneo-nombre-input" class="admin-input" style="margin:0" placeholder="Ej: Copa Silph Co. #1" autocomplete="off">
+            </div>
+            <div style="margin-bottom:14px">
+              <label class="form-label">Participantes <span id="torneo-contador-participantes" style="color:var(--neon-legal);text-transform:none;font-weight:400">(0 seleccionados)</span></label>
+              <div id="torneo-lista-jugadores" style="display:flex;flex-wrap:wrap;gap:6px;max-height:230px;overflow-y:auto;padding:8px;background:var(--bg-overlay);border-radius:var(--r-md);border:1px solid var(--borde)"></div>
+            </div>
+            <button class="btn-admin arena" style="width:100%;justify-content:center" onclick="torneoCrearYGenerarBracket()">🏆 Generar Cuadro y Crear Torneo</button>
+            <div id="torneo-crear-estado" style="margin-top:10px;font-size:11px;color:#e2646f;text-align:center"></div>
+          </div>
+          <div id="torneo-solo-admin-aviso" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;margin-top:10px">Solo el Admin puede crear y arbitrar torneos. Tú puedes ver los torneos en curso y el historial.</div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">⚔️ Torneos en Curso</div>
+          <div id="torneos-en-curso-lista" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div id="torneos-en-curso-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:16px 0">No hay torneos en curso.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📜 Historial de Torneos</div>
+          <div id="torneos-historial-lista" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div id="torneos-historial-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:16px 0">Todavía no se ha completado ningún torneo.</div>
+        </div>
+      </div>
+
+      <div id="torneos-vista-detalle" style="display:none">
+        <button class="btn-admin" onclick="torneoVolverALista()" style="margin-bottom:14px">← Volver a Torneos</button>
+        <div id="torneo-detalle-contenido"></div>
       </div>
     </section>
 
@@ -3998,7 +4083,7 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -4012,7 +4097,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
                     window._bdVerificandoVacio=false;
                     if(!snap2.val()){
                         /* Confirmado dos veces por separado: ahora sí, base de datos nueva de verdad. */
-                        baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[]};
+                        baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[],torneos:{}};
                         window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));
                         set(ref(db,'silph_co_market'),baseDatos);
                     }
@@ -4023,7 +4108,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
         return;
     }
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();renderizarMapaInicio();}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();renderizarMapaInicio();}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
@@ -4031,7 +4116,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
    sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
-const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog'];
+const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos'];
 async function guardarBD(){
   const local = baseDatos;
   try{
@@ -4071,7 +4156,7 @@ window.navegarA=function(s){
     mostrarNotificacion(`🚫 Estás baneado de esta sección. Motivo: ${mot}`,'error','🚫','Acceso restringido');
     s='inicio';
   }
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
@@ -5162,6 +5247,285 @@ window.renderizarTracker = function(){
   if(_trackerVista === 'mapa' && window.renderizarMapaTracker) renderizarMapaTracker();
   // Siempre refrescar el mapa del inicio
   if(window.renderizarMapaInicio) renderizarMapaInicio();
+};
+
+/* ══════════════════════════════════════
+   TORNEOS — sistema de eliminación directa
+   ══════════════════════════════════════ */
+let _torneoDetalleId = null;
+
+function _torneoEsAdmin(){ return !!(userSesion && userSesion.toLowerCase()==='srwiwa'); }
+function _torneoNombreJ(id){ return id ? escaparHTML(id.toUpperCase()) : '—'; }
+
+/* Baraja un array (Fisher-Yates) */
+function torneoBarajar(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j = Math.floor(Math.random()*(i+1));
+    var tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+  }
+  return a;
+}
+
+/* Genera una ronda emparejando la lista de jugadores que entran en ella.
+   Si el número es par, todos quedan emparejados (sin ningún bye).
+   Si es impar, uno de ellos recibe el bye (elegido al azar, colocado en una
+   posición aleatoria de la ronda) y pasa automáticamente a la siguiente. */
+function torneoGenerarRondaDesdeLista(participantes){
+  var lista = torneoBarajar(participantes);
+  var pares = [];
+  if(lista.length % 2 === 1){
+    var idxBye = Math.floor(Math.random()*lista.length);
+    var jugadorBye = lista.splice(idxBye,1)[0];
+    for(var i=0;i<lista.length;i+=2){ pares.push({a:lista[i], b:lista[i+1], ganador:null, bye:false}); }
+    var posInsercion = Math.floor(Math.random()*(pares.length+1));
+    pares.splice(posInsercion, 0, {a:jugadorBye, b:null, ganador:jugadorBye, bye:true});
+  } else {
+    for(var i=0;i<lista.length;i+=2){ pares.push({a:lista[i], b:lista[i+1], ganador:null, bye:false}); }
+  }
+  return pares;
+}
+
+/* Genera la primera ronda a partir de la lista de IDs de jugadores */
+function torneoGenerarBracket(participantesIds){
+  return [torneoGenerarRondaDesdeLista(participantesIds)];
+}
+
+/* Nombre de la ronda según cuántos enfrentamientos tiene (no según jugadores totales,
+   para que un cuadro con byes de por medio siga mostrando el nombre correcto) */
+function torneoNombreRonda(ronda){
+  var numPartidos = ronda.length;
+  if(numPartidos === 1) return 'Final';
+  if(numPartidos === 2) return 'Semifinal';
+  if(numPartidos === 4) return 'Cuartos de Final';
+  if(numPartidos === 8) return 'Octavos de Final';
+  if(numPartidos === 16) return 'Dieciseisavos de Final';
+  var numJugadores = ronda.reduce(function(acc,m){ return acc + (m.bye?1:2); }, 0);
+  return 'Ronda de '+numJugadores+' Jugadores';
+}
+
+/* Si la ronda actual está completa, genera la siguiente (o finaliza el torneo si ya no quedan más) */
+function torneoIntentarAvanzar(t){
+  var rondas = t.rondas;
+  var ultima = rondas[rondas.length-1];
+  var todasResueltas = ultima.every(function(m){ return !!m.ganador; });
+  if(!todasResueltas) return;
+  var ganadores = ultima.map(function(m){ return m.ganador; });
+  if(ganadores.length === 1){
+    if(t.estado === 'finalizado') return; // ya se procesó
+    var finalMatch = ultima[0];
+    t.campeon = finalMatch.ganador;
+    t.subcampeon = (finalMatch.ganador === finalMatch.a) ? finalMatch.b : finalMatch.a;
+    t.estado = 'finalizado';
+    var d = new Date();
+    t.fechaFin = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+    if(baseDatos.jugadores[t.campeon]){
+      baseDatos.jugadores[t.campeon].torneos = (baseDatos.jugadores[t.campeon].torneos||0) + 1;
+    }
+    inyectarEntradaDiarioAutomaticaPara(t.campeon, `🏆 ¡Campeón del torneo "${t.nombre}"!`);
+    return;
+  }
+  var siguiente = torneoGenerarRondaDesdeLista(ganadores);
+  rondas.push(siguiente);
+  torneoIntentarAvanzar(t);
+}
+
+/* ═══ UI: lista de participantes al crear un torneo ═══ */
+window.torneoAlternarCreacion = function(){
+  var form = document.getElementById('torneo-form-crear');
+  var visible = form.style.display !== 'none';
+  form.style.display = visible ? 'none' : 'block';
+  if(!visible) torneoRenderizarListaParticipantes();
+};
+
+function torneoRenderizarListaParticipantes(){
+  var cont = document.getElementById('torneo-lista-jugadores');
+  if(!cont) return;
+  var ids = Object.keys(baseDatos.jugadores||{}).sort();
+  if(!ids.length){ cont.innerHTML = '<span style="color:var(--txt-muted);font-size:11px">No hay entrenadores registrados todavía.</span>'; return; }
+  cont.innerHTML = ids.map(function(id){
+    return '<label class="torneo-jugador-chip" id="torneo-chip-'+id+'">'
+      +'<input type="checkbox" value="'+id+'" onchange="torneoActualizarContador()">'
+      +'<span>'+escaparHTML(id.toUpperCase())+'</span></label>';
+  }).join('');
+  // Sincroniza el estilo "activo" del chip con el checkbox interno
+  cont.querySelectorAll('.torneo-jugador-chip').forEach(function(chip){
+    var cb = chip.querySelector('input');
+    cb.addEventListener('change', function(){ chip.classList.toggle('activo', cb.checked); });
+  });
+  torneoActualizarContador();
+}
+
+window.torneoActualizarContador = function(){
+  var n = document.querySelectorAll('#torneo-lista-jugadores input:checked').length;
+  var span = document.getElementById('torneo-contador-participantes');
+  if(span) span.textContent = '('+n+' seleccionado'+(n===1?'':'s')+')';
+};
+
+window.torneoCrearYGenerarBracket = function(){
+  if(!_torneoEsAdmin()){ mostrarNotificacion('Solo el Admin puede crear torneos.','error','🔒'); return; }
+  var nombreInput = document.getElementById('torneo-nombre-input');
+  var estadoEl = document.getElementById('torneo-crear-estado');
+  var nombre = (nombreInput.value||'').trim();
+  var ids = Array.from(document.querySelectorAll('#torneo-lista-jugadores input:checked')).map(function(cb){return cb.value;});
+  if(!nombre){ estadoEl.textContent = 'Ponle un nombre al torneo.'; return; }
+  if(ids.length < 2){ estadoEl.textContent = 'Selecciona al menos 2 participantes.'; return; }
+  estadoEl.textContent = '';
+  var id = 'torneo_'+Date.now();
+  var d = new Date();
+  var fecha = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+  var rondas = torneoGenerarBracket(ids);
+  var t = {
+    id: id,
+    nombre: nombre,
+    fecha: fecha,
+    participantes: ids,
+    rondas: rondas,
+    estado: 'en_curso',
+    campeon: null,
+    subcampeon: null,
+    creadoPor: userSesion
+  };
+  torneoIntentarAvanzar(t); // por si con 2 jugadores ya queda resuelto tras los byes (imposible con n=2, pero por seguridad)
+  if(!baseDatos.torneos) baseDatos.torneos = {};
+  baseDatos.torneos[id] = t;
+  var ts = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+  registrarActividadGlobal(userSesion, `🏟️ Se ha creado el torneo "${nombre}" con ${ids.length} participantes`, ts);
+  logAdmin('Crear torneo', `${nombre} (${ids.length} participantes)`);
+  guardarBD();
+  reproducirSonido('exito');
+  nombreInput.value = '';
+  document.getElementById('torneo-form-crear').style.display = 'none';
+  torneoVerDetalle(id);
+};
+
+/* ═══ UI: listas (en curso / historial) ═══ */
+function renderizarTorneos(){
+  var listaEnCurso = document.getElementById('torneos-en-curso-lista');
+  var vacioEnCurso = document.getElementById('torneos-en-curso-vacio');
+  var listaHist = document.getElementById('torneos-historial-lista');
+  var vacioHist = document.getElementById('torneos-historial-vacio');
+  if(!listaEnCurso) return;
+
+  var esAdmin = _torneoEsAdmin();
+  var btnToggle = document.getElementById('torneo-btn-toggle-crear');
+  var avisoNoAdmin = document.getElementById('torneo-solo-admin-aviso');
+  if(btnToggle) btnToggle.style.display = esAdmin ? '' : 'none';
+  if(avisoNoAdmin) avisoNoAdmin.style.display = esAdmin ? 'none' : 'block';
+  if(!esAdmin){ var f = document.getElementById('torneo-form-crear'); if(f) f.style.display='none'; }
+
+  var torneos = baseDatos.torneos || {};
+  var todos = Object.keys(torneos).map(function(id){ return torneos[id]; });
+  var enCurso = todos.filter(function(t){ return t.estado !== 'finalizado'; });
+  var historial = todos.filter(function(t){ return t.estado === 'finalizado'; });
+
+  if(!enCurso.length){ listaEnCurso.innerHTML=''; vacioEnCurso.style.display='block'; }
+  else{
+    vacioEnCurso.style.display='none';
+    listaEnCurso.innerHTML = enCurso.map(function(t){
+      return '<div class="torneo-item-card" onclick="torneoVerDetalle(\''+t.id+'\')">'
+        +'<div><div class="torneo-item-nombre">🏟️ '+escaparHTML(t.nombre)+'</div>'
+        +'<div class="torneo-item-meta">'+t.participantes.length+' participantes · '+escaparHTML(t.fecha)+'</div></div>'
+        +'<span class="torneo-item-badge en-curso">EN CURSO</span></div>';
+    }).join('');
+  }
+
+  if(!historial.length){ listaHist.innerHTML=''; vacioHist.style.display='block'; }
+  else{
+    vacioHist.style.display='none';
+    historial.sort(function(a,b){ return (b.fechaFin||'').localeCompare(a.fechaFin||''); });
+    listaHist.innerHTML = historial.map(function(t){
+      return '<div class="torneo-item-card finalizado" onclick="torneoVerDetalle(\''+t.id+'\')">'
+        +'<div><div class="torneo-item-nombre">🏆 '+escaparHTML(t.nombre)+'</div>'
+        +'<div class="torneo-item-meta">Campeón: '+_torneoNombreJ(t.campeon)+' · '+escaparHTML(t.fechaFin||t.fecha)+'</div></div>'
+        +'<span class="torneo-item-badge finalizado">FINALIZADO</span></div>';
+    }).join('');
+  }
+
+  if(_torneoDetalleId && torneos[_torneoDetalleId]) renderizarTorneoDetalle(_torneoDetalleId);
+}
+
+window.torneoVerDetalle = function(id){
+  _torneoDetalleId = id;
+  document.getElementById('torneos-vista-lista').style.display = 'none';
+  document.getElementById('torneos-vista-detalle').style.display = 'block';
+  renderizarTorneoDetalle(id);
+};
+
+window.torneoVolverALista = function(){
+  _torneoDetalleId = null;
+  document.getElementById('torneos-vista-detalle').style.display = 'none';
+  document.getElementById('torneos-vista-lista').style.display = 'block';
+  renderizarTorneos();
+};
+
+function renderizarTorneoDetalle(id){
+  var cont = document.getElementById('torneo-detalle-contenido');
+  if(!cont) return;
+  var t = (baseDatos.torneos||{})[id];
+  if(!t){ cont.innerHTML = '<div class="card">Este torneo ya no existe.</div>'; return; }
+  var esAdmin = _torneoEsAdmin();
+  var totalRondas = t.rondas.length;
+
+  var html = '<div class="card" style="margin-bottom:16px">';
+  html += '<div class="torneo-cabecera"><div><div class="torneo-cabecera-nombre">🏟️ '+escaparHTML(t.nombre)+'</div>';
+  html += '<div class="torneo-cabecera-meta">'+t.participantes.length+' participantes · Creado el '+escaparHTML(t.fecha)+(t.estado==='finalizado' ? (' · Finalizado el '+escaparHTML(t.fechaFin)) : '')+'</div></div>';
+  html += '<span class="torneo-item-badge '+(t.estado==='finalizado'?'finalizado':'en-curso')+'">'+(t.estado==='finalizado'?'FINALIZADO':'EN CURSO')+'</span></div>';
+
+  if(t.estado === 'finalizado'){
+    html += '<div class="torneo-campeon-banner">'
+      + '<div class="torneo-campeon-trofeo">🏆</div>'
+      + '<div class="torneo-campeon-nombre">'+_torneoNombreJ(t.campeon)+'</div>'
+      + '<div class="torneo-campeon-sub">Subcampeón: '+_torneoNombreJ(t.subcampeon)+'</div></div>';
+  }
+  html += '</div>';
+
+  html += '<div class="card">';
+  html += '<div class="card-title">🗺️ Cuadro del Torneo</div>';
+  html += '<div class="torneo-bracket-scroll"><div class="torneo-bracket-track">';
+  t.rondas.forEach(function(ronda, rIdx){
+    var esRondaActiva = (rIdx === totalRondas-1) && t.estado !== 'finalizado';
+    html += '<div class="torneo-ronda-col"><div class="torneo-ronda-titulo">'+torneoNombreRonda(ronda)+'</div>';
+    ronda.forEach(function(m, mIdx){
+      html += '<div class="torneo-match-card">';
+      [['a',m.a],['b',m.b]].forEach(function(par){
+        var lado = par[0], jugadorId = par[1];
+        if(jugadorId === null){
+          html += '<div class="torneo-match-jugador bye torneo-match-vacio">— BYE —</div>';
+          return;
+        }
+        var esGanador = m.ganador === jugadorId;
+        var esPerdedor = m.ganador && m.ganador !== jugadorId;
+        var clases = 'torneo-match-jugador'+(esGanador?' ganador':'')+(esPerdedor?' perdedor':'');
+        var puedeClicar = esAdmin && esRondaActiva && !m.bye;
+        if(!puedeClicar) clases += ' no-clicable';
+        var onclick = puedeClicar ? ' onclick="torneoSeleccionarGanador(\''+t.id+'\','+rIdx+','+mIdx+',\''+jugadorId+'\')"' : '';
+        html += '<div class="'+clases+'"'+onclick+'>'
+          + '<span>'+_torneoNombreJ(jugadorId)+'</span>'
+          + '<span class="torneo-match-check">✓</span></div>';
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  html += '</div></div></div>';
+
+  cont.innerHTML = html;
+}
+
+window.torneoSeleccionarGanador = function(torneoId, rondaIdx, matchIdx, ganadorId){
+  if(!_torneoEsAdmin()){ mostrarNotificacion('Solo el Admin puede arbitrar torneos.','error','🔒'); return; }
+  var t = (baseDatos.torneos||{})[torneoId];
+  if(!t || t.estado === 'finalizado') return;
+  if(rondaIdx !== t.rondas.length-1) return; // solo se puede jugar la ronda activa
+  var match = t.rondas[rondaIdx][matchIdx];
+  if(!match || match.bye) return;
+  match.ganador = ganadorId;
+  torneoIntentarAvanzar(t);
+  guardarBD();
+  reproducirSonido('exito');
+  renderizarTorneoDetalle(torneoId);
+  renderizarTorneos();
 };
 
 /* ═══════════ RULETAS ═══════════ */
