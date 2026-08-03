@@ -434,6 +434,7 @@ body.tema-egglocke{--neon-packs:#fbbf24;--neon-legal:#fde68a;--neon-ilegal:#c99a
 body.tema-randomlocke{--neon-packs:#34d399;--neon-legal:#6ee7b7;--neon-ilegal:#1e9e73}
 body.tema-shinylocke{--neon-packs:#c084fc;--neon-legal:#a78bfa;--neon-ilegal:#e879f9}
 body.tema-duallinks{--neon-packs:#facc15;--neon-legal:#4ade80;--neon-ilegal:#b8602e}
+body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c2410c}
 
 /* Generador de tiendas - layout responsive */
 .gen-label{font-size:9px;color:var(--neon-packs);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px}
@@ -565,6 +566,7 @@ body.tema-egglocke    .hero-strip{--hero-color:#fbbf24;--hero-glow:rgba(251,191,
 body.tema-randomlocke .hero-strip{--hero-color:#34d399;--hero-glow:rgba(52,211,153,.09)}
 body.tema-shinylocke .hero-strip{--hero-color:#c084fc;--hero-glow:rgba(192,132,252,.09)}
 body.tema-duallinks  .hero-strip{--hero-color:#facc15;--hero-glow:rgba(250,204,21,.09)}
+body.tema-monotype   .hero-strip{--hero-color:#fb923c;--hero-glow:rgba(251,146,60,.09)}
 body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgba(201,154,46,.07)}
 @keyframes lockeFadeTransition{0%{opacity:1}45%{opacity:0}55%{opacity:0}100%{opacity:1}}
 .locke-transitioning{animation:lockeFadeTransition .6s ease}
@@ -1518,6 +1520,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
                 <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="EvoLocke"> 🧬 EvoLocke</label>
                 <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="Shinylocke"> ✨ Shinylocke</label>
                 <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="SoulLink"> ⚡ Soul-Link</label>
+                <label class="nl-checkbox-label" style="font-size:11px;padding:7px 10px"><input type="checkbox" name="museo-modal" value="Monotype"> 🎯 Monotype</label>
               </div>
             </div>
 
@@ -1604,6 +1607,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
                 <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="EvoLocke"> 🧬 EvoLocke</label>
                 <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="Shinylocke"> ✨ Shinylocke</label>
                 <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="SoulLink"> ⚡ Soul-Link</label>
+                <label class="nl-checkbox-label"><input type="checkbox" name="nl-tipo" value="Monotype"> 🎯 Monotype</label>
               </div>
             </div>
 
@@ -3455,6 +3459,7 @@ var NL_TIPOS = {
   'Shinylocke':  {icon:'✨', color:'#c084fc', bg:'rgba(192,132,252,.06)', tema:'shinylocke',  label:'Shinylocke'},
   'SoulLink':    {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks',   label:'Soul-Link'},
   'DualLinks':   {icon:'⚡', color:'#facc15', bg:'rgba(250,204,21,.06)',  tema:'duallinks',   label:'Soul-Link'},
+  'Monotype':    {icon:'🎯', color:'#fb923c', bg:'rgba(251,146,60,.06)', tema:'monotype',    label:'Monotype'},
 };
 
 var _nlJuegoSel = null;
