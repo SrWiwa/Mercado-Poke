@@ -398,6 +398,44 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .tracker-progreso-bar{height:6px;background:var(--bg-overlay);border-radius:4px;overflow:hidden;display:flex;margin-bottom:14px}
 .tracker-progreso-fill{height:100%;background:var(--neon-legal);transition:width .3s ease}
 .tracker-progreso-fill.perdido{background:var(--neon-ilegal)}
+.mision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.mision-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;gap:8px;transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.mision-card:hover{border-color:var(--borde-hover);transform:translateY(-2px)}
+.mision-card.dif-dificil{border-color:rgba(62,111,166,.3)}
+.mision-card.dif-epica{border-color:rgba(201,154,46,.4);background:linear-gradient(135deg,var(--bg-elevated),rgba(201,154,46,.05))}
+.mision-card.reclamada{opacity:.6}
+.mision-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mision-badge-dif{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.mision-badge-dif.dif-comun{background:rgba(30,158,115,.1);color:#34d399;border:1px solid rgba(30,158,115,.2)}
+.mision-badge-dif.dif-dificil{background:rgba(62,111,166,.1);color:#93c5fd;border:1px solid rgba(62,111,166,.2)}
+.mision-badge-dif.dif-epica{background:rgba(201,154,46,.15);color:var(--neon-packs);border:1px solid rgba(201,154,46,.3)}
+.mision-recompensa-chip{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-secondary);white-space:nowrap}
+.mision-icon{font-size:26px}
+.mision-titulo{font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--txt-primary)}
+.mision-desc{font-size:11px;color:var(--txt-secondary);line-height:1.4;min-height:28px}
+.mision-progreso-bar{width:100%;background:rgba(0,0,0,.4);border-radius:99px;height:9px;overflow:hidden;border:1px solid rgba(255,255,255,.04)}
+.mision-progreso-fill{height:100%;border-radius:99px;background:var(--neon-legal);transition:width .4s ease}
+.mision-progreso-fill.dif-dificil{background:var(--neon-intercambio)}
+.mision-progreso-fill.dif-epica{background:var(--neon-packs)}
+.mision-progreso-num{font-family:var(--font-display);font-size:10px;color:var(--txt-muted);text-align:right}
+.mision-accion{margin-top:4px}
+.btn-mision-reclamar{width:100%;padding:10px;border-radius:var(--r-md);background:rgba(201,154,46,.12);color:var(--neon-packs);border:1px solid rgba(201,154,46,.35);font-family:var(--font-display);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s}
+.btn-mision-reclamar:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 4px 18px -2px rgba(201,154,46,.4)}
+.btn-mision-reclamar:active{transform:scale(.96)}
+.btn-mision-manual{width:100%;padding:9px;border-radius:var(--r-md);background:rgba(62,111,166,.1);color:var(--neon-intercambio);border:1px solid rgba(62,111,166,.3);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;transition:all .18s}
+.btn-mision-manual:hover{filter:brightness(1.15)}
+.mision-reclamada-tag{text-align:center;font-family:var(--font-display);font-size:11px;font-weight:700;color:#34d399;padding:9px;background:rgba(30,158,115,.08);border:1px solid rgba(30,158,115,.2);border-radius:var(--r-md)}
+.mision-historial-lista{display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto}
+.mision-historial-item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(0,0,0,.15);border:1px solid var(--borde);border-radius:var(--r-sm);padding:8px 10px;font-size:11px;flex-wrap:wrap}
+.mision-historial-item .mh-fecha{color:var(--txt-muted);font-family:var(--font-display);font-size:9px;white-space:nowrap}
+.mision-historial-item .mh-nombre{color:var(--txt-primary);flex:1;min-width:120px}
+.mision-historial-item .mh-recompensa{color:var(--neon-packs);font-family:var(--font-display);font-weight:700;white-space:nowrap}
+.mision-historial-vacio{text-align:center;font-size:11px;color:var(--txt-muted);font-style:italic;padding:14px 0}
+.inicio-misiones-resumen{display:flex;align-items:center;justify-content:space-between;font-family:var(--font-display);font-size:12px;color:var(--txt-primary);flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.inicio-misiones-resumen .mision-countdown-valor-mini{color:var(--neon-packs);font-weight:700}
+.inicio-misiones-aviso{font-size:11px;color:var(--neon-packs);background:rgba(201,154,46,.1);border:1px solid rgba(201,154,46,.25);border-radius:var(--r-sm);padding:7px 10px;margin-bottom:8px;font-family:var(--font-display)}
+.btn-mision-ver-todas{width:100%;padding:9px;border-radius:var(--r-md);background:rgba(216,41,63,.08);color:var(--rojo);border:1px solid rgba(216,41,63,.22);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer}
+.btn-mision-ver-todas:hover{filter:brightness(1.15)}
 .tracker-vista-btn{padding:5px 12px;border-radius:var(--r-sm);border:1px solid var(--borde);background:transparent;color:var(--txt-muted);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;transition:all .15s}
 .tracker-vista-btn.activo{border-color:var(--neon-packs);color:var(--neon-packs);background:rgba(99,102,241,.1)}
 .tracker-mapa-leyenda-item{display:flex;align-items:center;gap:5px;font-size:10px;font-family:var(--font-display);color:var(--txt-secondary)}
@@ -647,12 +685,14 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   <div class="bn-item" id="bn-tiendas" onclick="navegarA('tiendas')"><span class="bn-icon">🏪</span><span class="bn-label">Tienda</span></div>
   <div class="bn-item" id="bn-eventos" onclick="navegarA('eventos')"><span class="bn-icon">⚔️</span><span class="bn-label">Eventos</span></div>
   <div class="bn-item" id="bn-tracker" onclick="navegarA('tracker')"><span class="bn-icon">🗺️</span><span class="bn-label">Tracker</span></div>
+  <div class="bn-item" id="bn-misiones" onclick="navegarA('misiones')"><span class="bn-icon">📋</span><span class="bn-label">Misiones</span></div>
   <div class="bn-item" id="bn-perfil" onclick="navegarA('perfil')"><span class="bn-icon">👤</span><span class="bn-label">Perfil</span></div>
   <div class="bn-item" id="bn-mas" onclick="abrirMasSheet()"><span class="bn-icon">☰</span><span class="bn-label">Más</span></div>
 </nav>
 <div id="more-sheet-backdrop" class="drawer-backdrop" onclick="cerrarMasSheet()"></div>
 <div id="more-sheet" class="more-sheet">
   <div class="more-sheet-handle"></div>
+  <div class="more-sheet-item" onclick="navegarA('misiones');cerrarMasSheet()"><span class="ms-icon">📋</span> Misiones Diarias</div>
   <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
   <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
   <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
@@ -706,6 +746,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <nav class="sidebar-nav">
       <div class="nav-section-label">Principal</div>
       <div class="nav-item active" id="nav-inicio" onclick="navegarA('inicio')"><span class="nav-icon">🏠</span> Inicio</div>
+      <div class="nav-item" id="nav-misiones" onclick="navegarA('misiones')"><span class="nav-icon">📋</span> Misiones Diarias</div>
       <div class="nav-section-label">Mercado</div>
       <div class="nav-item" id="nav-tiendas" onclick="navegarA('tiendas')"><span class="nav-icon">🏪</span> Tiendas</div>
       <div class="nav-item" id="nav-red-entrenadores" onclick="navegarA('red-entrenadores')"><span class="nav-icon">📡</span> Red de Entrenadores</div>
@@ -765,6 +806,12 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
       </div>
       <div class="inicio-ticker" id="inicio-ticker-vivo"><span>📡</span><span id="inicio-ticker-texto">Cargando pulso de la red…</span></div>
+      <div class="card mision-widget-card" id="inicio-misiones-widget-card" style="margin-bottom:14px;cursor:pointer;border-color:rgba(201,154,46,.3);background:linear-gradient(135deg,var(--bg-elevated),rgba(201,154,46,.05))" onclick="navegarA('misiones')">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(201,154,46,.2)">
+          <div class="card-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none">📋 Misiones Diarias</div>
+        </div>
+        <div id="inicio-misiones-widget"></div>
+      </div>
       <div class="card" style="margin-bottom:14px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(216,41,63,.18)">
           <div class="card-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none">📰 Actividad Reciente de la Red</div>
@@ -799,6 +846,25 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
         <div id="inicio-mapa-leyenda" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px"></div>
         <div id="inicio-mapa-svg" style="width:100%;overflow-x:auto"></div>
+      </div>
+    </section>
+    <!-- MISIONES DIARIAS -->
+    <section id="section-misiones" class="page-section">
+      <div class="section-header"><div class="section-title">Misiones Diarias</div><div class="section-subtitle">Pequeños retos que se renuevan cada 12 horas</div></div>
+      <div class="card mision-countdown-card" style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:26px">⏳</span>
+          <div>
+            <div style="font-family:var(--font-display);font-size:10px;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.5px">Próxima rotación en</div>
+            <div class="mision-countdown-valor" style="font-family:var(--font-display);font-size:20px;font-weight:900;color:var(--neon-packs)">--:--:--</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">🔄 Las misiones se renuevan automáticamente</div>
+      </div>
+      <div class="mision-grid" id="misiones-grid"></div>
+      <div class="card" style="margin-top:18px">
+        <div class="card-title">📜 Historial de Misiones Completadas</div>
+        <div id="misiones-historial-lista" class="mision-historial-lista"></div>
       </div>
     </section>
     <!-- TIENDAS -->
@@ -4138,7 +4204,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
         return;
     }
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
@@ -4179,6 +4245,339 @@ async function guardarBD(){
   set(ref(db,'silph_co_market'), local);
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   MISIONES DIARIAS — sistema completo, rotación cada 12h
+   Determinista por tiempo (sin escrituras globales en Firebase):
+   todos los clientes calculan la misma rotación a partir de la hora.
+   ═══════════════════════════════════════════════════════════════ */
+const MISION_MS_ROTACION = 12*60*60*1000;
+
+function misionMulberry32(seed){
+  return function(){
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+const MISION_POOL_COMUN = [
+  {tipo:'capturas', metaOpts:[2,3,4], titulo:'Cazador Novato', desc:function(m){return `Completa ${m} capturas.`;}, icon:'🎯'},
+  {tipo:'rutas', metaOpts:[1,2], titulo:'De Ruta en Ruta', desc:function(m){return `Completa ${m===1?'una ruta':'dos rutas'}.`;}, icon:'🗺️'},
+  {tipo:'comprados', metaOpts:[2,3], titulo:'Ir de Compras', desc:function(m){return `Compra ${m} objetos.`;}, icon:'🛍️'},
+  {tipo:'dinero', metaOpts:[3000,5000], titulo:'Ahorro Pokéinomano', desc:function(m){return `Consigue ${m.toLocaleString()}$.`;}, icon:'💰'},
+  {tipo:'gachaAbiertas', metaOpts:[1,2], titulo:'Prueba tu Suerte', desc:function(m){return `Abre ${m} Gacha${m>1?'s':''}.`;}, icon:'🎰'},
+  {tipo:'pfGastado', metaOpts:[3,5], titulo:'Invierte tus PF', desc:function(m){return `Gasta ${m} PF.`;}, icon:'🔮'},
+  {tipo:'objetosUsados', metaOpts:[1,2], titulo:'Usa tu Mochila', desc:function(m){return `Usa ${m} objeto${m>1?'s':''} de tu mochila.`;}, icon:'🎒'},
+  {tipo:'manual', metaOpts:[1], titulo:'Recaptura de Emergencia', desc:function(){return 'Usa una recaptura durante tus capturas. Márcalo tú mismo cuando lo hagas.';}, icon:'🔁', manual:true}
+];
+const MISION_POOL_DIFICIL = [
+  {tipo:'medallas', metaOpts:[1], tituloMedallas:'Reto de Gimnasio', tituloKahunas:'Reto de Kahuna', icon:'🏅'},
+  {tipo:'torneosJugados', metaOpts:[1], titulo:'Ponte a Prueba', desc:function(){return 'Participa en un torneo.';}, icon:'🏟️'},
+  {tipo:'dineroGastado', metaOpts:[5000,8000], titulo:'Gran Comprador', desc:function(m){return `Gasta ${m.toLocaleString()}$.`;}, icon:'💸'},
+  {tipo:'capturas', metaOpts:[6,8], titulo:'Cazador Experto', desc:function(m){return `Completa ${m} capturas.`;}, icon:'🎯'},
+  {tipo:'sinMuertes', metaOpts:[1], titulo:'Mano Firme', desc:function(){return 'No pierdas ningún Pokémon durante esta rotación.';}, icon:'🛡️'}
+];
+const MISION_POOL_EPICA = [
+  {tipo:'torneosGanados', metaOpts:[1], titulo:'Campeón del Día', desc:function(){return 'Gana un torneo.';}, icon:'🏆'},
+  {tipo:'revividos', metaOpts:[1], titulo:'Segunda Oportunidad', desc:function(){return 'Sacrifica un Pokémon para recuperar vidas (si tu modalidad lo permite).';}, icon:'🔥'},
+  {tipo:'rutas', metaOpts:[3,4], titulo:'Explorador Incansable', desc:function(m){return `Completa ${m} rutas.`;}, icon:'🗺️'},
+  {tipo:'sinMuertes', metaOpts:[1], titulo:'Racha Perfecta', desc:function(){return 'Sobrevive toda la rotación sin ninguna baja.';}, icon:'✨'}
+];
+const MISION_RECOMPENSA_POOLS = {
+  comun:[{tipo:'pf',min:2,max:4},{tipo:'dinero',min:300,max:600}],
+  dificil:[{tipo:'dinero',min:800,max:1500},{tipo:'pf',min:5,max:8},{tipo:'gacha',min:1,max:1}],
+  epica:[{tipo:'gacha',min:1,max:1},{tipo:'dinero',min:2000,max:3500},{tipo:'ticket',min:1,max:1},{tipo:'vida',min:1,max:1}]
+};
+const MISION_ITEMS_ALEATORIOS = [
+  {nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},
+  {nombre:"Master Ball",icon:"🟣"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},
+  {nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Pepita",icon:"🪙"}
+];
+
+function misionElegirDePool(pool, usados, rnd){
+  var idx, intentos = 0;
+  do{ idx = Math.floor(rnd()*pool.length); intentos++; }while(usados.indexOf(pool[idx].tipo)!==-1 && intentos<30);
+  usados.push(pool[idx].tipo);
+  return pool[idx];
+}
+function misionGenerarRecompensa(dificultad, rnd){
+  var pool = MISION_RECOMPENSA_POOLS[dificultad];
+  var opt = pool[Math.floor(rnd()*pool.length)];
+  var valor = opt.min===opt.max ? opt.min : (opt.min + Math.floor(rnd()*(opt.max-opt.min+1)));
+  return {tipo:opt.tipo, valor:valor};
+}
+function misionConstruir(def, dificultad, rnd){
+  var meta = def.metaOpts[Math.floor(rnd()*def.metaOpts.length)];
+  return {
+    id: dificultad+'_'+def.tipo+'_'+meta,
+    tipo: def.tipo,
+    meta: meta,
+    dificultad: dificultad,
+    icon: def.icon,
+    tituloBase: def.titulo,
+    tituloMedallas: def.tituloMedallas,
+    tituloKahunas: def.tituloKahunas,
+    descFn: def.desc,
+    manual: !!def.manual,
+    recompensa: misionGenerarRecompensa(dificultad, rnd)
+  };
+}
+function obtenerRotacionMisiones(){
+  var rotationId = Math.floor(Date.now()/MISION_MS_ROTACION);
+  var rnd = misionMulberry32(rotationId*7919+13);
+  var usados = [];
+  var misiones = [
+    misionConstruir(misionElegirDePool(MISION_POOL_COMUN, usados, rnd), 'comun', rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_COMUN, usados, rnd), 'comun', rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_DIFICIL, usados, rnd), 'dificil', rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_EPICA, usados, rnd), 'epica', rnd)
+  ];
+  return {rotationId:rotationId, rotationStart:rotationId*MISION_MS_ROTACION, rotationEnd:(rotationId+1)*MISION_MS_ROTACION, misiones:misiones};
+}
+function misionTituloRender(m,u){
+  if(m.tipo==='medallas') return (u&&u.tipoMedallas==='kahunas')?m.tituloKahunas:m.tituloMedallas;
+  return m.tituloBase;
+}
+function misionDescRender(m,u){
+  if(m.tipo==='medallas') return (u&&u.tipoMedallas==='kahunas')?'Derrota al siguiente Kahuna de tu recorrido.':'Derrota al siguiente Líder de Gimnasio de tu recorrido.';
+  return m.descFn ? m.descFn(m.meta) : '';
+}
+function misionFormatearRecompensa(r){
+  switch(r.tipo){
+    case 'pf': return `🔮 +${r.valor} PF`;
+    case 'dinero': return `💰 +${r.valor.toLocaleString()} P₠`;
+    case 'gacha': return `🎰 Gacha`;
+    case 'ticket': return `🎫 Ticket Especial`;
+    case 'vida': return `❤️ +1 Vida`;
+    default: return '';
+  }
+}
+function regContadorMision(u, campo, cantidad){
+  if(!u || !cantidad) return;
+  if(!u.misionesContadores) u.misionesContadores = {};
+  u.misionesContadores[campo] = (u.misionesContadores[campo]||0) + cantidad;
+}
+function misionCalcularStats(uid, u){
+  var torneosJugados = 0;
+  if(baseDatos.torneos){
+    Object.keys(baseDatos.torneos).forEach(function(tid){
+      var t = baseDatos.torneos[tid];
+      if(t && t.participantes && t.participantes.indexOf(uid)!==-1) torneosJugados++;
+    });
+  }
+  var mc = u.misionesContadores || {};
+  return {
+    capturas: (u.tracker||[]).filter(function(e){return e.estado==='atrapado';}).length,
+    rutas: (u.tracker||[]).filter(function(e){return e.estado && e.estado!=='pendiente';}).length,
+    medallas: u.numMedallas||0,
+    torneosGanados: u.torneos||0,
+    torneosJugados: torneosJugados,
+    dinero: u.dinero||0,
+    muertes: (u.cementerio||[]).length,
+    revividos: (u.sacrificios||[]).length,
+    comprados: mc.comprados||0,
+    pfGastado: mc.pfGastado||0,
+    dineroGastado: mc.dineroGastado||0,
+    gachaAbiertas: mc.gachaAbiertas||0,
+    objetosUsados: mc.objetosUsados||0
+  };
+}
+function obtenerMisionesJugador(uid){
+  var u = baseDatos.jugadores[uid];
+  if(!u) return null;
+  var rot = obtenerRotacionMisiones();
+  if(!u.misionesJugador || u.misionesJugador.rotationId!==rot.rotationId){
+    var historialPrevio = (u.misionesJugador && u.misionesJugador.historial) || [];
+    u.misionesJugador = {
+      rotationId: rot.rotationId,
+      snapshot: misionCalcularStats(uid, u),
+      progresoManual: {},
+      reclamadas: [],
+      notificadas: [],
+      historial: historialPrevio
+    };
+    window._misionRotacionCambio = true;
+  }
+  if(!u.misionesJugador.progresoManual) u.misionesJugador.progresoManual = {};
+  if(!u.misionesJugador.reclamadas) u.misionesJugador.reclamadas = [];
+  if(!u.misionesJugador.notificadas) u.misionesJugador.notificadas = [];
+  if(!u.misionesJugador.historial) u.misionesJugador.historial = [];
+  return u.misionesJugador;
+}
+function misionGetProgreso(uid, u, mision){
+  var mj = obtenerMisionesJugador(uid);
+  if(mision.tipo==='manual'){
+    return Math.min(mision.meta, (mj.progresoManual&&mj.progresoManual[mision.id])||0);
+  }
+  if(mision.tipo==='sinMuertes'){
+    var statsAhora = misionCalcularStats(uid,u);
+    return (statsAhora.muertes<=mj.snapshot.muertes) ? mision.meta : 0;
+  }
+  var statsAhora2 = misionCalcularStats(uid,u);
+  var base = statsAhora2[mision.tipo]!==undefined ? statsAhora2[mision.tipo] : 0;
+  var inicio = mj.snapshot[mision.tipo]!==undefined ? mj.snapshot[mision.tipo] : 0;
+  return Math.min(mision.meta, Math.max(0, base-inicio));
+}
+function misionAplicarRecompensa(u, recompensa){
+  switch(recompensa.tipo){
+    case 'pf':
+      u.pf = (u.pf||0) + recompensa.valor;
+      return {texto:`+${recompensa.valor} PF`, gachaReveal:{rareza:'pf',icono:'🔮',nombre:`+${recompensa.valor} PF`,detalle:'Recompensa de misión diaria'}};
+    case 'dinero':
+      u.dinero = (u.dinero||0) + recompensa.valor;
+      return {texto:`+${recompensa.valor.toLocaleString()} P₠`, gachaReveal:{rareza:'dinero',icono:'💰',nombre:`+${recompensa.valor.toLocaleString()} P₠`,detalle:'Recompensa de misión diaria'}};
+    case 'vida':
+      var vt = u.vidasTotales||20, va = (u.vidasActuales!==undefined?u.vidasActuales:vt);
+      u.vidasActuales = Math.min(vt, va+1);
+      return {texto:'+1 ❤️ Vida', gachaReveal:{rareza:'especial',icono:'❤️',nombre:'+1 Vida',detalle:'Recompensa de misión diaria',especial:true}};
+    case 'ticket':
+      if(!u.inventario) u.inventario=[];
+      u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:"Ticket Especial del Mercader",icon:"🎫",desc:"Ticket obtenido por completar una misión diaria.",tienda:"mision",fecha:new Date().toLocaleDateString()});
+      return {texto:'🎫 Ticket Especial', gachaReveal:{rareza:'especial',icono:'🎫',nombre:'Ticket Especial',detalle:'Añadido a tu mochila',especial:true}};
+    case 'gacha':
+      var item = MISION_ITEMS_ALEATORIOS[Math.floor(Math.random()*MISION_ITEMS_ALEATORIOS.length)];
+      if(!u.inventario) u.inventario=[];
+      u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString(),tienda:"mision"});
+      return {texto:`${item.icon} ${item.nombre}`, gachaReveal:{rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Recompensa de misión diaria · Añadido a tu mochila'}};
+    default:
+      return {texto:'', gachaReveal:null};
+  }
+}
+function renderizarMisiones(){
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  var rot = obtenerRotacionMisiones();
+  var mj = obtenerMisionesJugador(userSesion);
+  var cont = document.getElementById('misiones-grid');
+  if(cont){
+    cont.innerHTML = rot.misiones.map(function(m){
+      var progreso = misionGetProgreso(userSesion,u,m);
+      var completada = progreso>=m.meta;
+      var reclamada = mj.reclamadas.indexOf(m.id)!==-1;
+      var pct = m.meta>0 ? Math.min(100,Math.round((progreso/m.meta)*100)) : 0;
+      var titulo = misionTituloRender(m,u), desc = misionDescRender(m,u);
+      var dificLabel = {comun:'Común',dificil:'Difícil',epica:'Épica'}[m.dificultad];
+      var recompensaTxt = misionFormatearRecompensa(m.recompensa);
+      var accion = '';
+      if(reclamada){
+        accion = '<div class="mision-reclamada-tag">✅ Reclamada</div>';
+      } else if(completada){
+        accion = '<button class="btn-mision-reclamar" onclick="reclamarMision(\''+m.id+'\')">🎁 Reclamar Recompensa</button>';
+      } else if(m.manual){
+        accion = '<button class="btn-mision-manual" onclick="marcarProgresoManualMision(\''+m.id+'\')">✅ Marcar como hecha</button>';
+      }
+      return '<div class="mision-card dif-'+m.dificultad+(reclamada?' reclamada':'')+'">'
+        +'<div class="mision-card-top"><span class="mision-badge-dif dif-'+m.dificultad+'">'+dificLabel+'</span><span class="mision-recompensa-chip">'+recompensaTxt+'</span></div>'
+        +'<div class="mision-icon">'+m.icon+'</div>'
+        +'<div class="mision-titulo">'+escaparHTML(titulo)+'</div>'
+        +'<div class="mision-desc">'+escaparHTML(desc)+'</div>'
+        +'<div class="mision-progreso-bar"><div class="mision-progreso-fill dif-'+m.dificultad+'" style="width:'+pct+'%"></div></div>'
+        +'<div class="mision-progreso-num">'+progreso+' / '+m.meta+'</div>'
+        +'<div class="mision-accion">'+accion+'</div>'
+        +'</div>';
+    }).join('');
+  }
+  var histCont = document.getElementById('misiones-historial-lista');
+  if(histCont){
+    var hist = mj.historial||[];
+    if(!hist.length){
+      histCont.innerHTML = '<div class="mision-historial-vacio">Todavía no has completado ninguna misión.</div>';
+    }else{
+      histCont.innerHTML = hist.slice(0,25).map(function(h){
+        return '<div class="mision-historial-item"><span class="mh-fecha">'+escaparHTML(h.fecha)+'</span><span class="mh-nombre">'+escaparHTML(h.nombre)+'</span><span class="mh-recompensa">'+escaparHTML(h.recompensa)+'</span></div>';
+      }).join('');
+    }
+  }
+  actualizarWidgetMisionesInicio();
+  if(window._misionRotacionCambio){ window._misionRotacionCambio=false; guardarBD(); }
+}
+function actualizarWidgetMisionesInicio(){
+  var box = document.getElementById('inicio-misiones-widget');
+  if(!box||!userSesion||!baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  var rot = obtenerRotacionMisiones();
+  var mj = obtenerMisionesJugador(userSesion);
+  var completadas = 0, pendientesReclamar = 0;
+  rot.misiones.forEach(function(m){
+    var p = misionGetProgreso(userSesion,u,m);
+    if(p>=m.meta){
+      completadas++;
+      if(mj.reclamadas.indexOf(m.id)===-1) pendientesReclamar++;
+    }
+  });
+  var rest = Math.max(0, rot.rotationEnd-Date.now());
+  var h = Math.floor(rest/3600000), mnt = Math.floor((rest%3600000)/60000);
+  box.innerHTML = '<div class="inicio-misiones-resumen"><span>📋 '+completadas+'/'+rot.misiones.length+' completadas</span><span class="mision-countdown-valor-mini">⏳ '+h+'h '+mnt+'m</span></div>'
+    + (pendientesReclamar>0 ? '<div class="inicio-misiones-aviso">🎁 '+pendientesReclamar+' misión(es) lista(s) para reclamar</div>' : '')
+    + '<button class="btn-mision-ver-todas" onclick="navegarA(\'misiones\')">Ver Misiones Diarias</button>';
+}
+function actualizarCountdownMisiones(){
+  var rot = obtenerRotacionMisiones();
+  var rest = Math.max(0, rot.rotationEnd-Date.now());
+  var h = Math.floor(rest/3600000), m = Math.floor((rest%3600000)/60000), s = Math.floor((rest%60000)/1000);
+  var txt = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  document.querySelectorAll('.mision-countdown-valor').forEach(function(el){ el.textContent = txt; });
+  if(userSesion && document.getElementById('section-misiones') && document.getElementById('section-misiones').classList.contains('active')){
+    var g = document.getElementById('misiones-grid');
+    if(g && rest<=0) renderizarMisiones();
+  }
+  if(userSesion) actualizarWidgetMisionesInicio();
+}
+function verificarMisionesCompletadasMision(){
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  var rot = obtenerRotacionMisiones();
+  var mj = obtenerMisionesJugador(userSesion);
+  var cambiado = false;
+  rot.misiones.forEach(function(m){
+    var progreso = misionGetProgreso(userSesion,u,m);
+    if(progreso>=m.meta && mj.reclamadas.indexOf(m.id)===-1 && mj.notificadas.indexOf(m.id)===-1){
+      mj.notificadas.push(m.id);
+      cambiado = true;
+      mostrarNotificacion('¡'+misionTituloRender(m,u)+'! Ya puedes reclamar tu recompensa.','exito','🎯','📋 Misión completada',true);
+      reproducirSonido('exito');
+    }
+  });
+  if(cambiado || window._misionRotacionCambio){ window._misionRotacionCambio=false; guardarBD(); }
+}
+window.reclamarMision = function(misionId){
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  var rot = obtenerRotacionMisiones();
+  var mision = rot.misiones.filter(function(m){return m.id===misionId;})[0];
+  if(!mision){ mostrarNotificacion('Esta misión ya no está disponible.','error','⏳'); return; }
+  var mj = obtenerMisionesJugador(userSesion);
+  if(mj.reclamadas.indexOf(misionId)!==-1){ mostrarNotificacion('Ya has reclamado esta misión.','error','✅'); return; }
+  var progreso = misionGetProgreso(userSesion,u,mision);
+  if(progreso<mision.meta){ mostrarNotificacion('Aún no has completado esta misión.','error','⏳'); return; }
+  var info = misionAplicarRecompensa(u, mision.recompensa);
+  mj.reclamadas.push(misionId);
+  mj.historial.unshift({fecha:new Date().toLocaleString('es-ES'), nombre:misionTituloRender(mision,u), recompensa:info.texto});
+  if(mj.historial.length>40) mj.historial.length = 40;
+  inyectarEntradaDiarioAutomatica('📋 Misión completada: \''+misionTituloRender(mision,u)+'\'. Recompensa: '+info.texto+'.');
+  guardarBD();
+  if(info.gachaReveal) mostrarRevelacionGacha(info.gachaReveal);
+  else mostrarNotificacion('Recompensa reclamada: '+info.texto,'exito','🎁','¡Misión completada!',true);
+  renderizarMisiones();
+  refrescarPantallaGamer();
+};
+window.marcarProgresoManualMision = function(misionId){
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return;
+  var rot = obtenerRotacionMisiones();
+  var mision = rot.misiones.filter(function(m){return m.id===misionId;})[0];
+  if(!mision) return;
+  var mj = obtenerMisionesJugador(userSesion);
+  mj.progresoManual[misionId] = Math.min(mision.meta, (mj.progresoManual[misionId]||0)+1);
+  guardarBD();
+  reproducirSonido('click');
+  mostrarNotificacion('Progreso actualizado.','info','✅',null,true);
+  renderizarMisiones();
+  verificarMisionesCompletadasMision();
+};
+setInterval(actualizarCountdownMisiones, 1000);
+setInterval(function(){ if(userSesion) verificarMisionesCompletadasMision(); }, 5000);
+
 /* ═══ NAVEGACIÓN ═══ */
 window.navegarA=function(s){
   if(userSesion&&jugadorBaneado(userSesion)&&['tiendas','eventos','duelos','red-entrenadores','hall-of-fame'].includes(s)){
@@ -4186,7 +4585,7 @@ window.navegarA=function(s){
     mostrarNotificacion(`🚫 Estás baneado de esta sección. Motivo: ${mot}`,'error','🚫','Acceso restringido');
     s='inicio';
   }
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
@@ -4563,7 +4962,7 @@ window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySele
 window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='ficha')renderizarTitulosYTemas();if(tab==='carnet')renderizarPanelCarnet();};
 
 /* ═══ LOGIN ═══ */
-window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;sessionStorage.setItem('silph_user_sesion',id);if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[])};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.tracker)u.tracker=crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[]);}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();};
+window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;sessionStorage.setItem('silph_user_sesion',id);if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[]),misionesContadores:{}};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.tracker)u.tracker=crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[]);if(!u.misionesContadores)u.misionesContadores={};}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();obtenerMisionesJugador(id);actualizarWidgetMisionesInicio();actualizarCountdownMisiones();};
 window.cerrarSesionOperador=function(){reproducirSonido('puerta_cerrar');userSesion=null;sessionStorage.removeItem('silph_user_sesion');document.getElementById('app-shell').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('login-screen').classList.remove('fade-out');document.getElementById('login-nombre').value='';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";cerrarDrawer();};
 function actualizarComprasPorTiempo(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ahora=Date.now(),tr=ahora-u.ultimaRecarga,hoy=new Date().toDateString();if(!u.comprasHoy||u.comprasHoy._fecha!==hoy){u.comprasHoy={_fecha:hoy};}if(tr>=MS_EN_6_HORAS){let cg=Math.floor(tr/MS_EN_6_HORAS);u.comprasDisponibles=Math.min(MAX_COMPRAS,(u.comprasDisponibles||0)+cg);u.ultimaRecarga=u.ultimaRecarga+(cg*MS_EN_6_HORAS);u.comprasHoy._global=Math.max(0,(u.comprasHoy._global||0)-cg);guardarBD();return true;}return false;}
 /* Comprobar la recarga de compras cada 6h de forma periódica, sin necesidad de recargar la página */
@@ -4827,12 +5226,12 @@ window.comprarObjetoGamer=async function(id){
   let cont=p.desc?` Contiene: ${p.desc}.`:'';
   if(tienda==='illegal'){
     if(u.pf<p.precioPf){mostrarNotificacion("No tienes suficientes PF.","error","🔮");return;}
-    u.pf-=p.precioPf;
+    u.pf-=p.precioPf;regContadorMision(u,'pfGastado',p.precioPf);
     let contIlegal=(p.desc?` ${p.desc}.`:'')+(p.beneficio?` Beneficio: ${p.beneficio}.`:'')+(p.castigo?` Castigo potencial: ${p.castigo}.`:'');
     inyectarEntradaDiarioAutomatica(`Adquirió módulo prohibido: ${p.icon} '${p.nombre}' por ${p.precioPf} PF.${contIlegal}`);
   }else{
     if(u.dinero<pf){mostrarNotificacion("No tienes suficiente efectivo P₠.","error","💰");return;}
-    u.dinero-=pf;u.pf+=bonoPf;
+    u.dinero-=pf;u.pf+=bonoPf;regContadorMision(u,'dineroGastado',pf);
     inyectarEntradaDiarioAutomatica(`Adquirió: ${p.icon} ${_qty>1?'x'+_qty+' ':''}'${p.nombre}' por ${pf} P₠ (+${bonoPf} PF). Créditos usados: ${usadosGlobal+coste}/${MAX_COMPRAS}.${cont}`);
   }
 
@@ -4847,6 +5246,7 @@ window.comprarObjetoGamer=async function(id){
   if(!u.inventario)u.inventario=[];
   u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:_nombreQty,icon:p.icon,qty:_qty,desc:p.desc||'',beneficio:p.beneficio||'',castigo:p.castigo||'',tienda:tienda,fecha:new Date().toLocaleDateString()});
   _checkCompraTemaTienda(p.nombre);
+  regContadorMision(u,'comprados',_qty);
   guardarBD();
   if(be){
     let flashClass=tienda==='illegal'?'flash-ilegal':(tienda==='pack'?'flash-pack':'flash-legal');
@@ -4876,7 +5276,7 @@ window.comprarObjetoGamer=async function(id){
   mostrarNotificacion(`Has adquirido ${p.nombre}.${cont}`,'exito',p.icon||'✅','Compra realizada',true);
   refrescarPantallaGamer();
 };
-window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];if(!u.inventario)return;let i=u.inventario.findIndex(x=>x.uid===uid);if(i!==-1){let item=u.inventario[i];let desc=item.desc||'';u.inventario.splice(i,1);let esIlegal=item.tienda==='illegal';let parteDesc=desc?` Descripción: ${desc}.`:'';let parteBeneficio=esIlegal&&item.beneficio?` ✅ Beneficio: ${item.beneficio}.`:'';let parteCastigo=esIlegal&&item.castigo?` ⚠️ Castigo si detectado: ${item.castigo}.`:'';let entradaDiario=esIlegal?`🟣 Activó módulo prohibido: ${icon} '${nombre}'.${parteDesc}${parteBeneficio}${parteCastigo}`:(desc?`Utilizó el objeto ${icon} '${nombre}'. Contenido: ${desc}.`:`Utilizó el objeto ${icon} '${nombre}'. Consumido.`);inyectarEntradaDiarioAutomatica(entradaDiario);guardarBD();reproducirSonido('usar_objeto');mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true);}};
+window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];if(!u.inventario)return;let i=u.inventario.findIndex(x=>x.uid===uid);if(i!==-1){let item=u.inventario[i];let desc=item.desc||'';u.inventario.splice(i,1);let esIlegal=item.tienda==='illegal';let parteDesc=desc?` Descripción: ${desc}.`:'';let parteBeneficio=esIlegal&&item.beneficio?` ✅ Beneficio: ${item.beneficio}.`:'';let parteCastigo=esIlegal&&item.castigo?` ⚠️ Castigo si detectado: ${item.castigo}.`:'';let entradaDiario=esIlegal?`🟣 Activó módulo prohibido: ${icon} '${nombre}'.${parteDesc}${parteBeneficio}${parteCastigo}`:(desc?`Utilizó el objeto ${icon} '${nombre}'. Contenido: ${desc}.`:`Utilizó el objeto ${icon} '${nombre}'. Consumido.`);inyectarEntradaDiarioAutomatica(entradaDiario);regContadorMision(u,'objetosUsados',1);guardarBD();reproducirSonido('usar_objeto');mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true);}};
 
 /* ═══ MODAL BAJA ═══ */
 window.abrirModalBaja=function(){['baja-nombre','baja-mote','baja-lugar','baja-epitafio'].forEach(id=>document.getElementById(id).value='');document.getElementById('baja-motivo').value='Ruta';refrescarSelectsPersonalizados();reproducirSonido('abrir');document.getElementById('baja-modal-overlay').style.display='flex';};
@@ -6895,7 +7295,7 @@ function renderizarCementerioDOM(){if(!userSesion||!baseDatos.jugadores[userSesi
 function actualizarBannerAlertasVisuales(){let b=document.getElementById('alertas-sistema-marquee');if(!b)return;let ev=baseDatos.eventoSistema||"normal";if(ev==="normal"){b.classList.remove('active');b.innerHTML='';return;}b.classList.add('active');if(ev==="rebajas"){b.style.borderColor='rgba(30,158,115,.3)';b.style.color='var(--neon-legal)';b.innerHTML='📉 RED ESTABLE: −25% de descuento en Tienda Legal y Packs.';}if(ev==="inflacion"){b.style.borderColor='rgba(216,41,63,.3)';b.style.color='#e2646f';b.innerHTML='⚠️ RED INESTABLE: +50% de recargo en costes P₠.';}if(ev==="bonus_pf"){b.style.borderColor='rgba(201,154,46,.3)';b.style.color='var(--neon-packs)';b.innerHTML='🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!';}}
 
 /* ═══ GACHA ═══ */
-window.reclamarHackeoDiario=function(){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado del Gacha. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);guardarBD();mostrarRevelacionGacha(reveal);actualizarAvisoGachaDisponible();};
+window.reclamarHackeoDiario=function(){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado del Gacha. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);regContadorMision(u,'gachaAbiertas',1);guardarBD();mostrarRevelacionGacha(reveal);actualizarAvisoGachaDisponible();};
 
 /* ═══ PF GACHA (solo entrega de 1 a 20 PF, cooldown propio de 24h) ═══ */
 window.reclamarGachaPF=function(){
@@ -6914,6 +7314,7 @@ window.reclamarGachaPF=function(){
   let pfg = Math.floor(Math.random()*20)+1;
   u.pf = (u.pf||0) + pfg;
   inyectarEntradaDiarioAutomatica(`[PF GACHA] Transferencia recibida: +${pfg} PF.`);
+  regContadorMision(u,'gachaAbiertas',1);
   guardarBD();
   mostrarRevelacionGacha({rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'PF Gacha · Puntos de Favor transferidos',especial:pfg>=17});
   actualizarAvisoGachaDisponible();
