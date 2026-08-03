@@ -3993,7 +3993,7 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -4008,6 +4008,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
                     if(!snap2.val()){
                         /* Confirmado dos veces por separado: ahora sí, base de datos nueva de verdad. */
                         baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[]};
+                        window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));
                         set(ref(db,'silph_co_market'),baseDatos);
                     }
                     /* Si en la relectura sí hay datos, era un parpadeo: no hacemos nada, el propio listener ya recibirá los datos reales. */
@@ -4020,7 +4021,43 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
     if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();renderizarMapaInicio();}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
-function guardarBD(){set(ref(db,'silph_co_market'),baseDatos);}
+/* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
+   vuelve a leer lo último del servidor justo antes de guardar, y solo aplica encima los trozos
+   (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
+   sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
+   accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
+const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog'];
+async function guardarBD(){
+  const local = baseDatos;
+  try{
+    const snap = await get(ref(db,'silph_co_market'));
+    const fresco = snap.val();
+    if(fresco){
+      const anterior = window._ultimaBDConocida || {};
+      const jugAnterior = anterior.jugadores || {};
+      const jugLocal = local.jugadores || {};
+      const jugFresco = Object.assign({}, fresco.jugadores || {});
+      Object.keys(jugLocal).forEach(function(id){
+        if(JSON.stringify(jugAnterior[id]||null) !== JSON.stringify(jugLocal[id]||null)){
+          jugFresco[id] = jugLocal[id];
+        }
+      });
+      fresco.jugadores = jugFresco;
+      _CAMPOS_GLOBALES_BD.forEach(function(campo){
+        const antesStr = JSON.stringify(anterior[campo]!==undefined?anterior[campo]:null);
+        const localStr = JSON.stringify(local[campo]!==undefined?local[campo]:null);
+        if(antesStr !== localStr){
+          fresco[campo] = local[campo];
+        }
+      });
+      baseDatos = fresco;
+      window._ultimaBDConocida = JSON.parse(JSON.stringify(fresco));
+      set(ref(db,'silph_co_market'), fresco);
+      return;
+    }
+  }catch(err){ /* si falla la relectura (sin red, etc.), seguimos con el plan B de abajo */ }
+  set(ref(db,'silph_co_market'), local);
+}
 
 /* ═══ NAVEGACIÓN ═══ */
 window.navegarA=function(s){
