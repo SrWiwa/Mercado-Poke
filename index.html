@@ -615,6 +615,24 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 .mision-card.mision-reclamo-flash{animation:misionReclamoFlash .5s ease}
 @keyframes misionReclamoFlash{0%{transform:scale(1)}30%{transform:scale(1.035)}100%{transform:scale(1)}}
 .mision-reward-float{position:absolute;left:50%;top:38%;transform:translateX(-50%);font-family:var(--font-display);font-weight:900;font-size:14px;color:var(--neon-packs);animation:pfFloatUp 1.1s ease-out forwards;pointer-events:none;z-index:5;white-space:nowrap;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+/* ── LOGROS: desbloqueo con brillo ── */
+.titulo-chip{animation:misionCardEntrada .3s ease both;position:relative;overflow:hidden}
+.titulo-chip.recien-desbloqueado{animation:misionGlowPop 1.15s ease-out}
+.medalla-insignia{transition:transform .2s ease}
+.medalla-insignia.recien-desbloqueado{animation:misionGlowPop 1.15s ease-out}
+.items-grid .item-card{animation:misionCardEntrada .3s ease both}
+.items-grid .item-card:nth-child(1){animation-delay:0ms}.items-grid .item-card:nth-child(2){animation-delay:30ms}.items-grid .item-card:nth-child(3){animation-delay:60ms}.items-grid .item-card:nth-child(4){animation-delay:90ms}.items-grid .item-card:nth-child(5){animation-delay:120ms}.items-grid .item-card:nth-child(6){animation-delay:150ms}.items-grid .item-card:nth-child(n+7){animation-delay:170ms}
+.mochila-tag{animation:misionCardEntrada .28s ease both}
+/* ── TOOLTIPS ligeros (data-tt) ── */
+[data-tt]{position:relative}
+[data-tt]::after{content:attr(data-tt);position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%) translateY(3px);background:#0c0a08;color:var(--txt-primary);font-family:var(--font-display);font-size:10px;font-weight:600;white-space:nowrap;padding:6px 10px;border-radius:var(--r-sm);border:1px solid var(--borde-hover);box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:opacity .15s ease,transform .15s ease;z-index:4000}
+[data-tt]:hover::after{opacity:1;transform:translateX(-50%) translateY(0);transition-delay:.35s}
+/* ── SKELETON de carga ── */
+.skel{position:relative;overflow:hidden;background:rgba(255,255,255,.04);border-radius:var(--r-md)}
+.skel::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);animation:skelSweep 1.4s ease-in-out infinite}
+@keyframes skelSweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.skel-line{height:12px;margin-bottom:8px}
+.skel-card{height:90px}
 .pvp-historial-meta{font-size:10px;color:var(--txt-muted)}
 .pvp-racha{font-size:10px;color:#c99a2e;font-family:var(--font-display)}
 #section-hall-of-fame::after{content:'🏆';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
@@ -726,7 +744,6 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 <div id="more-sheet-backdrop" class="drawer-backdrop" onclick="cerrarMasSheet()"></div>
 <div id="more-sheet" class="more-sheet">
   <div class="more-sheet-handle"></div>
-  <div class="more-sheet-item" onclick="navegarA('misiones');cerrarMasSheet()"><span class="ms-icon">📋</span> Misiones Diarias</div>
   <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
   <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
   <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
@@ -775,7 +792,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <div class="sidebar-logo">
       <div class="sidebar-logo-mark"></div>
       <div style="flex:1"><div class="sidebar-logo-text">SILPH CO.</div><div class="sidebar-logo-sub">Red Comercial</div></div>
-      <button class="sidebar-close-btn" onclick="cerrarDrawer()" title="Cerrar menú">✕</button>
+      <button class="sidebar-close-btn" onclick="cerrarDrawer()" data-tt="Cerrar menú">✕</button>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Principal</div>
@@ -805,7 +822,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   </aside>
   <header class="topbar">
     <div class="topbar-left">
-      <button class="btn-hamburguesa" id="btn-hamburguesa" onclick="abrirDrawer()" title="Menú"><span></span><span></span><span></span></button>
+      <button class="btn-hamburguesa" id="btn-hamburguesa" onclick="abrirDrawer()" data-tt="Menú"><span></span><span></span><span></span></button>
     </div>
     <div class="topbar-resources">
       <div class="topbar-stat"><span>💰</span><span class="value dinero" id="usr-dinero">0</span><span style="font-size:9px;color:var(--txt-muted)">P₠</span></div>
@@ -816,7 +833,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="topbar-stat-divider"></div>
       <div class="topbar-stat"><span>❤️</span><span class="value" id="usr-vidas-top" style="color:#e2646f">--</span></div>
     </div>
-    <button class="sonido-toggle-btn" id="btn-sonido-toggle" onclick="alternarSonido()" title="Sonido">🔊</button>
+    <button class="sonido-toggle-btn" id="btn-sonido-toggle" onclick="alternarSonido()" data-tt="Sonido">🔊</button>
     <button class="topbar-gacha-btn" id="topbar-gacha-btn" onclick="reclamarHackeoDiario()">⚡ GACHA</button>
     <button class="topbar-gacha-btn" id="topbar-gacha-pf-btn" style="border-color:rgba(142,79,199,.3);color:#c79bff" onclick="reclamarGachaPF()">🔮 PF GACHA</button>
   </header>
@@ -7304,7 +7321,7 @@ window.renderizarTitulosYTemas = function(){
       var btn = tiene
         ? '<button onclick="seleccionarTitulo(\''+t.id+'\')">'+btnTxt+'</button>'
         : '';
-      return '<div class="'+cls+'" title="'+escaparHTML(t.desc)+'">'+t.icon+' '+escaparHTML(t.nombre)+lock+btn+'</div>';
+      return '<div class="'+cls+'" data-titulo-id="'+t.id+'" title="'+escaparHTML(t.desc)+'">'+t.icon+' '+escaparHTML(t.nombre)+lock+btn+'</div>';
     }).join('');
     if(u.tituloManual){
       var esActivoM = u.tituloActivo === 'manual';
@@ -7313,6 +7330,15 @@ window.renderizarTitulosYTemas = function(){
       html += '<div class="'+clsM+'" title="Título especial otorgado por el Mercader">🏷️ '+escaparHTML(u.tituloManual)+'<button onclick="seleccionarTitulo(\'manual\')">'+btnTxtM+'</button></div>';
     }
     listaEl.innerHTML = html;
+    nuevos.forEach(function(id){
+      var chipEl = listaEl.querySelector('[data-titulo-id="'+id+'"]');
+      if(chipEl){
+        chipEl.classList.add('recien-desbloqueado');
+        dispararConfetti(chipEl);
+        reproducirSonido('raro');
+        setTimeout(function(){ chipEl.classList.remove('recien-desbloqueado'); }, 1200);
+      }
+    });
   }
 
   var temasEl = document.getElementById('temas-lista');
@@ -7394,10 +7420,10 @@ function _checkCompraTemaTienda(nombreProducto){
   }
 }
 
-function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}">${icon}</div>`;}box.innerHTML=html;}
+function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';let prevN=box.querySelectorAll('.medalla-insignia.ganada').length;let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}"${i===n&&n>prevN?' data-nueva="1"':''}>${icon}</div>`;}box.innerHTML=html;let nueva=box.querySelector('[data-nueva="1"]');if(nueva){nueva.classList.add('recien-desbloqueado');dispararConfetti(nueva);reproducirSonido('exito');}}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
-window.alterarTorneosPerfil=function(v){let u=baseDatos.jugadores[userSesion];u.torneos=Math.max(0,(u.torneos||0)+v);document.getElementById('perf-txt-torneos').textContent=u.torneos;guardarBD();};
+window.alterarTorneosPerfil=function(v){let u=baseDatos.jugadores[userSesion];u.torneos=Math.max(0,(u.torneos||0)+v);animarValorNumerico(document.getElementById('perf-txt-torneos'),u.torneos);if(v>0)dispararConfetti(document.getElementById('perf-txt-torneos'));guardarBD();};
 function renderizarCementerioDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],box=document.getElementById('cementerio-lista-local');if(!box)return;box.innerHTML='';if(!u.cementerio||!u.cementerio.length){box.innerHTML='<div style="color:var(--txt-muted);text-align:center;font-size:11px;padding:16px;font-family:var(--font-display);letter-spacing:.5px">Sin bajas registradas en este Locke... Aún.</div>';return;}u.cementerio.forEach(b=>{box.innerHTML+=`<div class="graveyard-item"><div class="graveyard-name">💀 ${escaparHTML(b.nombre)}</div><div class="graveyard-meta">${escaparHTML(b.ruta)} · ${escaparHTML(b.fecha)}</div><div class="graveyard-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`;});}
 
 /* ═══ BANNER ═══ */
