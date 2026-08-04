@@ -676,6 +676,144 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 .timestamp-vivo{color:var(--neon-legal)!important}
 
 .page-section.active{padding:0}
+
+/* ═══════════════════════════════════════
+   ROTOM PHONE — Asistente flotante (ZA)
+   ═══════════════════════════════════════ */
+#rotom-widget{position:fixed;bottom:80px;right:14px;z-index:8000;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
+@media(min-width:768px){#rotom-widget{bottom:24px;right:22px}}
+
+/* ── Cuerpo del Rotom Phone (rojo, con "orejas" en zigzag y pantalla negra) ── */
+#rotom-btn{
+  width:50px;height:78px;
+  border-radius:16px 16px 13px 13px;
+  background:linear-gradient(165deg,#ef4b52 0%,#d8293f 45%,#b81f32 100%);
+  border:2px solid rgba(0,0,0,.35);
+  box-shadow:0 0 0 1.5px rgba(0,0,0,.25),0 4px 18px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.35),inset 0 -3px 6px rgba(0,0,0,.25);
+  cursor:pointer;pointer-events:auto;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  position:relative;transition:box-shadow .25s,border-color .25s;flex-shrink:0;
+  overflow:visible;
+}
+#rotom-btn:hover{box-shadow:0 0 0 2px rgba(255,220,80,.7),0 6px 24px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.35)}
+#rotom-btn.tiene-alerta{border-color:rgba(255,80,80,.9);box-shadow:0 0 0 2px rgba(255,210,60,.8),0 4px 18px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.35);animation:rotomAlertaPulse 2s ease-in-out infinite}
+@keyframes rotomAlertaPulse{0%,100%{box-shadow:0 0 0 2px rgba(255,210,60,.55),0 4px 18px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.35)}50%{box-shadow:0 0 0 3px rgba(255,225,90,.9),0 0 22px rgba(255,190,50,.5),0 4px 18px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.35)}}
+
+/* "Orejas" en zigzag — el rasgo característico de Rotom, a ambos lados de la parte superior */
+.rotom-ear{position:absolute;top:-7px;width:11px;height:11px;background:linear-gradient(160deg,#2a2e38,#14161c);z-index:0;
+  clip-path:polygon(50% 0%,80% 30%,100% 20%,75% 55%,95% 65%,55% 100%,60% 60%,30% 85%,35% 45%,5% 55%,35% 15%);
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.5));}
+.rotom-ear-l{left:-3px;transform:scaleX(-1) rotate(-8deg)}
+.rotom-ear-r{right:-3px;transform:rotate(8deg)}
+
+/* Pantalla interior (negra, con los ojos de Rotom asomando) */
+#rotom-screen{
+  width:38px;height:32px;
+  margin:7px auto 2px;
+  border-radius:5px;
+  background:radial-gradient(circle at 50% 35%,#0c1016,#020304 75%);
+  border:1.5px solid rgba(0,0,0,.6);
+  box-shadow:inset 0 0 7px rgba(0,0,0,.9),inset 0 0 10px rgba(80,200,255,.12),0 1px 0 rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;z-index:1;
+}
+#rotom-screen::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.05) 0%,transparent 55%);pointer-events:none}
+#rotom-face{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1;animation:rotomFloat 3.4s ease-in-out infinite;position:relative;z-index:1}
+@keyframes rotomFloat{0%,100%{transform:translateY(0) rotate(0deg)}28%{transform:translateY(-2px) rotate(-3deg)}60%{transform:translateY(-1px) rotate(2deg)}82%{transform:translateY(-2.5px) rotate(-1.5deg)}}
+#rotom-btn.hablando #rotom-face{animation:rotomHabla .2s ease-in-out infinite alternate}
+@keyframes rotomHabla{0%{transform:scale(1) rotate(-2deg)}100%{transform:scale(1.12) rotate(3deg)}}
+.rotom-ojos-fila{display:flex;gap:6px}
+.rotom-boca{width:7px;height:2px;border-radius:2px;background:#39d6ff;box-shadow:0 0 4px rgba(60,210,255,.9);opacity:.85}
+
+/* Detalles físicos del teléfono */
+.rotom-phone-cam{width:5px;height:5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3a3f4a,#0c0e12);margin:2px auto 1px;border:1px solid rgba(0,0,0,.5);box-shadow:inset 0 0 1px rgba(255,255,255,.15)}
+.rotom-phone-speaker{width:18px;height:3px;border-radius:99px;background:rgba(0,0,0,.35);margin:1px auto 3px;box-shadow:inset 0 1px 1px rgba(0,0,0,.5)}
+.rotom-phone-btn-lateral{position:absolute;right:-2px;top:22px;width:3px;height:9px;border-radius:0 2px 2px 0;background:linear-gradient(90deg,#8a1c28,#c9c9c9);box-shadow:0 1px 2px rgba(0,0,0,.5)}
+
+/* Animación de ojos/parpadeo (ojos cian brillantes, estilo Rotom) */
+@keyframes rotomBlink{0%,92%,100%{transform:scaleY(1)}94%,98%{transform:scaleY(.08)}}
+.rotom-ojo{display:inline-block;width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c9f7ff,#39d6ff 55%,#0e9fce 100%);box-shadow:0 0 5px rgba(60,210,255,.9),0 0 1px rgba(255,255,255,.6);animation:rotomBlink 4.5s ease-in-out infinite}
+.rotom-ojo:nth-child(2){animation-delay:.12s}
+
+/* Badge de alerta */
+.rotom-badge{position:absolute;top:-5px;right:-5px;background:#d8293f;color:#fff;font-family:var(--font-display);font-size:8px;font-weight:900;min-width:16px;height:16px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--bg-base);z-index:2}
+.rotom-badge.visible{display:flex}
+
+/* ── Burbuja de mensaje rápido ── */
+#rotom-bubble{
+  max-width:238px;
+  background:var(--bg-elevated);
+  border:1px solid var(--borde);
+  border-radius:14px 14px 4px 14px;
+  padding:10px 13px 10px 12px;
+  pointer-events:auto;
+  opacity:0;transform:translateY(6px) scale(.95);
+  transition:opacity .22s,transform .22s;
+  box-shadow:var(--shadow-md),0 0 0 1px rgba(80,160,255,.08);
+  cursor:pointer;display:none;
+}
+#rotom-bubble.visible{opacity:1;transform:translateY(0) scale(1);display:block}
+#rotom-bubble-nivel{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+#rotom-bubble-nivel::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+#rotom-bubble-nivel.critico{color:#e2646f}
+#rotom-bubble-nivel.importante{color:#c99a2e}
+#rotom-bubble-nivel.consejo{color:var(--neon-legal)}
+#rotom-bubble-txt{font-size:11.5px;color:var(--txt-secondary);line-height:1.48;font-family:var(--font-body)}
+
+/* ── Panel expandido ── */
+#rotom-panel{
+  width:296px;
+  background:var(--bg-elevated);
+  border:1px solid rgba(100,180,255,.2);
+  border-radius:var(--r-xl);
+  padding:0;pointer-events:auto;
+  box-shadow:var(--shadow-xl),0 0 0 1px rgba(80,160,255,.06);
+  overflow:hidden;display:none;
+  opacity:0;transform:translateY(10px) scale(.96);
+  transition:opacity .22s,transform .22s;
+}
+#rotom-panel.visible{opacity:1;transform:translateY(0) scale(1);display:block}
+.rotom-panel-header{
+  padding:12px 14px 10px;
+  border-bottom:1px solid var(--borde);
+  display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,rgba(80,140,255,.06),transparent);
+}
+.rotom-panel-avatar{
+  width:32px;height:50px;
+  border-radius:10px 10px 8px 8px;
+  background:linear-gradient(165deg,#ef4b52,#b81f32);
+  border:2px solid rgba(0,0,0,.35);
+  box-shadow:0 0 0 1px rgba(0,0,0,.25),0 2px 8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex-shrink:0;gap:2px;overflow:hidden;position:relative;
+}
+.rotom-panel-screen{width:20px;height:16px;background:#050708;border-radius:2px;border:1px solid rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:9px;box-shadow:inset 0 0 6px rgba(80,200,255,.15)}
+.rotom-panel-dots{display:flex;gap:3px}
+.rotom-panel-dot{width:4px;height:4px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c9f7ff,#39d6ff 60%,#0e9fce 100%);box-shadow:0 0 3px rgba(60,210,255,.8)}
+.rotom-panel-nombre{font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--blanco);line-height:1.1}
+.rotom-panel-sub{font-size:9.5px;color:var(--txt-muted);font-family:var(--font-display);margin-top:1px}
+.rotom-panel-close{background:none;border:none;cursor:pointer;color:var(--txt-muted);font-size:15px;line-height:1;padding:5px;border-radius:var(--r-sm);transition:color .2s;margin-left:auto}
+.rotom-panel-close:hover{color:var(--blanco)}
+.rotom-panel-msgs{max-height:300px;overflow-y:auto;padding:10px 11px;display:flex;flex-direction:column;gap:7px}
+.rotom-panel-msgs::-webkit-scrollbar{width:4px}
+.rotom-panel-msgs::-webkit-scrollbar-thumb{background:var(--borde-hover);border-radius:99px}
+.rotom-msg-item{padding:8px 10px;background:var(--bg-card);border:1px solid var(--borde);border-left:3px solid var(--borde);border-radius:var(--r-md);display:flex;gap:8px;align-items:flex-start}
+.rotom-msg-item.critico{border-left-color:#e2646f;background:linear-gradient(135deg,rgba(226,100,111,.07),transparent)}
+.rotom-msg-item.importante{border-left-color:#c99a2e;background:linear-gradient(135deg,rgba(201,154,46,.07),transparent)}
+.rotom-msg-item.consejo{border-left-color:rgba(100,200,120,.5)}
+.rotom-msg-icono{font-size:15px;line-height:1;flex-shrink:0;margin-top:1px}
+.rotom-msg-cuerpo{flex:1;min-width:0}
+.rotom-msg-titulo{font-family:var(--font-display);font-size:10.5px;font-weight:700;color:var(--blanco);margin-bottom:2px}
+.rotom-msg-desc{font-size:10.5px;color:var(--txt-secondary);line-height:1.45}
+.rotom-msg-tiempo{font-size:8.5px;color:var(--txt-muted);margin-top:3px;font-family:var(--font-display)}
+.rotom-panel-footer{padding:9px 11px;border-top:1px solid var(--borde);display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.rotom-config-label{font-family:var(--font-display);font-size:8.5px;color:var(--txt-muted);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
+.rotom-freq-btn{background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);color:var(--txt-muted);font-family:var(--font-display);font-size:8.5px;font-weight:700;padding:4px 8px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.rotom-freq-btn.activo{background:rgba(80,150,255,.12);border-color:rgba(80,150,255,.4);color:#7bbfff}
+.rotom-mute-btn{margin-left:auto;background:none;border:1px solid var(--borde);border-radius:var(--r-sm);color:var(--txt-muted);font-size:12px;padding:4px 8px;cursor:pointer;transition:all .2s}
+.rotom-mute-btn.activo{border-color:rgba(216,41,63,.4);color:#e2646f;background:rgba(216,41,63,.07)}
+.rotom-panel-vacio{text-align:center;padding:26px 16px;color:var(--txt-muted);font-size:11px;font-family:var(--font-display);font-style:italic}
 </style>
 </head>
 <body>
@@ -696,7 +834,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
   <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
   <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
-  <div class="more-sheet-item" onclick="navegarA('asistente');cerrarMasSheet()"><span class="ms-icon">🤖</span> Asistente</div>
+
   <div class="more-sheet-item" onclick="navegarA('vidas-sacrificios');cerrarMasSheet()"><span class="ms-icon">❤️</span> Vidas y Sacrificios</div>
   <div class="more-sheet-item" onclick="navegarA('medallas-torneos');cerrarMasSheet()"><span class="ms-icon">🏆</span> Medallas y Torneos</div>
   <div class="more-sheet-item" onclick="cerrarMasSheet();abrirOverlayDiarioNativo()"><span class="ms-icon">📖</span> Bitácora</div>
@@ -755,7 +893,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span> Eventos</div>
       <div class="nav-item" id="nav-duelos" onclick="navegarA('duelos')"><span class="nav-icon">🥊</span> Duelos PvP</div>
       <div class="nav-item" id="nav-torneos" onclick="navegarA('torneos')"><span class="nav-icon">🏟️</span> Torneos</div>
-      <div class="nav-item" id="nav-asistente" onclick="navegarA('asistente')"><span class="nav-icon">🤖</span> Asistente</div>
+
       <div class="nav-section-label">Personal</div>
       <div class="nav-item" id="nav-perfil" onclick="navegarA('perfil')"><span class="nav-icon">👤</span> Perfil</div>
       <div class="nav-item" id="nav-vidas-sacrificios" onclick="navegarA('vidas-sacrificios')"><span class="nav-icon">❤️</span> Vidas y Sacrificios</div>
@@ -1156,19 +1294,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
     </section>
 
-    <!-- ASISTENTE -->
-    <section id="section-asistente" class="page-section">
-      <div class="hero-strip">
-        <div class="section-title">🤖 Asistente</div>
-        <div class="section-subtitle">Consejos y avisos generados a partir de tu propia partida</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🤖 Asistente</div>
-        <div id="asistente-lista" style="display:flex;flex-direction:column;gap:10px"></div>
-        <div id="asistente-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:16px 0">Todo en orden por ahora. Vuelve más tarde.</div>
-      </div>
-    </section>
+    <!-- ASISTENTE: ahora es el Rotom flotante — ver #rotom-widget más abajo -->
 
     <!-- TRACKER DE RUTAS -->
     <section id="section-tracker" class="page-section">
@@ -4559,6 +4685,7 @@ window.reclamarMision = function(misionId){
   guardarBD();
   if(info.gachaReveal) mostrarRevelacionGacha(info.gachaReveal);
   else mostrarNotificacion('Recompensa reclamada: '+info.texto,'exito','🎁','¡Misión completada!',true);
+  if(typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('misionReclamada'); },1000);
   renderizarMisiones();
   refrescarPantallaGamer();
 };
@@ -5226,7 +5353,7 @@ window.comprarObjetoGamer=async function(id){
   let cont=p.desc?` Contiene: ${p.desc}.`:'';
   if(tienda==='illegal'){
     if(u.pf<p.precioPf){mostrarNotificacion("No tienes suficientes PF.","error","🔮");return;}
-    u.pf-=p.precioPf;regContadorMision(u,'pfGastado',p.precioPf);
+    u.pf-=p.precioPf;regContadorMision(u,'pfGastado',p.precioPf);if(p.precioPf>=15&&typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('gastarPF'); },1300);
     let contIlegal=(p.desc?` ${p.desc}.`:'')+(p.beneficio?` Beneficio: ${p.beneficio}.`:'')+(p.castigo?` Castigo potencial: ${p.castigo}.`:'');
     inyectarEntradaDiarioAutomatica(`Adquirió módulo prohibido: ${p.icon} '${p.nombre}' por ${p.precioPf} PF.${contIlegal}`);
   }else{
@@ -5274,6 +5401,7 @@ window.comprarObjetoGamer=async function(id){
     }
   }
   mostrarNotificacion(`Has adquirido ${p.nombre}.${cont}`,'exito',p.icon||'✅','Compra realizada',true);
+  if(typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('compra'); },1200);
   refrescarPantallaGamer();
 };
 window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];if(!u.inventario)return;let i=u.inventario.findIndex(x=>x.uid===uid);if(i!==-1){let item=u.inventario[i];let desc=item.desc||'';u.inventario.splice(i,1);let esIlegal=item.tienda==='illegal';let parteDesc=desc?` Descripción: ${desc}.`:'';let parteBeneficio=esIlegal&&item.beneficio?` ✅ Beneficio: ${item.beneficio}.`:'';let parteCastigo=esIlegal&&item.castigo?` ⚠️ Castigo si detectado: ${item.castigo}.`:'';let entradaDiario=esIlegal?`🟣 Activó módulo prohibido: ${icon} '${nombre}'.${parteDesc}${parteBeneficio}${parteCastigo}`:(desc?`Utilizó el objeto ${icon} '${nombre}'. Contenido: ${desc}.`:`Utilizó el objeto ${icon} '${nombre}'. Consumido.`);inyectarEntradaDiarioAutomatica(entradaDiario);regContadorMision(u,'objetosUsados',1);guardarBD();reproducirSonido('usar_objeto');mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true);}};
@@ -5281,7 +5409,7 @@ window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!bas
 /* ═══ MODAL BAJA ═══ */
 window.abrirModalBaja=function(){['baja-nombre','baja-mote','baja-lugar','baja-epitafio'].forEach(id=>document.getElementById(id).value='');document.getElementById('baja-motivo').value='Ruta';refrescarSelectsPersonalizados();reproducirSonido('abrir');document.getElementById('baja-modal-overlay').style.display='flex';};
 window.cerrarModalBaja=function(){reproducirSonido('cerrar');document.getElementById('baja-modal-overlay').style.display='none';};
-window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').value.trim(),m=document.getElementById('baja-mote').value.trim(),mot=document.getElementById('baja-motivo').value,l=document.getElementById('baja-lugar').value.trim(),e=document.getElementById('baja-epitafio').value.trim();if(!n){mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀");return;}if(!l){mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>0)va--;u.vidasActuales=va;if(va<=0)u.lockeStatus='perdido';let nc=m?`${n} "${m}"`:n,rc=`[${mot}] ${l}`;if(!u.cementerio)u.cementerio=[];u.cementerio.push({nombre:nc,ruta:rc,epitafio:e||"Sin últimas palabras.",fecha:new Date().toLocaleDateString()});inyectarEntradaDiarioAutomatica(`💀 RIP: '${nc}' cayó ante ${rc}. Últimas palabras: "${e||'...'}"`);guardarBD();cerrarModalBaja();reproducirSonido('muerte');destellarPantalla('rojo');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();let _barraV=document.querySelector('.hp-barra-contenedor');if(_barraV){_barraV.classList.add('shake-vidas');setTimeout(()=>_barraV.classList.remove('shake-vidas'),350);}mostrarInfo({icono:'💀',titulo:nc,descripcion:`Ha caído ante ${rc}.\n❤️ Vidas restantes: ${va}`,tipo:'peligro',textoConfirmar:'Descanse en paz'});};
+window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').value.trim(),m=document.getElementById('baja-mote').value.trim(),mot=document.getElementById('baja-motivo').value,l=document.getElementById('baja-lugar').value.trim(),e=document.getElementById('baja-epitafio').value.trim();if(!n){mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀");return;}if(!l){mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>0)va--;u.vidasActuales=va;if(va<=0)u.lockeStatus='perdido';let nc=m?`${n} "${m}"`:n,rc=`[${mot}] ${l}`;if(!u.cementerio)u.cementerio=[];u.cementerio.push({nombre:nc,ruta:rc,epitafio:e||"Sin últimas palabras.",fecha:new Date().toLocaleDateString()});inyectarEntradaDiarioAutomatica(`💀 RIP: '${nc}' cayó ante ${rc}. Últimas palabras: "${e||'...'}"`);guardarBD();cerrarModalBaja();reproducirSonido('muerte');destellarPantalla('rojo');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();let _barraV=document.querySelector('.hp-barra-contenedor');if(_barraV){_barraV.classList.add('shake-vidas');setTimeout(()=>_barraV.classList.remove('shake-vidas'),350);}mostrarInfo({icono:'💀',titulo:nc,descripcion:`Ha caído ante ${rc}.\n❤️ Vidas restantes: ${va}`,tipo:'peligro',textoConfirmar:'Descanse en paz'});if(typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('bajaPokemon'); },800);};
 
 /* ═══ HP BAR ═══ */
 window.actualizarBarraVidas=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20,act=(u.vidasActuales!==undefined)?u.vidasActuales:ini;_renderBarra(act,ini);};
@@ -5753,6 +5881,9 @@ function torneoIntentarAvanzar(t){
       baseDatos.jugadores[t.campeon].torneos = (baseDatos.jugadores[t.campeon].torneos||0) + 1;
     }
     inyectarEntradaDiarioAutomaticaPara(t.campeon, `🏆 ¡Campeón del torneo "${t.nombre}"!`);
+    if(typeof window.rotomReaccionar==='function' && userSesion && t.campeon===userSesion){
+      setTimeout(function(){ window.rotomReaccionar('torneoGanado'); },1000);
+    }
     return;
   }
   var siguiente = torneoGenerarRondaDesdeLista(ganadores);
@@ -5966,7 +6097,7 @@ window.torneoSeleccionarGanador = function(torneoId, rondaIdx, matchIdx, ganador
    ══════════════════════════════════════ */
 function generarConsejosAsistente(u){
   var msgs = [];
-  function add(nivel, icono, titulo, desc){ msgs.push({nivel:nivel, icono:icono, titulo:titulo, desc:desc}); }
+  function add(nivel, icono, titulo, desc, categorias){ msgs.push({nivel:nivel, icono:icono, titulo:titulo, desc:desc, categorias:categorias||['inicio']}); }
 
   var vidasAct = u.vidasActuales!==undefined ? u.vidasActuales : (u.vidasTotales||20);
   var vidasTot = u.vidasTotales || 20;
@@ -5997,86 +6128,86 @@ function generarConsejosAsistente(u){
 
   // ── SUPERVIVENCIA ──
   if(vidasTot>0 && vidasAct===1){
-    add('critico','💀','¡Última vida en juego!', `Solo te queda 1 vida de ${vidasTot}. Un fallo más y toca hablar con el Cementerio.`);
+    add('critico','💀','¡Última vida en juego!', `Solo te queda 1 vida de ${vidasTot}. Un fallo más y toca hablar con el Cementerio.`, ['vidas-sacrificios','inicio']);
   } else if(vidasTot>0 && vidasAct<=Math.max(1,Math.ceil(vidasTot*0.25))){
-    add('importante','❤️‍🩹','Vidas bajo mínimos', `Te quedan ${vidasAct}/${vidasTot} vidas. Puede ser buen momento para jugar sobre seguro.`);
+    add('importante','❤️‍🩹','Vidas bajo mínimos', `Te quedan ${vidasAct}/${vidasTot} vidas. Puede ser buen momento para jugar sobre seguro.`, ['vidas-sacrificios','inicio']);
   }
   if(rachaActual<=-3){
-    add('importante','📉','Racha de pérdidas', `Llevas ${Math.abs(rachaActual)} capturas perdidas seguidas. Respira antes de la siguiente ruta.`);
+    add('importante','📉','Racha de pérdidas', `Llevas ${Math.abs(rachaActual)} capturas perdidas seguidas. Respira antes de la siguiente ruta.`, ['vidas-sacrificios','tracker']);
   } else if(rachaActual>=6){
-    add('consejo','🔥','¡Buena racha!', `Llevas ${rachaActual} capturas seguidas sin fallar. ¡Sigue así!`);
+    add('consejo','🔥','¡Buena racha!', `Llevas ${rachaActual} capturas seguidas sin fallar. ¡Sigue así!`, ['vidas-sacrificios','tracker']);
   }
   if(perdidos>=5 && rachaActual>-3){
-    add('consejo','⚰️','Bajas en el Locke', `Llevas ${perdidos} Pokémon perdidos en total en esta partida.`);
+    add('consejo','⚰️','Bajas en el Locke', `Llevas ${perdidos} Pokémon perdidos en total en esta partida.`, ['vidas-sacrificios','hall-of-fame']);
   }
 
   // ── PROGRESO (tracker) ──
   if(totalRutas>0){
     if(pendientes===0){
-      add('consejo','✅','Tracker al día', `Has resuelto las ${totalRutas} rutas asignadas. Buen ritmo.`);
+      add('consejo','✅','Tracker al día', `Has resuelto las ${totalRutas} rutas asignadas. Buen ritmo.`, ['tracker']);
     } else if(pendientes<=3){
-      add('importante','🗺️','Rutas por decidir', `Tienes ${pendientes} ruta${pendientes===1?'':'s'} pendiente${pendientes===1?'':'s'} de capturar o marcar como perdida.`);
+      add('importante','🗺️','Rutas por decidir', `Tienes ${pendientes} ruta${pendientes===1?'':'s'} pendiente${pendientes===1?'':'s'} de capturar o marcar como perdida.`, ['tracker','inicio']);
     } else {
-      add('consejo','🗺️','Quedan rutas por delante', `Aún tienes ${pendientes} rutas sin resolver en el tracker.`);
+      add('consejo','🗺️','Quedan rutas por delante', `Aún tienes ${pendientes} rutas sin resolver en el tracker.`, ['tracker']);
     }
   }
 
   // ── GIMNASIOS / KAHUNAS ──
   if(numMed<8){
-    add('consejo', tipoMed==='pruebas'?'🌺':'🏅', 'Camino a la Liga', `Llevas ${numMed}/8 ${tipoMed}. Te quedan ${8-numMed} para completarlas todas.`);
+    add('consejo', tipoMed==='pruebas'?'🌺':'🏅', 'Camino a la Liga', `Llevas ${numMed}/8 ${tipoMed}. Te quedan ${8-numMed} para completarlas todas.`, ['medallas-torneos']);
   } else {
-    add('consejo','🏆','¡Insignias completas!', `Has conseguido las 8 ${tipoMed}. ¿Ya vas por la Liga o el Alto Mando?`);
+    add('consejo','🏆','¡Insignias completas!', `Has conseguido las 8 ${tipoMed}. ¿Ya vas por la Liga o el Alto Mando?`, ['medallas-torneos','hall-of-fame']);
   }
 
   // ── ECONOMÍA (siempre aporta 2 mensajes, cubriendo todos los rangos) ──
   if(dinero<500){
-    add('importante','💸','Fondos bajos', `Solo te quedan ${dinero.toLocaleString('es-ES')} P₠. Ahorra antes del próximo gasto grande.`);
+    add('importante','💸','Fondos bajos', `Solo te quedan ${dinero.toLocaleString('es-ES')} P₠. Ahorra antes del próximo gasto grande.`, ['tiendas','perfil']);
   } else if(dinero>=5000){
-    add('consejo','💰','Buena economía', `Tienes ${dinero.toLocaleString('es-ES')} P₠ acumulados. Casi cualquier objeto está a tu alcance.`);
+    add('consejo','💰','Buena economía', `Tienes ${dinero.toLocaleString('es-ES')} P₠ acumulados. Casi cualquier objeto está a tu alcance.`, ['tiendas','perfil']);
   } else {
-    add('consejo','💵','Economía estable', `Llevas ${dinero.toLocaleString('es-ES')} P₠ en el bolsillo.`);
+    add('consejo','💵','Economía estable', `Llevas ${dinero.toLocaleString('es-ES')} P₠ en el bolsillo.`, ['tiendas','perfil']);
   }
   if(pf>=30){
-    add('consejo','🔮','PF acumulados', `Tienes ${pf} PF sin gastar. Podrías invertirlos en la tienda o en el PF Gacha.`);
+    add('consejo','🔮','PF acumulados', `Tienes ${pf} PF sin gastar. Podrías invertirlos en la tienda o en el PF Gacha.`, ['tiendas','ruletas','perfil']);
   } else if(pf===0){
-    add('consejo','🔮','Sin PF ahora mismo', `No te queda ningún PF disponible. El Gacha o el PF Gacha pueden darte algunos.`);
+    add('consejo','🔮','Sin PF ahora mismo', `No te queda ningún PF disponible. El Gacha o el PF Gacha pueden darte algunos.`, ['tiendas','ruletas','perfil']);
   } else {
-    add('consejo','🔮','PF disponibles', `Tienes ${pf} PF listos para gastar cuando quieras.`);
+    add('consejo','🔮','PF disponibles', `Tienes ${pf} PF listos para gastar cuando quieras.`, ['tiendas','ruletas','perfil']);
   }
 
   // ── GACHA ──
   if(gachaListo && gachaPFListo){
-    add('importante','🎁','2 recompensas esperando', `Tienes el Gacha normal Y el PF Gacha disponibles para reclamar hoy.`);
+    add('importante','🎁','2 recompensas esperando', `Tienes el Gacha normal Y el PF Gacha disponibles para reclamar hoy.`, ['ruletas','inicio']);
   } else if(gachaListo){
-    add('consejo','⚡','Gacha disponible', `Ya puedes reclamar tu recompensa diaria del Gacha.`);
+    add('consejo','⚡','Gacha disponible', `Ya puedes reclamar tu recompensa diaria del Gacha.`, ['ruletas','inicio']);
   } else if(gachaPFListo){
-    add('consejo','🔮','PF Gacha disponible', `Ya puedes reclamar tu PF Gacha de hoy.`);
+    add('consejo','🔮','PF Gacha disponible', `Ya puedes reclamar tu PF Gacha de hoy.`, ['ruletas','inicio']);
   }
 
   // ── INVENTARIO ──
   if(inventario.length===0){
-    add('consejo','🎒','Mochila vacía', `No tienes ningún objeto en la mochila. Revisa la tienda o prueba suerte en el Gacha.`);
+    add('consejo','🎒','Mochila vacía', `No tienes ningún objeto en la mochila. Revisa la tienda o prueba suerte en el Gacha.`, ['perfil','tiendas']);
   } else if(inventario.length>=8){
-    add('consejo','🎒','Mochila cargada', `Tienes ${inventario.length} objetos guardados. Puede que alguno te sirva ya mismo.`);
+    add('consejo','🎒','Mochila cargada', `Tienes ${inventario.length} objetos guardados. Puede que alguno te sirva ya mismo.`, ['perfil','tiendas']);
   } else {
-    add('consejo','🎒','Tu mochila', `Llevas ${inventario.length} objeto${inventario.length===1?'':'s'} guardado${inventario.length===1?'':'s'}.`);
+    add('consejo','🎒','Tu mochila', `Llevas ${inventario.length} objeto${inventario.length===1?'':'s'} guardado${inventario.length===1?'':'s'}.`, ['perfil','tiendas']);
   }
 
   // ── TORNEOS ──
   if(torneoEnCursoParticipando){
-    add('importante','🏟️','Torneo en curso', `Estás participando en "${torneoEnCursoParticipando.nombre}". Consulta el cuadro para ver tu ronda.`);
+    add('importante','🏟️','Torneo en curso', `Estás participando en "${torneoEnCursoParticipando.nombre}". Consulta el cuadro para ver tu ronda.`, ['torneos','medallas-torneos','inicio']);
   }
   if(torneosGanados>=3){
-    add('consejo','🏆','Racha de campeón', `Has ganado ${torneosGanados} torneos. ¡Eres toda una leyenda de la Liga!`);
+    add('consejo','🏆','Racha de campeón', `Has ganado ${torneosGanados} torneos. ¡Eres toda una leyenda de la Liga!`, ['torneos','medallas-torneos','hall-of-fame']);
   } else if(torneosJugados>0 && torneosGanados===0){
-    add('consejo','🥈','Cerca de tu primer título', `Has competido en ${torneosJugados} torneo${torneosJugados===1?'':'s'} pero aún no has ganado ninguno.`);
+    add('consejo','🥈','Cerca de tu primer título', `Has competido en ${torneosJugados} torneo${torneosJugados===1?'':'s'} pero aún no has ganado ninguno.`, ['torneos']);
   } else if(torneosJugados===0){
-    add('consejo','🏟️','Sin torneos todavía', `Aún no has participado en ningún torneo. Anímate a apuntarte al próximo.`);
+    add('consejo','🏟️','Sin torneos todavía', `Aún no has participado en ningún torneo. Anímate a apuntarte al próximo.`, ['torneos']);
   }
 
   // ── COMPRAS ──
   if((u.comprasDisponibles||0)===0){
-    add('consejo','🛍️','Compras agotadas por hoy', `Ya has usado tus compras disponibles. Se recargan automáticamente cada 6 horas.`);
+    add('consejo','🛍️','Compras agotadas por hoy', `Ya has usado tus compras disponibles. Se recargan automáticamente cada 6 horas.`, ['tiendas']);
   }
 
   // ── MISIONES DIARIAS ──
@@ -6096,29 +6227,32 @@ function generarConsejosAsistente(u){
     var _restanteMis = Math.max(0, _rotMis.rotationEnd-Date.now());
     var _horasRestMis = _restanteMis/(60*60*1000);
     if(_pendientesReclamarMis>0){
-      add('importante','🎁','Misiones listas para reclamar', `Tienes ${_pendientesReclamarMis} misión${_pendientesReclamarMis===1?'':'es'} diaria${_pendientesReclamarMis===1?'':'s'} completada${_pendientesReclamarMis===1?'':'s'} esperando su recompensa.`);
+      add('importante','🎁','Misiones listas para reclamar', `Tienes ${_pendientesReclamarMis} misión${_pendientesReclamarMis===1?'':'es'} diaria${_pendientesReclamarMis===1?'':'s'} completada${_pendientesReclamarMis===1?'':'s'} esperando su recompensa.`, ['misiones','inicio']);
     } else if(_completadasMis===_rotMis.misiones.length){
-      add('consejo','📋','Misiones diarias completas', `Has completado y reclamado las ${_rotMis.misiones.length} misiones de esta rotación. ¡Buen trabajo!`);
+      add('consejo','📋','Misiones diarias completas', `Has completado y reclamado las ${_rotMis.misiones.length} misiones de esta rotación. ¡Buen trabajo!`, ['misiones']);
     } else if(_horasRestMis<=2){
-      add('importante','⏳','Poco tiempo para las misiones', `Quedan menos de 2 horas para que roten las misiones diarias y te faltan ${_rotMis.misiones.length-_completadasMis} por completar.`);
+      add('importante','⏳','Poco tiempo para las misiones', `Quedan menos de 2 horas para que roten las misiones diarias y te faltan ${_rotMis.misiones.length-_completadasMis} por completar.`, ['misiones','inicio']);
     } else if(_enProgresoMis===0 && _completadasMis===0){
-      add('consejo','📋','Misiones diarias sin empezar', `Todavía no has avanzado en ninguna de tus misiones diarias. Échales un vistazo, se renuevan cada 12 horas.`);
+      add('consejo','📋','Misiones diarias sin empezar', `Todavía no has avanzado en ninguna de tus misiones diarias. Échales un vistazo, se renuevan cada 12 horas.`, ['misiones']);
     } else {
-      add('consejo','📋','Misiones diarias en marcha', `Llevas ${_completadasMis}/${_rotMis.misiones.length} misiones completadas en esta rotación.`);
+      add('consejo','📋','Misiones diarias en marcha', `Llevas ${_completadasMis}/${_rotMis.misiones.length} misiones completadas en esta rotación.`, ['misiones']);
     }
   }
 
-  // ── ACTIVIDAD GENERAL ──
+  // ── ACTIVIDAD GENERAL / BITÁCORA ──
   var d = new Date();
   var hoyStr = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
-  var ultimoLog = (u.diarioLogs && u.diarioLogs.length) ? u.diarioLogs[u.diarioLogs.length-1] : null;
+  var logsDiario = u.diarioLogs || [];
+  var ultimoLog = logsDiario.length ? logsDiario[logsDiario.length-1] : null;
   var actividadHoy = ultimoLog && ultimoLog.timestamp && ultimoLog.timestamp.indexOf(hoyStr)===0;
   if(!actividadHoy){
-    add('importante','📓','Sin actividad hoy', `Todavía no has registrado ninguna acción hoy en tu Locke.`);
+    add('importante','📓','Sin actividad hoy', `Todavía no has registrado ninguna acción hoy en tu Locke.`, ['bitacora','perfil','inicio']);
+  } else {
+    add('consejo','📖','Bitácora al día', `Ya has registrado actividad hoy. Llevas ${logsDiario.length} entrada${logsDiario.length===1?'':'s'} en total.`, ['bitacora']);
   }
 
   if(baseDatos.eventoSistema && baseDatos.eventoSistema !== 'normal'){
-    add('consejo','🌟','Evento activo', `Hay un evento especial en marcha ahora mismo: ${baseDatos.eventoSistema}.`);
+    add('consejo','🌟','Evento activo', `Hay un evento especial en marcha ahora mismo: ${baseDatos.eventoSistema}.`, ['inicio','eventos']);
   }
 
   var orden = {critico:0, importante:1, consejo:2};
@@ -6385,6 +6519,7 @@ window.trackerCambiarEstado = function(idx, nuevoEstado){
     inyectarEntradaDiarioAutomatica(`🟢 ${entrada.ruta} - ¡Encuentro Atrapado!`);
     reproducirSonido('exito');
     actualizarRachaCapturas(u,'atrapado');
+    if(typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('capturaRegistrada'); },900);
   } else if(nuevoEstado === 'perdido' && estadoAnterior !== 'perdido'){
     inyectarEntradaDiarioAutomatica(`🔴 ${entrada.ruta} - ¡Encuentro Perdido (F)!`);
     reproducirSonido('muerte');
@@ -8056,6 +8191,657 @@ window.erDescartar = function(){
   erCargar();
   mostrarNotificacion('Cambios descartados.','info','↩️');
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   ROTOM PHONE — Sistema completo (v2)
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  'use strict';
+
+  /* ── HTML del Rotom Phone (diseño ZA) ── */
+
+  /* ══════════════════════════════════════════════════════════
+     Internals del Rotom Phone
+     ══════════════════════════════════════════════════════════ */
+  var _historial      = [];
+  var _panelAbierto   = false;
+  var _silenciado     = false;
+  var _frecuencia     = 'normal';
+  var _timerBurbuja   = null;
+  var _timerSiguiente = null;
+  var _seccionActual  = 'inicio';
+  var _tiendaActual   = 'legal';
+  var _eventoActual   = 'arena';
+  var _ultimoMsgKey   = '';
+  var _msgMostrados   = {};
+  var _arrancado      = false;
+
+  var FRECUENCIAS = { baja: 90000, normal: 45000, alta: 20000 };
+
+  /* ── Variantes de frases ── */
+  var FRASES = {
+    /* Eventos reactivos */
+    compra_legal: [
+      'Buena elección en la tienda.',
+      'Un objeto legal más en la mochila.',
+      'Inversión clásica. Siempre segura.',
+      'Nada como los objetos de toda la vida.',
+      'Eso puede ser útil en la siguiente ruta.',
+      'Las monedas no sirven guardadas.',
+      'Sabio gasto, Entrenador.',
+      'Un clásico del catálogo.'
+    ],
+    compra_pack: [
+      'Los PF bien invertidos.',
+      'Los Packs esconden buenas sorpresas.',
+      'Un pack de PF. Espero que el azar esté de tu lado.',
+      'Interesante apuesta por el loot.',
+      'A veces los packs cambian partidas.',
+      'Bien, a ver qué te ha tocado.',
+      'Los PF no son infinitos, pero un pack vale la pena.'
+    ],
+    compra_ilegal: [
+      'Módulo ilegal activado. Espera que nadie lo sepa.',
+      'Arriesgado, pero puede ser decisivo.',
+      'La zona oscura de la tienda tiene sus ventajas...',
+      '¿Seguro que vale la pena arriesgarte?',
+      'Un trato con el mercado negro. Que rinda.',
+      'El beneficio puede ser grande. El castigo también.',
+      'El Mercader no pregunta. Yo tampoco.'
+    ],
+    misionCompletada: [
+      '¡Misión completada! Ya puedes reclamar tu recompensa.',
+      'Otro objetivo tachado. Buen ritmo.',
+      'Eficiente como siempre.',
+      'Las recompensas no se van a recoger solas...',
+      'Bien hecho. Las recompensas te esperan.',
+      'Una misión menos. Sigues avanzando.',
+      'El registro lo confirma: misión superada.',
+      'Progreso real, no simulado.',
+      'Eso ya está. A por la siguiente.',
+      'Las misiones no se completan solas. Buen trabajo.'
+    ],
+    misionReclamada: [
+      'Recompensa recogida. Sigue así.',
+      '¡Reclamado! Cada pequeño avance suma.',
+      'Las recompensas ya son tuyas.',
+      'Cobrado. A por la siguiente.',
+      'Bien aprovechado.'
+    ],
+    torneoGanado: [
+      '¡Tenemos campeón! Otro título para tu colección.',
+      'La Liga tiembla ante tu nombre.',
+      'Nadie puede contigo hoy.',
+      'Victoria total. Bien merecida.',
+      'El trofeo es tuyo. Nadie lo discute.',
+      'Campeón de nuevo. Esto ya empieza a ser costumbre.',
+      'Histórico. Digno de Hall of Fame.'
+    ],
+    bajaPokemon: [
+      'Uf... esa baja puede doler bastante.',
+      'Descansa en paz, compañero.',
+      'El Cementerio tiene un nuevo residente.',
+      'Nuzlocke es así. No hay vuelta atrás.',
+      'Una pérdida complicada. Mucho cuidado a partir de ahora.',
+      'Los que caen en batalla no se olvidan.',
+      'Ha luchado hasta el final. Eso es lo que importa.',
+      'Una baja más. Espero que no sea la última.',
+      'El Cementerio sigue creciendo...',
+      'Difícil de asumir. Pero el Locke continúa.'
+    ],
+    capturaRegistrada: [
+      '¡Otra captura registrada! Muy buen progreso.',
+      'Nueva incorporación al equipo.',
+      'El tracker se actualiza. Uno más en la colección.',
+      'Buena captura. Ahora a no perderlo.',
+      'Registrado. El Locke avanza.',
+      'El equipo crece. Cuida bien de él.',
+      '¡Bien capturado!'
+    ],
+    rutaCompletada: [
+      'Una ruta menos. Sigues avanzando.',
+      'El mapa se va completando poco a poco.',
+      'Ruta resuelta. A por la siguiente.',
+      'Buen progreso en el tracker.',
+      'Cada ruta cuenta. Bien hecho.',
+      'El camino a la Liga se acorta.'
+    ],
+    gastarPF: [
+      'Espero que tengas un plan...',
+      'Has invertido bastantes PF. Que valgan la pena.',
+      'Los PF no crecen en los árboles.',
+      'Ahora a recuperar lo gastado.',
+      'Bien, pero que den resultado.'
+    ],
+    /* Contextuales por sección */
+    inicio: [
+      'Bienvenido. Tienes varias cosas pendientes hoy.',
+      'El Locke sigue en marcha. ¿Qué toca hoy?',
+      'Todo el sistema operativo y listo.',
+      'Veo que estás de vuelta. ¿Qué planes tienes?',
+      'Revisa el resumen antes de entrar en acción.'
+    ],
+    tiendas_legal: [
+      'La tienda legal nunca falla para lo básico.',
+      'Ese objeto suele agotarse rápido. Compra a tiempo.',
+      'Revisa bien el stock antes de decidir.',
+      'Los objetos clásicos siempre tienen su momento.',
+      'La tienda legal es tu mejor aliada para el día a día.',
+      '¿Necesitas algo para la próxima ruta?'
+    ],
+    tiendas_pack: [
+      'Los Packs de PF son una apuesta arriesgada... y emocionante.',
+      'A veces un buen pack cambia la partida entera.',
+      'Los PF no son infinitos. ¿Merece la pena el pack?',
+      'El contenido de los packs puede sorprenderte.',
+      'Invierte con cabeza. Los packs no siempre dan lo que esperas.'
+    ],
+    tiendas_illegal: [
+      'Zona de riesgo. Todo beneficio tiene su precio aquí.',
+      'Las ilegalidades son un juego de alto riesgo.',
+      'El Mercader no pregunta. Tú tampoco deberías.',
+      '¿Estás seguro de que nadie te está mirando?',
+      'Un módulo prohibido en el momento justo puede ser decisivo.',
+      'El mercado negro tiene sus reglas. Respétalas.'
+    ],
+    tracker: [
+      'No olvides registrar las últimas capturas.',
+      'Cada ruta sin resolver es una oportunidad perdida.',
+      'El tracker no miente. Tú sí puedes olvidar.',
+      'Rutas pendientes = progreso bloqueado.',
+      'El mapa espera tus decisiones.',
+      '¿Cuántas rutas te quedan por resolver?'
+    ],
+    'vidas-sacrificios': [
+      'Las vidas son lo más valioso de un Nuzlocke.',
+      'Cada vida que conservas es una decisión acertada.',
+      'Aquí es donde se decide el legado del Locke.',
+      'Mucho cuidado con los riesgos innecesarios.',
+      'Un sacrificio bien hecho puede salvar tu partida.'
+    ],
+    'medallas-torneos': [
+      'El camino a la Liga se construye medalla a medalla.',
+      'Las insignias no se consiguen solas.',
+      'Tu historial habla por sí solo.',
+      'Cada medalla es un capítulo de este Locke.'
+    ],
+    torneos: [
+      'Los torneos son la prueba de fuego del Entrenador.',
+      'La competición es donde se forjan los campeones.',
+      'Analiza bien a tus rivales antes de entrar.',
+      'El siguiente torneo podría ser el tuyo.',
+      'Ganar un torneo cambia todo el ranking.'
+    ],
+    misiones: [
+      'Las misiones diarias son la forma más fácil de avanzar.',
+      'No dejes que se agote el tiempo de las misiones.',
+      'Cada misión completada es un paso hacia adelante.',
+      'Las recompensas no esperan para siempre.',
+      '¿Ya has echado un vistazo a las misiones de hoy?'
+    ],
+    'hall-of-fame': [
+      'Aquí descansan las leyendas de este Locke.',
+      'El Hall of Fame no miente.',
+      'Los campeones no se olvidan.',
+      'Esto es lo que queda para la historia.'
+    ],
+    museo: [
+      'El museo guarda la memoria de todos los Lockes.',
+      'Cada Locke archivado es una historia completa.',
+      'La historia no se repite, pero sí se registra.'
+    ],
+    'vidas-sacrificios_cementerio': [
+      'Aquí descansan auténticos guerreros...',
+      'Esperemos que no tengas que añadir ninguno más.',
+      'El Cementerio crece con cada batalla perdida.',
+      'Que descansen en paz. Han dado todo por el Locke.'
+    ],
+    perfil: [
+      'Tu historial dice mucho de ti como Entrenador.',
+      'El perfil no miente: eres lo que has hecho.',
+      'Cada dato aquí es parte de tu legado.',
+      'Un Entrenador con personalidad propia.'
+    ],
+    ruletas: [
+      'La suerte también es una habilidad.',
+      'Las ruletas no tienen favoritos... o eso dicen.',
+      'El azar decide, tú ejecutas.',
+      'Que la fortuna esté de tu lado.'
+    ],
+    eventos_arena: [
+      'La arena de apuestas está activa. ¿Tienes PF para apostar?',
+      'Las apuestas son pura tensión. Apuesta con cabeza.',
+      'El bote crece con cada PF apostado. ¿Entras?',
+      'La arena no perdona las apuestas impulsivas.',
+      'Analiza bien el duelo antes de mover tus PF.'
+    ],
+    eventos_camara: [
+      'La Cámara de Comercio está abierta. ¿Tienes algo que intercambiar?',
+      'Los trueques pueden cambiar el rumbo de tu partida.',
+      'El intercambio requiere confianza. Y PF.',
+      'Lo que no usas puede ser oro para otro Entrenador.',
+      'La Cámara de Comercio: donde los acuerdos toman forma.'
+    ],
+    'red-entrenadores': [
+      'Aquí puedes ver cómo le va al resto.',
+      'La competencia es sana. Mira dónde estás.',
+      'Los rivales también avanzan. No te quedes atrás.',
+      'La red de entrenadores es el pulso del Locke.',
+      'Estudia a tus rivales. El conocimiento es poder.'
+    ],
+    duelos: [
+      'Los duelos PvP son donde se prueba el metal del Entrenador.',
+      'La arena no perdona los errores.',
+      'Tu ELO depende de lo que hagas aquí.',
+      'Cada duelo es una lección, ganes o pierdas.',
+      'Un duelo bien planteado vale más que diez capturas.'
+    ],
+    bitacora: [
+      'Cada entrada en la bitácora construye la historia de tu Locke.',
+      'Registra lo importante. El futuro tú lo agradecerá.',
+      'Una buena bitácora es el mejor recuerdo de la partida.',
+      'No olvides anotar los momentos clave de hoy.',
+      'La bitácora no miente: ahí queda todo lo que has vivido.'
+    ],
+    admin: [
+      'Consola de administrador activa. Todo bajo control.',
+      'Recuerda revisar los registros antes de hacer cambios.',
+      'El sistema depende de tus decisiones aquí.',
+      'Cada ajuste queda registrado en el log de admin.',
+      'Un buen Mercader vigila de cerca la economía de todos.'
+    ]
+  };
+
+  /* ── Inyectar HTML del widget ── */
+  function inyectarDOM(){
+    var div = document.createElement('div');
+    div.id = 'rotom-widget';
+    div.innerHTML =
+      '<div id="rotom-panel">'
+        +'<div class="rotom-panel-header">'
+          +'<div class="rotom-panel-avatar">'
+            +'<div class="rotom-ear rotom-ear-l" style="top:-5px;width:8px;height:8px"></div>'
+            +'<div class="rotom-ear rotom-ear-r" style="top:-5px;width:8px;height:8px"></div>'
+            +'<div class="rotom-panel-screen"><div class="rotom-panel-dots"><div class="rotom-panel-dot"></div><div class="rotom-panel-dot"></div></div></div>'
+          +'</div>'
+          +'<div style="flex:1;min-width:0">'
+            +'<div class="rotom-panel-nombre">Rotom Phone</div>'
+            +'<div class="rotom-panel-sub" id="rotom-panel-sub">Asistente contextual</div>'
+          +'</div>'
+          +'<button class="rotom-panel-close" onclick="window._rotomCerrarPanel()">✕</button>'
+        +'</div>'
+        +'<div class="rotom-panel-msgs" id="rotom-panel-msgs"><div class="rotom-panel-vacio">Sin mensajes todavía.<br><span style="font-size:9px">Explora la app para recibir consejos.</span></div></div>'
+        +'<div class="rotom-panel-footer">'
+          +'<span class="rotom-config-label">Frecuencia</span>'
+          +'<button class="rotom-freq-btn" id="rfreq-baja" onclick="window._rotomSetFreq(\'baja\')">Baja</button>'
+          +'<button class="rotom-freq-btn activo" id="rfreq-normal" onclick="window._rotomSetFreq(\'normal\')">Normal</button>'
+          +'<button class="rotom-freq-btn" id="rfreq-alta" onclick="window._rotomSetFreq(\'alta\')">Alta</button>'
+          +'<button class="rotom-mute-btn" id="rotom-mute-btn" onclick="window._rotomToggleMute()" title="Silenciar">🔔</button>'
+        +'</div>'
+      +'</div>'
+      +'<div id="rotom-bubble" onclick="window._rotomAbrirPanel()">'
+        +'<div id="rotom-bubble-nivel" class="consejo">CONSEJO</div>'
+        +'<div id="rotom-bubble-txt">...</div>'
+      +'</div>'
+      +'<div id="rotom-btn" onclick="window._rotomTogglePanel()" title="Rotom Phone">'
+        +'<div class="rotom-ear rotom-ear-l"></div>'
+        +'<div class="rotom-ear rotom-ear-r"></div>'
+        +'<div id="rotom-screen">'
+          +'<div id="rotom-face"><div class="rotom-ojos-fila"><span class="rotom-ojo"></span><span class="rotom-ojo"></span></div><div class="rotom-boca"></div></div>'
+        +'</div>'
+        +'<div class="rotom-phone-cam"></div>'
+        +'<div class="rotom-phone-speaker"></div>'
+        +'<div class="rotom-phone-btn-lateral"></div>'
+        +'<div class="rotom-badge" id="rotom-badge">!</div>'
+      +'</div>';
+    document.body.appendChild(div);
+  }
+
+  /* ── Utilidades ── */
+  function elegirFrase(key){
+    var arr = FRASES[key];
+    if(!arr || !arr.length) return null;
+    var opc = arr.filter(function(f){ return f !== _ultimoMsgKey; });
+    if(!opc.length) opc = arr;
+    var f = opc[Math.floor(Math.random()*opc.length)];
+    _ultimoMsgKey = f;
+    return f;
+  }
+
+  function tiempoRelativo(ts){
+    var d = Date.now()-ts;
+    if(d<60000) return 'ahora mismo';
+    if(d<3600000) return 'hace '+(Math.floor(d/60000))+'m';
+    if(d<86400000) return 'hace '+(Math.floor(d/3600000))+'h';
+    return 'hace '+(Math.floor(d/86400000))+'d';
+  }
+
+  function renderizarPanel(){
+    var cont = document.getElementById('rotom-panel-msgs');
+    var sub  = document.getElementById('rotom-panel-sub');
+    if(!cont) return;
+    var secLabel = _seccionActual ? _seccionActual.replace(/-/g,' ') : 'inicio';
+    if(sub) sub.textContent = 'Zona: '+secLabel;
+    if(!_historial.length){
+      cont.innerHTML = '<div class="rotom-panel-vacio">Sin mensajes todavía.<br><span style="font-size:9px">Explora la app para recibir consejos.</span></div>';
+      return;
+    }
+    cont.innerHTML = _historial.slice().reverse().slice(0,15).map(function(m){
+      return '<div class="rotom-msg-item '+m.nivel+'">'
+        +'<div class="rotom-msg-icono">'+m.icono+'</div>'
+        +'<div class="rotom-msg-cuerpo">'
+          +'<div class="rotom-msg-titulo">'+escaparHTML(m.titulo)+'</div>'
+          +'<div class="rotom-msg-desc">'+escaparHTML(m.desc)+'</div>'
+          +'<div class="rotom-msg-tiempo">'+tiempoRelativo(m.tiempo)+'</div>'
+        +'</div>'
+      +'</div>';
+    }).join('');
+  }
+
+  function actualizarBadge(){
+    var badge = document.getElementById('rotom-badge');
+    var btn   = document.getElementById('rotom-btn');
+    if(!badge||!btn) return;
+    var n = _historial.filter(function(m){ return m.nivel==='critico' && (Date.now()-m.tiempo)<300000; }).length;
+    if(n>0 && !_panelAbierto){
+      badge.textContent = n; badge.classList.add('visible');
+      btn.classList.add('tiene-alerta');
+    } else {
+      badge.classList.remove('visible');
+      btn.classList.remove('tiene-alerta');
+    }
+  }
+
+  function mostrarBurbuja(msg, dur){
+    if(_silenciado || _panelAbierto) return;
+    var burbuja = document.getElementById('rotom-bubble');
+    var txt  = document.getElementById('rotom-bubble-txt');
+    var niv  = document.getElementById('rotom-bubble-nivel');
+    var btn  = document.getElementById('rotom-btn');
+    if(!burbuja||!txt||!niv) return;
+    var et = {critico:'CRÍTICO', importante:'AVISO', consejo:'CONSEJO'};
+    niv.className = ''; niv.classList.add(msg.nivel||'consejo');
+    niv.textContent = et[msg.nivel]||'CONSEJO';
+    txt.textContent = msg.desc;
+    burbuja.classList.add('visible');
+    btn.classList.add('hablando');
+    if(_timerBurbuja) clearTimeout(_timerBurbuja);
+    _timerBurbuja = setTimeout(function(){
+      burbuja.classList.remove('visible');
+      btn.classList.remove('hablando');
+    }, dur||6000);
+  }
+
+  /* ── Registrar y emitir ── */
+  function emitir(nivel, icono, titulo, desc, urgente){
+    var key = titulo+'|'+desc;
+    // Para urgentes se permite repetir; para el resto max 2 veces por sesión
+    if(!urgente && _msgMostrados[key] && _msgMostrados[key]>=2) return;
+    _msgMostrados[key] = (_msgMostrados[key]||0)+1;
+    var msg = {nivel:nivel, icono:icono, titulo:titulo, desc:desc, tiempo:Date.now(), seccion:_seccionActual};
+    _historial.push(msg);
+    if(_historial.length>60) _historial.shift();
+    actualizarBadge();
+    if(!_silenciado) mostrarBurbuja(msg, urgente?9000:6000);
+    if(_panelAbierto) renderizarPanel();
+  }
+
+  /* ── API pública para eventos reactivos ── */
+  window.rotomReaccionar = function(tipo, extra){
+    if(!tipo) return;
+    // tipos con variantes por subtipo
+    var clavesFrases = {
+      'compra_legal':        {nivel:'consejo',    icono:'🟢', titulo:'Compra legal'},
+      'compra_pack':         {nivel:'consejo',    icono:'🟡', titulo:'Pack de PF'},
+      'compra_ilegal':       {nivel:'importante', icono:'🟣', titulo:'Módulo ilegal'},
+      'misionCompletada':    {nivel:'importante', icono:'✅',  titulo:'¡Misión completada!'},
+      'misionReclamada':     {nivel:'consejo',    icono:'🎁',  titulo:'Recompensa reclamada'},
+      'torneoGanado':        {nivel:'critico',    icono:'🏆',  titulo:'¡Campeón!'},
+      'bajaPokemon':         {nivel:'critico',    icono:'💀',  titulo:'Baja en el equipo'},
+      'capturaRegistrada':   {nivel:'consejo',    icono:'🎯',  titulo:'Captura registrada'},
+      'rutaCompletada':      {nivel:'consejo',    icono:'🗺️', titulo:'Ruta completada'},
+      'gastarPF':            {nivel:'importante', icono:'🔮',  titulo:'PF gastados'}
+    };
+    var c = clavesFrases[tipo];
+    if(!c) return;
+    var fr = elegirFrase(tipo);
+    if(!fr) return;
+    emitir(c.nivel, c.icono, c.titulo, fr, tipo==='torneoGanado'||tipo==='bajaPokemon');
+  };
+
+  /* ── Selección de un consejo REAL (basado en datos) para una sección concreta ── */
+  function obtenerConsejoRealParaSeccion(u, seccion){
+    if(!u || typeof generarConsejosAsistente !== 'function') return null;
+    var todos = generarConsejosAsistente(u);
+    var relevantes = todos.filter(function(m){ return m.categorias && m.categorias.indexOf(seccion)!==-1; });
+    if(!relevantes.length) return null;
+    var pocoMostrados = relevantes.filter(function(m){
+      var k = m.titulo+'|'+m.desc;
+      return !_msgMostrados[k] || _msgMostrados[k]<2;
+    });
+    var candidatos = pocoMostrados.length ? pocoMostrados : relevantes;
+    return candidatos[Math.floor(Math.random()*candidatos.length)];
+  }
+
+  /* ── Insights de secciones globales (no dependen de un solo jugador) ── */
+  function obtenerConsejoAdmin(){
+    if(!window.baseDatos || !window.baseDatos.jugadores) return null;
+    var ids = Object.keys(window.baseDatos.jugadores);
+    var total = ids.length;
+    if(!total) return null;
+    var enJuego = 0, perdidos = 0;
+    ids.forEach(function(id){
+      var j = window.baseDatos.jugadores[id];
+      if(j.lockeStatus==='perdido') perdidos++; else enJuego++;
+    });
+    return {nivel:'consejo', icono:'🛠️', titulo:'Estado del sistema',
+      desc:`Hay ${total} entrenador${total===1?'':'es'} registrados: ${enJuego} con el Locke en juego y ${perdidos} con el Locke perdido.`};
+  }
+  function obtenerConsejoMuseo(){
+    if(!window.baseDatos || !window.baseDatos.historialLockes) return null;
+    var n = Object.keys(window.baseDatos.historialLockes).length;
+    if(!n) return null;
+    return {nivel:'consejo', icono:'🏛️', titulo:'Museo de Lockes',
+      desc:`El museo conserva ${n} Locke${n===1?'':'s'} archivado${n===1?'':'s'}. Explora su historia completa.`};
+  }
+  function obtenerConsejoHOF(){
+    if(!window.baseDatos || !window.baseDatos.campeones) return null;
+    var c = window.baseDatos.campeones;
+    var t = c.torneos;
+    var tn = Array.isArray(t) ? t.length : (t ? 1 : 0);
+    if(!tn) return null;
+    return {nivel:'consejo', icono:'🏆', titulo:'Hall of Fame',
+      desc:`El Salón de la Fama guarda a ${tn} campeón${tn===1?'':'es'} de torneo. La leyenda sigue creciendo.`};
+  }
+  var INSIGHTS_SECCION = { admin: obtenerConsejoAdmin, museo: obtenerConsejoMuseo, 'hall-of-fame': obtenerConsejoHOF };
+
+  /* ── Núcleo: intenta un consejo REAL para la sección; si no hay, cae al canned ── */
+  function reaccionarASeccion(seccion, claveFrase){
+    if(_silenciado || _panelAbierto) return;
+    var u = (window.userSesion && window.baseDatos && window.baseDatos.jugadores) ? window.baseDatos.jugadores[window.userSesion] : null;
+
+    var real = obtenerConsejoRealParaSeccion(u, seccion);
+    if(real){ emitir(real.nivel, real.icono, real.titulo, real.desc, real.nivel==='critico'); return; }
+
+    var especial = INSIGHTS_SECCION[seccion] ? INSIGHTS_SECCION[seccion]() : null;
+    if(especial){
+      var k2 = especial.titulo+'|'+especial.desc;
+      if(!_msgMostrados[k2] || _msgMostrados[k2]<2){
+        emitir(especial.nivel, especial.icono, especial.titulo, especial.desc, false);
+        return;
+      }
+    }
+
+    var fr = elegirFrase(claveFrase)||elegirFrase(seccion)||elegirFrase('inicio');
+    if(!fr) return;
+    var key = 'sec|'+seccion+'|'+fr;
+    if(!_msgMostrados[key]){
+      _msgMostrados[key] = 1;
+      emitir('consejo','⚡','Rotom Phone', fr, false);
+    }
+  }
+
+  /* ── Consejo periódico basado en datos reales del jugador ── */
+  function emitirConsejoContextual(){
+    if(_silenciado) return;
+    if(!window.userSesion || !window.baseDatos || !window.baseDatos.jugadores) return;
+    var u = window.baseDatos.jugadores[window.userSesion];
+    if(!u) return;
+
+    // Reutilizar la lógica completa del asistente original
+    var msgs = typeof generarConsejosAsistente === 'function' ? generarConsejosAsistente(u) : [];
+
+    // Ordenar: primero críticos, luego importantes, luego consejos
+    var criticos    = msgs.filter(function(m){ return m.nivel==='critico'; });
+    var importantes = msgs.filter(function(m){ return m.nivel==='importante'; });
+    var consejos    = msgs.filter(function(m){ return m.nivel==='consejo'; });
+
+    // Preferir los menos mostrados
+    function noMostradoOPoco(lista){
+      return lista.filter(function(m){
+        var k = m.titulo+'|'+m.desc;
+        return !_msgMostrados[k] || _msgMostrados[k]<2;
+      });
+    }
+
+    var candidatos = noMostradoOPoco(criticos).length   ? noMostradoOPoco(criticos)
+                   : noMostradoOPoco(importantes).length ? noMostradoOPoco(importantes)
+                   : noMostradoOPoco(consejos).length    ? noMostradoOPoco(consejos)
+                   : criticos.length ? criticos : importantes.length ? importantes : consejos;
+
+    if(candidatos.length){
+      var m = candidatos[Math.floor(Math.random()*candidatos.length)];
+      emitir(m.nivel, m.icono, m.titulo, m.desc, m.nivel==='critico');
+      return;
+    }
+
+    // Fallback: frase contextual según sección/subsección actual
+    var claveCtx = _seccionActual;
+    if(_seccionActual==='tiendas')  claveCtx = 'tiendas_'+_tiendaActual;
+    if(_seccionActual==='eventos')  claveCtx = 'eventos_'+_eventoActual;
+    var fr = elegirFrase(claveCtx) || elegirFrase('inicio');
+    if(fr) emitir('consejo','⚡','Rotom Phone', fr, false);
+  }
+
+  /* ── Ciclo periódico de consejos ── */
+  function iniciarCiclo(){
+    if(_timerSiguiente) clearTimeout(_timerSiguiente);
+    (function tick(){
+      emitirConsejoContextual();
+      _timerSiguiente = setTimeout(tick, FRECUENCIAS[_frecuencia]||45000);
+    })();
+  }
+
+  /* ── Controles públicos del panel ── */
+  window._rotomTogglePanel = function(){
+    _panelAbierto ? window._rotomCerrarPanel() : window._rotomAbrirPanel();
+  };
+  window._rotomAbrirPanel = function(){
+    _panelAbierto = true;
+    var panel   = document.getElementById('rotom-panel');
+    var burbuja = document.getElementById('rotom-bubble');
+    if(panel){ panel.style.display='block'; requestAnimationFrame(function(){ panel.classList.add('visible'); }); }
+    if(burbuja){ burbuja.classList.remove('visible'); if(_timerBurbuja) clearTimeout(_timerBurbuja); }
+    renderizarPanel();
+    actualizarBadge();
+  };
+  window._rotomCerrarPanel = function(){
+    _panelAbierto = false;
+    var panel = document.getElementById('rotom-panel');
+    if(panel){ panel.classList.remove('visible'); setTimeout(function(){ panel.style.display='none'; },230); }
+    actualizarBadge();
+  };
+  window._rotomSetFreq = function(f){
+    _frecuencia = f;
+    ['baja','normal','alta'].forEach(function(k){
+      var b = document.getElementById('rfreq-'+k);
+      if(b) b.classList.toggle('activo', k===f);
+    });
+    if(_timerSiguiente) clearTimeout(_timerSiguiente);
+    iniciarCiclo();
+  };
+  window._rotomToggleMute = function(){
+    _silenciado = !_silenciado;
+    var btn = document.getElementById('rotom-mute-btn');
+    if(btn){ btn.textContent=_silenciado?'🔕':'🔔'; btn.classList.toggle('activo',_silenciado); }
+  };
+
+  /* ── Hookear navegarA ── */
+  var _navegarAOrig = window.navegarA;
+  window.navegarA = function(s){
+    _seccionActual = s;
+    if(typeof _navegarAOrig==='function') _navegarAOrig(s);
+    // Emitir un consejo real (basado en tus datos) para la sección, con fallback a frase genérica
+    setTimeout(function(){
+      var clave = s;
+      if(s==='tiendas') clave = 'tiendas_'+_tiendaActual;
+      if(s==='eventos') clave = 'eventos_'+_eventoActual;
+      reaccionarASeccion(s, clave);
+    }, 900);
+  };
+
+  /* ── Hookear cambios de pestaña dentro de tiendas ── */
+  var _cambiarTiendaTabOrig = window.cambiarTiendaTab;
+  window.cambiarTiendaTab = function(tab){
+    _tiendaActual = tab;
+    if(typeof _cambiarTiendaTabOrig==='function') _cambiarTiendaTabOrig(tab);
+    setTimeout(function(){
+      reaccionarASeccion('tiendas', 'tiendas_'+tab);
+    }, 700);
+  };
+
+  /* ── Hookear cambios de pestaña dentro de eventos ── */
+  var _cambiarEventoTabOrig = window.cambiarEventoTab;
+  window.cambiarEventoTab = function(tab){
+    _eventoActual = tab;
+    if(typeof _cambiarEventoTabOrig==='function') _cambiarEventoTabOrig(tab);
+    setTimeout(function(){
+      reaccionarASeccion('eventos', 'eventos_'+tab);
+    }, 700);
+  };
+
+  /* ── Hookear apertura de la Bitácora (no es una "sección" navegable, es un overlay) ── */
+  var _abrirDiarioOrig = window.abrirOverlayDiarioNativo;
+  window.abrirOverlayDiarioNativo = function(){
+    if(typeof _abrirDiarioOrig==='function') _abrirDiarioOrig.apply(this, arguments);
+    setTimeout(function(){ reaccionarASeccion('bitacora', 'bitacora'); }, 500);
+  };
+
+  /* ── Arrancar sólo cuando el usuario ha iniciado sesión ── */
+  function arrancarSiLogin(){
+    if(_arrancado) return;
+    if(!window.userSesion || !window.baseDatos || !window.baseDatos.jugadores || !window.baseDatos.jugadores[window.userSesion]) return;
+    _arrancado = true;
+    // Saludo inicial
+    emitir('consejo','⚡','¡Bienvenido, '+window.userSesion+'!','Rotom Phone online. Monitorizando tu partida...', false);
+    // Lanzar primer consejo real tras 4 segundos
+    setTimeout(function(){
+      emitirConsejoContextual();
+      // Y luego el ciclo periódico
+      setTimeout(iniciarCiclo, 8000);
+    }, 4000);
+  }
+
+  /* ── Hookear el login para saber cuándo arrancar ── */
+  var _ingresarOrig = window.ingresarAlSistema;
+  window.ingresarAlSistema = function(){
+    if(typeof _ingresarOrig==='function') _ingresarOrig.apply(this,arguments);
+    setTimeout(arrancarSiLogin, 1200);
+  };
+
+  /* ── Init: solo inyectar DOM; el ciclo espera al login ── */
+  function init(){
+    inyectarDOM();
+    // Si ya hay sesión activa (recarga de página), arrancar directamente
+    setTimeout(arrancarSiLogin, 1000);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(init,200); });
+  } else {
+    setTimeout(init, 200);
+  }
+})();
 
 </script>
 </body>
