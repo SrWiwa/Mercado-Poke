@@ -676,6 +676,62 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 .timestamp-vivo{color:var(--neon-legal)!important}
 
 .page-section.active{padding:0}
+
+/* ═══════════════════════════════════════
+   ROTOM FLOTANTE — Asistente contextual
+   ═══════════════════════════════════════ */
+#rotom-widget{position:fixed;bottom:80px;right:16px;z-index:8000;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
+@media(min-width:768px){#rotom-widget{bottom:24px;right:24px}}
+
+/* Burbuja del Rotom */
+#rotom-btn{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#1a2340,#0d1220);border:2px solid rgba(201,154,46,.35);box-shadow:0 0 18px rgba(201,154,46,.18),0 4px 16px rgba(0,0,0,.6);cursor:pointer;pointer-events:auto;display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .3s,box-shadow .3s;flex-shrink:0}
+#rotom-btn:hover{border-color:rgba(201,154,46,.7);box-shadow:0 0 28px rgba(201,154,46,.3),0 4px 16px rgba(0,0,0,.6)}
+#rotom-btn.tiene-alerta{border-color:rgba(216,41,63,.6);box-shadow:0 0 20px rgba(216,41,63,.25),0 4px 16px rgba(0,0,0,.6);animation:rotomAlertaPulse 2s ease-in-out infinite}
+@keyframes rotomAlertaPulse{0%,100%{box-shadow:0 0 20px rgba(216,41,63,.25),0 4px 16px rgba(0,0,0,.6)}50%{box-shadow:0 0 32px rgba(216,41,63,.45),0 4px 16px rgba(0,0,0,.6)}}
+#rotom-svg-wrap{animation:rotomFloat 3.2s ease-in-out infinite}
+@keyframes rotomFloat{0%,100%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-4px) rotate(-2deg)}60%{transform:translateY(-2px) rotate(1.5deg)}80%{transform:translateY(-5px) rotate(-1deg)}}
+#rotom-btn.hablando #rotom-svg-wrap{animation:rotomHabla .18s ease-in-out infinite alternate}
+@keyframes rotomHabla{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.08) rotate(2deg)}}
+.rotom-badge{position:absolute;top:-4px;right:-4px;background:#d8293f;color:#fff;font-family:var(--font-display);font-size:9px;font-weight:900;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--bg-base);display:none}
+.rotom-badge.visible{display:flex}
+
+/* Burbuja de mensaje rápido */
+#rotom-bubble{max-width:230px;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:14px 14px 4px 14px;padding:10px 14px;pointer-events:auto;opacity:0;transform:translateY(6px) scale(.95);transition:opacity .25s,transform .25s;box-shadow:var(--shadow-md);cursor:pointer;display:none}
+#rotom-bubble.visible{opacity:1;transform:translateY(0) scale(1);display:block}
+#rotom-bubble-txt{font-size:12px;color:var(--txt-secondary);line-height:1.45;font-family:var(--font-body)}
+#rotom-bubble-nivel{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+#rotom-bubble-nivel.critico{color:#e2646f}
+#rotom-bubble-nivel.importante{color:#c99a2e}
+#rotom-bubble-nivel.consejo{color:var(--neon-legal)}
+
+/* Panel expandido */
+#rotom-panel{width:290px;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-xl);padding:0;pointer-events:auto;box-shadow:var(--shadow-xl);overflow:hidden;display:none;opacity:0;transform:translateY(8px) scale(.97);transition:opacity .22s,transform .22s}
+#rotom-panel.visible{opacity:1;transform:translateY(0) scale(1);display:block}
+.rotom-panel-header{padding:14px 16px 10px;border-bottom:1px solid var(--borde);display:flex;align-items:center;gap:10px}
+.rotom-panel-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1a2340,#0d1220);border:1.5px solid rgba(201,154,46,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rotom-panel-nombre{font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--blanco);flex:1}
+.rotom-panel-sub{font-size:10px;color:var(--txt-muted);font-family:var(--font-display)}
+.rotom-panel-close{background:none;border:none;cursor:pointer;color:var(--txt-muted);font-size:16px;line-height:1;padding:4px;border-radius:var(--r-sm);transition:color .2s}
+.rotom-panel-close:hover{color:var(--blanco)}
+.rotom-panel-msgs{max-height:320px;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.rotom-panel-msgs::-webkit-scrollbar{width:4px}
+.rotom-panel-msgs::-webkit-scrollbar-thumb{background:var(--borde-hover);border-radius:99px}
+.rotom-msg-item{padding:9px 11px;background:var(--bg-card);border:1px solid var(--borde);border-left:3px solid var(--borde);border-radius:var(--r-md);display:flex;gap:9px;align-items:flex-start}
+.rotom-msg-item.critico{border-left-color:#e2646f;background:linear-gradient(135deg,rgba(226,100,111,.07),transparent)}
+.rotom-msg-item.importante{border-left-color:#c99a2e;background:linear-gradient(135deg,rgba(201,154,46,.07),transparent)}
+.rotom-msg-item.consejo{border-left-color:var(--neon-legal)}
+.rotom-msg-icono{font-size:16px;line-height:1;flex-shrink:0;margin-top:1px}
+.rotom-msg-cuerpo{flex:1;min-width:0}
+.rotom-msg-titulo{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--blanco);margin-bottom:2px}
+.rotom-msg-desc{font-size:10.5px;color:var(--txt-secondary);line-height:1.45}
+.rotom-msg-tiempo{font-size:9px;color:var(--txt-muted);margin-top:3px;font-family:var(--font-display)}
+.rotom-panel-footer{padding:10px 12px;border-top:1px solid var(--borde);display:flex;gap:8px;align-items:center}
+.rotom-config-label{font-family:var(--font-display);font-size:9px;color:var(--txt-muted);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
+.rotom-freq-btn{background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);color:var(--txt-muted);font-family:var(--font-display);font-size:9px;font-weight:700;padding:4px 8px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.rotom-freq-btn.activo{background:rgba(201,154,46,.12);border-color:rgba(201,154,46,.4);color:#c99a2e}
+.rotom-mute-btn{margin-left:auto;background:none;border:1px solid var(--borde);border-radius:var(--r-sm);color:var(--txt-muted);font-size:12px;padding:4px 8px;cursor:pointer;transition:all .2s}
+.rotom-mute-btn.activo{border-color:rgba(216,41,63,.4);color:#e2646f;background:rgba(216,41,63,.07)}
+.rotom-panel-vacio{text-align:center;padding:28px 16px;color:var(--txt-muted);font-size:11px;font-family:var(--font-display);font-style:italic}
 </style>
 </head>
 <body>
@@ -696,7 +752,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
   <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
   <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
-  <div class="more-sheet-item" onclick="navegarA('asistente');cerrarMasSheet()"><span class="ms-icon">🤖</span> Asistente</div>
+
   <div class="more-sheet-item" onclick="navegarA('vidas-sacrificios');cerrarMasSheet()"><span class="ms-icon">❤️</span> Vidas y Sacrificios</div>
   <div class="more-sheet-item" onclick="navegarA('medallas-torneos');cerrarMasSheet()"><span class="ms-icon">🏆</span> Medallas y Torneos</div>
   <div class="more-sheet-item" onclick="cerrarMasSheet();abrirOverlayDiarioNativo()"><span class="ms-icon">📖</span> Bitácora</div>
@@ -755,7 +811,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span> Eventos</div>
       <div class="nav-item" id="nav-duelos" onclick="navegarA('duelos')"><span class="nav-icon">🥊</span> Duelos PvP</div>
       <div class="nav-item" id="nav-torneos" onclick="navegarA('torneos')"><span class="nav-icon">🏟️</span> Torneos</div>
-      <div class="nav-item" id="nav-asistente" onclick="navegarA('asistente')"><span class="nav-icon">🤖</span> Asistente</div>
+
       <div class="nav-section-label">Personal</div>
       <div class="nav-item" id="nav-perfil" onclick="navegarA('perfil')"><span class="nav-icon">👤</span> Perfil</div>
       <div class="nav-item" id="nav-vidas-sacrificios" onclick="navegarA('vidas-sacrificios')"><span class="nav-icon">❤️</span> Vidas y Sacrificios</div>
@@ -1156,19 +1212,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
     </section>
 
-    <!-- ASISTENTE -->
-    <section id="section-asistente" class="page-section">
-      <div class="hero-strip">
-        <div class="section-title">🤖 Asistente</div>
-        <div class="section-subtitle">Consejos y avisos generados a partir de tu propia partida</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🤖 Asistente</div>
-        <div id="asistente-lista" style="display:flex;flex-direction:column;gap:10px"></div>
-        <div id="asistente-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:16px 0">Todo en orden por ahora. Vuelve más tarde.</div>
-      </div>
-    </section>
+    <!-- ASISTENTE: ahora es el Rotom flotante — ver #rotom-widget más abajo -->
 
     <!-- TRACKER DE RUTAS -->
     <section id="section-tracker" class="page-section">
@@ -4559,6 +4603,7 @@ window.reclamarMision = function(misionId){
   guardarBD();
   if(info.gachaReveal) mostrarRevelacionGacha(info.gachaReveal);
   else mostrarNotificacion('Recompensa reclamada: '+info.texto,'exito','🎁','¡Misión completada!',true);
+  if(typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('misionReclamada'); },1000);
   renderizarMisiones();
   refrescarPantallaGamer();
 };
@@ -5226,7 +5271,7 @@ window.comprarObjetoGamer=async function(id){
   let cont=p.desc?` Contiene: ${p.desc}.`:'';
   if(tienda==='illegal'){
     if(u.pf<p.precioPf){mostrarNotificacion("No tienes suficientes PF.","error","🔮");return;}
-    u.pf-=p.precioPf;regContadorMision(u,'pfGastado',p.precioPf);
+    u.pf-=p.precioPf;regContadorMision(u,'pfGastado',p.precioPf);if(p.precioPf>=15&&typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('gastarPF'); },1300);
     let contIlegal=(p.desc?` ${p.desc}.`:'')+(p.beneficio?` Beneficio: ${p.beneficio}.`:'')+(p.castigo?` Castigo potencial: ${p.castigo}.`:'');
     inyectarEntradaDiarioAutomatica(`Adquirió módulo prohibido: ${p.icon} '${p.nombre}' por ${p.precioPf} PF.${contIlegal}`);
   }else{
@@ -5274,6 +5319,7 @@ window.comprarObjetoGamer=async function(id){
     }
   }
   mostrarNotificacion(`Has adquirido ${p.nombre}.${cont}`,'exito',p.icon||'✅','Compra realizada',true);
+  if(typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('compra'); },1200);
   refrescarPantallaGamer();
 };
 window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];if(!u.inventario)return;let i=u.inventario.findIndex(x=>x.uid===uid);if(i!==-1){let item=u.inventario[i];let desc=item.desc||'';u.inventario.splice(i,1);let esIlegal=item.tienda==='illegal';let parteDesc=desc?` Descripción: ${desc}.`:'';let parteBeneficio=esIlegal&&item.beneficio?` ✅ Beneficio: ${item.beneficio}.`:'';let parteCastigo=esIlegal&&item.castigo?` ⚠️ Castigo si detectado: ${item.castigo}.`:'';let entradaDiario=esIlegal?`🟣 Activó módulo prohibido: ${icon} '${nombre}'.${parteDesc}${parteBeneficio}${parteCastigo}`:(desc?`Utilizó el objeto ${icon} '${nombre}'. Contenido: ${desc}.`:`Utilizó el objeto ${icon} '${nombre}'. Consumido.`);inyectarEntradaDiarioAutomatica(entradaDiario);regContadorMision(u,'objetosUsados',1);guardarBD();reproducirSonido('usar_objeto');mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true);}};
@@ -5281,7 +5327,7 @@ window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!bas
 /* ═══ MODAL BAJA ═══ */
 window.abrirModalBaja=function(){['baja-nombre','baja-mote','baja-lugar','baja-epitafio'].forEach(id=>document.getElementById(id).value='');document.getElementById('baja-motivo').value='Ruta';refrescarSelectsPersonalizados();reproducirSonido('abrir');document.getElementById('baja-modal-overlay').style.display='flex';};
 window.cerrarModalBaja=function(){reproducirSonido('cerrar');document.getElementById('baja-modal-overlay').style.display='none';};
-window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').value.trim(),m=document.getElementById('baja-mote').value.trim(),mot=document.getElementById('baja-motivo').value,l=document.getElementById('baja-lugar').value.trim(),e=document.getElementById('baja-epitafio').value.trim();if(!n){mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀");return;}if(!l){mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>0)va--;u.vidasActuales=va;if(va<=0)u.lockeStatus='perdido';let nc=m?`${n} "${m}"`:n,rc=`[${mot}] ${l}`;if(!u.cementerio)u.cementerio=[];u.cementerio.push({nombre:nc,ruta:rc,epitafio:e||"Sin últimas palabras.",fecha:new Date().toLocaleDateString()});inyectarEntradaDiarioAutomatica(`💀 RIP: '${nc}' cayó ante ${rc}. Últimas palabras: "${e||'...'}"`);guardarBD();cerrarModalBaja();reproducirSonido('muerte');destellarPantalla('rojo');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();let _barraV=document.querySelector('.hp-barra-contenedor');if(_barraV){_barraV.classList.add('shake-vidas');setTimeout(()=>_barraV.classList.remove('shake-vidas'),350);}mostrarInfo({icono:'💀',titulo:nc,descripcion:`Ha caído ante ${rc}.\n❤️ Vidas restantes: ${va}`,tipo:'peligro',textoConfirmar:'Descanse en paz'});};
+window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').value.trim(),m=document.getElementById('baja-mote').value.trim(),mot=document.getElementById('baja-motivo').value,l=document.getElementById('baja-lugar').value.trim(),e=document.getElementById('baja-epitafio').value.trim();if(!n){mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀");return;}if(!l){mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if(va>0)va--;u.vidasActuales=va;if(va<=0)u.lockeStatus='perdido';let nc=m?`${n} "${m}"`:n,rc=`[${mot}] ${l}`;if(!u.cementerio)u.cementerio=[];u.cementerio.push({nombre:nc,ruta:rc,epitafio:e||"Sin últimas palabras.",fecha:new Date().toLocaleDateString()});inyectarEntradaDiarioAutomatica(`💀 RIP: '${nc}' cayó ante ${rc}. Últimas palabras: "${e||'...'}"`);guardarBD();cerrarModalBaja();reproducirSonido('muerte');destellarPantalla('rojo');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();let _barraV=document.querySelector('.hp-barra-contenedor');if(_barraV){_barraV.classList.add('shake-vidas');setTimeout(()=>_barraV.classList.remove('shake-vidas'),350);}mostrarInfo({icono:'💀',titulo:nc,descripcion:`Ha caído ante ${rc}.\n❤️ Vidas restantes: ${va}`,tipo:'peligro',textoConfirmar:'Descanse en paz'});if(typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('bajaPokemon'); },800);};
 
 /* ═══ HP BAR ═══ */
 window.actualizarBarraVidas=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20,act=(u.vidasActuales!==undefined)?u.vidasActuales:ini;_renderBarra(act,ini);};
@@ -5753,6 +5799,9 @@ function torneoIntentarAvanzar(t){
       baseDatos.jugadores[t.campeon].torneos = (baseDatos.jugadores[t.campeon].torneos||0) + 1;
     }
     inyectarEntradaDiarioAutomaticaPara(t.campeon, `🏆 ¡Campeón del torneo "${t.nombre}"!`);
+    if(typeof window.rotomReaccionar==='function' && userSesion && t.campeon===userSesion){
+      setTimeout(function(){ window.rotomReaccionar('torneoGanado'); },1000);
+    }
     return;
   }
   var siguiente = torneoGenerarRondaDesdeLista(ganadores);
@@ -6385,6 +6434,7 @@ window.trackerCambiarEstado = function(idx, nuevoEstado){
     inyectarEntradaDiarioAutomatica(`🟢 ${entrada.ruta} - ¡Encuentro Atrapado!`);
     reproducirSonido('exito');
     actualizarRachaCapturas(u,'atrapado');
+    if(typeof window.rotomReaccionar==='function') setTimeout(function(){ window.rotomReaccionar('capturaRegistrada'); },900);
   } else if(nuevoEstado === 'perdido' && estadoAnterior !== 'perdido'){
     inyectarEntradaDiarioAutomatica(`🔴 ${entrada.ruta} - ¡Encuentro Perdido (F)!`);
     reproducirSonido('muerte');
@@ -8056,6 +8106,508 @@ window.erDescartar = function(){
   erCargar();
   mostrarNotificacion('Cambios descartados.','info','↩️');
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   ROTOM FLOTANTE — Sistema completo
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  'use strict';
+
+  /* ── SVG del Rotom ── */
+  var ROTOM_SVG = '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">'
+    +'<ellipse cx="16" cy="18" rx="10" ry="9" fill="#1a2340" stroke="rgba(100,160,255,0.6)" stroke-width="1.2"/>'
+    +'<ellipse cx="16" cy="16" rx="8" ry="8" fill="url(#rg1)"/>'
+    +'<radialGradient id="rg1" cx="40%" cy="35%"><stop offset="0%" stop-color="#5ab4ff"/><stop offset="100%" stop-color="#1e4a8a"/></radialGradient>'
+    +'<ellipse id="rotom-ojo-i" cx="12.5" cy="14.5" rx="2.2" ry="2.5" fill="#cde8ff"/>'
+    +'<ellipse id="rotom-ojo-d" cx="19.5" cy="14.5" rx="2.2" ry="2.5" fill="#cde8ff"/>'
+    +'<ellipse cx="12.5" cy="14.5" rx="1.1" ry="1.4" fill="#0a1a3a"/>'
+    +'<ellipse cx="19.5" cy="14.5" rx="1.1" ry="1.4" fill="#0a1a3a"/>'
+    +'<path d="M13 20 Q16 22 19 20" stroke="#cde8ff" stroke-width="1" stroke-linecap="round" fill="none"/>'
+    +'<path d="M8 12 L5 9 M8 14 L4 14 M8 16 L5 19" stroke="rgba(100,180,255,0.7)" stroke-width="1.2" stroke-linecap="round"/>'
+    +'<path d="M24 12 L27 9 M24 14 L28 14 M24 16 L27 19" stroke="rgba(100,180,255,0.7)" stroke-width="1.2" stroke-linecap="round"/>'
+    +'<ellipse cx="16" cy="12" rx="3" ry="2" fill="rgba(100,180,255,0.2)"/>'
+    +'</svg>';
+
+  /* ── Estado interno ── */
+  var _historial = [];        // {nivel, icono, titulo, desc, tiempo, seccion}
+  var _panelAbierto = false;
+  var _silenciado = false;
+  var _frecuencia = 'normal'; // baja | normal | alta
+  var _timerBurbuja = null;
+  var _timerSiguiente = null;
+  var _idxActual = 0;
+  var _seccionActual = 'inicio';
+  var _ultimoMsgKey = '';     // evitar repetir la misma frase seguida
+  var _msgMostrados = {};     // clave → veces mostrado en sesión
+
+  var FRECUENCIAS = { baja: 90000, normal: 45000, alta: 20000 };
+
+  /* ── Variantes de frases por situación ── */
+  var FRASES = {
+    compra: [
+      'Buena elección.',
+      'Creo que esa inversión merece la pena.',
+      'Un objeto menos disponible para los demás.',
+      'Interesante adquisición.',
+      'No estaba seguro de que lo harías, pero bien hecho.',
+      'Las monedas no sirven de nada guardadas.',
+      'Eso podría ser útil más adelante.',
+      'Sabia decisión, en mi opinión.'
+    ],
+    misionCompletada: [
+      '¡Misión completada! Ya puedes reclamar tu recompensa.',
+      'Otro objetivo tachado. Buen ritmo.',
+      'Eficiente como siempre.',
+      'Las recompensas no se van a recoger solas...',
+      '¡Misión superada! No olvides reclamar.',
+      'Eso ya está. Siguiente.',
+      'Progreso real, no simulado.',
+      'Bien hecho. Las recompensas te esperan.',
+      'Una misión menos. Sigues avanzando.',
+      'El registro lo confirma: misión superada.'
+    ],
+    misionReclamada: [
+      'Recompensa recogida. Sigue así.',
+      '¡Reclamado! Cada pequeño avance suma.',
+      'Las recompensas ya son tuyas.',
+      'Perfecto. Qué sería de este Locke sin ti.',
+      'Cobrado. A por la siguiente.'
+    ],
+    torneoGanado: [
+      '¡Tenemos campeón! Otro título para tu colección.',
+      'La Liga tiembla ante tu nombre.',
+      'Nadie puede contigo hoy.',
+      'Victoria total. Bien merecida.',
+      'El trofeo es tuyo. Nadie lo discute.',
+      'Campeón de nuevo. Esto ya empieza a ser costumbre.',
+      'Histórico. Digno de Hall of Fame.'
+    ],
+    bajaPokemon: [
+      'Uf... esa baja puede doler bastante.',
+      'Descansa en paz, compañero.',
+      'El Cementerio tiene un nuevo residente.',
+      'Nuzlocke es así. No hay vuelta atrás.',
+      'Una pérdida complicada. Mucho cuidado a partir de ahora.',
+      'Los que caen en batalla no se olvidan.',
+      'Ha luchado hasta el final. Eso es lo que importa.',
+      'Una baja más. Espero que no sea la última.',
+      'El Cementerio sigue creciendo...',
+      'Difícil de asumir. Pero el Locke continúa.'
+    ],
+    capturaRegistrada: [
+      '¡Otra captura registrada! Muy buen progreso.',
+      'Nueva incorporación al equipo.',
+      'El tracker se actualiza solo... casi.',
+      'Uno más en la colección.',
+      'Buena captura. Ahora a no perderlo.',
+      'Registrado. El Locke avanza.',
+      'El equipo crece. Cuida bien de él.'
+    ],
+    rutaCompletada: [
+      'Una ruta menos. Sigues avanzando.',
+      'El mapa se va completando poco a poco.',
+      'Ruta resuelta. A por la siguiente.',
+      'Buen progreso en el tracker.',
+      'Cada ruta cuenta. Bien hecho.',
+      'Eso ya está en los libros.',
+      'El camino a la Liga se acorta.'
+    ],
+    gastarPF: [
+      'Espero que tengas un plan...',
+      'Has invertido bastantes PF. Que valgan la pena.',
+      'Los PF no crecen en los árboles.',
+      'Interesante estrategia de gasto.',
+      'Ahora a recuperar lo gastado.',
+      'Bien, pero que den resultado.'
+    ],
+    muchoDinero: [
+      'Tu economía está mejor que nunca.',
+      'Con esa cartera puedes permitirte casi todo.',
+      'Dinero no te falta. Saber gastarlo ya es otro tema.',
+      'Impresionante acumulación de fondos.',
+      'El Mercader está orgulloso de ti.'
+    ],
+    // Mensajes contextuales por sección
+    inicio: [
+      'Bienvenido. Tienes varias cosas pendientes hoy.',
+      'El Locke sigue en marcha. ¿Qué toca hoy?',
+      'Todo el sistema operativo y listo para ti.',
+      'Veo que estás de vuelta. ¿Qué planes tienes?'
+    ],
+    tiendas: [
+      'Ese objeto suele agotarse rápido.',
+      'Revisa bien el stock antes de decidir.',
+      'No todo lo que brilla es lo que necesitas ahora mismo.',
+      'Compra inteligente, Entrenador.',
+      'Los objetos raros no vuelven enseguida.'
+    ],
+    tracker: [
+      'No olvides registrar las últimas capturas.',
+      'Cada ruta sin resolver es una oportunidad perdida.',
+      'El tracker no miente. Tú sí puedes olvidar.',
+      'Rutas pendientes = progreso bloqueado.',
+      'El mapa espera tus decisiones.'
+    ],
+    'vidas-sacrificios': [
+      'Las vidas son lo más valioso de un Nuzlocke.',
+      'Cada vida que conservas es una decisión acertada.',
+      'Aquí es donde se decide el legado del Locke.',
+      'Mucho cuidado con los riesgos innecesarios.'
+    ],
+    'medallas-torneos': [
+      'El camino a la Liga se construye medalla a medalla.',
+      'Las insignias no se consiguen solas.',
+      'Tu historial habla por sí solo.',
+      'Cada medalla es un capítulo de este Locke.'
+    ],
+    torneos: [
+      'Los torneos son la prueba de fuego del Entrenador.',
+      'La competición es donde se forjan los campeones.',
+      'Analiza bien a tus rivales antes de entrar.',
+      'El siguiente torneo podría ser el tuyo.'
+    ],
+    misiones: [
+      'Las misiones diarias son la forma más fácil de avanzar.',
+      'No dejes que se agote el tiempo de las misiones.',
+      'Cada misión completada es un paso hacia adelante.',
+      'Las recompensas no esperan para siempre.'
+    ],
+    'hall-of-fame': [
+      'Aquí descansan las leyendas de este Locke.',
+      'El Hall of Fame no miente.',
+      'Los campeones no se olvidan.',
+      'Esto es lo que queda para la historia.'
+    ],
+    museo: [
+      'El museo guarda la memoria de todos los Lockes.',
+      'Cada Locke archivado es una historia completa.',
+      'La historia no se repite, pero sí se registra.'
+    ],
+    cementerio: [
+      'Aquí descansan auténticos guerreros...',
+      'Esperemos que no tengas que añadir ninguno más.',
+      'El Cementerio crece con cada batalla perdida.',
+      'Que descansen en paz. Han dado todo por el Locke.'
+    ],
+    perfil: [
+      'Tu historial dice mucho de ti como Entrenador.',
+      'El perfil no miente: eres lo que has hecho.',
+      'Cada dato aquí es parte de tu legado.',
+      'Un Entrenador con personalidad propia.'
+    ],
+    ruletas: [
+      'La suerte también es una habilidad.',
+      'Las ruletas no tienen favoritos... o eso dicen.',
+      'El azar decide, tú ejecutas.',
+      'Que la fortuna esté de tu lado.'
+    ],
+    eventos: [
+      'Los eventos son oportunidades que no se repiten.',
+      'Cada evento tiene su momento. No lo pierdas.',
+      'La actividad en la arena define rangos.',
+      'El mercado de intercambio está siempre activo.'
+    ],
+    duelos: [
+      'Los duelos PvP son donde se prueba el metal del Entrenador.',
+      'La arena no perdona los errores.',
+      'Tu ELO depende de lo que hagas aquí.',
+      'Cada duelo es una lección, ganes o pierdas.'
+    ]
+  };
+
+  /* ── Inyectar HTML ── */
+  function inyectarDOM(){
+    var div = document.createElement('div');
+    div.id = 'rotom-widget';
+    div.innerHTML =
+      '<div id="rotom-panel">'
+        +'<div class="rotom-panel-header">'
+          +'<div class="rotom-panel-avatar">'+ROTOM_SVG+'</div>'
+          +'<div style="flex:1">'
+            +'<div class="rotom-panel-nombre">Rotom Dex</div>'
+            +'<div class="rotom-panel-sub" id="rotom-panel-sub">Asistente contextual</div>'
+          +'</div>'
+          +'<button class="rotom-panel-close" onclick="window._rotomCerrarPanel()">✕</button>'
+        +'</div>'
+        +'<div class="rotom-panel-msgs" id="rotom-panel-msgs"><div class="rotom-panel-vacio">Sin mensajes todavía.</div></div>'
+        +'<div class="rotom-panel-footer">'
+          +'<span class="rotom-config-label">Frecuencia</span>'
+          +'<button class="rotom-freq-btn" id="rfreq-baja" onclick="window._rotomSetFreq(\'baja\')">Baja</button>'
+          +'<button class="rotom-freq-btn activo" id="rfreq-normal" onclick="window._rotomSetFreq(\'normal\')">Normal</button>'
+          +'<button class="rotom-freq-btn" id="rfreq-alta" onclick="window._rotomSetFreq(\'alta\')">Alta</button>'
+          +'<button class="rotom-mute-btn" id="rotom-mute-btn" onclick="window._rotomToggleMute()" title="Silenciar">🔔</button>'
+        +'</div>'
+      +'</div>'
+      +'<div id="rotom-bubble" onclick="window._rotomAbrirPanel()">'
+        +'<div id="rotom-bubble-nivel" class="consejo">CONSEJO</div>'
+        +'<div id="rotom-bubble-txt">...</div>'
+      +'</div>'
+      +'<div id="rotom-btn" onclick="window._rotomTogglePanel()" title="Rotom Dex">'
+        +'<div id="rotom-svg-wrap">'+ROTOM_SVG+'</div>'
+        +'<div class="rotom-badge" id="rotom-badge">!</div>'
+      +'</div>';
+    document.body.appendChild(div);
+  }
+
+  /* ── Utilidades ── */
+  function elegirFrase(key){
+    var arr = FRASES[key];
+    if(!arr || !arr.length) return null;
+    var opciones = arr.filter(function(f){ return f !== _ultimoMsgKey; });
+    if(!opciones.length) opciones = arr;
+    var f = opciones[Math.floor(Math.random()*opciones.length)];
+    _ultimoMsgKey = f;
+    return f;
+  }
+
+  function tiempoRelativo(ts){
+    var diff = Date.now()-ts;
+    if(diff<60000) return 'ahora mismo';
+    if(diff<3600000) return 'hace '+(Math.floor(diff/60000))+'m';
+    if(diff<86400000) return 'hace '+(Math.floor(diff/3600000))+'h';
+    return 'hace '+(Math.floor(diff/86400000))+'d';
+  }
+
+  function renderizarPanel(){
+    var cont = document.getElementById('rotom-panel-msgs');
+    var sub = document.getElementById('rotom-panel-sub');
+    if(!cont) return;
+    if(sub) sub.textContent = _seccionActual ? 'Sección: '+_seccionActual.replace(/-/g,' ') : 'Asistente contextual';
+    if(!_historial.length){
+      cont.innerHTML = '<div class="rotom-panel-vacio">Sin mensajes todavía.</div>';
+      return;
+    }
+    var items = _historial.slice().reverse().slice(0,12);
+    cont.innerHTML = items.map(function(m){
+      return '<div class="rotom-msg-item '+m.nivel+'">'
+        +'<div class="rotom-msg-icono">'+m.icono+'</div>'
+        +'<div class="rotom-msg-cuerpo">'
+          +'<div class="rotom-msg-titulo">'+escaparHTML(m.titulo)+'</div>'
+          +'<div class="rotom-msg-desc">'+escaparHTML(m.desc)+'</div>'
+          +'<div class="rotom-msg-tiempo">'+tiempoRelativo(m.tiempo)+'</div>'
+        +'</div>'
+        +'</div>';
+    }).join('');
+  }
+
+  function actualizarBadge(){
+    var badge = document.getElementById('rotom-badge');
+    var btn = document.getElementById('rotom-btn');
+    if(!badge || !btn) return;
+    var criticos = _historial.filter(function(m){ return m.nivel==='critico' && (Date.now()-m.tiempo)<300000; }).length;
+    if(criticos>0 && !_panelAbierto){
+      badge.textContent = criticos;
+      badge.classList.add('visible');
+      btn.classList.add('tiene-alerta');
+    } else {
+      badge.classList.remove('visible');
+      btn.classList.remove('tiene-alerta');
+    }
+  }
+
+  function mostrarBurbuja(msg, duracion){
+    if(_silenciado || _panelAbierto) return;
+    var burbuja = document.getElementById('rotom-bubble');
+    var txt = document.getElementById('rotom-bubble-txt');
+    var niv = document.getElementById('rotom-bubble-nivel');
+    var btn = document.getElementById('rotom-btn');
+    if(!burbuja || !txt || !niv) return;
+    var etiquetas = {critico:'CRÍTICO', importante:'AVISO', consejo:'CONSEJO'};
+    niv.textContent = etiquetas[msg.nivel] || 'CONSEJO';
+    niv.className = 'consejo'; niv.classList.remove('consejo','importante','critico'); niv.classList.add(msg.nivel||'consejo');
+    txt.textContent = msg.desc;
+    burbuja.classList.add('visible');
+    btn.classList.add('hablando');
+    if(_timerBurbuja) clearTimeout(_timerBurbuja);
+    _timerBurbuja = setTimeout(function(){
+      burbuja.classList.remove('visible');
+      btn.classList.remove('hablando');
+    }, duracion || 6000);
+  }
+
+  /* ── Registrar mensaje en historial y mostrarlo ── */
+  function emitir(nivel, icono, titulo, desc, urgente){
+    var key = titulo+'|'+desc;
+    if(_msgMostrados[key] && _msgMostrados[key]>0 && !urgente) return; // no repetir en sesión
+    _msgMostrados[key] = (_msgMostrados[key]||0)+1;
+    var msg = {nivel:nivel, icono:icono, titulo:titulo, desc:desc, tiempo:Date.now(), seccion:_seccionActual};
+    _historial.push(msg);
+    if(_historial.length>50) _historial.shift();
+    actualizarBadge();
+    if(!_silenciado) mostrarBurbuja(msg, urgente?8000:5500);
+    if(_panelAbierto) renderizarPanel();
+  }
+
+  /* ── Emitir mensaje reactivo (para eventos externos) ── */
+  window.rotomReaccionar = function(tipo){
+    if(!tipo) return;
+    var frase = elegirFrase(tipo);
+    if(!frase) return;
+    var config = {
+      compra:         {nivel:'consejo',    icono:'🛍️', titulo:'Compra realizada'},
+      misionCompletada:{nivel:'importante', icono:'✅',  titulo:'¡Misión completada!'},
+      misionReclamada: {nivel:'consejo',   icono:'🎁',  titulo:'Recompensa reclamada'},
+      torneoGanado:   {nivel:'critico',    icono:'🏆',  titulo:'¡Campeón!'},
+      bajaPokemon:    {nivel:'critico',    icono:'💀',  titulo:'Baja en el equipo'},
+      capturaRegistrada:{nivel:'consejo',  icono:'🎯',  titulo:'Captura registrada'},
+      rutaCompletada: {nivel:'consejo',    icono:'🗺️', titulo:'Ruta completada'},
+      gastarPF:       {nivel:'importante', icono:'🔮',  titulo:'PF gastados'},
+      muchoDinero:    {nivel:'consejo',    icono:'💰',  titulo:'Gran fortuna'}
+    };
+    var c = config[tipo];
+    if(!c) return;
+    var urgente = (tipo==='torneoGanado'||tipo==='bajaPokemon');
+    emitir(c.nivel, c.icono, c.titulo, frase, urgente);
+  };
+
+  /* ── Consejo contextual basado en los datos reales del jugador ── */
+  function emitirConsejoContextual(){
+    if(_silenciado) return;
+    if(!window.userSesion || !window.baseDatos || !window.baseDatos.jugadores) return;
+    var u = window.baseDatos.jugadores[window.userSesion];
+    if(!u) return;
+
+    // Generar consejos de alta prioridad primero
+    var msgs = typeof generarConsejosAsistente === 'function' ? generarConsejosAsistente(u) : [];
+    var criticos   = msgs.filter(function(m){ return m.nivel==='critico'; });
+    var importantes = msgs.filter(function(m){ return m.nivel==='importante'; });
+    var consejos   = msgs.filter(function(m){ return m.nivel==='consejo'; });
+
+    // Elegir según prioridad
+    var candidatos = criticos.length ? criticos : (importantes.length ? importantes : consejos);
+
+    // Filtrar los ya mostrados muchas veces
+    var noMostrados = candidatos.filter(function(m){
+      var k = m.titulo+'|'+m.desc;
+      return !_msgMostrados[k] || _msgMostrados[k]<2;
+    });
+    if(!noMostrados.length) noMostrados = candidatos;
+
+    if(!noMostrados.length){
+      // Fallback: frase contextual de sección
+      var sec = _seccionActual||'inicio';
+      var fr = elegirFrase(sec) || elegirFrase('inicio');
+      if(fr) emitir('consejo','⚡','Rotom Dex', fr, false);
+      return;
+    }
+
+    // Elegir uno al azar de entre los candidatos
+    var m = noMostrados[Math.floor(Math.random()*noMostrados.length)];
+    var urgente = m.nivel==='critico';
+    emitir(m.nivel, m.icono, m.titulo, m.desc, urgente);
+  }
+
+  /* ── Ciclo de mensajes ── */
+  function iniciarCiclo(){
+    if(_timerSiguiente) clearTimeout(_timerSiguiente);
+    var intervalo = FRECUENCIAS[_frecuencia] || FRECUENCIAS.normal;
+    // Primer mensaje tras un pequeño delay inicial
+    _timerSiguiente = setTimeout(function tick(){
+      emitirConsejoContextual();
+      _timerSiguiente = setTimeout(tick, FRECUENCIAS[_frecuencia] || FRECUENCIAS.normal);
+    }, 4000);
+  }
+
+  /* ── Controles públicos ── */
+  window._rotomTogglePanel = function(){
+    _panelAbierto ? window._rotomCerrarPanel() : window._rotomAbrirPanel();
+  };
+  window._rotomAbrirPanel = function(){
+    _panelAbierto = true;
+    var panel = document.getElementById('rotom-panel');
+    var burbuja = document.getElementById('rotom-bubble');
+    if(panel){ panel.style.display='block'; setTimeout(function(){ panel.classList.add('visible'); },10); }
+    if(burbuja){ burbuja.classList.remove('visible'); if(_timerBurbuja) clearTimeout(_timerBurbuja); }
+    renderizarPanel();
+    actualizarBadge();
+  };
+  window._rotomCerrarPanel = function(){
+    _panelAbierto = false;
+    var panel = document.getElementById('rotom-panel');
+    if(panel){ panel.classList.remove('visible'); setTimeout(function(){ panel.style.display='none'; },220); }
+    actualizarBadge();
+  };
+  window._rotomSetFreq = function(f){
+    _frecuencia = f;
+    ['baja','normal','alta'].forEach(function(k){
+      var b = document.getElementById('rfreq-'+k);
+      if(b) b.classList.toggle('activo', k===f);
+    });
+    iniciarCiclo();
+  };
+  window._rotomToggleMute = function(){
+    _silenciado = !_silenciado;
+    var btn = document.getElementById('rotom-mute-btn');
+    if(btn){ btn.textContent = _silenciado ? '🔕' : '🔔'; btn.classList.toggle('activo', _silenciado); }
+  };
+
+  /* ── Detectar sección activa ── */
+  function detectarSeccion(){
+    var secs = document.querySelectorAll('.page-section.active');
+    if(secs.length){
+      var id = secs[0].id || '';
+      _seccionActual = id.replace('section-','') || 'inicio';
+    }
+  }
+  // Hookear navegarA para detectar cambio de sección
+  var _navegarAOrig = window.navegarA;
+  window.navegarA = function(s){
+    _seccionActual = s;
+    if(typeof _navegarAOrig === 'function') _navegarAOrig(s);
+    // Emitir consejo de sección tras un pequeño delay
+    setTimeout(function(){
+      if(_silenciado || _panelAbierto) return;
+      var fr = elegirFrase(s);
+      if(fr){
+        var key = 'sec|'+s+'|'+fr;
+        // Solo 1 vez por sección por sesión
+        if(!_msgMostrados[key]){
+          _msgMostrados[key] = 1;
+          emitir('consejo','⚡', 'Rotom Dex', fr, false);
+        }
+      }
+    }, 800);
+  };
+
+  /* ── Hookear eventos de la app ── */
+  // Esperar a que esté el DOM y los datos listos
+  function hookearEventos(){
+    // Compras
+    var _comprarOrig = window.realizarCompraConfirmada || window.comprarObjetoGamer;
+    // Solo para notificaciones - no reemplazamos funciones críticas
+    // En su lugar, observamos la actividad global
+
+    // Observar cambios en la actividad global para reaccionar
+    var _actFeedOrig = window.renderizarActividadGlobalInicio;
+    window.renderizarActividadGlobalInicio = function(){
+      if(typeof _actFeedOrig==='function') _actFeedOrig.apply(this,arguments);
+    };
+  }
+
+  /* ── Init ── */
+  function init(){
+    inyectarDOM();
+    detectarSeccion();
+    iniciarCiclo();
+    hookearEventos();
+    // Emitir saludo inicial tras 2 segundos
+    setTimeout(function(){
+      if(window.userSesion && window.baseDatos && window.baseDatos.jugadores && window.baseDatos.jugadores[window.userSesion]){
+        var nombre = window.userSesion;
+        emitir('consejo','⚡','¡Bienvenido, '+nombre+'!','El sistema está operativo. Estoy monitorizando tu partida.',false);
+      }
+    }, 2000);
+  }
+
+  // Arrancar cuando el DOM esté listo y el usuario haya iniciado sesión
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', function(){
+      setTimeout(init, 500);
+    });
+  } else {
+    setTimeout(init, 500);
+  }
+})();
 
 </script>
 </body>
