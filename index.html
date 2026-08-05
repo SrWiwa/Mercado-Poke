@@ -386,10 +386,14 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .nl-checkbox-label:has(input:checked){border-color:rgba(216,41,63,.5);background:rgba(216,41,63,.08);color:var(--blanco)}
 .nl-checkbox-label input{accent-color:#e2646f;width:15px;height:15px}
 .tracker-row{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);padding:10px 12px;margin-bottom:8px;transition:all .18s ease;animation:misionCardEntrada .28s ease backwards}.tracker-row:hover{border-color:var(--borde-hover);transform:translateX(2px)}
-.tracker-sug-flotante{position:fixed;z-index:5000;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-sm);max-height:220px;overflow-y:auto;box-shadow:var(--shadow-xl)}
-.tracker-poke-opt{padding:7px 10px;cursor:pointer;font-size:11px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body);transition:background .12s ease}
-.tracker-poke-opt:last-child{border-bottom:none}
-.tracker-poke-opt:hover{background:var(--bg-overlay)}
+.ac-flotante{position:fixed;z-index:5000;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-sm);max-height:220px;overflow-y:auto;box-shadow:var(--shadow-xl);animation:acFlotanteEntrada .12s ease}
+@keyframes acFlotanteEntrada{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.ac-opt{padding:8px 12px;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body);transition:background .12s ease}
+.ac-opt:last-child{border-bottom:none}
+.ac-opt:hover,.ac-opt.ac-activa{background:var(--bg-overlay)}
+.ac-opt-num{color:var(--txt-muted);font-size:9px;margin-left:auto}
+.ac-opt-sprite{width:26px;height:26px;image-rendering:pixelated;flex-shrink:0}
+.ac-opt-loading{padding:10px 12px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)}
 .tracker-row.estado-atrapado{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.06)}
 .tracker-row.estado-perdido{border-color:rgba(216,41,63,.5);background:rgba(216,41,63,.06)}
 .tracker-row .tracker-orden{font-family:var(--font-display);font-size:10px;color:var(--txt-muted);font-weight:900;min-width:20px;flex-shrink:0}
@@ -754,7 +758,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   <div class="bn-item" id="bn-mas" onclick="abrirMasSheet()"><span class="bn-icon">☰</span><span class="bn-label">Más</span></div>
 </nav>
 <div id="more-sheet-backdrop" class="drawer-backdrop" onclick="cerrarMasSheet()"></div>
-<div id="tracker-sug-flotante" class="tracker-sug-flotante" style="display:none"></div>
+<div id="ac-flotante-global" class="ac-flotante" style="display:none"></div>
 <div id="more-sheet" class="more-sheet">
   <div class="more-sheet-handle"></div>
   <div class="more-sheet-grid">
@@ -1086,8 +1090,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             <div style="flex:1;min-width:180px">
               <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Buscar Pokémon</label>
               <div style="position:relative;margin-bottom:8px">
-                <input id="mipoke-search" class="admin-input" placeholder="Escribe el nombre en inglés..." style="font-family:var(--font-body);margin-bottom:0;width:100%" oninput="mipokeAutocompletar()" autocomplete="off" spellcheck="false">
-                <div id="mipoke-sugerencias" style="position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:180px;overflow-y:auto;display:none"></div>
+                <input id="mipoke-search" class="admin-input ac-trigger" placeholder="Escribe el nombre en inglés..." style="font-family:var(--font-body);margin-bottom:0;width:100%" oninput="mipokeAutocompletar()" autocomplete="off" spellcheck="false">
               </div>
               <input id="mipoke-nombre" type="hidden" value="">
               <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">Mote (opcional)</label>
@@ -1667,8 +1670,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             <select id="pvp-jugador-a" class="admin-select" style="margin-bottom:8px"></select>
             <div id="pvp-equipo-a-lista" style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px"></div>
             <div id="pvp-equipo-a-form" style="display:none;position:relative;margin-bottom:6px">
-              <input id="pvp-poke-a" class="admin-input" placeholder="Buscar Pokémon..." style="margin-bottom:0;width:100%;box-sizing:border-box" oninput="pvpPokeAutocom('a')" autocomplete="off">
-              <div id="pvp-poke-a-dd" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:180px;overflow-y:auto"></div>
+              <input id="pvp-poke-a" class="admin-input ac-trigger" placeholder="Buscar Pokémon..." style="margin-bottom:0;width:100%;box-sizing:border-box" oninput="pvpPokeAutocom('a')" autocomplete="off">
             </div>
             <button id="pvp-btn-add-a" onclick="pvpToggleAddPoke('a')" class="btn-admin" style="width:100%;font-size:10px;padding:5px;margin-bottom:12px">➕ Añadir Pokémon</button>
 
@@ -1676,8 +1678,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
             <select id="pvp-jugador-b" class="admin-select" style="margin-bottom:8px"></select>
             <div id="pvp-equipo-b-lista" style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px"></div>
             <div id="pvp-equipo-b-form" style="display:none;position:relative;margin-bottom:6px">
-              <input id="pvp-poke-b" class="admin-input" placeholder="Buscar Pokémon..." style="margin-bottom:0;width:100%;box-sizing:border-box" oninput="pvpPokeAutocom('b')" autocomplete="off">
-              <div id="pvp-poke-b-dd" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:180px;overflow-y:auto"></div>
+              <input id="pvp-poke-b" class="admin-input ac-trigger" placeholder="Buscar Pokémon..." style="margin-bottom:0;width:100%;box-sizing:border-box" oninput="pvpPokeAutocom('b')" autocomplete="off">
             </div>
             <button id="pvp-btn-add-b" onclick="pvpToggleAddPoke('b')" class="btn-admin" style="width:100%;font-size:10px;padding:5px;margin-bottom:12px">➕ Añadir Pokémon</button>
 
@@ -1798,8 +1799,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
               <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
                 <select id="museo-poke-jugador" class="admin-select" style="flex:1;min-width:120px;margin-bottom:0"></select>
                 <div style="position:relative;flex:2;min-width:160px">
-                  <input id="museo-poke-nombre" class="admin-input" style="margin-bottom:0;width:100%;box-sizing:border-box" placeholder="Buscar Pokémon..." oninput="museoPokeAutocom()" autocomplete="off">
-                  <div id="museo-poke-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg-elevated);border:1px solid var(--borde);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);z-index:50;max-height:180px;overflow-y:auto"></div>
+                  <input id="museo-poke-nombre" class="admin-input ac-trigger" style="margin-bottom:0;width:100%;box-sizing:border-box" placeholder="Buscar Pokémon..." oninput="museoPokeAutocom()" autocomplete="off">
                 </div>
                 <input id="museo-poke-mote" class="admin-input" style="margin-bottom:0;flex:2;min-width:100px" placeholder="Mote (opcional)">
               </div>
@@ -2650,19 +2650,12 @@ function renderizarListaRadioAdmin(){let box=document.getElementById('radio-admi
   document.addEventListener('DOMContentLoaded', function(){
     var inp = document.getElementById('pgl-input');
     if(inp) inp.addEventListener('keydown', function(e){ if(e.key==='Enter') window.pglConsultar(); });
-    // Cerrar sugerencias mipoke al clickar fuera
-    document.addEventListener('click', function(e){
-      if(!e.target.closest('#mipoke-search') && !e.target.closest('#mipoke-sugerencias')){
-        var s = document.getElementById('mipoke-sugerencias');
-        if(s) s.style.display='none';
-      }
-    });
-    // Enter en buscador mipoke selecciona el primer resultado
+    // Enter en buscador mipoke selecciona el primer resultado del panel flotante
     var msin = document.getElementById('mipoke-search');
     if(msin) msin.addEventListener('keydown', function(e){
       if(e.key==='Enter'){
-        var s = document.getElementById('mipoke-sugerencias');
-        if(s && s.firstChild) s.firstChild.click();
+        var primera = document.querySelector('#ac-flotante-global .ac-opt');
+        if(primera) primera.dispatchEvent(new MouseEvent('mousedown', {bubbles:true}));
       }
     });
   });
@@ -2681,24 +2674,21 @@ var _mipokeNombres = [];
 })();
 
 window.mipokeAutocompletar = function(){
-  var val = (document.getElementById('mipoke-search').value||'').trim().toLowerCase().replace(/\s+/g,'-');
-  var sug = document.getElementById('mipoke-sugerencias');
-  if(val.length < 2){ sug.style.display='none'; return; }
+  var inputEl = document.getElementById('mipoke-search');
+  var val = (inputEl.value||'').trim().toLowerCase().replace(/\s+/g,'-');
+  if(val.length < 2){ AC.ocultar(); return; }
   var matches = _mipokeNombres.filter(function(n){ return n.indexOf(val)!==-1; }).slice(0,8);
-  if(!matches.length){ sug.style.display='none'; return; }
-  sug.innerHTML = matches.map(function(m){
+  var items = matches.map(function(m){
     var label = m.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
-    return '<div onclick="mipokeSeleccionar(\''+m+'\',\''+label+'\')" '
-      +'style="padding:8px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)" '
-      +'onmouseover="this.style.background=\'var(--bg-overlay)\'" onmouseout="this.style.background=\'\'">'+label+'</div>';
-  }).join('');
-  sug.style.display = 'block';
+    return { valor: {apiName:m, label:label}, html: '<span>'+escaparHTML(label)+'</span>' };
+  });
+  AC.mostrar(inputEl, items, function(v){ mipokeSeleccionar(v.apiName, v.label); });
 };
 
 window.mipokeSeleccionar = function(apiName, label){
   document.getElementById('mipoke-search').value = label;
   document.getElementById('mipoke-nombre').value  = apiName;
-  document.getElementById('mipoke-sugerencias').style.display = 'none';
+  AC.ocultar();
   // Cargar imagen desde PokeAPI
   var img = document.getElementById('mipoke-img');
   var ph  = document.getElementById('mipoke-img-placeholder');
@@ -4340,6 +4330,56 @@ function dispararConfetti(origenEl){
   }
 }
 
+/* ═══ AUTOCOMPLETADO FLOTANTE UNIFICADO ═══
+   Un único panel anclado al <body>, fuera de cualquier tarjeta con
+   transform/animación, para que nunca quede atrapado detrás de nada. */
+var AC = {
+  box: null,
+  items: null,
+  get(){ if(!this.box) this.box = document.getElementById('ac-flotante-global'); return this.box; },
+  mostrar(inputEl, items, onSelect){
+    var box = this.get();
+    if(!box || !inputEl) return;
+    if(!items || !items.length){ this.ocultar(); return; }
+    this.items = items;
+    var r = inputEl.getBoundingClientRect();
+    box.style.left = Math.round(r.left)+'px';
+    box.style.top = Math.round(r.bottom+4)+'px';
+    box.style.width = Math.round(r.width)+'px';
+    box.innerHTML = items.map(function(it,i){ return '<div class="ac-opt" data-idx="'+i+'">'+it.html+'</div>'; }).join('');
+    box.style.display = 'block';
+    box.onmousedown = function(ev){
+      var opt = ev.target.closest('.ac-opt');
+      if(!opt) return;
+      ev.preventDefault(); // conserva el foco del input hasta completar la selección
+      var idx = parseInt(opt.getAttribute('data-idx'),10);
+      var elegido = AC.items && AC.items[idx];
+      AC.ocultar();
+      if(elegido) onSelect(elegido.valor, idx);
+    };
+  },
+  mostrarCargando(inputEl){
+    var box = this.get();
+    if(!box || !inputEl) return;
+    var r = inputEl.getBoundingClientRect();
+    box.style.left = Math.round(r.left)+'px';
+    box.style.top = Math.round(r.bottom+4)+'px';
+    box.style.width = Math.round(r.width)+'px';
+    box.innerHTML = '<div class="ac-opt-loading">⏳ Cargando lista...</div>';
+    box.style.display = 'block';
+  },
+  ocultar(){
+    var box = this.get();
+    if(box){ box.style.display='none'; box.innerHTML=''; box.onmousedown=null; }
+    this.items = null;
+  }
+};
+window.addEventListener('scroll', function(){ AC.ocultar(); }, true);
+window.addEventListener('resize', function(){ AC.ocultar(); });
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.ac-flotante') && !e.target.closest('.ac-trigger')) AC.ocultar();
+});
+
 function misionMulberry32(seed){
   return function(){
     seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
@@ -4757,13 +4797,12 @@ function museoPokeLabel(apiName){
 
 window.museoPokeAutocom = function(){
   var inputEl = document.getElementById('museo-poke-nombre');
-  var dd      = document.getElementById('museo-poke-dropdown');
-  if(!inputEl || !dd) return;
+  if(!inputEl) return;
   var raw = (inputEl.value||'').trim().toLowerCase();
   var q   = raw.replace(/\s+/g,'-');
   _museoPokeSelected = null;
   document.getElementById('museo-poke-preview').style.display = 'none';
-  if(raw.length < 2){ dd.style.display='none'; return; }
+  if(raw.length < 2){ AC.ocultar(); return; }
 
   function doSearch(){
     var matches = _museoPokeListaCompleta
@@ -4771,52 +4810,30 @@ window.museoPokeAutocom = function(){
         if(p.name.indexOf(q) !== -1) return true;
         return museoPokeLabel(p.name).toLowerCase().indexOf(raw) !== -1;
       }).slice(0,10);
-    if(!matches.length){ dd.style.display='none'; return; }
-    dd.innerHTML = matches.map(function(m){
+    var items = matches.map(function(m){
       var id     = museoPokeIdDesdeUrl(m.url);
       var sprite = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png' : '';
       var label  = museoPokeLabel(m.name);
-      return '<div class="museo-poke-opt"'
-        +' data-apiname="'+m.name+'"'
-        +' data-id="'+id+'"'
-        +' data-sprite="'+sprite+'"'
-        +' data-label="'+label.replace(/"/g,'&quot;')+'"'
-        +' style="padding:7px 12px;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)">'
-        +'<img src="'+sprite+'" style="width:28px;height:28px;image-rendering:pixelated" onerror="this.style.opacity=&apos;0.25&apos;">'
-        +'<span>'+label+'</span>'
-        +(id ? '<span style="color:var(--txt-muted);font-size:9px;margin-left:auto">#'+id+'</span>' : '')
-        +'</div>';
-    }).join('');
-    dd.style.display = 'block';
-    dd.onclick = function(ev){
-      var opt = ev.target.closest('.museo-poke-opt');
-      if(!opt) return;
-      var label  = opt.getAttribute('data-label');
-      var sprite = opt.getAttribute('data-sprite');
-      var id     = parseInt(opt.getAttribute('data-id'))||0;
-      inputEl.value = label;
-      dd.style.display = 'none';
-      _museoPokeSelected = { num: id, nombre: label, sprite: sprite };
-      document.getElementById('museo-poke-sprite').src = sprite;
-      document.getElementById('museo-poke-nombre-preview').textContent = label;
-      document.getElementById('museo-poke-num-preview').textContent = id||'?';
+      return {
+        valor: {label:label, sprite:sprite, id:id},
+        html: '<img class="ac-opt-sprite" src="'+sprite+'" onerror="this.style.opacity=\'0.25\'">'
+          +'<span>'+escaparHTML(label)+'</span>'
+          +(id ? '<span class="ac-opt-num">#'+id+'</span>' : '')
+      };
+    });
+    AC.mostrar(inputEl, items, function(v){
+      inputEl.value = v.label;
+      _museoPokeSelected = { num: v.id, nombre: v.label, sprite: v.sprite };
+      document.getElementById('museo-poke-sprite').src = v.sprite;
+      document.getElementById('museo-poke-nombre-preview').textContent = v.label;
+      document.getElementById('museo-poke-num-preview').textContent = v.id||'?';
       document.getElementById('museo-poke-preview').style.display = 'flex';
-    };
+    });
   }
 
   if(_museoPokeListaCargada){ doSearch(); }
-  else {
-    dd.innerHTML = '<div style="padding:10px 12px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">\u23f3 Cargando lista...</div>';
-    dd.style.display = 'block';
-    museoCargarListaCompleta(doSearch);
-  }
+  else { AC.mostrarCargando(inputEl); museoCargarListaCompleta(doSearch); }
 };
-document.addEventListener('click', function(e){
-  if(!e.target.closest('#museo-poke-nombre') && !e.target.closest('#museo-poke-dropdown')){
-    var dd = document.getElementById('museo-poke-dropdown');
-    if(dd) dd.style.display = 'none';
-  }
-});
 
 window.museoAnadirPoke = function(){
   var jugador = (document.getElementById('museo-poke-jugador')||{}).value;
@@ -5050,11 +5067,7 @@ window.museoRenderAdmin = function(){
   };
 };
 
-document.addEventListener('click',function(e){
-  if(!e.target.closest('#museo-poke-nombre')&&!e.target.closest('#museo-poke-dropdown')){
-    var dd=document.getElementById('museo-poke-dropdown'); if(dd) dd.style.display='none';
-  }
-});
+
 
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
 window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');sec.classList.add(`zona-${tab}`);}};
@@ -5757,11 +5770,10 @@ window.renderizarTracker = function(){
     fila += '<div class="tracker-info">';
     fila += '<span class="tracker-ruta-nombre">'+escaparHTML(e.ruta)+'</span>';
     if(e.estado === 'atrapado'){
-      fila += '<input type="text" class="tracker-poke-input" placeholder="Pokémon capturado + mote (opcional)" '
+      fila += '<input type="text" class="tracker-poke-input ac-trigger" placeholder="Pokémon capturado + mote (opcional)" '
             + 'value="'+escaparHTML(_trackerNombrePoke(e))+'" '
             + 'onchange="trackerActualizarPokemon('+idx+',this.value)" '
             + 'oninput="trackerSugerirPokemon(this,'+idx+')" autocomplete="off">';
-      fila += '<div class="tracker-sugerencias" id="tracker-sug-'+idx+'" style="display:none"></div>';
     }
     fila += '</div>';
     if(e.estado === 'pendiente'){
@@ -6602,10 +6614,6 @@ window.trackerActualizarPokemon = function(idx, valorCrudo){
    que ya usan los buscadores de Pokémon del Museo y del PvP: _museoPokeListaCompleta / museoCargarListaCompleta.
    Usa delegación de eventos (igual que el selector de PvP) en vez de onclick inline, para evitar fallos de escape. */
 window.trackerSugerirPokemon = function(inputEl, idx){
-  var sugBox = document.getElementById('tracker-sug-flotante');
-  if(!sugBox) return;
-  window._trackerSugIdxActivo = idx;
-  window._trackerSugInputActivo = inputEl;
   var raw = inputEl.value || '';
   var motePart = '';
   var mQuote = raw.match(/^(.*?)"(.*)$/);
@@ -6613,78 +6621,40 @@ window.trackerSugerirPokemon = function(inputEl, idx){
   if(mQuote){ basePart = mQuote[1]; motePart = mQuote[2]; }
   var rawQ = basePart.trim().toLowerCase();
   var q = rawQ.replace(/\s+/g,'-');
-  if(rawQ.length < 1){ sugBox.style.display='none'; sugBox.innerHTML=''; return; }
-
-  function posicionar(){
-    var r = inputEl.getBoundingClientRect();
-    sugBox.style.left = r.left+'px';
-    sugBox.style.top = (r.bottom+4)+'px';
-    sugBox.style.width = r.width+'px';
-  }
+  if(rawQ.length < 1){ AC.ocultar(); return; }
 
   function doSearch(){
     var matches = _museoPokeListaCompleta.filter(function(p){
       if(p.name.indexOf(q) !== -1) return true;
       return museoPokeLabel(p.name).toLowerCase().indexOf(rawQ) !== -1;
     }).slice(0,8);
-    if(!matches.length){ sugBox.style.display='none'; sugBox.innerHTML=''; return; }
-    posicionar();
-    sugBox.style.display='block';
-    sugBox.innerHTML = matches.map(function(m){
+    var items = matches.map(function(m){
       var id = museoPokeIdDesdeUrl(m.url);
       var sprite = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png' : '';
       var label = museoPokeLabel(m.name);
       var motSuffix = motePart ? (' "'+motePart+'"') : '';
       var valorFinal = label+motSuffix;
-      return '<div class="tracker-poke-opt" data-valor="'+escaparHTML(valorFinal)+'">'
-        +'<img src="'+sprite+'" style="width:24px;height:24px;image-rendering:pixelated;flex-shrink:0" onerror="this.style.opacity=\'0.25\'">'
-        +'<span>'+escaparHTML(valorFinal)+'</span>'
-        +(id ? '<span style="color:var(--txt-muted);font-size:9px;margin-left:auto">#'+id+'</span>' : '')
-        +'</div>';
-    }).join('');
-    sugBox.onmousedown = function(ev){
-      var opt = ev.target.closest('.tracker-poke-opt');
-      if(!opt) return;
-      ev.preventDefault(); // evita que el input pierda el foco (blur) antes de completar la selección
-      var valor = opt.getAttribute('data-valor') || '';
-      trackerSeleccionarSugerencia(window._trackerSugIdxActivo, valor);
-    };
+      return {
+        valor: valorFinal,
+        html: '<img class="ac-opt-sprite" src="'+sprite+'" onerror="this.style.opacity=\'0.25\'">'
+          +'<span>'+escaparHTML(valorFinal)+'</span>'
+          +(id ? '<span class="ac-opt-num">#'+id+'</span>' : '')
+      };
+    });
+    AC.mostrar(inputEl, items, function(valor){ trackerSeleccionarSugerencia(idx, valor); });
   }
 
-  if(_museoPokeListaCargada){
-    doSearch();
-  } else {
-    posicionar();
-    sugBox.style.display='block';
-    sugBox.innerHTML = '<div style="padding:8px 10px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">⏳ Cargando lista...</div>';
-    museoCargarListaCompleta(doSearch);
-  }
+  if(_museoPokeListaCargada){ doSearch(); }
+  else { AC.mostrarCargando(inputEl); museoCargarListaCompleta(doSearch); }
 };
 
 window.trackerSeleccionarSugerencia = function(idx, labelConMote){
   var input = document.querySelector('.tracker-row[data-idx="'+idx+'"] .tracker-poke-input');
-  var sugBox = document.getElementById('tracker-sug-flotante');
   if(input){
     input.value = labelConMote;
     trackerActualizarPokemon(idx, labelConMote);
   }
-  if(sugBox){ sugBox.innerHTML=''; sugBox.style.display='none'; }
 };
-
-document.addEventListener('click', function(e){
-  if(!e.target.closest('.tracker-info') && !e.target.closest('.tracker-sug-flotante')){
-    var flot = document.getElementById('tracker-sug-flotante');
-    if(flot){ flot.style.display='none'; flot.innerHTML=''; }
-  }
-});
-window.addEventListener('scroll', function(){
-  var flot = document.getElementById('tracker-sug-flotante');
-  if(flot && flot.style.display==='block'){ flot.style.display='none'; flot.innerHTML=''; }
-}, true);
-window.addEventListener('resize', function(){
-  var flot = document.getElementById('tracker-sug-flotante');
-  if(flot){ flot.style.display='none'; flot.innerHTML=''; }
-});
 
 /* ═══════════ TÍTULOS / RANGOS ═══════════ */
 
@@ -7763,12 +7733,11 @@ window.pvpQuitarPoke = function(lado, idx){
 
 window.pvpPokeAutocom = function(lado){
   var inputEl = document.getElementById('pvp-poke-'+lado);
-  var ddEl    = document.getElementById('pvp-poke-'+lado+'-dd');
-  if(!inputEl || !ddEl) return;
+  if(!inputEl) return;
   var raw = (inputEl.value||'').trim().toLowerCase();
   var q   = raw.replace(/\s+/g,'-');
   _pvpPokeSelected[lado] = null;
-  if(raw.length < 2){ ddEl.style.display='none'; return; }
+  if(raw.length < 2){ AC.ocultar(); return; }
 
   function doSearch(){
     var matches = _museoPokeListaCompleta
@@ -7776,56 +7745,32 @@ window.pvpPokeAutocom = function(lado){
         if(p.name.indexOf(q) !== -1) return true;
         return museoPokeLabel(p.name).toLowerCase().indexOf(raw) !== -1;
       }).slice(0,10);
-    if(!matches.length){ ddEl.style.display='none'; return; }
-    ddEl.innerHTML = matches.map(function(m){
+    var items = matches.map(function(m){
       var id     = museoPokeIdDesdeUrl(m.url);
       var sprite = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png' : '';
       var label  = museoPokeLabel(m.name);
-      return '<div class="pvp-poke-opt"'
-        +' data-label="'+label.replace(/"/g,'&quot;')+'"'
-        +' data-sprite="'+sprite+'"'
-        +' data-id="'+id+'"'
-        +' style="padding:7px 12px;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--borde);color:var(--txt-primary);font-family:var(--font-body)">'
-        +'<img src="'+sprite+'" style="width:28px;height:28px;image-rendering:pixelated" onerror="this.style.opacity=\'0.25\'">'
-        +'<span>'+label+'</span>'
-        +(id ? '<span style="color:var(--txt-muted);font-size:9px;margin-left:auto">#'+id+'</span>' : '')
-        +'</div>';
-    }).join('');
-    ddEl.style.display = 'block';
-    ddEl.onclick = function(ev){
-      var opt = ev.target.closest('.pvp-poke-opt');
-      if(!opt) return;
-      var label  = opt.getAttribute('data-label');
-      var sprite = opt.getAttribute('data-sprite');
-      var id     = parseInt(opt.getAttribute('data-id'))||0;
-      ddEl.style.display = 'none';
+      return {
+        valor: {label:label, sprite:sprite, id:id},
+        html: '<img class="ac-opt-sprite" src="'+sprite+'" onerror="this.style.opacity=\'0.25\'">'
+          +'<span>'+escaparHTML(label)+'</span>'
+          +(id ? '<span class="ac-opt-num">#'+id+'</span>' : '')
+      };
+    });
+    AC.mostrar(inputEl, items, function(v){
       if(_pvpEquipos[lado].length < 6){
-        _pvpEquipos[lado].push({ nombre: label, sprite: sprite, num: id });
+        _pvpEquipos[lado].push({ nombre: v.label, sprite: v.sprite, num: v.id });
         pvpRenderEquipo(lado);
       }
       inputEl.value = '';
       var formEl = document.getElementById('pvp-equipo-'+lado+'-form');
       if(formEl) formEl.style.display = 'none';
       _pvpPokeSelected[lado] = null;
-    };
+    });
   }
 
   if(_museoPokeListaCargada){ doSearch(); }
-  else {
-    ddEl.innerHTML = '<div style="padding:10px 12px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">⏳ Cargando lista...</div>';
-    ddEl.style.display = 'block';
-    museoCargarListaCompleta(doSearch);
-  }
+  else { AC.mostrarCargando(inputEl); museoCargarListaCompleta(doSearch); }
 };
-
-document.addEventListener('click', function(e){
-  ['a','b'].forEach(function(lado){
-    if(!e.target.closest('#pvp-poke-'+lado) && !e.target.closest('#pvp-poke-'+lado+'-dd')){
-      var dd = document.getElementById('pvp-poke-'+lado+'-dd');
-      if(dd) dd.style.display = 'none';
-    }
-  });
-});
 
 function pvpRenderSpritesEquipo(equipo){
   if(!equipo || !equipo.length) return '';
