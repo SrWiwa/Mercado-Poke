@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v40 | Build: 2026-08-07 -->
+<!-- Silph Co v42 | Build: 2026-08-07 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -234,8 +234,8 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .banner-alerta-global{background:rgba(245,197,24,.05);border:1px solid rgba(245,197,24,.2);border-radius:var(--r-md);padding:10px 18px;text-align:center;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;display:none;animation:pulse-glow 3s ease-in-out infinite}.banner-alerta-global.active{display:block}
 @keyframes pulse-glow{0%,100%{box-shadow:0 0 0 rgba(245,197,24,0)}50%{box-shadow:0 0 20px rgba(245,197,24,.1)}}
 .page-section{display:none}.page-section.active{display:block}
-.section-header{margin-bottom:24px;position:relative;padding-left:16px}.section-header::before{content:'';position:absolute;left:0;top:2px;bottom:4px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--tab-accent,var(--rojo)),transparent);box-shadow:0 0 8px var(--tab-accent-glow,rgba(224,49,63,.2));transition:background .3s ease,box-shadow .3s ease}.section-title{font-family:var(--font-display);font-size:20px;font-weight:900;color:var(--txt-primary);letter-spacing:.4px;margin-bottom:4px}.section-subtitle{font-size:13px;color:var(--txt-secondary)}
-.card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow-sm);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;animation:misionCardEntrada .32s ease backwards}.card:hover{border-color:var(--borde-hover);box-shadow:var(--shadow-md);transform:translateY(-2px)}.card+.card{margin-top:16px}.card-title{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--txt-secondary);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--borde);display:flex;align-items:center;gap:9px}.card-title::before{content:'';width:4px;height:16px;border-radius:3px;background:var(--tab-accent,var(--rojo));flex-shrink:0;transition:background .3s ease;box-shadow:0 0 6px var(--tab-accent-glow,rgba(224,49,63,.2))}
+.section-header{margin-bottom:24px;position:relative;padding-left:16px}.section-title{font-family:var(--font-display);font-size:20px;font-weight:900;color:var(--txt-primary);letter-spacing:.4px;margin-bottom:4px}.section-subtitle{font-size:13px;color:var(--txt-secondary)}
+.card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow-sm);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;animation:misionCardEntrada .32s ease backwards}.card:hover{border-color:var(--borde-hover);box-shadow:var(--shadow-md);transform:translateY(-2px)}.card+.card{margin-top:16px}.card-title{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--txt-secondary);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--borde);display:flex;align-items:center;gap:9px}
 .inicio-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
 .inicio-ticker{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);padding:10px 14px;margin-bottom:16px;font-family:var(--font-display);font-size:11px;color:var(--txt-secondary);letter-spacing:.3px;display:flex;align-items:center;gap:8px;min-height:16px}
 .inicio-ticker-fade{animation:tickerFade .3s ease}
@@ -916,164 +916,43 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 .page-section.active{padding:0}
 
 /* ════════════════════════════════════════════════════
-   IDENTIDAD VISUAL POR SECCIÓN
-   Funciona poniendo data-seccion="X" en <body> via JS.
-   CSS custom properties en ::before son poco fiables;
-   usamos selectores directos con colores hardcoded.
+   IDENTIDAD VISUAL POR SECCIÓN — v41
+   Enfoque directo: JS inyecta style inline en los
+   elementos vivos en el DOM al cambiar de sección.
+   Sin ::before problemáticos. Sin CSS vars en pseudo.
+   Garantizado en todos los navegadores.
    ════════════════════════════════════════════════════ */
 
-/* ── Acento en section-header ── */
-[data-seccion="inicio"]           .section-header::before{background:linear-gradient(180deg,#2563EB,transparent)!important}
-[data-seccion="tiendas"]          .section-header::before{background:linear-gradient(180deg,#DC2626,transparent)!important}
-[data-seccion="misiones"]         .section-header::before{background:linear-gradient(180deg,#CA8A04,transparent)!important}
-[data-seccion="tracker"]          .section-header::before{background:linear-gradient(180deg,#16A34A,transparent)!important}
-[data-seccion="torneos"]          .section-header::before{background:linear-gradient(180deg,#7C3AED,transparent)!important}
-[data-seccion="perfil"]           .section-header::before{background:linear-gradient(180deg,#4F46E5,transparent)!important}
-[data-seccion="vidas-sacrificios"].section-header::before{background:linear-gradient(180deg,#DC2626,transparent)!important}
-[data-seccion="medallas-torneos"] .section-header::before{background:linear-gradient(180deg,#CA8A04,transparent)!important}
-[data-seccion="eventos"]          .section-header::before{background:linear-gradient(180deg,#7C3AED,transparent)!important}
-[data-seccion="duelos"]           .section-header::before{background:linear-gradient(180deg,#7C3AED,transparent)!important}
-[data-seccion="red-entrenadores"] .section-header::before{background:linear-gradient(180deg,#0891B2,transparent)!important}
-[data-seccion="hall-of-fame"]     .section-header::before{background:linear-gradient(180deg,#CA8A04,transparent)!important}
-[data-seccion="museo"]            .section-header::before{background:linear-gradient(180deg,#B45309,transparent)!important}
-[data-seccion="ruletas"]          .section-header::before{background:linear-gradient(180deg,#EA580C,transparent)!important}
-[data-seccion="asistente"]        .section-header::before{background:linear-gradient(180deg,#0891B2,transparent)!important}
-[data-seccion="admin"]            .section-header::before{background:linear-gradient(180deg,#CA8A04,transparent)!important}
+/* Barra de acento en section-header: elemento real */
+.section-accent-bar{
+  position:absolute;left:0;top:2px;bottom:4px;
+  width:3px;border-radius:3px;
+  background:#2563EB;
+  box-shadow:0 0 8px rgba(37,99,235,.25);
+  transition:background .3s ease, box-shadow .3s ease;
+}
+/* Pastilla de color en card-title: elemento real */
+.card-accent-pill{
+  display:inline-block;width:4px;height:16px;
+  border-radius:3px;flex-shrink:0;
+  background:#2563EB;
+  box-shadow:0 0 6px rgba(37,99,235,.25);
+  transition:background .3s ease;
+}
 
-/* ── Acento en card-title ── */
-[data-seccion="inicio"]           .card-title::before{background:#2563EB!important;box-shadow:0 0 6px rgba(37,99,235,.3)!important}
-[data-seccion="tiendas"]          .card-title::before{background:#DC2626!important;box-shadow:0 0 6px rgba(220,38,38,.3)!important}
-[data-seccion="misiones"]         .card-title::before{background:#CA8A04!important;box-shadow:0 0 6px rgba(202,138,4,.3)!important}
-[data-seccion="tracker"]          .card-title::before{background:#16A34A!important;box-shadow:0 0 6px rgba(22,163,74,.3)!important}
-[data-seccion="torneos"]          .card-title::before{background:#7C3AED!important;box-shadow:0 0 6px rgba(124,58,237,.3)!important}
-[data-seccion="perfil"]           .card-title::before{background:#4F46E5!important;box-shadow:0 0 6px rgba(79,70,229,.3)!important}
-[data-seccion="vidas-sacrificios"].card-title::before{background:#DC2626!important;box-shadow:0 0 6px rgba(220,38,38,.3)!important}
-[data-seccion="medallas-torneos"] .card-title::before{background:#CA8A04!important;box-shadow:0 0 6px rgba(202,138,4,.3)!important}
-[data-seccion="eventos"]          .card-title::before{background:#7C3AED!important;box-shadow:0 0 6px rgba(124,58,237,.3)!important}
-[data-seccion="duelos"]           .card-title::before{background:#7C3AED!important;box-shadow:0 0 6px rgba(124,58,237,.3)!important}
-[data-seccion="red-entrenadores"] .card-title::before{background:#0891B2!important;box-shadow:0 0 6px rgba(8,145,178,.3)!important}
-[data-seccion="hall-of-fame"]     .card-title::before{background:#CA8A04!important;box-shadow:0 0 6px rgba(202,138,4,.3)!important}
-[data-seccion="museo"]            .card-title::before{background:#B45309!important;box-shadow:0 0 6px rgba(180,83,9,.3)!important}
-[data-seccion="ruletas"]          .card-title::before{background:#EA580C!important;box-shadow:0 0 6px rgba(234,88,12,.3)!important}
-[data-seccion="asistente"]        .card-title::before{background:#0891B2!important;box-shadow:0 0 6px rgba(8,145,178,.3)!important}
-[data-seccion="admin"]            .card-title::before{background:#CA8A04!important;box-shadow:0 0 6px rgba(202,138,4,.3)!important}
-
-/* ── Barra lateral del nav-item activo (color fijo por sección) ── */
-[data-seccion="inicio"]           .nav-item.active::before{background:#2563EB!important}
-[data-seccion="inicio"]           .nav-item.active{background:rgba(37,99,235,.08)!important}
-[data-seccion="inicio"]           .nav-item.active .nav-icon,
-[data-seccion="inicio"]           .nav-item.active .nav-label{color:#2563EB!important}
-
-[data-seccion="tiendas"]          .nav-item.active::before{background:#DC2626!important}
-[data-seccion="tiendas"]          .nav-item.active{background:rgba(220,38,38,.08)!important}
-[data-seccion="tiendas"]          .nav-item.active .nav-icon,
-[data-seccion="tiendas"]          .nav-item.active .nav-label{color:#DC2626!important}
-
-[data-seccion="misiones"]         .nav-item.active::before{background:#CA8A04!important}
-[data-seccion="misiones"]         .nav-item.active{background:rgba(202,138,4,.08)!important}
-[data-seccion="misiones"]         .nav-item.active .nav-icon,
-[data-seccion="misiones"]         .nav-item.active .nav-label{color:#CA8A04!important}
-
-[data-seccion="tracker"]          .nav-item.active::before{background:#16A34A!important}
-[data-seccion="tracker"]          .nav-item.active{background:rgba(22,163,74,.08)!important}
-[data-seccion="tracker"]          .nav-item.active .nav-icon,
-[data-seccion="tracker"]          .nav-item.active .nav-label{color:#16A34A!important}
-
-[data-seccion="torneos"]          .nav-item.active::before{background:#7C3AED!important}
-[data-seccion="torneos"]          .nav-item.active{background:rgba(124,58,237,.08)!important}
-[data-seccion="torneos"]          .nav-item.active .nav-icon,
-[data-seccion="torneos"]          .nav-item.active .nav-label{color:#7C3AED!important}
-
-[data-seccion="perfil"]           .nav-item.active::before{background:#4F46E5!important}
-[data-seccion="perfil"]           .nav-item.active{background:rgba(79,70,229,.08)!important}
-[data-seccion="perfil"]           .nav-item.active .nav-icon,
-[data-seccion="perfil"]           .nav-item.active .nav-label{color:#4F46E5!important}
-
-[data-seccion="vidas-sacrificios"].nav-item.active::before{background:#DC2626!important}
-[data-seccion="vidas-sacrificios"].nav-item.active{background:rgba(220,38,38,.08)!important}
-[data-seccion="vidas-sacrificios"].nav-item.active .nav-icon,
-[data-seccion="vidas-sacrificios"].nav-item.active .nav-label{color:#DC2626!important}
-
-[data-seccion="medallas-torneos"] .nav-item.active::before{background:#CA8A04!important}
-[data-seccion="medallas-torneos"] .nav-item.active{background:rgba(202,138,4,.08)!important}
-[data-seccion="medallas-torneos"] .nav-item.active .nav-icon,
-[data-seccion="medallas-torneos"] .nav-item.active .nav-label{color:#CA8A04!important}
-
-[data-seccion="eventos"]          .nav-item.active::before{background:#7C3AED!important}
-[data-seccion="eventos"]          .nav-item.active{background:rgba(124,58,237,.08)!important}
-[data-seccion="eventos"]          .nav-item.active .nav-icon,
-[data-seccion="eventos"]          .nav-item.active .nav-label{color:#7C3AED!important}
-
-[data-seccion="duelos"]           .nav-item.active::before{background:#7C3AED!important}
-[data-seccion="duelos"]           .nav-item.active{background:rgba(124,58,237,.08)!important}
-[data-seccion="duelos"]           .nav-item.active .nav-icon,
-[data-seccion="duelos"]           .nav-item.active .nav-label{color:#7C3AED!important}
-
-[data-seccion="red-entrenadores"] .nav-item.active::before{background:#0891B2!important}
-[data-seccion="red-entrenadores"] .nav-item.active{background:rgba(8,145,178,.08)!important}
-[data-seccion="red-entrenadores"] .nav-item.active .nav-icon,
-[data-seccion="red-entrenadores"] .nav-item.active .nav-label{color:#0891B2!important}
-
-[data-seccion="hall-of-fame"]     .nav-item.active::before{background:#CA8A04!important}
-[data-seccion="hall-of-fame"]     .nav-item.active{background:rgba(202,138,4,.08)!important}
-[data-seccion="hall-of-fame"]     .nav-item.active .nav-icon,
-[data-seccion="hall-of-fame"]     .nav-item.active .nav-label{color:#CA8A04!important}
-
-[data-seccion="museo"]            .nav-item.active::before{background:#B45309!important}
-[data-seccion="museo"]            .nav-item.active{background:rgba(180,83,9,.08)!important}
-[data-seccion="museo"]            .nav-item.active .nav-icon,
-[data-seccion="museo"]            .nav-item.active .nav-label{color:#B45309!important}
-
-[data-seccion="ruletas"]          .nav-item.active::before{background:#EA580C!important}
-[data-seccion="ruletas"]          .nav-item.active{background:rgba(234,88,12,.08)!important}
-[data-seccion="ruletas"]          .nav-item.active .nav-icon,
-[data-seccion="ruletas"]          .nav-item.active .nav-label{color:#EA580C!important}
-
-[data-seccion="asistente"]        .nav-item.active::before{background:#0891B2!important}
-[data-seccion="asistente"]        .nav-item.active{background:rgba(8,145,178,.08)!important}
-[data-seccion="asistente"]        .nav-item.active .nav-icon,
-[data-seccion="asistente"]        .nav-item.active .nav-label{color:#0891B2!important}
-
-[data-seccion="admin"]            .nav-item.active::before{background:#CA8A04!important}
-[data-seccion="admin"]            .nav-item.active{background:rgba(202,138,4,.08)!important}
-[data-seccion="admin"]            .nav-item.active .nav-icon,
-[data-seccion="admin"]            .nav-item.active .nav-label{color:#CA8A04!important}
-
-/* ── version-badge-nombre: color por sección ── */
-[data-seccion="inicio"]           .version-badge-nombre{color:#2563EB!important}
-[data-seccion="tiendas"]          .version-badge-nombre{color:#DC2626!important}
-[data-seccion="misiones"]         .version-badge-nombre{color:#CA8A04!important}
-[data-seccion="tracker"]          .version-badge-nombre{color:#16A34A!important}
-[data-seccion="torneos"]          .version-badge-nombre{color:#7C3AED!important}
-[data-seccion="perfil"]           .version-badge-nombre{color:#4F46E5!important}
-[data-seccion="vidas-sacrificios"].version-badge-nombre{color:#DC2626!important}
-[data-seccion="medallas-torneos"] .version-badge-nombre{color:#CA8A04!important}
-[data-seccion="eventos"]          .version-badge-nombre{color:#7C3AED!important}
-[data-seccion="duelos"]           .version-badge-nombre{color:#7C3AED!important}
-[data-seccion="red-entrenadores"] .version-badge-nombre{color:#0891B2!important}
-[data-seccion="hall-of-fame"]     .version-badge-nombre{color:#CA8A04!important}
-[data-seccion="museo"]            .version-badge-nombre{color:#B45309!important}
-[data-seccion="ruletas"]          .version-badge-nombre{color:#EA580C!important}
-[data-seccion="asistente"]        .version-badge-nombre{color:#0891B2!important}
-[data-seccion="admin"]            .version-badge-nombre{color:#CA8A04!important}
-
-/* ── sidebar-version-dot: color por sección ── */
-[data-seccion="inicio"]           .sidebar-version-dot{background:#2563EB!important}
-[data-seccion="tiendas"]          .sidebar-version-dot{background:#DC2626!important}
-[data-seccion="misiones"]         .sidebar-version-dot{background:#CA8A04!important}
-[data-seccion="tracker"]          .sidebar-version-dot{background:#16A34A!important}
-[data-seccion="torneos"]          .sidebar-version-dot{background:#7C3AED!important}
-[data-seccion="perfil"]           .sidebar-version-dot{background:#4F46E5!important}
-[data-seccion="vidas-sacrificios"].sidebar-version-dot{background:#DC2626!important}
-[data-seccion="medallas-torneos"] .sidebar-version-dot{background:#CA8A04!important}
-[data-seccion="eventos"]          .sidebar-version-dot{background:#7C3AED!important}
-[data-seccion="duelos"]           .sidebar-version-dot{background:#7C3AED!important}
-[data-seccion="red-entrenadores"] .sidebar-version-dot{background:#0891B2!important}
-[data-seccion="hall-of-fame"]     .sidebar-version-dot{background:#CA8A04!important}
-[data-seccion="museo"]            .sidebar-version-dot{background:#B45309!important}
-[data-seccion="ruletas"]          .sidebar-version-dot{background:#EA580C!important}
-[data-seccion="asistente"]        .sidebar-version-dot{background:#0891B2!important}
-[data-seccion="admin"]            .sidebar-version-dot{background:#CA8A04!important}
+/* Nav item activo — la barra y el fondo se aplican por JS inline */
+.nav-item.active{
+  background:rgba(37,99,235,.08);
+  font-weight:700;
+}
+.nav-item.active .nav-icon,
+.nav-item.active .nav-label{
+  color:#2563EB;
+}
+.nav-item.active::before{
+  background:#2563EB;
+  transform:translateY(-50%) scaleY(1);
+}
 
 /* ── VERSION BADGE mejorado ── */
 .version-badge-wrap{display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--bg-surface);border:1px solid var(--borde);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:18px;width:fit-content;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s,border-color .2s}
@@ -1117,7 +996,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 .more-sheet-item:hover{border-left-color:var(--tab-accent,var(--rojo))}
 </style>
 </head>
-<body>
+<body data-seccion="inicio">
 <div id="drawer-backdrop" class="drawer-backdrop" onclick="cerrarDrawer()"></div>
 <nav id="bottom-nav" class="bottom-nav">
   <div class="bn-item active" id="bn-inicio" onclick="navegarA('inicio')"><span class="bn-icon">🏠</span><span class="bn-label">Inicio</span></div>
@@ -4665,7 +4544,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
         return;
     }
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
@@ -5144,23 +5023,105 @@ var _TEMAS_SECCION = {
   'admin':            {accent:'#CA8A04', bg:'rgba(202,138,4,.08)',   glow:'rgba(202,138,4,.18)'},
 };
 function _aplicarTemaSidebarNav(s){
-  var tema=_TEMAS_SECCION[s]||_TEMAS_SECCION['inicio'];
-  /* Método principal: data-seccion en body activa los selectores CSS directos */
+  var TEMAS={
+    'inicio':           {color:'#2563EB', rgb:'37,99,235'},
+    'tiendas':          {color:'#DC2626', rgb:'220,38,38'},
+    'misiones':         {color:'#CA8A04', rgb:'202,138,4'},
+    'tracker':          {color:'#16A34A', rgb:'22,163,74'},
+    'torneos':          {color:'#7C3AED', rgb:'124,58,237'},
+    'perfil':           {color:'#4F46E5', rgb:'79,70,229'},
+    'vidas-sacrificios':{color:'#DC2626', rgb:'220,38,38'},
+    'medallas-torneos': {color:'#CA8A04', rgb:'202,138,4'},
+    'eventos':          {color:'#7C3AED', rgb:'124,58,237'},
+    'duelos':           {color:'#7C3AED', rgb:'124,58,237'},
+    'red-entrenadores': {color:'#0891B2', rgb:'8,145,178'},
+    'hall-of-fame':     {color:'#CA8A04', rgb:'202,138,4'},
+    'museo':            {color:'#B45309', rgb:'180,83,9'},
+    'ruletas':          {color:'#EA580C', rgb:'234,88,12'},
+    'asistente':        {color:'#0891B2', rgb:'8,145,178'},
+    'admin':            {color:'#CA8A04', rgb:'202,138,4'},
+  };
+  var t=TEMAS[s]||TEMAS['inicio'];
+  var c=t.color, r=t.rgb;
+
   document.body.setAttribute('data-seccion',s);
-  /* CSS vars como respaldo para elementos que sí las leen en tiempo real */
-  var root=document.documentElement;
-  root.style.setProperty('--tab-accent',tema.accent);
-  root.style.setProperty('--tab-accent-bg',tema.bg);
-  root.style.setProperty('--tab-accent-glow',tema.glow);
-  /* Avatar del footer */
+
+  /* ── 1. TOPBAR: borde inferior del color de la sección ── */
+  var tb=document.querySelector('.topbar');
+  if(tb){
+    tb.style.borderBottom='2px solid rgba('+r+',.35)';
+    tb.style.background='#ffffff';
+  }
+
+  /* ── 2. SECTION-HEADER: fondo con gradiente de color visible ── */
+  document.querySelectorAll('.section-header').forEach(function(hdr){
+    hdr.style.background='linear-gradient(135deg,rgba('+r+',.07) 0%,rgba('+r+',.02) 60%,transparent 100%)';
+    hdr.style.borderLeft='4px solid '+c;
+    hdr.style.borderRadius='0 8px 8px 0';
+    hdr.style.padding='14px 16px 14px 18px';
+    hdr.style.marginBottom='20px';
+  });
+
+  /* ── 3. SECTION-TITLE: color del acento ── */
+  document.querySelectorAll('.section-title').forEach(function(el){
+    el.style.color=c;
+  });
+
+  /* ── 4. CARD-TITLE: pastilla de color inyectada ── */
+  document.querySelectorAll('.card-title').forEach(function(ct){
+    var pill=ct.querySelector('.card-accent-pill');
+    if(!pill){
+      pill=document.createElement('span');
+      pill.className='card-accent-pill';
+      ct.insertBefore(pill,ct.firstChild);
+    }
+    pill.style.cssText='display:inline-block;width:4px;height:16px;border-radius:3px;flex-shrink:0;background:'+c+';box-shadow:0 0 6px rgba('+r+',.3);';
+  });
+
+  /* ── 5. NAV ITEM ACTIVO: fondo + borde izquierdo coloreado ── */
+  document.querySelectorAll('.nav-item').forEach(function(ni){
+    if(ni.classList.contains('active')){
+      ni.style.background='rgba('+r+',.09)';
+      ni.style.borderLeft='3px solid '+c;
+      ni.style.paddingLeft='9px';
+      var icon=ni.querySelector('.nav-icon');
+      var label=ni.querySelector('.nav-label');
+      if(icon)icon.style.color=c;
+      if(label)label.style.color=c;
+    } else {
+      ni.style.background='';
+      ni.style.borderLeft='3px solid transparent';
+      ni.style.paddingLeft='12px';
+      var icon2=ni.querySelector('.nav-icon');
+      var label2=ni.querySelector('.nav-label');
+      if(icon2)icon2.style.color='';
+      if(label2)label2.style.color='';
+    }
+  });
+
+  /* ── 6. BOTTOM-NAV: item activo coloreado ── */
+  document.querySelectorAll('.bn-item').forEach(function(bn){
+    bn.style.color=bn.classList.contains('active')?c:'';
+  });
+
+  /* ── 7. SIDEBAR FOOTER AVATAR ── */
   var av=document.getElementById('sidebar-footer-avatar');
-  if(av)av.style.background='linear-gradient(135deg,'+tema.accent+','+tema.accent+'aa)';
-  /* Bottom-nav activo */
-  _syncMobileNavAccent(tema.accent);
-  /* Label de versión */
+  if(av)av.style.background='linear-gradient(135deg,'+c+',rgba('+r+',.7))';
+
+  /* ── 8. SIDEBAR VERSION DOT ── */
+  var dot=document.querySelector('.sidebar-version-dot');
+  if(dot)dot.style.background=c;
+
+  /* ── 9. VERSION BADGE ── */
+  var vbname=document.querySelector('.version-badge-nombre');
+  if(vbname)vbname.style.color=c;
   var vl=document.getElementById('sidebar-version-label');
   if(vl&&window.APP_VERSION)vl.textContent='Mercado-Poke v'+APP_VERSION;
 }
+window.refrescarAcentoTema=function(){
+  var s=document.body.getAttribute('data-seccion')||'inicio';
+  _aplicarTemaSidebarNav(s);
+};
 function _syncMobileNavAccent(color){
   /* El bn-item activo recibe el color de acento de la sección */
   document.querySelectorAll('.bn-item').forEach(function(el){
@@ -5191,7 +5152,7 @@ window.navegarA=function(s){
   }
   /* ── Aplicar tema de sección ── */
   _aplicarTemaSidebarNav(s);
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn){bn.classList.add('active');var _t=_TEMAS_SECCION[s]||_TEMAS_SECCION['inicio'];bn.style.color=_t.accent;}if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
@@ -8610,8 +8571,18 @@ window.erDescartar = function(){
 /* ===== Sistema de Versión y Novedades (Mercado-Poke) =====
    Para publicar una nueva versión: sube APP_VERSION y añade UNA entrada
    nueva al principio del array VERSIONES. Todo lo demás se actualiza solo. */
-const APP_VERSION = 40;
+const APP_VERSION = 42;
 const VERSIONES = [
+  {
+    version: 41,
+    fecha: "2026-08-07",
+    titulo: "Fix definitivo de colores por sección",
+    resumen: "Inyección directa de elementos reales en el DOM para acentos de color. Sin ::before, sin CSS vars problemáticas.",
+    nuevas:[],
+    mejoras:["section-accent-bar inyectado en cada section-header","card-accent-pill inyectado en cada card-title","nav-item activo con inline styles directos","refrescarAcentoTema() helper global","Firebase auto-restore aplica el tema","body data-seccion desde el HTML"],
+    fixes:["var() no funciona en ::before al cambiar via JS — eliminado","Reconexión Firebase no aplicaba tema — corregido"],
+    rendimiento:[]
+  },
   {
     version: 40,
     fecha: '2026-08-07',
