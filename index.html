@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v44 | Build: 2026-08-07 -->
+<!-- Silph Co v45 | Build: 2026-08-07 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -249,7 +249,7 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .item-card{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px 14px 12px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;position:relative;overflow:hidden;transition:transform .22s cubic-bezier(.4,0,.2,1),box-shadow .22s ease,border-color .22s ease,opacity .3s ease,filter .3s ease}.item-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s}.item-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg),0 0 0 1px var(--borde-hover)}.item-card:hover::before{opacity:1}.item-card:active{transform:scale(.97)}.item-card.agotado{opacity:.35;filter:grayscale(1);pointer-events:none}
 .legal-zone .item-card::before{background:var(--neon-legal)}.legal-zone .item-card:hover{border-color:rgba(30,158,115,.3)}.pack-zone .item-card::before{background:var(--neon-packs)}.pack-zone .item-card:hover{border-color:rgba(201,154,46,.3)}.illegal-zone .item-card::before{background:var(--neon-ilegal)}.illegal-zone .item-card:hover{border-color:rgba(142,79,199,.3)}
 .item-categoria-tag{font-size:9px;color:var(--txt-muted);text-transform:uppercase;letter-spacing:1px;font-family:var(--font-display);margin-bottom:8px}.item-emoji{font-size:26px;margin-bottom:8px}.item-nombre{font-family:var(--font-display);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blanco);margin-bottom:7px}.item-descripcion{font-size:11px;color:var(--txt-secondary);line-height:1.4;text-align:left;background:rgba(0,0,0,.2);padding:7px 9px;border-radius:var(--r-sm);margin-bottom:7px}.item-estrategia{font-size:10px;color:var(--amarillo-dim);font-style:italic;text-align:left;margin-bottom:7px}.item-precio-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.item-precio{font-family:var(--font-display);font-size:13px;font-weight:900}.item-stock{font-size:10px;color:var(--txt-muted);font-family:var(--font-display)}.item-pf-bonus{font-size:9px;color:var(--neon-ilegal);font-family:var(--font-display);margin-bottom:7px}
-.btn-comprar{width:100%;padding:10px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .18s ease;border:1px solid}.legal-zone .btn-comprar{background:var(--neon-legal);color:#052e1f;border-color:var(--neon-legal)}.legal-zone .btn-comprar:hover:not(:disabled){filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(30,158,115,.55);transform:translateY(-1px)}.legal-zone .btn-comprar:active:not(:disabled){transform:scale(.96)}.pack-zone .btn-comprar{background:var(--neon-packs);color:#3a1e02;border-color:var(--neon-packs)}.pack-zone .btn-comprar:hover:not(:disabled){filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(201,154,46,.55);transform:translateY(-1px)}.pack-zone .btn-comprar:active:not(:disabled){transform:scale(.96)}.illegal-zone .btn-comprar{background:#7C3AED;color:#ffffff;border-color:#7C3AED}.illegal-zone .btn-comprar:hover:not(:disabled){filter:brightness(1.15);box-shadow:0 4px 18px -2px rgba(124,58,237,.55);transform:translateY(-1px)}.illegal-zone .btn-comprar:active:not(:disabled){transform:scale(.96)}.btn-comprar:disabled{background:var(--bg-surface)!important;color:var(--txt-muted)!important;border-color:var(--gris-700)!important;cursor:not-allowed}
+.btn-comprar{width:100%;padding:10px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .18s ease;border:1px solid}.legal-zone .btn-comprar{background:var(--neon-legal);color:#ffffff;border-color:var(--neon-legal)}.legal-zone .btn-comprar:hover:not(:disabled){filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(30,158,115,.55);transform:translateY(-1px)}.legal-zone .btn-comprar:active:not(:disabled){transform:scale(.96)}.pack-zone .btn-comprar{background:var(--neon-packs);color:#ffffff;border-color:var(--neon-packs)}.pack-zone .btn-comprar:hover:not(:disabled){filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(201,154,46,.55);transform:translateY(-1px)}.pack-zone .btn-comprar:active:not(:disabled){transform:scale(.96)}.illegal-zone .btn-comprar{background:#7C3AED;color:#ffffff;border-color:#7C3AED}.illegal-zone .btn-comprar:hover:not(:disabled){filter:brightness(1.15);box-shadow:0 4px 18px -2px rgba(124,58,237,.55);transform:translateY(-1px)}.illegal-zone .btn-comprar:active:not(:disabled){transform:scale(.96)}.btn-comprar:disabled{background:var(--bg-surface)!important;color:var(--txt-muted)!important;border-color:var(--gris-700)!important;cursor:not-allowed}
 .mochila-bar{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.mochila-label{font-size:10px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;flex-shrink:0}.mochila-items-wrap{display:flex;gap:7px;flex-wrap:wrap;flex:1}.mochila-tag{background:var(--bg-overlay);border:1px solid var(--borde);border-radius:99px;padding:5px 10px;font-size:11px;display:flex;align-items:center;gap:7px;transition:border-color .15s}.mochila-tag:hover{border-color:var(--borde-hover)}
 .mochila-tag-pack{border-radius:var(--r-md);align-items:flex-start;padding:7px 10px}
 .mochila-tag-desc{font-size:9.5px;color:var(--txt-muted);font-style:italic;font-family:var(--font-body);max-width:240px;line-height:1.3}.btn-usar{background:rgba(30,158,115,.1);color:var(--neon-legal);border:1px solid rgba(30,158,115,.25);padding:2px 8px;border-radius:99px;font-size:9px;font-weight:700;font-family:var(--font-display);cursor:pointer;letter-spacing:.3px;transition:all .15s}.btn-usar:hover{background:var(--neon-legal);color:#000}
@@ -4595,6 +4595,9 @@ const MISION_MS_ROTACION = 12*60*60*1000;
 function dispararConfetti(origenEl){
   if(!origenEl) return;
   var rect = origenEl.getBoundingClientRect();
+  /* No disparar si el elemento está fuera de pantalla o en una sección oculta */
+  if(rect.width===0 && rect.height===0) return;
+  if(rect.top < -100 || rect.top > window.innerHeight + 100) return;
   var cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
   var colores = ['#d8293f','#3e6fa6','#c99a2e','#1e9e73','#8e4fc7'];
   for(var i=0;i<14;i++){
@@ -7877,7 +7880,7 @@ function _checkCompraTemaTienda(nombreProducto){
   }
 }
 
-function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';let prevN=box.querySelectorAll('.medalla-insignia.ganada').length;let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}"${i===n&&n>prevN?' data-nueva="1"':''}>${icon}</div>`;}box.innerHTML=html;let nueva=box.querySelector('[data-nueva="1"]');if(nueva){nueva.classList.add('recien-desbloqueado');dispararConfetti(nueva);reproducirSonido('exito');}}
+function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';/* Usar el previo guardado en memoria, no el conteo del DOM (que al cargar siempre es 0) */var prevN=typeof window._insigPrevN==='number'?window._insigPrevN:-1;var esNuevaMedalla=n>prevN&&prevN>=0;window._insigPrevN=n;let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}"${i===n&&esNuevaMedalla?' data-nueva="1"':''}>${icon}</div>`;}box.innerHTML=html;let nueva=box.querySelector('[data-nueva="1"]');if(nueva){nueva.classList.add('recien-desbloqueado');dispararConfetti(nueva);reproducirSonido('exito');}}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
 window.alterarTorneosPerfil=function(v){let u=baseDatos.jugadores[userSesion];u.torneos=Math.max(0,(u.torneos||0)+v);animarValorNumerico(document.getElementById('perf-txt-torneos'),u.torneos);if(v>0)dispararConfetti(document.getElementById('perf-txt-torneos'));guardarBD();};
@@ -8604,8 +8607,24 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 44;
+const APP_VERSION = 45;
 const VERSIONES = [
+  {
+    version: 45,
+    fecha: '2026-08-07',
+    titulo: 'Fix confeti + legibilidad botones Legal y Pack',
+    resumen: 'El confeti ya no aparece en coordenadas invisibles al cargar sesión ni al entrar a perfil con medallas existentes. Botones de comprar en tiendas Legal y Pack pasan a texto blanco.',
+    nuevas: [],
+    mejoras: [
+      'Botón comprar Legal: color de texto de #052e1f (verde oscuro) a #ffffff',
+      'Botón comprar Pack: color de texto de #3a1e02 (marrón oscuro) a #ffffff',
+    ],
+    fixes: [
+      'Confeti disparado en (0,0) al cargar sesión con misiones pendientes — guard en dispararConfetti: si el elemento tiene rect vacío o está fuera de pantalla, no dispara',
+      'Confeti falso de medallas al entrar a perfil — renderizarInsigniasPerfil usaba prevN del DOM vacío (siempre 0); ahora usa window._insigPrevN inicializado a -1 para distinguir primer render de ganancia real',
+    ],
+    rendimiento: []
+  },
   {
     version: 44,
     fecha: '2026-08-07',
