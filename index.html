@@ -746,107 +746,76 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 .page-section.active{padding:0}
 
 /* ════════════════════════════════════════════════════
-   IDENTIDAD VISUAL POR SECCIÓN — Mercado-Poke v38
-   Cada sección hereda --tab-accent para colorear
-   section-header::before, card-title::before, badges, etc.
+   IDENTIDAD VISUAL POR SECCIÓN — acento directo en
+   section-header::before y card-title::before.
+   Usar colores directos (no var) para evitar que la
+   herencia de custom properties falle en ::before.
    ════════════════════════════════════════════════════ */
 
-/* INICIO — Azul Control */
-#section-inicio{--tab-accent:var(--tab-inicio)}
-#section-inicio .section-header::before{background:linear-gradient(180deg,var(--tab-inicio),rgba(37,99,235,0))}
-#section-inicio .card-title::before{background:var(--tab-inicio)}
+/* INICIO — Azul */
+#section-inicio .section-header::before{background:linear-gradient(180deg,#2563EB,rgba(37,99,235,0))!important}
+#section-inicio .card-title::before{background:#2563EB!important}
 
-/* TIENDAS — Rojo Mercado */
-#section-tiendas{--tab-accent:var(--tab-tiendas)}
-#section-tiendas .section-header::before{background:linear-gradient(180deg,var(--tab-tiendas),rgba(224,49,63,0))}
-#section-tiendas .card-title::before{background:var(--tab-tiendas)}
+/* TIENDAS — Rojo */
+#section-tiendas .section-header::before{background:linear-gradient(180deg,#E0313F,rgba(224,49,63,0))!important}
+#section-tiendas .card-title::before{background:#E0313F!important}
 
-/* MISIONES — Amarillo Encargos */
-#section-misiones{--tab-accent:var(--tab-misiones)}
-#section-misiones .section-header::before{background:linear-gradient(180deg,var(--tab-misiones),rgba(217,164,4,0))}
-#section-misiones .card-title::before{background:var(--tab-misiones)}
+/* MISIONES — Amarillo */
+#section-misiones .section-header::before{background:linear-gradient(180deg,#D9A404,rgba(217,164,4,0))!important}
+#section-misiones .card-title::before{background:#D9A404!important}
 
-/* TRACKER — Verde Exploración */
-#section-tracker{--tab-accent:var(--tab-tracker)}
-#section-tracker .section-header::before{background:linear-gradient(180deg,var(--tab-tracker),rgba(22,163,74,0))}
-#section-tracker .card-title::before{background:var(--tab-tracker)}
+/* TRACKER — Verde */
+#section-tracker .section-header::before{background:linear-gradient(180deg,#16A34A,rgba(22,163,74,0))!important}
+#section-tracker .card-title::before{background:#16A34A!important}
 
-/* TORNEOS — Morado Arena */
-#section-torneos{--tab-accent:var(--tab-torneos)}
-#section-torneos .section-header::before{background:linear-gradient(180deg,var(--tab-torneos),rgba(124,58,237,0))}
-#section-torneos .card-title::before{background:var(--tab-torneos)}
+/* TORNEOS — Morado */
+#section-torneos .section-header::before{background:linear-gradient(180deg,#7C3AED,rgba(124,58,237,0))!important}
+#section-torneos .card-title::before{background:#7C3AED!important}
 
-/* DUELOS PVP — Morado Arena */
-#section-duelos{--tab-accent:var(--tab-torneos)}
-#section-duelos .section-header::before{background:linear-gradient(180deg,var(--tab-torneos),rgba(124,58,237,0))}
-#section-duelos .card-title::before{background:var(--tab-torneos)}
+/* DUELOS PVP — Morado */
+#section-duelos .section-header::before{background:linear-gradient(180deg,#7C3AED,rgba(124,58,237,0))!important}
+#section-duelos .card-title::before{background:#7C3AED!important}
 
-/* PERFIL — Índigo Ficha */
-#section-perfil{--tab-accent:var(--tab-perfil)}
-#section-perfil .section-header::before{background:linear-gradient(180deg,var(--tab-perfil),rgba(79,70,229,0))}
-#section-perfil .card-title::before{background:var(--tab-perfil)}
+/* PERFIL — Índigo */
+#section-perfil .section-header::before{background:linear-gradient(180deg,#4F46E5,rgba(79,70,229,0))!important}
+#section-perfil .card-title::before{background:#4F46E5!important}
 
-/* VIDAS & CEMENTERIO — Gris oscuro Memorial */
-#section-vidas-sacrificios{--tab-accent:var(--tab-cementerio)}
-#section-vidas-sacrificios .section-header::before{background:linear-gradient(180deg,var(--tab-cementerio),rgba(55,65,81,0))}
-#section-vidas-sacrificios .card-title::before{background:var(--tab-cementerio)}
+/* VIDAS & CEMENTERIO — Gris oscuro */
+#section-vidas-sacrificios .section-header::before{background:linear-gradient(180deg,#374151,rgba(55,65,81,0))!important}
+#section-vidas-sacrificios .card-title::before{background:#374151!important}
 
-/* MEDALLAS & TORNEOS — Morado */
-#section-medallas-torneos{--tab-accent:var(--tab-torneos)}
-#section-medallas-torneos .section-header::before{background:linear-gradient(180deg,var(--tab-torneos),rgba(124,58,237,0))}
-#section-medallas-torneos .card-title::before{background:var(--tab-torneos)}
+/* MEDALLAS — Morado */
+#section-medallas-torneos .section-header::before{background:linear-gradient(180deg,#7C3AED,rgba(124,58,237,0))!important}
+#section-medallas-torneos .card-title::before{background:#7C3AED!important}
 
 /* HALL OF FAME — Dorado */
-#section-hall-of-fame{--tab-accent:#c99a2e}
-#section-hall-of-fame .section-header::before{background:linear-gradient(180deg,#c99a2e,rgba(201,154,46,0))}
-#section-hall-of-fame .card-title::before{background:#c99a2e}
+#section-hall-of-fame .section-header::before{background:linear-gradient(180deg,#c99a2e,rgba(201,154,46,0))!important}
+#section-hall-of-fame .card-title::before{background:#c99a2e!important}
 
-/* RED DE ENTRENADORES — Azul intercambio */
-#section-red-entrenadores{--tab-accent:var(--neon-intercambio)}
-#section-red-entrenadores .section-header::before{background:linear-gradient(180deg,var(--neon-intercambio),rgba(8,145,178,0))}
-#section-red-entrenadores .card-title::before{background:var(--neon-intercambio)}
+/* RED DE ENTRENADORES — Cian */
+#section-red-entrenadores .section-header::before{background:linear-gradient(180deg,#0891B2,rgba(8,145,178,0))!important}
+#section-red-entrenadores .card-title::before{background:#0891B2!important}
 
 /* EVENTOS — Arena morado */
-#section-eventos{--tab-accent:var(--neon-arena)}
-#section-eventos .section-header::before{background:linear-gradient(180deg,var(--neon-arena),rgba(91,82,199,0))}
-#section-eventos .card-title::before{background:var(--neon-arena)}
+#section-eventos .section-header::before{background:linear-gradient(180deg,#5B52C7,rgba(91,82,199,0))!important}
+#section-eventos .card-title::before{background:#5B52C7!important}
 
-/* ── SECTION HEADER mejorado: título usa el color accent de la sección ── */
-.section-title{color:var(--txt-primary)}
+/* RULETAS — Naranja */
+#section-ruletas .section-header::before{background:linear-gradient(180deg,#EA580C,rgba(234,88,12,0))!important}
+#section-ruletas .card-title::before{background:#EA580C!important}
+
+/* MUSEO — Ámbar */
+#section-museo .section-header::before{background:linear-gradient(180deg,#B45309,rgba(180,83,9,0))!important}
+#section-museo .card-title::before{background:#B45309!important}
 
 /* ── VERSION BADGE mejorado ── */
-.version-badge-wrap{display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--bg-surface);border:1px solid var(--borde);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:18px;width:fit-content;box-shadow:var(--shadow-sm);transition:box-shadow .2s ease,transform .2s ease,border-color .2s ease}
+.version-badge-wrap{display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--bg-surface);border:1px solid var(--borde);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:18px;width:fit-content;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s,border-color .2s}
 .version-badge-wrap:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);border-color:var(--borde-hover)}
 .version-badge-wrap:active{transform:scale(.97)}
-.version-badge-icon{font-size:22px;line-height:1}
-.version-badge-texto{display:flex;flex-direction:column;gap:1px}
-.version-badge-nombre{font-family:var(--font-display);font-weight:900;font-size:13px;color:var(--tab-inicio)}
-.version-badge-num{font-size:11px;color:var(--txt-muted);font-family:var(--font-display)}
-.version-badge-link{font-size:10px;color:var(--tab-inicio);text-decoration:none;font-family:var(--font-display);font-weight:700;opacity:.75;transition:opacity .15s}
-.version-badge-wrap:hover .version-badge-link{opacity:1}
-
-/* ── NOVEDADES OVERLAY mejorado ── */
-#novedades-overlay .nov-entry{padding:16px 0;border-bottom:1px solid var(--borde)}
-#novedades-overlay .nov-entry:last-child{border-bottom:none}
-#novedades-close-btn:hover{background:var(--bg-overlay);color:var(--txt-primary)}
-
-/* ── MICROANIMACIONES de entrada escalonada para listas ── */
-@keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.card{animation:fadeSlideIn .3s ease backwards}
-.card:nth-child(1){animation-delay:.03s}
-.card:nth-child(2){animation-delay:.06s}
-.card:nth-child(3){animation-delay:.09s}
-.card:nth-child(4){animation-delay:.12s}
-.card:nth-child(5){animation-delay:.15s}
-
-/* ── HOVER PRESS en botones ── */
-button:not(:disabled):active,.btn-comprar:not(:disabled):active{transform:scale(.95)!important}
-
-/* ── BARRA DE PROGRESO ANIMADA (misiones) ── */
-.mision-progreso-fill{transition:width .6s cubic-bezier(.4,0,.2,1)}
-
-/* ── IMPROVED CARD FOCUS RING ── */
-button:focus-visible{outline:2px solid var(--tab-accent,var(--rojo));outline-offset:2px}
+.version-badge-icon{font-size:20px;line-height:1}
+.version-badge-texto{display:flex;flex-direction:column;gap:2px}
+.version-badge-nombre{font-family:var(--font-display);font-weight:900;font-size:13px;color:#2563EB}
+.version-badge-sub{font-size:10px;color:var(--txt-muted);font-family:var(--font-display)}
 </style>
 </head>
 <body>
@@ -968,14 +937,13 @@ button:focus-visible{outline:2px solid var(--tab-accent,var(--rojo));outline-off
     <!-- INICIO -->
     <section id="section-inicio" class="page-section active">
       <div class="section-header"><div class="section-title">Inicio</div><div class="section-subtitle">Bienvenido a la Red de Intercambio Comercial</div></div>
-      <div class="version-badge-wrap" onclick="abrirNovedades()" role="button" aria-label="Ver novedades">
+      <div class="version-badge-wrap" id="version-badge-btn">
         <span class="version-badge-icon">🔴</span>
         <div class="version-badge-texto">
-          <span class="version-badge-nombre">Mercado-Poke &nbsp;<span style="color:var(--txt-muted);font-weight:600">v<span id="version-actual-num"></span></span></span>
-          <span class="version-badge-num">Toca para ver las novedades →</span>
+          <span class="version-badge-nombre">Mercado-Poke <span style="color:var(--txt-muted);font-weight:500">v<span id="version-actual-num"></span></span></span>
+          <span class="version-badge-sub">Ver novedades →</span>
         </div>
       </div>
-
       <div class="inicio-stats-row" id="inicio-pulso-red">
         <div class="inicio-stat-card">
           <div class="inicio-stat-icon" id="pulso-mercado-icon" style="background:rgba(30,158,115,.1)">🟢</div>
@@ -8254,103 +8222,118 @@ window.erDescartar = function(){
 
 /* ===== Sistema de Versión y Novedades (Mercado-Poke) =====
    Para publicar una nueva versión: sube APP_VERSION y añade UNA entrada
-   nueva al principio del array VERSIONES. Todo lo demás (indicador de
-   Inicio, ventana de novedades, aviso automático) se actualiza solo. */
+   nueva al principio del array VERSIONES. Todo lo demás se actualiza solo. */
 const APP_VERSION = 38;
 const VERSIONES = [
   {
     version: 38,
     fecha: '2026-08-07',
-    titulo: 'Identidad visual por sección',
-    resumen: 'Cada pestaña tiene ahora su propio color de acento. Ventana de Novedades rediseñada y bug de cierre corregido.',
-    nuevas: ['Color de acento propio por cada sección (Inicio→Azul, Tiendas→Rojo, Misiones→Amarillo, Tracker→Verde, Torneos→Morado, Perfil→Índigo…)'],
-    mejoras: ['Version badge rediseñado en Inicio', 'Overlay de Novedades ahora se puede cerrar con ✕, clic fuera o tecla Escape', 'Microanimaciones de entrada escalonada en tarjetas', 'Jerarquía visual mejorada en todos los section headers'],
-    rendimiento: ['Overlay de Novedades movido al root del DOM para evitar conflictos de stacking context'],
-    fixes: ['Bug: la ventana de Novedades no dejaba cerrarse']
+    titulo: 'Identidad visual por sección + bug fixes',
+    resumen: 'Cada pestaña tiene su propio color de acento. Ventana de Novedades rediseñada y bug de cierre corregido.',
+    nuevas: ['Color de acento propio por sección: Inicio→Azul, Tiendas→Rojo, Misiones→Amarillo, Tracker→Verde, Torneos→Morado, Perfil→Índigo'],
+    mejoras: ['Version badge rediseñado', 'Changelog con categorías visuales'],
+    rendimiento: ['Overlay de Novedades movido al root del DOM para evitar conflictos'],
+    fixes: ['Bug: la ventana de Novedades no se podía cerrar con ✕ ni haciendo clic fuera']
   },
   {
     version: 37,
     fecha: '2026-08-07',
     titulo: 'Rediseño visual completo',
-    resumen: 'Nueva identidad visual clara y moderna en toda la aplicación, con una paleta de colores propia por sección.',
+    resumen: 'Nueva identidad visual clara y moderna en toda la aplicación.',
     nuevas: [],
-    mejoras: ['Rediseño visual completo: fondo claro, tarjetas blancas, tipografía unificada y nueva paleta por sección', 'Sistema de indicador de versión y ventana de Novedades'],
+    mejoras: ['Fondo claro, tarjetas blancas, tipografía unificada', 'Sistema de indicador de versión y ventana de Novedades'],
     rendimiento: [],
     fixes: []
   }
 ];
 
-function _pintarNovedades(){
-  const cont = document.getElementById('novedades-lista');
+window._pintarNovedades = function(){
+  var cont = document.getElementById('novedades-lista');
   if(!cont) return;
-  const iconos = { nuevas:'✨', mejoras:'⬆️', rendimiento:'⚡', fixes:'🔧' };
-  const colores = { nuevas:'rgba(37,99,235,.08)', mejoras:'rgba(22,163,74,.07)', rendimiento:'rgba(217,164,4,.07)', fixes:'rgba(224,49,63,.07)' };
-  const coloresTexto = { nuevas:'var(--tab-inicio)', mejoras:'var(--tab-tracker)', rendimiento:'var(--tab-misiones)', fixes:'var(--tab-tiendas)' };
-  cont.innerHTML = VERSIONES.map((v,i) => {
-    const esUltima = i === 0;
-    const secciones = [
-      {key:'nuevas',label:'Novedades'},
-      {key:'mejoras',label:'Mejoras'},
-      {key:'rendimiento',label:'Rendimiento'},
-      {key:'fixes',label:'Correcciones'}
-    ].filter(s => v[s.key] && v[s.key].length);
-    return `
-    <div style="padding:18px 0;border-bottom:1px solid var(--borde);animation:fadeSlideIn .3s ease ${i*.06}s backwards">
-      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
-        <span style="font-family:var(--font-display);font-weight:900;font-size:12px;padding:3px 10px;border-radius:99px;background:${esUltima?'var(--tab-inicio)':'var(--bg-overlay)'};color:${esUltima?'#fff':'var(--txt-secondary)'};white-space:nowrap;flex-shrink:0">v${v.version}${esUltima?' · Última':''}</span>
-        <div style="flex:1;min-width:0">
-          <div style="font-family:var(--font-display);font-weight:800;font-size:13px;color:var(--txt-primary);margin-bottom:2px">${v.titulo}</div>
-          <div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">${v.fecha}</div>
-        </div>
-      </div>
-      ${v.resumen?`<div style="font-size:12px;color:var(--txt-secondary);line-height:1.5;margin-bottom:10px">${v.resumen}</div>`:''}
-      ${secciones.map(s=>`
-        <div style="margin-bottom:6px">
-          <div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:${coloresTexto[s.key]};margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">${iconos[s.key]} ${s.label}</div>
-          <ul style="margin:0;padding:0 0 0 16px;display:flex;flex-direction:column;gap:3px">
-            ${v[s.key].map(item=>`<li style="font-size:11px;color:var(--txt-secondary);line-height:1.45">${item}</li>`).join('')}
-          </ul>
-        </div>
-      `).join('')}
-    </div>`;
+  var iconos = {nuevas:'✨',mejoras:'⬆️',rendimiento:'⚡',fixes:'🔧'};
+  var labels = {nuevas:'Novedades',mejoras:'Mejoras',rendimiento:'Rendimiento',fixes:'Correcciones'};
+  var colores = {nuevas:'#2563EB',mejoras:'#16A34A',rendimiento:'#D9A404',fixes:'#E0313F'};
+  cont.innerHTML = VERSIONES.map(function(v,i){
+    var esUltima = i === 0;
+    var secciones = ['nuevas','mejoras','rendimiento','fixes'].filter(function(k){ return v[k] && v[k].length; });
+    return '<div style="padding:18px 0;border-bottom:1px solid var(--borde)">'
+      + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'
+      + '<span style="font-family:var(--font-display);font-weight:900;font-size:11px;padding:3px 10px;border-radius:99px;background:'+(esUltima?'#2563EB':'var(--bg-overlay)')+';color:'+(esUltima?'#fff':'var(--txt-secondary)')+'">v'+v.version+(esUltima?' · Última':'')+'</span>'
+      + '<div><div style="font-family:var(--font-display);font-weight:800;font-size:13px;color:var(--txt-primary)">'+v.titulo+'</div>'
+      + '<div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">'+v.fecha+'</div></div>'
+      + '</div>'
+      + (v.resumen ? '<div style="font-size:12px;color:var(--txt-secondary);line-height:1.5;margin-bottom:10px">'+v.resumen+'</div>' : '')
+      + secciones.map(function(k){
+          return '<div style="margin-bottom:6px">'
+            + '<div style="font-family:var(--font-display);font-size:10px;font-weight:700;color:'+colores[k]+';margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">'+iconos[k]+' '+labels[k]+'</div>'
+            + '<ul style="margin:0;padding:0 0 0 16px">'
+            + v[k].map(function(item){ return '<li style="font-size:11px;color:var(--txt-secondary);line-height:1.6">'+item+'</li>'; }).join('')
+            + '</ul></div>';
+        }).join('')
+      + '</div>';
   }).join('');
-}
-function abrirNovedades(){
-  _pintarNovedades();
-  document.getElementById('novedades-overlay').style.display = 'flex';
-}
-function cerrarNovedades(){
-  document.getElementById('novedades-overlay').style.display = 'none';
+};
+
+window.abrirNovedades = function(){
+  window._pintarNovedades();
+  var ov = document.getElementById('novedades-overlay');
+  if(ov){ ov.style.display = 'flex'; }
+};
+
+window.cerrarNovedades = function(){
+  var ov = document.getElementById('novedades-overlay');
+  if(ov){ ov.style.display = 'none'; }
   try{ localStorage.setItem('mercadopoke_ultima_version_vista', String(APP_VERSION)); }catch(e){}
-}
-document.addEventListener('DOMContentLoaded', () => {
-  const numEl = document.getElementById('version-actual-num');
+};
+
+document.addEventListener('DOMContentLoaded', function(){
+  /* Número de versión en el badge */
+  var numEl = document.getElementById('version-actual-num');
   if(numEl) numEl.textContent = APP_VERSION;
-  try{
-    const vista = parseInt(localStorage.getItem('mercadopoke_ultima_version_vista')||'0', 10);
-    if(vista < APP_VERSION){ setTimeout(abrirNovedades, 900); }
-  }catch(e){}
-});
-/* Cerrar con tecla Escape */
-document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape'){
-    var ov = document.getElementById('novedades-overlay');
-    if(ov && ov.style.display !== 'none') cerrarNovedades();
+
+  /* Click en el badge de versión */
+  var badge = document.getElementById('version-badge-btn');
+  if(badge) badge.addEventListener('click', function(){ window.abrirNovedades(); });
+
+  /* Botón cerrar del overlay */
+  var closeBtn = document.getElementById('novedades-close-btn');
+  if(closeBtn) closeBtn.addEventListener('click', function(e){ e.stopPropagation(); window.cerrarNovedades(); });
+
+  /* Click en el backdrop (fuera del modal) */
+  var ov = document.getElementById('novedades-overlay');
+  if(ov){
+    ov.addEventListener('click', function(e){
+      if(e.target === ov) window.cerrarNovedades();
+    });
   }
+
+  /* Tecla Escape */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      var o = document.getElementById('novedades-overlay');
+      if(o && o.style.display !== 'none') window.cerrarNovedades();
+    }
+  });
+
+  /* Auto-mostrar si hay versión nueva */
+  try{
+    var vista = parseInt(localStorage.getItem('mercadopoke_ultima_version_vista')||'0', 10);
+    if(vista < APP_VERSION){ setTimeout(window.abrirNovedades, 900); }
+  }catch(e){}
 });
 </script>
 
-<!-- OVERLAY NOVEDADES: fuera de cualquier section para evitar stacking context -->
-<div id="novedades-overlay" onclick="if(event.target===this)cerrarNovedades()" style="display:none;position:fixed;inset:0;background:rgba(16,24,40,.6);backdrop-filter:blur(6px);z-index:10800;justify-content:center;align-items:center;padding:20px">
-  <div style="background:var(--bg-surface);border-radius:var(--r-xl);max-width:500px;width:100%;max-height:82vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl);animation:vistaEntrada .3s cubic-bezier(.16,1,.3,1);border:1px solid var(--borde);overflow:hidden">
+<!-- OVERLAY NOVEDADES — al nivel del body para evitar cualquier stacking context -->
+<div id="novedades-overlay" style="display:none;position:fixed;inset:0;background:rgba(16,24,40,.6);backdrop-filter:blur(6px);z-index:10800;justify-content:center;align-items:center;padding:20px">
+  <div style="background:var(--bg-surface);border-radius:var(--r-xl);max-width:500px;width:100%;max-height:82vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl);border:1px solid var(--borde);overflow:hidden;animation:vistaEntrada .3s cubic-bezier(.16,1,.3,1)">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 22px 16px;border-bottom:1px solid var(--borde);flex-shrink:0">
       <div>
         <div style="font-family:var(--font-display);font-weight:900;font-size:15px;color:var(--txt-primary)">Novedades de Mercado-Poke</div>
         <div style="font-size:11px;color:var(--txt-muted);margin-top:2px;font-family:var(--font-display)">Historial de actualizaciones</div>
       </div>
-      <button id="novedades-close-btn" onclick="cerrarNovedades()" title="Cerrar" style="border:none;background:var(--bg-overlay);border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:15px;color:var(--txt-secondary);display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;flex-shrink:0">✕</button>
+      <button id="novedades-close-btn" style="border:none;background:var(--bg-overlay);border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px;color:var(--txt-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1">✕</button>
     </div>
-    <div id="novedades-lista" style="overflow-y:auto;padding:6px 22px 22px;flex:1"></div>
+    <div id="novedades-lista" style="overflow-y:auto;padding:0 22px 22px;flex:1"></div>
   </div>
 </div>
 
