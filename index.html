@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v45 | Build: 2026-08-07 -->
+<!-- Silph Co v46 | Build: 2026-08-07 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1110,7 +1110,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="sidebar-footer-version">
         <div class="sidebar-version-tag" onclick="window.abrirNovedades&&window.abrirNovedades()">
           <span class="sidebar-version-dot"></span>
-          <span id="sidebar-version-label">Mercado-Poke v39</span>
+          <span id="sidebar-version-label">Silph Co v—</span>
         </div>
         <span style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display)">2026</span>
       </div>
@@ -5165,12 +5165,15 @@ function _actualizarSidebarFooter(){
   var nameEl = document.getElementById('sidebar-footer-name');
   var roleEl = document.getElementById('sidebar-footer-role');
   var avEl   = document.getElementById('sidebar-footer-avatar');
+  var verEl  = document.getElementById('sidebar-version-label');
   if(!userSesion) return;
   var nombre = userSesion.charAt(0).toUpperCase() + userSesion.slice(1);
   if(nameEl) nameEl.textContent = nombre;
   if(avEl)   avEl.textContent   = userSesion.charAt(0).toUpperCase();
   var esAdmin = userSesion.toLowerCase() === 'srwiwa';
   if(roleEl) roleEl.textContent = esAdmin ? 'Administrador · Modo Dios' : 'Operador · Red Silph';
+  /* Sincronizar con APP_VERSION — no editar este número aquí, solo arriba en APP_VERSION */
+  if(verEl)  verEl.textContent  = 'Silph Co v' + APP_VERSION;
 }
 
 window.navegarA=function(s){
@@ -8607,8 +8610,21 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 45;
+const APP_VERSION = 46;
 const VERSIONES = [
+  {
+    version: 46,
+    fecha: '2026-08-07',
+    titulo: 'Versión del sidebar sincronizada con APP_VERSION',
+    resumen: 'El número de versión que aparece abajo a la izquierda en el sidebar ahora se actualiza automáticamente desde APP_VERSION al hacer login, en vez de ser un hardcoded fijo.',
+    nuevas: [],
+    mejoras: [
+      '_actualizarSidebarFooter ahora escribe "Silph Co vN" en sidebar-version-label usando APP_VERSION',
+      'Placeholder del HTML cambiado de "Mercado-Poke v39" a "Silph Co v—" para que no aparezca un número incorrecto antes de que cargue el JS',
+    ],
+    fixes: [],
+    rendimiento: []
+  },
   {
     version: 45,
     fecha: '2026-08-07',
