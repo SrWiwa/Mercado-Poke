@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v39 | Build: 2026-08-07 -->
+<!-- Silph Co v40 | Build: 2026-08-07 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -312,8 +312,8 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .cat-badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.4px}.cat-comun{background:rgba(30,158,115,.1);color:#34d399;border:1px solid rgba(30,158,115,.2)}.cat-competitivo{background:rgba(62,111,166,.1);color:#93c5fd;border:1px solid rgba(62,111,166,.2)}.cat-evolucion{background:rgba(201,154,46,.1);color:var(--neon-packs);border:1px solid rgba(201,154,46,.2)}.cat-megaevolucion{background:rgba(142,79,199,.1);color:#d8b4fe;border:1px solid rgba(142,79,199,.2)}.cat-pokemon{background:rgba(216,41,63,.1);color:#fca5a5;border:1px solid rgba(216,41,63,.2)}
 .perfil-tabs{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap;border-bottom:1px solid var(--borde);padding-bottom:14px}.perfil-tab{padding:7px 14px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-secondary);transition:all .2s cubic-bezier(.4,0,.2,1)}.perfil-tab:hover{color:var(--blanco);background:var(--bg-overlay);transform:translateY(-1px)}.perfil-tab.active{background:var(--bg-overlay);color:var(--blanco);border-color:var(--borde-hover);box-shadow:0 2px 14px -3px currentColor;transform:translateY(-1px)}
 .perfil-view{display:none}.perfil-view.active{display:block}
-.hp-panel{background:#0a0f1a;border:1px solid rgba(216,41,63,.12);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:18px;position:relative;overflow:hidden}.hp-panel::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 85% 15%,rgba(216,41,63,.06),transparent 55%)}.hp-label-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}.hp-tag{font-family:var(--font-display);font-size:9px;font-weight:900;letter-spacing:2px;color:var(--txt-muted);text-transform:uppercase}.hp-numeros{font-family:var(--font-display);font-size:24px;font-weight:900;letter-spacing:1px;transition:color .4s ease}
-.hp-barra-contenedor{width:100%;background:rgba(0,0,0,.5);border-radius:3px;height:16px;overflow:hidden;border:1px solid rgba(255,255,255,.04);position:relative;box-shadow:inset 0 2px 8px rgba(0,0,0,.8)}.hp-barra-contenedor::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 9px,rgba(0,0,0,.25) 9px,rgba(0,0,0,.25) 10px);z-index:2;pointer-events:none}.hp-fill{height:100%;border-radius:2px;transition:width .7s cubic-bezier(.4,0,.2,1),background .5s ease;position:relative}.hp-fill::after{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:rgba(255,255,255,.18);border-radius:2px 2px 0 0}.hp-fill.alta{background:linear-gradient(180deg,#22c55e,#16a34a);box-shadow:0 0 14px rgba(34,197,94,.4)}.hp-fill.media{background:linear-gradient(180deg,#eab308,#ca8a04);box-shadow:0 0 14px rgba(234,179,8,.35)}.hp-fill.baja{background:linear-gradient(180deg,#d8293f,#b91c1c);box-shadow:0 0 14px rgba(216,41,63,.4);animation:blink-hp 1s ease-in-out infinite}.hp-fill.cero{background:var(--gris-700);box-shadow:none}
+.hp-panel{background:var(--bg-surface);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:18px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm)}.hp-panel::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 85% 15%,rgba(220,38,38,.04),transparent 60%)}.hp-label-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}.hp-tag{font-family:var(--font-display);font-size:9px;font-weight:900;letter-spacing:2px;color:var(--txt-muted);text-transform:uppercase}.hp-numeros{font-family:var(--font-display);font-size:24px;font-weight:900;letter-spacing:1px;transition:color .4s ease;color:var(--txt-primary)}
+.hp-barra-contenedor{width:100%;background:#e9ecef;border-radius:8px;height:14px;overflow:hidden;border:1px solid rgba(0,0,0,.06);position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,.08)}.hp-fill{height:100%;border-radius:7px;transition:width .7s cubic-bezier(.4,0,.2,1),background .5s ease;position:relative}.hp-fill::after{content:'';position:absolute;top:0;left:0;right:0;height:45%;background:rgba(255,255,255,.35);border-radius:7px 7px 0 0}.hp-fill.alta{background:linear-gradient(90deg,#22c55e,#16a34a);box-shadow:0 2px 8px rgba(22,163,74,.35)}.hp-fill.media{background:linear-gradient(90deg,#facc15,#ca8a04);box-shadow:0 2px 8px rgba(202,138,4,.35)}.hp-fill.baja{background:linear-gradient(90deg,#f87171,#dc2626);box-shadow:0 2px 8px rgba(220,38,38,.35);animation:blink-hp 1s ease-in-out infinite}.hp-fill.cero{background:#d1d5db;box-shadow:none}
 @keyframes blink-hp{0%,100%{opacity:1}50%{opacity:.5}}.hp-pct{font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-align:right;margin-top:4px}
 .vidas-controles{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:14px}.vidas-ini-label{font-size:10px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px}.vidas-ini-input{width:70px;background:var(--bg-elevated);color:var(--blanco);border:1px solid var(--borde);padding:7px 10px;border-radius:var(--r-sm);text-align:center;font-family:var(--font-display);font-size:14px}.vidas-ini-input:focus{outline:none;border-color:var(--rojo)}
 .vidas-btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn-vida-perder{padding:9px 16px;background:rgba(216,41,63,.08);color:#e2646f;border:1px solid rgba(216,41,63,.25);cursor:pointer;border-radius:var(--r-md);font-weight:700;font-size:11px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;transition:all .18s}.btn-vida-perder:hover{background:rgba(216,41,63,.18)}.btn-sacrificio{padding:9px 16px;background:rgba(184,96,46,.08);color:var(--neon-sacrificio);border:1px solid rgba(184,96,46,.25);cursor:pointer;border-radius:var(--r-md);font-weight:700;font-size:11px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;transition:all .18s}.btn-sacrificio:hover:not(:disabled){background:rgba(184,96,46,.18);box-shadow:0 0 16px rgba(184,96,46,.12)}.btn-sacrificio:disabled{background:var(--bg-surface)!important;color:var(--txt-muted)!important;border-color:var(--gris-700)!important;cursor:not-allowed}.btn-sincronizar{padding:9px 16px;background:rgba(30,158,115,.06);color:var(--neon-legal);border:1px solid rgba(30,158,115,.25);cursor:pointer;border-radius:var(--r-md);font-weight:700;font-size:11px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;transition:all .18s}.btn-sincronizar:hover{background:rgba(30,158,115,.16)}
@@ -916,11 +916,164 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 .page-section.active{padding:0}
 
 /* ════════════════════════════════════════════════════
-   IDENTIDAD VISUAL POR SECCIÓN — gestionada
-   dinámicamente por JS via --tab-accent en :root.
-   _aplicarTemaSidebarNav() actualiza las CSS vars
-   al cambiar de sección, sin duplicar componentes.
+   IDENTIDAD VISUAL POR SECCIÓN
+   Funciona poniendo data-seccion="X" en <body> via JS.
+   CSS custom properties en ::before son poco fiables;
+   usamos selectores directos con colores hardcoded.
    ════════════════════════════════════════════════════ */
+
+/* ── Acento en section-header ── */
+[data-seccion="inicio"]           .section-header::before{background:linear-gradient(180deg,#2563EB,transparent)!important}
+[data-seccion="tiendas"]          .section-header::before{background:linear-gradient(180deg,#DC2626,transparent)!important}
+[data-seccion="misiones"]         .section-header::before{background:linear-gradient(180deg,#CA8A04,transparent)!important}
+[data-seccion="tracker"]          .section-header::before{background:linear-gradient(180deg,#16A34A,transparent)!important}
+[data-seccion="torneos"]          .section-header::before{background:linear-gradient(180deg,#7C3AED,transparent)!important}
+[data-seccion="perfil"]           .section-header::before{background:linear-gradient(180deg,#4F46E5,transparent)!important}
+[data-seccion="vidas-sacrificios"].section-header::before{background:linear-gradient(180deg,#DC2626,transparent)!important}
+[data-seccion="medallas-torneos"] .section-header::before{background:linear-gradient(180deg,#CA8A04,transparent)!important}
+[data-seccion="eventos"]          .section-header::before{background:linear-gradient(180deg,#7C3AED,transparent)!important}
+[data-seccion="duelos"]           .section-header::before{background:linear-gradient(180deg,#7C3AED,transparent)!important}
+[data-seccion="red-entrenadores"] .section-header::before{background:linear-gradient(180deg,#0891B2,transparent)!important}
+[data-seccion="hall-of-fame"]     .section-header::before{background:linear-gradient(180deg,#CA8A04,transparent)!important}
+[data-seccion="museo"]            .section-header::before{background:linear-gradient(180deg,#B45309,transparent)!important}
+[data-seccion="ruletas"]          .section-header::before{background:linear-gradient(180deg,#EA580C,transparent)!important}
+[data-seccion="asistente"]        .section-header::before{background:linear-gradient(180deg,#0891B2,transparent)!important}
+[data-seccion="admin"]            .section-header::before{background:linear-gradient(180deg,#CA8A04,transparent)!important}
+
+/* ── Acento en card-title ── */
+[data-seccion="inicio"]           .card-title::before{background:#2563EB!important;box-shadow:0 0 6px rgba(37,99,235,.3)!important}
+[data-seccion="tiendas"]          .card-title::before{background:#DC2626!important;box-shadow:0 0 6px rgba(220,38,38,.3)!important}
+[data-seccion="misiones"]         .card-title::before{background:#CA8A04!important;box-shadow:0 0 6px rgba(202,138,4,.3)!important}
+[data-seccion="tracker"]          .card-title::before{background:#16A34A!important;box-shadow:0 0 6px rgba(22,163,74,.3)!important}
+[data-seccion="torneos"]          .card-title::before{background:#7C3AED!important;box-shadow:0 0 6px rgba(124,58,237,.3)!important}
+[data-seccion="perfil"]           .card-title::before{background:#4F46E5!important;box-shadow:0 0 6px rgba(79,70,229,.3)!important}
+[data-seccion="vidas-sacrificios"].card-title::before{background:#DC2626!important;box-shadow:0 0 6px rgba(220,38,38,.3)!important}
+[data-seccion="medallas-torneos"] .card-title::before{background:#CA8A04!important;box-shadow:0 0 6px rgba(202,138,4,.3)!important}
+[data-seccion="eventos"]          .card-title::before{background:#7C3AED!important;box-shadow:0 0 6px rgba(124,58,237,.3)!important}
+[data-seccion="duelos"]           .card-title::before{background:#7C3AED!important;box-shadow:0 0 6px rgba(124,58,237,.3)!important}
+[data-seccion="red-entrenadores"] .card-title::before{background:#0891B2!important;box-shadow:0 0 6px rgba(8,145,178,.3)!important}
+[data-seccion="hall-of-fame"]     .card-title::before{background:#CA8A04!important;box-shadow:0 0 6px rgba(202,138,4,.3)!important}
+[data-seccion="museo"]            .card-title::before{background:#B45309!important;box-shadow:0 0 6px rgba(180,83,9,.3)!important}
+[data-seccion="ruletas"]          .card-title::before{background:#EA580C!important;box-shadow:0 0 6px rgba(234,88,12,.3)!important}
+[data-seccion="asistente"]        .card-title::before{background:#0891B2!important;box-shadow:0 0 6px rgba(8,145,178,.3)!important}
+[data-seccion="admin"]            .card-title::before{background:#CA8A04!important;box-shadow:0 0 6px rgba(202,138,4,.3)!important}
+
+/* ── Barra lateral del nav-item activo (color fijo por sección) ── */
+[data-seccion="inicio"]           .nav-item.active::before{background:#2563EB!important}
+[data-seccion="inicio"]           .nav-item.active{background:rgba(37,99,235,.08)!important}
+[data-seccion="inicio"]           .nav-item.active .nav-icon,
+[data-seccion="inicio"]           .nav-item.active .nav-label{color:#2563EB!important}
+
+[data-seccion="tiendas"]          .nav-item.active::before{background:#DC2626!important}
+[data-seccion="tiendas"]          .nav-item.active{background:rgba(220,38,38,.08)!important}
+[data-seccion="tiendas"]          .nav-item.active .nav-icon,
+[data-seccion="tiendas"]          .nav-item.active .nav-label{color:#DC2626!important}
+
+[data-seccion="misiones"]         .nav-item.active::before{background:#CA8A04!important}
+[data-seccion="misiones"]         .nav-item.active{background:rgba(202,138,4,.08)!important}
+[data-seccion="misiones"]         .nav-item.active .nav-icon,
+[data-seccion="misiones"]         .nav-item.active .nav-label{color:#CA8A04!important}
+
+[data-seccion="tracker"]          .nav-item.active::before{background:#16A34A!important}
+[data-seccion="tracker"]          .nav-item.active{background:rgba(22,163,74,.08)!important}
+[data-seccion="tracker"]          .nav-item.active .nav-icon,
+[data-seccion="tracker"]          .nav-item.active .nav-label{color:#16A34A!important}
+
+[data-seccion="torneos"]          .nav-item.active::before{background:#7C3AED!important}
+[data-seccion="torneos"]          .nav-item.active{background:rgba(124,58,237,.08)!important}
+[data-seccion="torneos"]          .nav-item.active .nav-icon,
+[data-seccion="torneos"]          .nav-item.active .nav-label{color:#7C3AED!important}
+
+[data-seccion="perfil"]           .nav-item.active::before{background:#4F46E5!important}
+[data-seccion="perfil"]           .nav-item.active{background:rgba(79,70,229,.08)!important}
+[data-seccion="perfil"]           .nav-item.active .nav-icon,
+[data-seccion="perfil"]           .nav-item.active .nav-label{color:#4F46E5!important}
+
+[data-seccion="vidas-sacrificios"].nav-item.active::before{background:#DC2626!important}
+[data-seccion="vidas-sacrificios"].nav-item.active{background:rgba(220,38,38,.08)!important}
+[data-seccion="vidas-sacrificios"].nav-item.active .nav-icon,
+[data-seccion="vidas-sacrificios"].nav-item.active .nav-label{color:#DC2626!important}
+
+[data-seccion="medallas-torneos"] .nav-item.active::before{background:#CA8A04!important}
+[data-seccion="medallas-torneos"] .nav-item.active{background:rgba(202,138,4,.08)!important}
+[data-seccion="medallas-torneos"] .nav-item.active .nav-icon,
+[data-seccion="medallas-torneos"] .nav-item.active .nav-label{color:#CA8A04!important}
+
+[data-seccion="eventos"]          .nav-item.active::before{background:#7C3AED!important}
+[data-seccion="eventos"]          .nav-item.active{background:rgba(124,58,237,.08)!important}
+[data-seccion="eventos"]          .nav-item.active .nav-icon,
+[data-seccion="eventos"]          .nav-item.active .nav-label{color:#7C3AED!important}
+
+[data-seccion="duelos"]           .nav-item.active::before{background:#7C3AED!important}
+[data-seccion="duelos"]           .nav-item.active{background:rgba(124,58,237,.08)!important}
+[data-seccion="duelos"]           .nav-item.active .nav-icon,
+[data-seccion="duelos"]           .nav-item.active .nav-label{color:#7C3AED!important}
+
+[data-seccion="red-entrenadores"] .nav-item.active::before{background:#0891B2!important}
+[data-seccion="red-entrenadores"] .nav-item.active{background:rgba(8,145,178,.08)!important}
+[data-seccion="red-entrenadores"] .nav-item.active .nav-icon,
+[data-seccion="red-entrenadores"] .nav-item.active .nav-label{color:#0891B2!important}
+
+[data-seccion="hall-of-fame"]     .nav-item.active::before{background:#CA8A04!important}
+[data-seccion="hall-of-fame"]     .nav-item.active{background:rgba(202,138,4,.08)!important}
+[data-seccion="hall-of-fame"]     .nav-item.active .nav-icon,
+[data-seccion="hall-of-fame"]     .nav-item.active .nav-label{color:#CA8A04!important}
+
+[data-seccion="museo"]            .nav-item.active::before{background:#B45309!important}
+[data-seccion="museo"]            .nav-item.active{background:rgba(180,83,9,.08)!important}
+[data-seccion="museo"]            .nav-item.active .nav-icon,
+[data-seccion="museo"]            .nav-item.active .nav-label{color:#B45309!important}
+
+[data-seccion="ruletas"]          .nav-item.active::before{background:#EA580C!important}
+[data-seccion="ruletas"]          .nav-item.active{background:rgba(234,88,12,.08)!important}
+[data-seccion="ruletas"]          .nav-item.active .nav-icon,
+[data-seccion="ruletas"]          .nav-item.active .nav-label{color:#EA580C!important}
+
+[data-seccion="asistente"]        .nav-item.active::before{background:#0891B2!important}
+[data-seccion="asistente"]        .nav-item.active{background:rgba(8,145,178,.08)!important}
+[data-seccion="asistente"]        .nav-item.active .nav-icon,
+[data-seccion="asistente"]        .nav-item.active .nav-label{color:#0891B2!important}
+
+[data-seccion="admin"]            .nav-item.active::before{background:#CA8A04!important}
+[data-seccion="admin"]            .nav-item.active{background:rgba(202,138,4,.08)!important}
+[data-seccion="admin"]            .nav-item.active .nav-icon,
+[data-seccion="admin"]            .nav-item.active .nav-label{color:#CA8A04!important}
+
+/* ── version-badge-nombre: color por sección ── */
+[data-seccion="inicio"]           .version-badge-nombre{color:#2563EB!important}
+[data-seccion="tiendas"]          .version-badge-nombre{color:#DC2626!important}
+[data-seccion="misiones"]         .version-badge-nombre{color:#CA8A04!important}
+[data-seccion="tracker"]          .version-badge-nombre{color:#16A34A!important}
+[data-seccion="torneos"]          .version-badge-nombre{color:#7C3AED!important}
+[data-seccion="perfil"]           .version-badge-nombre{color:#4F46E5!important}
+[data-seccion="vidas-sacrificios"].version-badge-nombre{color:#DC2626!important}
+[data-seccion="medallas-torneos"] .version-badge-nombre{color:#CA8A04!important}
+[data-seccion="eventos"]          .version-badge-nombre{color:#7C3AED!important}
+[data-seccion="duelos"]           .version-badge-nombre{color:#7C3AED!important}
+[data-seccion="red-entrenadores"] .version-badge-nombre{color:#0891B2!important}
+[data-seccion="hall-of-fame"]     .version-badge-nombre{color:#CA8A04!important}
+[data-seccion="museo"]            .version-badge-nombre{color:#B45309!important}
+[data-seccion="ruletas"]          .version-badge-nombre{color:#EA580C!important}
+[data-seccion="asistente"]        .version-badge-nombre{color:#0891B2!important}
+[data-seccion="admin"]            .version-badge-nombre{color:#CA8A04!important}
+
+/* ── sidebar-version-dot: color por sección ── */
+[data-seccion="inicio"]           .sidebar-version-dot{background:#2563EB!important}
+[data-seccion="tiendas"]          .sidebar-version-dot{background:#DC2626!important}
+[data-seccion="misiones"]         .sidebar-version-dot{background:#CA8A04!important}
+[data-seccion="tracker"]          .sidebar-version-dot{background:#16A34A!important}
+[data-seccion="torneos"]          .sidebar-version-dot{background:#7C3AED!important}
+[data-seccion="perfil"]           .sidebar-version-dot{background:#4F46E5!important}
+[data-seccion="vidas-sacrificios"].sidebar-version-dot{background:#DC2626!important}
+[data-seccion="medallas-torneos"] .sidebar-version-dot{background:#CA8A04!important}
+[data-seccion="eventos"]          .sidebar-version-dot{background:#7C3AED!important}
+[data-seccion="duelos"]           .sidebar-version-dot{background:#7C3AED!important}
+[data-seccion="red-entrenadores"] .sidebar-version-dot{background:#0891B2!important}
+[data-seccion="hall-of-fame"]     .sidebar-version-dot{background:#CA8A04!important}
+[data-seccion="museo"]            .sidebar-version-dot{background:#B45309!important}
+[data-seccion="ruletas"]          .sidebar-version-dot{background:#EA580C!important}
+[data-seccion="asistente"]        .sidebar-version-dot{background:#0891B2!important}
+[data-seccion="admin"]            .sidebar-version-dot{background:#CA8A04!important}
 
 /* ── VERSION BADGE mejorado ── */
 .version-badge-wrap{display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--bg-surface);border:1px solid var(--borde);border-radius:var(--r-lg);padding:10px 16px;margin-bottom:18px;width:fit-content;box-shadow:var(--shadow-sm);transition:box-shadow .2s,transform .2s,border-color .2s}
@@ -4991,23 +5144,22 @@ var _TEMAS_SECCION = {
   'admin':            {accent:'#CA8A04', bg:'rgba(202,138,4,.08)',   glow:'rgba(202,138,4,.18)'},
 };
 function _aplicarTemaSidebarNav(s){
-  var tema = _TEMAS_SECCION[s] || _TEMAS_SECCION['inicio'];
-  var root = document.documentElement;
-  root.style.setProperty('--tab-accent', tema.accent);
-  root.style.setProperty('--tab-accent-bg', tema.bg);
-  root.style.setProperty('--tab-accent-glow', tema.glow);
-  /* Avatar del footer: color del tema */
-  var av = document.getElementById('sidebar-footer-avatar');
-  if(av) av.style.background = 'linear-gradient(135deg,'+tema.accent+','+tema.accent+'aa)';
-  /* Bottom nav item activo: color del tema */
-  document.querySelectorAll('.bn-item.active').forEach(function(el){
-    el.style.color = tema.accent;
-  });
-  /* Sincronizar mobile bottom-nav */
+  var tema=_TEMAS_SECCION[s]||_TEMAS_SECCION['inicio'];
+  /* Método principal: data-seccion en body activa los selectores CSS directos */
+  document.body.setAttribute('data-seccion',s);
+  /* CSS vars como respaldo para elementos que sí las leen en tiempo real */
+  var root=document.documentElement;
+  root.style.setProperty('--tab-accent',tema.accent);
+  root.style.setProperty('--tab-accent-bg',tema.bg);
+  root.style.setProperty('--tab-accent-glow',tema.glow);
+  /* Avatar del footer */
+  var av=document.getElementById('sidebar-footer-avatar');
+  if(av)av.style.background='linear-gradient(135deg,'+tema.accent+','+tema.accent+'aa)';
+  /* Bottom-nav activo */
   _syncMobileNavAccent(tema.accent);
-  /* Actualizar label de versión en sidebar footer */
-  var vl = document.getElementById('sidebar-version-label');
-  if(vl && window.APP_VERSION) vl.textContent = 'Mercado-Poke v'+APP_VERSION;
+  /* Label de versión */
+  var vl=document.getElementById('sidebar-version-label');
+  if(vl&&window.APP_VERSION)vl.textContent='Mercado-Poke v'+APP_VERSION;
 }
 function _syncMobileNavAccent(color){
   /* El bn-item activo recibe el color de acento de la sección */
@@ -5713,7 +5865,7 @@ window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').val
 /* ═══ HP BAR ═══ */
 window.actualizarBarraVidas=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20,act=(u.vidasActuales!==undefined)?u.vidasActuales:ini;_renderBarra(act,ini);};
 function actualizarBarraVidasDesdeDB(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ini=u.vidasTotales||20,act=(u.vidasActuales!==undefined)?u.vidasActuales:ini;let inp=document.getElementById('perf-vidas-iniciales');if(inp)inp.value=ini;_renderBarra(act,ini);let top=document.getElementById('usr-vidas-top');if(top)top.textContent=`${act}/${ini}`;}
-function _renderBarra(act,ini){let f=document.getElementById('perf-vida-barra-fill'),d=document.getElementById('perf-vidas-display'),pl=document.getElementById('perf-vida-pct');if(!f||!d)return;let pct=ini>0?Math.max(0,Math.min(100,(act/ini)*100)):0;f.style.width=pct+'%';f.className='hp-fill';if(act<=0){f.classList.add('cero');d.style.color='var(--gris-600)';}else if(pct>50){f.classList.add('alta');d.style.color='var(--neon-legal)';}else if(pct>25){f.classList.add('media');d.style.color='var(--amarillo)';}else{f.classList.add('baja');d.style.color='#e2646f';}d.textContent=`${act} / ${ini}`;if(pl)pl.textContent=Math.round(pct)+'%';}
+function _renderBarra(act,ini){let f=document.getElementById('perf-vida-barra-fill'),d=document.getElementById('perf-vidas-display'),pl=document.getElementById('perf-vida-pct');if(!f||!d)return;let pct=ini>0?Math.max(0,Math.min(100,(act/ini)*100)):0;f.style.width=pct+'%';f.className='hp-fill';if(act<=0){f.classList.add('cero');d.style.color='#9ca3af';}else if(pct>50){f.classList.add('alta');d.style.color='#16a34a';}else if(pct>25){f.classList.add('media');d.style.color='#ca8a04';}else{f.classList.add('baja');d.style.color='#dc2626';}d.textContent=`${act} / ${ini}`;if(pl)pl.textContent=Math.round(pct)+'%';}
 
 /* ═══ SACRIFICIO ═══ */
 window.abrirModalSacrificio=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],vt=u.vidasTotales||20,va=(u.vidasActuales!==undefined)?u.vidasActuales:vt;document.getElementById('sac-nombre-poke').value='';document.getElementById('sac-mote-poke').value='';document.getElementById('sac-categoria').value='';document.getElementById('sac-preview-vidas-box').classList.add('hidden');document.getElementById('sac-aviso-limite').style.display='none';document.getElementById('btn-confirmar-sacrificio').disabled=true;if(va>=vt)document.getElementById('sac-aviso-limite').style.display='block';refrescarSelectsPersonalizados();renderizarHistorialSacrificios();reproducirSonido('abrir');document.getElementById('sacrificio-modal-overlay').style.display='flex';};
@@ -8458,8 +8610,26 @@ window.erDescartar = function(){
 /* ===== Sistema de Versión y Novedades (Mercado-Poke) =====
    Para publicar una nueva versión: sube APP_VERSION y añade UNA entrada
    nueva al principio del array VERSIONES. Todo lo demás se actualiza solo. */
-const APP_VERSION = 39;
+const APP_VERSION = 40;
 const VERSIONES = [
+  {
+    version: 40,
+    fecha: '2026-08-07',
+    titulo: 'Fix colores por sección + barra de vidas',
+    resumen: 'Corrección del sistema de temas: CSS custom properties no funcionan en ::before — reemplazado por data-seccion en <body> con selectores CSS directos. Barra de vidas rediseñada para tema claro.',
+    nuevas: [],
+    mejoras: [
+      'Sistema de temas por sección: ahora usa data-seccion="X" en <body>, activando selectores CSS directos con colores hardcoded — fiable en todos los navegadores',
+      'Barra de vidas (hp-panel): fondo blanco, borde sutil, sombra suave — integrada con el diseño claro',
+      'Barra de HP: fondo gris claro (#e9ecef), relleno con gradiente horizontal, border-radius redondeado, brillo superior',
+      'Colores de los números de vidas: verde #16a34a / amarillo #ca8a04 / rojo #dc2626 — alto contraste sobre fondo claro',
+    ],
+    fixes: [
+      'Bug: los colores de sección no se aplicaban — las CSS vars no heredan en ::before con background en todos los navegadores',
+      'Bug: la barra de vidas tenía fondo #0a0f1a (negro) y sombra inset oscura del tema oscuro anterior',
+    ],
+    rendimiento: []
+  },
   {
     version: 39,
     fecha: '2026-08-07',
