@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v42 | Build: 2026-08-07 -->
+<!-- Silph Co v43 | Build: 2026-08-07 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5023,6 +5023,28 @@ var _TEMAS_SECCION = {
   'admin':            {accent:'#CA8A04', bg:'rgba(202,138,4,.08)',   glow:'rgba(202,138,4,.18)'},
 };
 function _aplicarTemaSidebarNav(s){
+  /* ── PALETA DE SECCIONES ────────────────────────────────────────────────
+     REGLA: cada sección tiene su propio color — NO repetir ninguno.
+     Al añadir una sección nueva elige un color que no esté ya en uso,
+     y documéntalo aquí. El rgb debe ser los tres valores decimales del hex.
+     Colores en uso (v43):
+       inicio            #2563EB  Azul
+       tiendas           #DC2626  Rojo
+       misiones          #CA8A04  Dorado
+       tracker           #16A34A  Verde
+       torneos           #7C3AED  Violeta
+       perfil            #4F46E5  Índigo
+       vidas-sacrificios #E11D48  Coral
+       medallas-torneos  #D97706  Ámbar
+       eventos           #C026D3  Fucsia
+       duelos            #DB2777  Rosa
+       red-entrenadores  #0891B2  Cian
+       hall-of-fame      #65A30D  Lima
+       museo             #B45309  Marrón
+       ruletas           #EA580C  Naranja
+       asistente         #0D9488  Teal
+       admin             #A16207  Oro
+  ─────────────────────────────────────────────────────────────────────── */
   var TEMAS={
     'inicio':           {color:'#2563EB', rgb:'37,99,235'},
     'tiendas':          {color:'#DC2626', rgb:'220,38,38'},
@@ -5030,16 +5052,16 @@ function _aplicarTemaSidebarNav(s){
     'tracker':          {color:'#16A34A', rgb:'22,163,74'},
     'torneos':          {color:'#7C3AED', rgb:'124,58,237'},
     'perfil':           {color:'#4F46E5', rgb:'79,70,229'},
-    'vidas-sacrificios':{color:'#DC2626', rgb:'220,38,38'},
-    'medallas-torneos': {color:'#CA8A04', rgb:'202,138,4'},
-    'eventos':          {color:'#7C3AED', rgb:'124,58,237'},
-    'duelos':           {color:'#7C3AED', rgb:'124,58,237'},
+    'vidas-sacrificios':{color:'#E11D48', rgb:'225,29,72'},
+    'medallas-torneos': {color:'#D97706', rgb:'217,119,6'},
+    'eventos':          {color:'#C026D3', rgb:'192,38,211'},
+    'duelos':           {color:'#DB2777', rgb:'219,39,119'},
     'red-entrenadores': {color:'#0891B2', rgb:'8,145,178'},
-    'hall-of-fame':     {color:'#CA8A04', rgb:'202,138,4'},
+    'hall-of-fame':     {color:'#65A30D', rgb:'101,163,13'},
     'museo':            {color:'#B45309', rgb:'180,83,9'},
     'ruletas':          {color:'#EA580C', rgb:'234,88,12'},
-    'asistente':        {color:'#0891B2', rgb:'8,145,178'},
-    'admin':            {color:'#CA8A04', rgb:'202,138,4'},
+    'asistente':        {color:'#0D9488', rgb:'13,148,136'},
+    'admin':            {color:'#A16207', rgb:'161,98,7'},
   };
   var t=TEMAS[s]||TEMAS['inicio'];
   var c=t.color, r=t.rgb;
@@ -5052,6 +5074,10 @@ function _aplicarTemaSidebarNav(s){
     tb.style.borderBottom='2px solid rgba('+r+',.35)';
     tb.style.background='#ffffff';
   }
+
+  /* ── 1b. MAIN-CONTENT: tinte de fondo sutil del color de sección ── */
+  var mc=document.querySelector('.main-content');
+  if(mc)mc.style.background='linear-gradient(180deg,rgba('+r+',.05) 0%,rgba('+r+',.015) 320px,transparent 640px)';
 
   /* ── 2. SECTION-HEADER: fondo con gradiente de color visible ── */
   document.querySelectorAll('.section-header').forEach(function(hdr){
@@ -5150,9 +5176,10 @@ window.navegarA=function(s){
     mostrarNotificacion(`🚫 Estás baneado de esta sección. Motivo: ${mot}`,'error','🚫','Acceso restringido');
     s='inicio';
   }
-  /* ── Aplicar tema de sección ── */
-  _aplicarTemaSidebarNav(s);
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+  /* IMPORTANTE: _aplicarTemaSidebarNav DEBE llamarse DESPUÉS de añadir
+     .active al nav-item, porque lee classList.contains('active') para saber
+     qué item pintar. Si se llama antes, pinta el item anterior. */
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
@@ -8568,11 +8595,34 @@ window.erDescartar = function(){
   mostrarNotificacion('Cambios descartados.','info','↩️');
 };
 
-/* ===== Sistema de Versión y Novedades (Mercado-Poke) =====
-   Para publicar una nueva versión: sube APP_VERSION y añade UNA entrada
-   nueva al principio del array VERSIONES. Todo lo demás se actualiza solo. */
-const APP_VERSION = 42;
+/* ===== Sistema de Versión y Novedades (Mercado-Poke) ======================
+   AL MODIFICAR ESTE ARCHIVO:
+   1. Sube APP_VERSION en 1.
+   2. Añade UNA entrada nueva AL PRINCIPIO del array VERSIONES (no al final).
+   3. Rellena título, resumen y al menos una de las listas:
+      nuevas / mejoras / rendimiento / fixes.
+   4. Actualiza la fecha al día actual (YYYY-MM-DD).
+   5. Actualiza también el comentario de la cabecera del HTML (línea 2).
+   Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
+const APP_VERSION = 43;
 const VERSIONES = [
+  {
+    version: 43,
+    fecha: '2026-08-07',
+    titulo: 'Colores únicos por sección + fondo dinámico',
+    resumen: 'Cada sección tiene ahora un color de acento exclusivo sin repeticiones. El fondo del contenido principal recibe un tinte sutil del color de la sección activa. Fix del bug de doble clic en la navegación.',
+    nuevas: [
+      'Fondo de la página con tinte sutil del color de sección (gradiente descendente sobre main-content)',
+    ],
+    mejoras: [
+      'Paleta de secciones sin colores repetidos: vidas-sacrificios→Coral, medallas-torneos→Ámbar, eventos→Fucsia, duelos→Rosa, hall-of-fame→Lima, asistente→Teal, admin→Oro',
+      'Comentario detallado en _aplicarTemaSidebarNav con la lista completa de colores en uso, para facilitar añadir secciones sin repetir',
+    ],
+    fixes: [
+      'Bug: al hacer clic en una pestaña se quedaba marcada la anterior y había que hacer doble clic — _aplicarTemaSidebarNav se llamaba antes de que .active estuviera actualizado en el DOM',
+    ],
+    rendimiento: []
+  },
   {
     version: 41,
     fecha: "2026-08-07",
