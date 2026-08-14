@@ -326,8 +326,8 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .medallas-insignias-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
 .medalla-insignia{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:50%;background:var(--bg-overlay);border:2px solid var(--borde);opacity:.35;filter:grayscale(1);transition:all .25s ease}
 .medalla-insignia.ganada{opacity:1;filter:none;background:radial-gradient(circle,rgba(245,197,24,.18),transparent);border-color:var(--amarillo);box-shadow:0 0 14px rgba(245,197,24,.3)}
-.diario-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,5,12,.9);backdrop-filter:blur(12px);z-index:2000;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .22s ease}.diario-overlay.show{display:flex;opacity:1}.diario-modal{background:var(--bg-elevated);border:1px solid var(--borde);box-shadow:var(--shadow-xl);width:100%;max-width:640px;height:82vh;border-radius:var(--r-2xl);display:flex;flex-direction:column;overflow:hidden;transform:scale(.94) translateY(10px);opacity:0;transition:transform .28s cubic-bezier(.16,1,.3,1),opacity .22s ease}.diario-overlay.show .diario-modal{transform:scale(1) translateY(0);opacity:1}
-@keyframes pop-in{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+.diario-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,5,12,.9);backdrop-filter:blur(12px);z-index:2000;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .2s ease}.diario-overlay.show{display:flex;opacity:1}.diario-modal{background:var(--bg-elevated);border:1px solid var(--borde);box-shadow:var(--shadow-xl);width:100%;max-width:640px;height:82vh;border-radius:var(--r-2xl);display:flex;flex-direction:column;overflow:hidden;transform:scale(.96) translateY(8px);opacity:0;transition:transform .25s cubic-bezier(.16,1,.3,1),opacity .2s ease}.diario-overlay.show .diario-modal{transform:scale(1) translateY(0);opacity:1}
+@keyframes pop-in{from{transform:scale(.94) translateY(4px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 .diario-header{background:var(--bg-overlay);padding:14px 18px;border-bottom:1px solid var(--borde);display:flex;justify-content:space-between;align-items:center}.diario-logs{flex:1;padding:20px 18px 20px 26px;overflow-y:auto;background:var(--bg-base);position:relative}.diario-logs::before{content:'';position:absolute;left:34px;top:20px;bottom:20px;width:2px;background:linear-gradient(180deg,rgba(201,154,46,.35),rgba(201,154,46,.05))}.diario-entry{position:relative;background:var(--bg-surface);border:1px solid var(--borde);padding:10px 14px 10px 16px;border-radius:var(--r-md);margin-left:18px;margin-bottom:10px;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;animation:misionCardEntrada .3s ease backwards}.diario-entry:hover{border-color:rgba(201,154,46,.4);transform:translateX(2px);box-shadow:0 4px 16px -4px rgba(0,0,0,.4)}.diario-entry::before{content:'';position:absolute;left:-24px;top:14px;width:9px;height:9px;border-radius:50%;background:var(--neon-packs);box-shadow:0 0 0 3px var(--bg-base),0 0 8px rgba(201,154,46,.5)}.diario-entry-ts{font-family:var(--font-display);font-size:9px;color:var(--txt-muted);margin-bottom:3px;letter-spacing:.3px}.diario-entry-txt{font-size:13px;color:var(--txt-primary);white-space:pre-wrap;line-height:1.45}.diario-footer{padding:12px 16px;background:var(--bg-elevated);border-top:1px solid var(--borde)}.diario-textarea{width:100%;background:var(--bg-base);color:var(--blanco);border:1px solid var(--borde);border-radius:var(--r-md);padding:9px 12px;font-size:13px;font-family:var(--font-body);resize:vertical}.diario-textarea:focus{outline:none;border-color:var(--amarillo-dim);box-shadow:0 0 0 3px rgba(201,154,46,.08)}.btn-guardar-diario{margin-top:8px;background:rgba(201,154,46,.08);color:var(--neon-packs);border:1px solid rgba(201,154,46,.25);padding:9px 18px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s}.btn-guardar-diario:hover{background:rgba(201,154,46,.18);transform:translateY(-1px);box-shadow:0 4px 14px -2px rgba(201,154,46,.3)}.btn-guardar-diario:active{transform:scale(.96)}
 .overlay-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,5,12,.9);backdrop-filter:blur(12px);z-index:3000;justify-content:center;align-items:center;padding:20px}.modal-box{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-2xl);padding:24px;width:100%;max-width:460px;box-shadow:var(--shadow-xl);animation:pop-in .3s cubic-bezier(.16,1,.3,1)}.modal-title{font-family:var(--font-display);font-size:14px;font-weight:900;margin-bottom:4px}.modal-subtitle{font-size:11px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:18px}.modal-field{margin-bottom:11px}.modal-field label{font-size:10px;color:var(--txt-secondary);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px}.modal-input{width:100%;background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:9px 12px;border-radius:var(--r-md);font-size:13px;font-family:var(--font-body);transition:border-color .18s}.modal-input:focus{outline:none;border-color:var(--rojo);box-shadow:0 0 0 3px rgba(216,41,63,.08)}.modal-select{width:100%;background:var(--bg-card);color:var(--blanco);border:1px solid var(--borde);padding:9px 12px;border-radius:var(--r-md);font-size:13px;font-family:var(--font-display);-webkit-appearance:none;appearance:none;cursor:pointer;transition:border-color .18s}.modal-select:focus{outline:none;border-color:var(--rojo)}.modal-btns{display:flex;gap:10px;margin-top:18px}.btn-modal-prim{flex:1;padding:12px;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s}.btn-modal-prim.danger{background:#d8293f;color:#2a0505;border:1px solid #d8293f}.btn-modal-prim.danger:hover{filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(216,41,63,.5);transform:translateY(-1px)}.btn-modal-prim.danger:active{transform:scale(.96)}.btn-modal-cancel:active{transform:scale(.96)}.btn-modal-cancel{padding:11px 16px;background:var(--bg-overlay);color:var(--txt-secondary);border:1px solid var(--borde);cursor:pointer;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:700;text-transform:uppercase;transition:all .18s}.btn-modal-cancel:hover{border-color:var(--borde-hover);color:var(--blanco)}
 .sacrificio-modal-box{background:#120a06;border:1px solid rgba(184,96,46,.2);border-radius:var(--r-2xl);width:100%;max-width:580px;max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl),0 0 50px rgba(184,96,46,.06);animation:pop-in .3s cubic-bezier(.16,1,.3,1);overflow:hidden}.sac-header{background:linear-gradient(135deg,rgba(92,42,16,.7),rgba(18,10,6,.9));border-bottom:1px solid rgba(184,96,46,.15);padding:16px 20px 12px;position:relative;overflow:hidden;flex-shrink:0}.sac-header::before{content:'🔥';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.06;pointer-events:none}.sac-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--neon-sacrificio),transparent);opacity:.4}.sac-title{font-family:var(--font-display);font-size:13px;font-weight:900;color:var(--neon-sacrificio);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}.sac-subtitulo{font-size:11px;color:var(--txt-muted);font-family:var(--font-display)}.sac-tabla{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:5px;padding:10px 20px;background:rgba(0,0,0,.25);border-bottom:1px solid rgba(184,96,46,.1);flex-shrink:0}.sac-tabla-chip{display:flex;align-items:center;gap:6px;background:rgba(184,96,46,.04);border:1px solid rgba(184,96,46,.1);border-radius:var(--r-sm);padding:4px 8px;font-size:10px;color:var(--txt-secondary);font-family:var(--font-display)}.sac-vida-badge{background:var(--neon-sacrificio);color:#000;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:900;flex-shrink:0}.sac-body{flex:1;overflow-y:auto;padding:16px 20px}.sac-form{background:rgba(0,0,0,.3);border:1px solid rgba(184,96,46,.12);border-radius:var(--r-lg);padding:14px;margin-bottom:12px}.sac-label{font-size:10px;font-family:var(--font-display);font-weight:700;color:var(--txt-secondary);letter-spacing:.8px;text-transform:uppercase;display:block;margin-bottom:5px}.sac-input{background:var(--bg-base);color:var(--blanco);border:1px solid rgba(184,96,46,.15);padding:9px 12px;width:100%;border-radius:var(--r-md);font-size:13px;font-family:var(--font-body);transition:border-color .18s;margin-bottom:9px}.sac-input:focus{outline:none;border-color:var(--neon-sacrificio);box-shadow:0 0 0 3px rgba(184,96,46,.08)}.sac-select{background:var(--bg-base);color:var(--neon-sacrificio);border:1px solid rgba(184,96,46,.15);padding:9px 12px;width:100%;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:700;-webkit-appearance:none;appearance:none;cursor:pointer;margin-bottom:9px}.sac-select:focus{outline:none;border-color:var(--neon-sacrificio)}.sac-preview{display:flex;align-items:center;gap:10px;background:rgba(184,96,46,.05);border:1px solid rgba(184,96,46,.18);border-radius:var(--r-md);padding:11px 13px;margin-top:8px;transition:all .3s ease}.sac-preview.hidden{opacity:0;pointer-events:none}.sac-preview-txt{font-family:var(--font-display);font-size:11px;color:var(--txt-secondary);flex:1}.sac-preview-num{font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--neon-sacrificio);flex-shrink:0}.sac-aviso-max{display:none;background:rgba(216,41,63,.06);border:1px solid rgba(216,41,63,.2);border-radius:var(--r-md);padding:9px 12px;margin-top:8px;font-size:11px;color:#e2646f;font-family:var(--font-display)}.sac-historial-titulo{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}.sac-entry{background:rgba(184,96,46,.03);border:1px solid rgba(184,96,46,.1);border-left:3px solid var(--neon-sacrificio);padding:8px 11px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:5px;font-size:11px;color:var(--txt-secondary);transition:border-left-color .15s}.sac-entry:hover{border-left-color:#fdba74}.sac-entry-ts{font-family:var(--font-display);font-size:9px;color:var(--txt-muted);margin-bottom:3px}.sac-footer{padding:12px 20px;background:rgba(0,0,0,.4);border-top:1px solid rgba(184,96,46,.1);display:flex;gap:10px;flex-shrink:0}.btn-sacrificar{flex:1;padding:11px;background:rgba(184,96,46,.08);color:var(--neon-sacrificio);border:1px solid rgba(184,96,46,.3);cursor:pointer;border-radius:var(--r-md);font-weight:900;font-size:11px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.8px;transition:all .2s}.btn-sacrificar:hover:not(:disabled){background:rgba(184,96,46,.2);box-shadow:0 0 20px rgba(184,96,46,.15)}.btn-sacrificar:disabled{background:var(--bg-surface)!important;color:var(--txt-muted)!important;border-color:var(--gris-700)!important;cursor:not-allowed}.btn-sac-cancel{padding:11px 16px;background:var(--bg-overlay);color:var(--txt-secondary);border:1px solid var(--borde);cursor:pointer;border-radius:var(--r-md);font-weight:700;font-size:11px;font-family:var(--font-display);text-transform:uppercase;transition:all .18s}.btn-sac-cancel:hover{border-color:var(--borde-hover);color:var(--blanco)}
@@ -354,9 +354,9 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .radio-upload-zone{border:2px dashed rgba(201,154,46,.25);border-radius:var(--r-lg);padding:20px;text-align:center;cursor:pointer;transition:all .2s ease;background:rgba(201,154,46,.02);margin-bottom:12px}.radio-upload-zone:hover{border-color:rgba(201,154,46,.5);background:rgba(201,154,46,.05)}.radio-upload-label{font-family:var(--font-display);font-size:11px;color:var(--neon-packs);font-weight:700;text-transform:uppercase;letter-spacing:.5px}.radio-upload-sub{font-size:10px;color:var(--txt-muted);margin-top:4px;font-family:var(--font-display)}
 .sonido-toggle-btn{width:34px;height:34px;flex-shrink:0;border-radius:var(--r-md);background:var(--bg-elevated);border:1px solid var(--borde);color:var(--txt-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s ease}.sonido-toggle-btn:hover{border-color:var(--borde-hover);color:var(--blanco)}.sonido-toggle-btn.muted{color:var(--txt-muted);opacity:.55}
 .csel{position:relative;width:100%;display:block}.csel-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;user-select:none;width:100%}.csel-trigger-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;text-align:left}.csel-trigger-arrow{font-size:9px;color:var(--txt-muted);flex-shrink:0;transition:transform .2s cubic-bezier(.4,0,.2,1)}.csel.open .csel-trigger-arrow{transform:rotate(180deg)}.csel-trigger:focus{outline:none;box-shadow:0 0 0 3px rgba(216,41,63,.12)}.csel-panel{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--bg-card);border:1px solid var(--borde-hover);border-radius:var(--r-md);box-shadow:var(--shadow-lg);max-height:248px;overflow-y:auto;z-index:9500;opacity:0;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .16s ease,transform .16s cubic-bezier(.4,0,.2,1);padding:4px}.csel.open .csel-panel{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}.csel-option{padding:9px 11px;font-size:12px;font-family:var(--font-display);font-weight:600;color:var(--txt-primary);cursor:pointer;border-radius:var(--r-sm);transition:background .12s ease,color .12s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.csel-option:hover{background:var(--bg-overlay);color:var(--blanco)}.csel-option.selected{color:var(--rojo);background:rgba(216,41,63,.08)}.csel-panel-vacio{padding:10px 11px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)}select.csel-native-hidden{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important;left:-9999px!important}.csel:has(#perf-locke-status){display:inline-block;width:auto}
-.toast-container{position:fixed;top:calc(var(--topbar-h) + 14px);right:18px;z-index:10500;display:flex;flex-direction:column;gap:10px;max-width:340px;width:calc(100% - 36px);pointer-events:none}.toast{pointer-events:auto;background:var(--bg-elevated);border:1px solid var(--borde);border-left:3px solid var(--neon-legal);border-radius:var(--r-md);padding:12px 14px;box-shadow:var(--shadow-lg);display:flex;align-items:flex-start;gap:10px;transform:translateX(120%);opacity:0;transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .3s ease}.toast.show{transform:translateX(0);opacity:1}.toast.hide{transform:translateX(120%);opacity:0}.toast.tipo-exito{border-left-color:var(--neon-legal)}.toast.tipo-error{border-left-color:var(--rojo)}.toast.tipo-info{border-left-color:var(--neon-intercambio)}.toast.tipo-pf{border-left-color:var(--neon-ilegal)}.toast.tipo-sacrificio{border-left-color:var(--neon-sacrificio)}.toast.tipo-radio{border-left-color:var(--neon-packs)}.toast-icon{font-size:18px;flex-shrink:0;line-height:1;margin-top:1px}.toast-texto{font-size:12px;color:var(--txt-primary);line-height:1.4;font-family:var(--font-body)}.toast-titulo{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--txt-secondary);margin-bottom:2px}
-.gx-overlay{display:none;position:fixed;inset:0;background:rgba(5,5,12,.88);backdrop-filter:blur(10px);z-index:10600;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .22s ease}.gx-overlay.show{display:flex;opacity:1}.gx-box{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-2xl);padding:26px;width:100%;max-width:420px;box-shadow:var(--shadow-xl);transform:scale(.92) translateY(8px);opacity:0;transition:transform .28s cubic-bezier(.16,1,.3,1),opacity .22s ease;text-align:center}.gx-overlay.show .gx-box{transform:scale(1) translateY(0);opacity:1}.gx-icon{font-size:38px;margin-bottom:12px;filter:drop-shadow(0 0 10px rgba(255,255,255,.08))}.gx-title{font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--blanco);letter-spacing:.5px;margin-bottom:8px}.gx-desc{font-size:12px;color:var(--txt-secondary);line-height:1.5;margin-bottom:20px;white-space:pre-line}.gx-btns{display:flex;gap:10px}.gx-btn{flex:1;padding:12px;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border:1px solid;transition:all .18s ease}.gx-btn-confirmar{background:var(--neon-legal);color:#052e1f;border-color:var(--neon-legal)}.gx-btn-confirmar:hover{filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(30,158,115,.5);transform:translateY(-1px)}.gx-btn-confirmar:active{transform:scale(.96)}.gx-btn-confirmar.peligro{background:#d8293f;color:#2a0505;border-color:#d8293f}.gx-btn-confirmar.peligro:hover{filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(216,41,63,.5);transform:translateY(-1px)}.gx-btn-confirmar.peligro:active{transform:scale(.96)}.gx-btn-confirmar.sacrificio{background:var(--neon-sacrificio);color:#2a1305;border-color:var(--neon-sacrificio)}.gx-btn-confirmar.sacrificio:hover{filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(184,96,46,.5);transform:translateY(-1px)}.gx-btn-confirmar.sacrificio:active{transform:scale(.96)}.gx-btn-cancelar{background:var(--bg-overlay);color:var(--txt-secondary);border-color:var(--borde)}.gx-btn-cancelar:hover{color:var(--blanco);border-color:var(--borde-hover)}.gx-btn-cancelar:active{transform:scale(.96)}
-.gacha-overlay{display:none;position:fixed;inset:0;background:rgba(3,4,10,.92);backdrop-filter:blur(14px);z-index:10700;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .25s ease}.gacha-overlay.show{display:flex;opacity:1}.gacha-card{position:relative;width:100%;max-width:360px;border-radius:var(--r-2xl);padding:36px 28px 30px;text-align:center;overflow:hidden;background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.06),transparent 60%),var(--bg-elevated);border:1px solid var(--borde);box-shadow:var(--shadow-xl);transform:scale(.7) rotateX(25deg);opacity:0;transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .3s ease}.gacha-overlay.show .gacha-card{transform:scale(1) rotateX(0deg);opacity:1}.gacha-card.rareza-dinero{border-color:rgba(30,158,115,.4);box-shadow:var(--shadow-xl),0 0 60px -10px rgba(30,158,115,.35)}.gacha-card.rareza-pf{border-color:rgba(142,79,199,.4);box-shadow:var(--shadow-xl),0 0 60px -10px rgba(142,79,199,.35)}.gacha-card.rareza-item{border-color:rgba(245,197,24,.4);box-shadow:var(--shadow-xl),0 0 60px -10px rgba(245,197,24,.35)}.gacha-eyebrow{font-family:var(--font-display);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-muted);margin-bottom:14px}.gacha-icon-wrap{width:88px;height:88px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:42px;position:relative}.gacha-icon-wrap::before{content:'';position:absolute;inset:-6px;border-radius:50%;opacity:.5;animation:gachaPulso 1.8s ease-out infinite}.rareza-dinero .gacha-icon-wrap{background:rgba(30,158,115,.12)}.rareza-dinero .gacha-icon-wrap::before{box-shadow:0 0 0 2px rgba(30,158,115,.4)}.rareza-pf .gacha-icon-wrap{background:rgba(142,79,199,.12)}.rareza-pf .gacha-icon-wrap::before{box-shadow:0 0 0 2px rgba(142,79,199,.4)}.rareza-item .gacha-icon-wrap{background:rgba(245,197,24,.12)}.rareza-item .gacha-icon-wrap::before{box-shadow:0 0 0 2px rgba(245,197,24,.4)}
+.toast-container{position:fixed;top:calc(var(--topbar-h) + 14px);right:18px;z-index:10500;display:flex;flex-direction:column;gap:10px;max-width:340px;width:calc(100% - 36px);pointer-events:none}.toast{pointer-events:auto;background:var(--bg-elevated);border:1px solid var(--borde);border-left:3px solid var(--neon-legal);border-radius:var(--r-md);padding:12px 14px;box-shadow:var(--shadow-lg);display:flex;align-items:flex-start;gap:10px;transform:translateX(calc(100% + 20px));opacity:0;transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .25s ease}.toast.show{transform:translateX(0);opacity:1}.toast.hide{transform:translateX(calc(100% + 20px));opacity:0;transition:transform .25s ease,opacity .2s ease}.toast.tipo-exito{border-left-color:var(--neon-legal)}.toast.tipo-error{border-left-color:var(--rojo)}.toast.tipo-info{border-left-color:var(--neon-intercambio)}.toast.tipo-pf{border-left-color:var(--neon-ilegal)}.toast.tipo-sacrificio{border-left-color:var(--neon-sacrificio)}.toast.tipo-radio{border-left-color:var(--neon-packs)}.toast-icon{font-size:18px;flex-shrink:0;line-height:1;margin-top:1px}.toast-texto{font-size:12px;color:var(--txt-primary);line-height:1.4;font-family:var(--font-body)}.toast-titulo{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--txt-secondary);margin-bottom:2px}
+.gx-overlay{display:none;position:fixed;inset:0;background:rgba(5,5,12,.88);backdrop-filter:blur(10px);z-index:10600;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .22s ease}.gx-overlay.show{display:flex;opacity:1}.gx-box{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-2xl);padding:26px;width:100%;max-width:420px;box-shadow:var(--shadow-xl);transform:scale(.94) translateY(6px);opacity:0;transition:transform .25s cubic-bezier(.16,1,.3,1),opacity .2s ease;text-align:center}.gx-overlay.show .gx-box{transform:scale(1) translateY(0);opacity:1}.gx-icon{font-size:38px;margin-bottom:12px;filter:drop-shadow(0 0 10px rgba(255,255,255,.08))}.gx-title{font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--blanco);letter-spacing:.5px;margin-bottom:8px}.gx-desc{font-size:12px;color:var(--txt-secondary);line-height:1.5;margin-bottom:20px;white-space:pre-line}.gx-btns{display:flex;gap:10px}.gx-btn{flex:1;padding:12px;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border:1px solid;transition:all .18s ease}.gx-btn-confirmar{background:var(--neon-legal);color:#052e1f;border-color:var(--neon-legal)}.gx-btn-confirmar:hover{filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(30,158,115,.5);transform:translateY(-1px)}.gx-btn-confirmar:active{transform:scale(.96)}.gx-btn-confirmar.peligro{background:#d8293f;color:#2a0505;border-color:#d8293f}.gx-btn-confirmar.peligro:hover{filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(216,41,63,.5);transform:translateY(-1px)}.gx-btn-confirmar.peligro:active{transform:scale(.96)}.gx-btn-confirmar.sacrificio{background:var(--neon-sacrificio);color:#2a1305;border-color:var(--neon-sacrificio)}.gx-btn-confirmar.sacrificio:hover{filter:brightness(1.12);box-shadow:0 4px 18px -2px rgba(184,96,46,.5);transform:translateY(-1px)}.gx-btn-confirmar.sacrificio:active{transform:scale(.96)}.gx-btn-cancelar{background:var(--bg-overlay);color:var(--txt-secondary);border-color:var(--borde)}.gx-btn-cancelar:hover{color:var(--blanco);border-color:var(--borde-hover)}.gx-btn-cancelar:active{transform:scale(.96)}
+.gacha-overlay{display:none;position:fixed;inset:0;background:rgba(3,4,10,.92);backdrop-filter:blur(14px);z-index:10700;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .25s ease}.gacha-overlay.show{display:flex;opacity:1}.gacha-card{position:relative;width:100%;max-width:360px;border-radius:var(--r-2xl);padding:36px 28px 30px;text-align:center;overflow:hidden;background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.06),transparent 60%),var(--bg-elevated);border:1px solid var(--borde);box-shadow:var(--shadow-xl);transform:scale(.88) rotateX(10deg);opacity:0;transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .25s ease}.gacha-overlay.show .gacha-card{transform:scale(1) rotateX(0deg);opacity:1}.gacha-card.rareza-dinero{border-color:rgba(30,158,115,.4);box-shadow:var(--shadow-xl),0 0 60px -10px rgba(30,158,115,.35)}.gacha-card.rareza-pf{border-color:rgba(142,79,199,.4);box-shadow:var(--shadow-xl),0 0 60px -10px rgba(142,79,199,.35)}.gacha-card.rareza-item{border-color:rgba(245,197,24,.4);box-shadow:var(--shadow-xl),0 0 60px -10px rgba(245,197,24,.35)}.gacha-eyebrow{font-family:var(--font-display);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt-muted);margin-bottom:14px}.gacha-icon-wrap{width:88px;height:88px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:42px;position:relative}.gacha-icon-wrap::before{content:'';position:absolute;inset:-6px;border-radius:50%;opacity:.5;animation:gachaPulso 1.8s ease-out infinite}.rareza-dinero .gacha-icon-wrap{background:rgba(30,158,115,.12)}.rareza-dinero .gacha-icon-wrap::before{box-shadow:0 0 0 2px rgba(30,158,115,.4)}.rareza-pf .gacha-icon-wrap{background:rgba(142,79,199,.12)}.rareza-pf .gacha-icon-wrap::before{box-shadow:0 0 0 2px rgba(142,79,199,.4)}.rareza-item .gacha-icon-wrap{background:rgba(245,197,24,.12)}.rareza-item .gacha-icon-wrap::before{box-shadow:0 0 0 2px rgba(245,197,24,.4)}
 @keyframes gachaPulso{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.45);opacity:0}}
 .gacha-nombre{font-family:var(--font-display);font-size:17px;font-weight:900;color:var(--blanco);margin-bottom:6px;letter-spacing:.3px}.gacha-detalle{font-size:12px;color:var(--txt-secondary);margin-bottom:22px}.gacha-cerrar-btn{width:100%;padding:12px;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;background:var(--bg-overlay);color:var(--txt-primary);border:1px solid var(--borde-hover);transition:all .18s ease}.gacha-cerrar-btn:hover{background:var(--bg-card)}.gacha-sparkle{position:absolute;font-size:14px;opacity:0;animation:sparkleFloat 1.4s ease-out forwards;pointer-events:none}
 @keyframes sparkleFloat{0%{opacity:0;transform:translateY(10px) scale(.4) rotate(0deg)}25%{opacity:1}100%{opacity:0;transform:translateY(-46px) scale(1.1) rotate(60deg)}}
@@ -364,14 +364,13 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 @keyframes compraFlash{0%{box-shadow:0 0 0 0 rgba(30,158,115,.5);transform:scale(1)}30%{box-shadow:0 0 0 6px rgba(30,158,115,.18);transform:scale(1.03)}100%{box-shadow:0 0 0 0 rgba(30,158,115,0);transform:scale(1)}}
 .item-card.compra-flash.tipo-ilegal{animation-name:compraFlashIlegal}
 @keyframes compraFlashIlegal{0%{box-shadow:0 0 0 0 rgba(142,79,199,.5);transform:scale(1)}30%{box-shadow:0 0 0 6px rgba(142,79,199,.18);transform:scale(1.03)}100%{box-shadow:0 0 0 0 rgba(142,79,199,0);transform:scale(1)}}
-@keyframes vistaEntrada{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.vista-transicion{opacity:0;transform:translateY(30px) scale(.92);transition:opacity .46s cubic-bezier(.22,1,.36,1),transform .46s cubic-bezier(.34,1.56,.64,1)}.vista-transicion.vista-visible{opacity:1;transform:translateY(0) scale(1)}
-@keyframes tabPop{0%{transform:scale(.94)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
-.tab-pop{animation:tabPop .28s cubic-bezier(.34,1.56,.64,1)}
+@keyframes vistaEntrada{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.vista-transicion{opacity:0;transform:translateY(8px) scale(.98);transition:opacity .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1)}.vista-transicion.vista-visible{opacity:1;transform:translateY(0) scale(1)}
+@keyframes tabPop{0%{transform:scale(.95)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.tab-pop{animation:tabPop .22s cubic-bezier(.34,1.56,.64,1)}
 button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),box-shadow .2s ease,background .2s ease,border-color .2s ease,color .2s ease,border-color .18s ease,box-shadow .18s ease}button:not(:disabled):active{transform:scale(.96)}
 .drawer-backdrop{transition:opacity .25s ease;opacity:0}.drawer-backdrop.active{opacity:1}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
-@media(max-width:900px){
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}@media(max-width:900px){
 .sidebar{display:none!important}
 .card,.admin-panel,.item-card,.red-roster-card,.arena-combate-card,.pvp-ranking-row,.tracker-row,.inicio-stat-card{box-shadow:var(--shadow-sm)}
 .card:hover,.admin-panel:hover{box-shadow:var(--shadow-md)}
@@ -769,7 +768,7 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 @keyframes asisIconoRespira{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.08) rotate(-3deg)}}
 .asis-icono-vivo{display:inline-block;animation:asisIconoRespira 3.2s ease-in-out infinite}
 /* ── CONFETTI genérico ── */
-.efecto-confetti-pieza{position:fixed;width:6px;height:10px;border-radius:2px;pointer-events:none;z-index:9999;opacity:0;animation:efectoConfettiCaida .9s ease-out forwards}
+.efecto-confetti-pieza{position:fixed;width:6px;height:10px;border-radius:2px;pointer-events:none;z-index:8000;opacity:0;animation:efectoConfettiCaida .9s ease-out forwards}
 @keyframes efectoConfettiCaida{0%{opacity:1;transform:translate(0,0) rotate(0deg)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot))}}
 /* ── TORNEOS: bracket vivo ── */
 @keyframes torneoMatchResuelto{0%{box-shadow:0 0 0 0 rgba(245,197,24,.6);transform:scale(1)}40%{box-shadow:0 0 0 8px rgba(245,197,24,0);transform:scale(1.02)}100%{box-shadow:0 0 0 0 rgba(245,197,24,0);transform:scale(1)}}
@@ -789,12 +788,12 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 .mision-icon{transition:transform .25s ease}
 .mision-card:hover .mision-icon{transform:scale(1.15) rotate(-6deg)}
 @keyframes misionPulsoBtn{0%,100%{box-shadow:0 0 0 0 rgba(201,154,46,.5)}50%{box-shadow:0 0 0 6px rgba(201,154,46,0)}}
-.btn-mision-reclamar{animation:misionPulsoBtn 1.7s ease-in-out infinite}
+.btn-mision-reclamar{animation:misionPulsoBtn 1.7s ease-in-out .4s infinite}
 .btn-mision-reclamar:active{transform:scale(.94)}
 @keyframes misionGlowPop{0%{box-shadow:0 0 0 0 rgba(201,154,46,.65)}40%{box-shadow:0 0 0 10px rgba(201,154,46,0)}100%{box-shadow:0 0 0 0 rgba(201,154,46,0)}}
 .mision-card.recien-completada{animation:misionGlowPop 1s ease-out}
-.mision-card.mision-reclamo-flash{animation:misionReclamoFlash .5s ease}
-@keyframes misionReclamoFlash{0%{transform:scale(1)}30%{transform:scale(1.035)}100%{transform:scale(1)}}
+.mision-card.mision-reclamo-flash{animation:misionReclamoFlash .4s ease forwards}
+@keyframes misionReclamoFlash{0%{transform:scale(1)}30%{transform:scale(1.03)}100%{transform:scale(1)}}
 .mision-reward-float{position:absolute;left:50%;top:38%;transform:translateX(-50%);font-family:var(--font-display);font-weight:900;font-size:14px;color:var(--neon-packs);animation:pfFloatUp 1.1s ease-out forwards;pointer-events:none;z-index:5;white-space:nowrap;text-shadow:0 2px 8px rgba(0,0,0,.6)}
 /* ── LOGROS: desbloqueo con brillo ── */
 .titulo-chip{animation:misionCardEntrada .3s ease backwards;position:relative;overflow:hidden}
@@ -894,8 +893,8 @@ body.tema-shinylocke .hero-strip{--hero-color:#c084fc;--hero-glow:rgba(192,132,2
 body.tema-duallinks  .hero-strip{--hero-color:#facc15;--hero-glow:rgba(250,204,21,.09)}
 body.tema-monotype   .hero-strip{--hero-color:#fb923c;--hero-glow:rgba(251,146,60,.09)}
 body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgba(201,154,46,.07)}
-@keyframes lockeFadeTransition{0%{opacity:1}45%{opacity:0}55%{opacity:0}100%{opacity:1}}
-.locke-transitioning{animation:lockeFadeTransition .6s ease}
+@keyframes lockeFadeTransition{0%{opacity:1}40%{opacity:0}60%{opacity:0}100%{opacity:1}}
+.locke-transitioning{animation:lockeFadeTransition .5s ease}
 
 /* ── ILEGALIDADES: LOCK / DESBLOQUEO ── */
 .illegal-zone .item-card.bloqueado-ilegal{opacity:.45;filter:grayscale(.85)}
@@ -904,8 +903,8 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
 /* ── DINERO ODÓMETRO FLIP ── */
 @keyframes flipDownNum{0%{transform:translateY(0);opacity:1}45%{transform:translateY(6px);opacity:0}55%{transform:translateY(-6px);opacity:0}100%{transform:translateY(0);opacity:1}}
-@keyframes valPulseUp{0%{color:var(--neon-legal);transform:scale(1.16)}100%{color:inherit;transform:scale(1)}}
-@keyframes valPulseDown{0%{color:var(--rojo);transform:scale(1.16)}100%{color:inherit;transform:scale(1)}}
+@keyframes valPulseUp{0%{color:var(--neon-legal);transform:scale(1.1)}100%{color:inherit;transform:scale(1)}}
+@keyframes valPulseDown{0%{color:var(--rojo);transform:scale(1.1)}100%{color:inherit;transform:scale(1)}}
 .val-pulse-up{display:inline-block;animation:valPulseUp .3s ease}
 .val-pulse-down{display:inline-block;animation:valPulseDown .3s ease}
 .flip-number-anim{animation:flipDownNum .3s ease}
@@ -965,14 +964,14 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
 /* ── Transición elegante del drawer en móvil ── */
 .drawer-backdrop{
-  transition:opacity .28s ease,backdrop-filter .28s ease!important;
+  transition:opacity .3s ease,backdrop-filter .3s ease!important;
   backdrop-filter:blur(0px);
 }
 .drawer-backdrop.active{
   backdrop-filter:blur(3px)!important;
   background:rgba(16,24,40,.5)!important;
 }
-.sidebar{transition:transform .32s cubic-bezier(.4,0,.2,1)!important}
+.sidebar{transition:transform .3s cubic-bezier(.4,0,.2,1)!important}
 
 /* ── Animación de entrada de la sidebar en móvil ── */
 @keyframes sidebarSlideIn{
@@ -986,7 +985,8 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   40%{background:color-mix(in srgb,var(--tab-accent) 15%,transparent)}
   100%{background:var(--tab-accent-bg)}
 }
-.nav-item.active{animation:navItemActivate .35s ease}
+/* navItemActivate solo se aplica via JS con clase .nav-item-flash (ver navegarA) */
+.nav-item-flash{animation:navItemActivate .3s ease}
 
 /* ── Consistencia móvil: same look as sidebar ── */
 .more-sheet-item{
@@ -4467,11 +4467,33 @@ window.guardarCampeones = function(){
 
 /* ═══ NOTIFICACIONES ═══ */
 window.mostrarNotificacion=function(texto,tipo,icono,titulo,sinSonido){tipo=tipo||'info';icono=icono||({exito:'✅',error:'⛔',info:'ℹ️',pf:'🔮',sacrificio:'🔥'}[tipo]||'✅');let cont=document.getElementById('toast-container');if(!cont)return;let el=document.createElement('div');el.className=`toast tipo-${tipo}`;el.innerHTML=`<span class="toast-icon">${icono}</span><div>${titulo?`<div class="toast-titulo">${escaparHTML(titulo)}</div>`:''}<div class="toast-texto">${escaparHTML(texto)}</div></div>`;cont.appendChild(el);requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));if(!sinSonido)reproducirSonido(tipo==='error'?'error':(tipo==='exito'?'exito':'click'));setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');setTimeout(()=>el.remove(),350);},3800);};
-window.mostrarConfirmacion=function(opts){opts=opts||{};return new Promise(resolve=>{let overlay=document.getElementById('gx-overlay');document.getElementById('gx-icon').textContent=opts.icono||'❔';document.getElementById('gx-title').textContent=opts.titulo||'Confirmar acción';document.getElementById('gx-desc').textContent=opts.descripcion||'';let bc=document.getElementById('gx-btn-confirmar'),bcan=document.getElementById('gx-btn-cancelar');bc.textContent=opts.textoConfirmar||'Confirmar';bcan.textContent=opts.textoCancelar||'Cancelar';bc.className='gx-btn gx-btn-confirmar '+(opts.tipo==='peligro'?'peligro':(opts.tipo==='sacrificio'?'sacrificio':''));bcan.style.display=opts.soloInfo?'none':'';reproducirSonido('abrir');function cerrar(v){overlay.classList.remove('show');bc.onclick=null;bcan.onclick=null;resolve(v);}bc.onclick=()=>{reproducirSonido(opts.sonidoConfirmar||(opts.tipo==='peligro'?'error':'exito'));cerrar(true);};bcan.onclick=()=>{reproducirSonido('cerrar');cerrar(false);};overlay.classList.add('show');});};
+window.mostrarConfirmacion=function(opts){opts=opts||{};return new Promise(resolve=>{let overlay=document.getElementById('gx-overlay');document.getElementById('gx-icon').textContent=opts.icono||'❔';document.getElementById('gx-title').textContent=opts.titulo||'Confirmar acción';document.getElementById('gx-desc').textContent=opts.descripcion||'';let bc=document.getElementById('gx-btn-confirmar'),bcan=document.getElementById('gx-btn-cancelar');bc.textContent=opts.textoConfirmar||'Confirmar';bcan.textContent=opts.textoCancelar||'Cancelar';bc.className='gx-btn gx-btn-confirmar '+(opts.tipo==='peligro'?'peligro':(opts.tipo==='sacrificio'?'sacrificio':''));bcan.style.display=opts.soloInfo?'none':'';reproducirSonido('abrir');function cerrar(v){overlay.classList.remove('show');bc.onclick=null;bcan.onclick=null;/* Esperar transición de salida antes de resolver */setTimeout(()=>resolve(v),250);}bc.onclick=()=>{reproducirSonido(opts.sonidoConfirmar||(opts.tipo==='peligro'?'error':'exito'));cerrar(true);};bcan.onclick=()=>{reproducirSonido('cerrar');cerrar(false);};overlay.classList.add('show');});};
 window.mostrarInfo=function(opts){opts=opts||{};opts.soloInfo=true;opts.textoConfirmar=opts.textoConfirmar||'Entendido';return window.mostrarConfirmacion(opts);};
-window.mostrarRevelacionGacha=function(opts){opts=opts||{};let ov=document.getElementById('gacha-overlay'),card=document.getElementById('gacha-card');card.className='gacha-card rareza-'+(opts.rareza||'item');document.getElementById('gacha-icon').textContent=opts.icono||'🎁';document.getElementById('gacha-nombre').textContent=opts.nombre||'Recompensa';document.getElementById('gacha-detalle').textContent=opts.detalle||'';ov.classList.add('show');reproducirSonido(opts.especial?'raro':'gacha');if(opts.especial){const s=['✨','🌟','⭐','💫'];for(let i=0;i<6;i++){let sp=document.createElement('span');sp.className='gacha-sparkle';sp.textContent=s[Math.floor(Math.random()*s.length)];sp.style.left=(10+Math.random()*80)+'%';sp.style.top=(60+Math.random()*20)+'%';sp.style.animationDelay=(Math.random()*.6)+'s';card.appendChild(sp);setTimeout(()=>sp.remove(),2200);}}};
-window.cerrarRevelacionGacha=function(){document.getElementById('gacha-overlay').classList.remove('show');reproducirSonido('cerrar');};
-window.destellarPantalla=function(color){let el=document.createElement('div');let t={rojo:'rgba(216,41,63,.16)',naranja:'rgba(184,96,46,.16)',verde:'rgba(30,158,115,.14)',morado:'rgba(142,79,199,.14)'};el.style.cssText=`position:fixed;inset:0;background:${t[color]||t.rojo};z-index:6000;pointer-events:none;opacity:0;transition:opacity .15s ease;`;document.body.appendChild(el);requestAnimationFrame(()=>{el.style.opacity='1';setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),250);},120);});};
+window.mostrarRevelacionGacha=function(opts){opts=opts||{};let ov=document.getElementById('gacha-overlay'),card=document.getElementById('gacha-card');card.className='gacha-card rareza-'+(opts.rareza||'item');document.getElementById('gacha-icon').textContent=opts.icono||'🎁';document.getElementById('gacha-nombre').textContent=opts.nombre||'Recompensa';document.getElementById('gacha-detalle').textContent=opts.detalle||'';/* Limpiar sparkles de una sesión anterior */card.querySelectorAll('.gacha-sparkle').forEach(function(s){s.remove();});ov.classList.add('show');reproducirSonido(opts.especial?'raro':'gacha');if(opts.especial){const s=['✨','🌟','⭐','💫'];for(let i=0;i<6;i++){let sp=document.createElement('span');sp.className='gacha-sparkle';sp.textContent=s[Math.floor(Math.random()*s.length)];sp.style.left=(10+Math.random()*80)+'%';sp.style.top=(60+Math.random()*20)+'%';sp.style.animationDelay=(Math.random()*.6)+'s';card.appendChild(sp);setTimeout(()=>{if(sp.parentNode)sp.remove();},2200);}}};
+window.cerrarRevelacionGacha=function(){
+  var ov = document.getElementById('gacha-overlay');
+  var card = document.getElementById('gacha-card');
+  /* Limpiar sparkles restantes */
+  if(card){ card.querySelectorAll('.gacha-sparkle').forEach(function(s){ s.remove(); }); }
+  ov.classList.remove('show');
+  reproducirSonido('cerrar');
+};
+window.destellarPantalla=function(color){
+  /* Cancelar destello previo si existe */
+  if(window._destelloEl && window._destelloEl.parentNode){ window._destelloEl.remove(); window._destelloEl = null; }
+  var el=document.createElement('div');
+  window._destelloEl = el;
+  var t={rojo:'rgba(216,41,63,.16)',naranja:'rgba(184,96,46,.16)',verde:'rgba(30,158,115,.14)',morado:'rgba(142,79,199,.14)'};
+  el.style.cssText=`position:fixed;inset:0;background:${t[color]||t.rojo};z-index:6000;pointer-events:none;opacity:0;transition:opacity .15s ease;`;
+  document.body.appendChild(el);
+  requestAnimationFrame(()=>{
+    el.style.opacity='1';
+    setTimeout(()=>{
+      el.style.opacity='0';
+      setTimeout(()=>{ if(el.parentNode)el.remove(); if(window._destelloEl===el)window._destelloEl=null; },200);
+    },120);
+  });
+};
 
 /* ═══ SELECT PERSONALIZADO ═══ */
 function mejorarSelect(sel){if(sel.dataset.cselDone)return;sel.dataset.cselDone='1';let cls=sel.className,sty=sel.getAttribute('style')||'';let wr=document.createElement('div');wr.className='csel';let tr=document.createElement('div');tr.className='csel-trigger '+cls;if(sty)tr.setAttribute('style',sty);tr.tabIndex=0;tr.innerHTML='<span class="csel-trigger-label"></span><span class="csel-trigger-arrow">▾</span>';let pn=document.createElement('div');pn.className='csel-panel';sel.parentNode.insertBefore(wr,sel);wr.appendChild(tr);wr.appendChild(pn);wr.appendChild(sel);sel.classList.add('csel-native-hidden');function upLabel(){let op=sel.options[sel.selectedIndex];tr.querySelector('.csel-trigger-label').textContent=op?op.textContent:'';}function buildPanel(){pn.innerHTML='';if(!sel.options.length){pn.innerHTML='<div class="csel-panel-vacio">Sin opciones</div>';return;}Array.from(sel.options).forEach((op,i)=>{let f=document.createElement('div');f.className='csel-option'+(i===sel.selectedIndex?' selected':'');f.textContent=op.textContent;f.addEventListener('click',e=>{e.stopPropagation();sel.value=op.value;upLabel();wr.classList.remove('open');sel.dispatchEvent(new Event('change',{bubbles:true}));reproducirSonido('click');});pn.appendChild(f);});}function open(){document.querySelectorAll('.csel.open').forEach(w=>{if(w!==wr)w.classList.remove('open');});buildPanel();wr.classList.add('open');reproducirSonido('click');}function close(){wr.classList.remove('open');}tr.addEventListener('click',e=>{e.stopPropagation();wr.classList.contains('open')?close():open();});tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tr.click();}if(e.key==='Escape')close();});upLabel();sel.__cselRefrescar=upLabel;}
@@ -4508,11 +4530,27 @@ window.cerrarMasSheet=function(){
   const sh=document.getElementById('more-sheet'),bd=document.getElementById('more-sheet-backdrop');
   if(!sh.classList.contains('open'))return;
   reproducirSonido('cerrar');
-  sh.classList.remove('show');bd.classList.remove('active');document.body.style.overflow='';
-  setTimeout(()=>sh.classList.remove('open'),300);
+  sh.classList.remove('show');
+  /* Esperar a que termine la transición de salida antes de quitar 'open' (que oculta el elemento) */
+  setTimeout(()=>{sh.classList.remove('open');bd.classList.remove('active');},300);
+  document.body.style.overflow='';
 };
 window.cerrarDrawer=function(){if(document.getElementById('sidebar').classList.contains('open'))reproducirSonido('cerrar');document.getElementById('sidebar').classList.remove('open');document.getElementById('drawer-backdrop').classList.remove('active');document.body.style.overflow='';};
-function transicionarVista(el){if(!el)return;el.classList.remove('vista-visible');el.classList.add('vista-transicion');void el.offsetWidth;requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('vista-visible')));}
+function transicionarVista(el){
+  if(!el) return;
+  el.classList.remove('vista-visible');
+  el.classList.add('vista-transicion');
+  /* Forzar reflow para que el estado inicial (opacity:0) se aplique antes de animar */
+  void el.offsetWidth;
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      el.classList.add('vista-visible');
+      /* Limpiar clase base después de la transición para no dejar residuos */
+      var _limpiar = function(){ el.classList.remove('vista-transicion'); el.removeEventListener('transitionend', _limpiar); };
+      el.addEventListener('transitionend', _limpiar, {once: true});
+    });
+  });
+}
 function reanimarElemento(el){transicionarVista(el);}
 
 /* ═══ FIREBASE ═══ */
@@ -4594,10 +4632,20 @@ const MISION_MS_ROTACION = 12*60*60*1000;
 
 function dispararConfetti(origenEl){
   if(!origenEl) return;
+  /* Respetar prefers-reduced-motion */
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  /* Guard anti-duplicado: no disparar en el mismo elemento dos veces en menos de 600ms */
+  var ahora = Date.now();
+  if(origenEl._confettiTs && ahora - origenEl._confettiTs < 600) return;
+  origenEl._confettiTs = ahora;
   var rect = origenEl.getBoundingClientRect();
   /* No disparar si el elemento está fuera de pantalla o en una sección oculta */
   if(rect.width===0 && rect.height===0) return;
   if(rect.top < -100 || rect.top > window.innerHeight + 100) return;
+  if(rect.left < -100 || rect.left > window.innerWidth + 100) return;
+  /* No disparar si el elemento está dentro de una sección no activa */
+  var secPadre = origenEl.closest('.page-section');
+  if(secPadre && !secPadre.classList.contains('active')) return;
   var cx = rect.left+rect.width/2, cy = rect.top+rect.height/2;
   var colores = ['#d8293f','#3e6fa6','#c99a2e','#1e9e73','#8e4fc7'];
   for(var i=0;i<14;i++){
@@ -4612,7 +4660,7 @@ function dispararConfetti(origenEl){
       p.style.background=colores[Math.floor(Math.random()*colores.length)];
       p.style.animationDelay=(Math.random()*.08)+'s';
       document.body.appendChild(p);
-      setTimeout(function(){p.remove();},1300);
+      setTimeout(function(){if(p.parentNode)p.remove();},1300);
     })();
   }
 }
@@ -4953,7 +5001,15 @@ function verificarMisionesCompletadasMision(){
       mostrarNotificacion('¡'+misionTituloRender(m,u)+'! Ya puedes reclamar tu recompensa.','exito','🎯','📋 Misión completada',true);
       reproducirSonido('exito');
       var cardElNueva = document.querySelector('.mision-card[data-mision-id="'+m.id+'"]');
-      if(cardElNueva){ cardElNueva.classList.add('recien-completada'); dispararConfetti(cardElNueva); setTimeout(function(){cardElNueva.classList.remove('recien-completada');},1000); }
+      if(cardElNueva){
+        cardElNueva.classList.add('recien-completada');
+        /* Solo disparar confeti si la sección de misiones está activa y el elemento es visible */
+        var secMisiones = document.getElementById('section-misiones');
+        if(secMisiones && secMisiones.classList.contains('active')){
+          dispararConfetti(cardElNueva);
+        }
+        setTimeout(function(){if(cardElNueva)cardElNueva.classList.remove('recien-completada');},1000);
+      }
     }
   });
   if(cambiado || window._misionRotacionCambio){ window._misionRotacionCambio=false; guardarBD(); }
@@ -4977,16 +5033,18 @@ window.reclamarMision = function(misionId){
   var cardElReclamo = document.querySelector('.mision-card[data-mision-id="'+misionId+'"]');
   if(cardElReclamo){
     cardElReclamo.classList.add('mision-reclamo-flash');
+    /* dispararConfetti ya comprueba sección activa y visibilidad */
     dispararConfetti(cardElReclamo);
     var flotante = document.createElement('div');
     flotante.className = 'mision-reward-float';
     flotante.textContent = info.texto;
     cardElReclamo.appendChild(flotante);
-    setTimeout(function(){ flotante.remove(); }, 1150);
+    setTimeout(function(){ if(flotante && flotante.parentNode) flotante.remove(); }, 1150);
   }
   if(info.gachaReveal) mostrarRevelacionGacha(info.gachaReveal);
   else mostrarNotificacion('Recompensa reclamada: '+info.texto,'exito','🎁','¡Misión completada!',true);
-  setTimeout(function(){ renderizarMisiones(); }, 950);
+  /* Limpiar clase de flash antes de re-renderizar para evitar conflicto de animaciones */
+  setTimeout(function(){ renderizarMisiones(); }, 500);
   refrescarPantallaGamer();
 };
 window.marcarProgresoManualMision = function(misionId){
@@ -5185,7 +5243,7 @@ window.navegarA=function(s){
   /* IMPORTANTE: _aplicarTemaSidebarNav DEBE llamarse DESPUÉS de añadir
      .active al nav-item, porque lee classList.contains('active') para saber
      qué item pintar. Si se llama antes, pinta el item anterior. */
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav)nav.classList.add('active');if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
@@ -5671,9 +5729,11 @@ function animarValorNumerico(el,nuevoValor){
   if(isNaN(anterior)||isNaN(nuevoNum)||anterior===nuevoNum)return;
   let cls=nuevoNum>anterior?'val-pulse-up':'val-pulse-down';
   el.classList.remove('val-pulse-up','val-pulse-down');
+  /* Cancelar timer anterior para evitar que se acumule */
+  if(el._valPulseTimer) clearTimeout(el._valPulseTimer);
   void el.offsetWidth;
   el.classList.add(cls);
-  setTimeout(()=>el.classList.remove(cls),320);
+  el._valPulseTimer=setTimeout(()=>{ el.classList.remove(cls); el._valPulseTimer=null; },320);
 }
 function refrescarPantallaGamer(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];animarValorNumerico(document.getElementById('usr-dinero'),u.dinero);animarValorNumerico(document.getElementById('usr-pf'),u.pf);
   let _gb=document.getElementById('topbar-gacha-btn');
@@ -6528,16 +6588,27 @@ window.torneoSeleccionarGanador = function(torneoId, rondaIdx, matchIdx, ganador
   guardarBD();
   reproducirSonido('exito');
   var cardEl = document.getElementById('tm-'+rondaIdx+'-'+matchIdx);
-  if(cardEl){ cardEl.classList.add('torneo-match-resuelto'); dispararConfetti(cardEl); }
+  if(cardEl){
+    cardEl.classList.add('torneo-match-resuelto');
+    /* dispararConfetti ya comprueba que el elemento esté visible en la sección activa */
+    dispararConfetti(cardEl);
+    /* Limpiar la clase cuando termine la animación para evitar que quede atascada */
+    var _onAnimEnd = function(){ cardEl.classList.remove('torneo-match-resuelto'); cardEl.removeEventListener('animationend', _onAnimEnd); };
+    cardEl.addEventListener('animationend', _onAnimEnd, {once: true});
+  }
   setTimeout(function(){
     renderizarTorneoDetalle(torneoId);
     renderizarTorneos();
     if(quedoFinalizado){
+      /* Dar tiempo al DOM para renderizar el banner del campeón antes de buscar el elemento */
       setTimeout(function(){
         var banner = document.querySelector('.torneo-campeon-banner');
-        if(banner) dispararConfetti(banner);
+        var secTorneos = document.getElementById('section-torneos');
+        if(banner && secTorneos && secTorneos.classList.contains('active')){
+          dispararConfetti(banner);
+        }
         reproducirSonido('raro');
-      }, 200);
+      }, 300);
     }
   }, 480);
 };
@@ -7797,9 +7868,13 @@ window.renderizarTitulosYTemas = function(){
       var chipEl = listaEl.querySelector('[data-titulo-id="'+id+'"]');
       if(chipEl){
         chipEl.classList.add('recien-desbloqueado');
-        dispararConfetti(chipEl);
+        /* Solo confeti si la sección de perfil está activa */
+        var secPerfilT=document.getElementById('section-perfil');
+        if(secPerfilT&&secPerfilT.classList.contains('active')){
+          dispararConfetti(chipEl);
+        }
         reproducirSonido('raro');
-        setTimeout(function(){ chipEl.classList.remove('recien-desbloqueado'); }, 1200);
+        setTimeout(function(){ if(chipEl)chipEl.classList.remove('recien-desbloqueado'); }, 1200);
       }
     });
   }
@@ -7883,10 +7958,10 @@ function _checkCompraTemaTienda(nombreProducto){
   }
 }
 
-function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';/* Usar el previo guardado en memoria, no el conteo del DOM (que al cargar siempre es 0) */var prevN=typeof window._insigPrevN==='number'?window._insigPrevN:-1;var esNuevaMedalla=n>prevN&&prevN>=0;window._insigPrevN=n;let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}"${i===n&&esNuevaMedalla?' data-nueva="1"':''}>${icon}</div>`;}box.innerHTML=html;let nueva=box.querySelector('[data-nueva="1"]');if(nueva){nueva.classList.add('recien-desbloqueado');dispararConfetti(nueva);reproducirSonido('exito');}}
+function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';/* Usar el previo guardado en memoria, no el conteo del DOM (que al cargar siempre es 0) */var prevN=typeof window._insigPrevN==='number'?window._insigPrevN:-1;var esNuevaMedalla=n>prevN&&prevN>=0;window._insigPrevN=n;let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}"${i===n&&esNuevaMedalla?' data-nueva="1"':''}>${icon}</div>`;}box.innerHTML=html;let nueva=box.querySelector('[data-nueva="1"]');if(nueva){nueva.classList.add('recien-desbloqueado');/* Solo confeti si la sección de perfil/medallas está activa */var secMedallas=document.getElementById('section-medallas-torneos');var secPerfil=document.getElementById('section-perfil');var secActiva=(secMedallas&&secMedallas.classList.contains('active'))||(secPerfil&&secPerfil.classList.contains('active'));if(secActiva){dispararConfetti(nueva);}reproducirSonido('exito');}}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
-window.alterarTorneosPerfil=function(v){let u=baseDatos.jugadores[userSesion];u.torneos=Math.max(0,(u.torneos||0)+v);animarValorNumerico(document.getElementById('perf-txt-torneos'),u.torneos);if(v>0)dispararConfetti(document.getElementById('perf-txt-torneos'));guardarBD();};
+window.alterarTorneosPerfil=function(v){let u=baseDatos.jugadores[userSesion];u.torneos=Math.max(0,(u.torneos||0)+v);animarValorNumerico(document.getElementById('perf-txt-torneos'),u.torneos);if(v>0){/* dispararConfetti ya tiene guard de visibilidad */dispararConfetti(document.getElementById('perf-txt-torneos'));}guardarBD();};
 function renderizarCementerioDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],box=document.getElementById('cementerio-lista-local');if(!box)return;box.innerHTML='';if(!u.cementerio||!u.cementerio.length){box.innerHTML='<div style="color:var(--txt-muted);text-align:center;font-size:11px;padding:16px;font-family:var(--font-display);letter-spacing:.5px">Sin bajas registradas en este Locke... Aún.</div>';return;}u.cementerio.forEach(b=>{box.innerHTML+=`<div class="graveyard-item"><div class="graveyard-name">💀 ${escaparHTML(b.nombre)}</div><div class="graveyard-meta">${escaparHTML(b.ruta)} · ${escaparHTML(b.fecha)}</div><div class="graveyard-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`;});}
 
 /* ═══ BANNER ═══ */
@@ -8610,8 +8685,50 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 46;
+const APP_VERSION = 47;
 const VERSIONES = [
+  {
+    version: 47,
+    fecha: '2026-08-14',
+    titulo: 'Fase 1 — Pulido de animaciones y confeti',
+    resumen: 'Auditoría completa de todas las animaciones, transiciones y efectos de la aplicación. El confeti ahora solo aparece cuando corresponde. Las transiciones son más rápidas y coherentes. Ningún efecto queda atascado.',
+    nuevas: [],
+    mejoras: [
+      'vista-transicion suavizada: translateY 30px→8px, scale .92→.98, duración 460ms→300ms',
+      'navItemActivate ya no se dispara en cada carga de pestaña — ahora es una clase temporal de 350ms aplicada solo al navegar',
+      'gacha-card: entrada menos dramática (scale .7→.88, rotateX 25°→10°)',
+      'tabPop: bounce scale 1.04→1.02, duración 280ms→220ms',
+      'lockeFadeTransition: duración 600ms→500ms',
+      'valPulseUp/Down: scale 1.16→1.1 — más sutil en la topbar',
+      'misionPulsoBtn: animation-delay .4s para que no compita con la entrada de la tarjeta',
+      'Novedades overlay: ahora tiene transición suave de entrada y salida (antes aparecía y desaparecía de golpe)',
+      'Confirmación modal (gx-overlay): espera a que termine la transición de salida antes de ejecutar la acción',
+      'cerrarMasSheet: la clase open se quita después de la transición de salida, no antes',
+      'diario-overlay/modal: tiempos de transición alineados al estándar del resto de modales',
+      'transicionarVista: limpia la clase vista-transicion al terminar con transitionend',
+    ],
+    fixes: [
+      'Confeti disparado en secciones no activas (al recibir update de Firebase en otra pestaña) — guard de .page-section.active en dispararConfetti',
+      'Confeti duplicado: throttle de 600ms por elemento con _confettiTs',
+      'Confeti en misiones completadas mientras el usuario está en otra sección — guard explícito antes de llamar dispararConfetti',
+      'Confeti de medalla al entrar a la pestaña de medallas — solo dispara si la sección de perfil/medallas está activa',
+      'Confeti de título desbloqueado en segundo plano — guard de sección activa',
+      'Confeti del banner de campeón de torneo: timeout aumentado a 300ms para que el DOM haya renderizado el banner antes de buscarlo',
+      'Confeti respeta prefers-reduced-motion del sistema',
+      'Z-index del confeti bajado de 9999 a 8000 — ya no tapa toasts, modales ni gacha',
+      'torneo-match-resuelto: clase quedaba atascada en el DOM — se elimina con listener animationend {once:true}',
+      'animarValorNumerico: timers se acumulaban si el valor cambiaba varias veces seguidas — cancelación con _valPulseTimer',
+      'destellarPantalla: destellos se apilaban si se llamaba seguido — guard _destelloEl cancela el anterior',
+      'mostrarRevelacionGacha / cerrarRevelacionGacha: sparkles podían quedar flotando al abrir otra vez sin cerrar — limpieza explícita',
+      'mision-reward-float: remove() protegido con guard de parentNode',
+      'recien-desbloqueado en títulos: remove() protegido con guard de parentNode',
+      're-render de misiones tras reclamar: 950ms→500ms para evitar que la tarjeta quede en estado visual raro',
+    ],
+    rendimiento: [
+      'Animaciones de confeti priorizan transform+opacity — sin layout thrashing',
+      'transicionarVista usa void offsetWidth para forzar reflow mínimo en un solo punto',
+    ]
+  },
   {
     version: 46,
     fecha: '2026-08-07',
@@ -8773,12 +8890,24 @@ window._pintarNovedades = function(){
 window.abrirNovedades = function(){
   window._pintarNovedades();
   var ov = document.getElementById('novedades-overlay');
-  if(ov){ ov.style.display = 'flex'; }
+  var inner = document.getElementById('novedades-modal-inner');
+  if(ov){
+    ov.style.display = 'flex';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      ov.style.opacity = '1';
+      if(inner){ inner.style.transform='scale(1) translateY(0)'; inner.style.opacity='1'; }
+    }));
+  }
 };
 
 window.cerrarNovedades = function(){
   var ov = document.getElementById('novedades-overlay');
-  if(ov){ ov.style.display = 'none'; }
+  var inner = document.getElementById('novedades-modal-inner');
+  if(ov){
+    ov.style.opacity = '0';
+    if(inner){ inner.style.transform='scale(.95) translateY(6px)'; inner.style.opacity='0'; }
+    setTimeout(()=>{ ov.style.display = 'none'; }, 260);
+  }
   try{ localStorage.setItem('mercadopoke_ultima_version_vista', String(APP_VERSION)); }catch(e){}
 };
 
@@ -8820,8 +8949,8 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <!-- OVERLAY NOVEDADES — al nivel del body para evitar cualquier stacking context -->
-<div id="novedades-overlay" style="display:none;position:fixed;inset:0;background:rgba(16,24,40,.6);backdrop-filter:blur(6px);z-index:10800;justify-content:center;align-items:center;padding:20px">
-  <div style="background:var(--bg-surface);border-radius:var(--r-xl);max-width:500px;width:100%;max-height:82vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl);border:1px solid var(--borde);overflow:hidden;animation:vistaEntrada .3s cubic-bezier(.16,1,.3,1)">
+<div id="novedades-overlay" style="display:none;position:fixed;inset:0;background:rgba(16,24,40,.6);backdrop-filter:blur(6px);z-index:10800;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .25s ease">
+  <div style="background:var(--bg-surface);border-radius:var(--r-xl);max-width:500px;width:100%;max-height:82vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl);border:1px solid var(--borde);overflow:hidden;transform:scale(.95) translateY(6px);transition:transform .28s cubic-bezier(.16,1,.3,1),opacity .22s ease;opacity:0" id="novedades-modal-inner">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 22px 16px;border-bottom:1px solid var(--borde);flex-shrink:0">
       <div>
         <div style="font-family:var(--font-display);font-weight:900;font-size:15px;color:var(--txt-primary)">Novedades de Mercado-Poke</div>
