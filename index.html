@@ -915,12 +915,391 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 .page-section.active{padding:0}
 
 /* ════════════════════════════════════════════════════
-   IDENTIDAD VISUAL POR SECCIÓN — v41
-   Enfoque directo: JS inyecta style inline en los
-   elementos vivos en el DOM al cambiar de sección.
-   Sin ::before problemáticos. Sin CSS vars en pseudo.
-   Garantizado en todos los navegadores.
+   IDENTIDAD VISUAL POR SECCIÓN — v48
+   Sistema de variables dinámicas + selectores [data-seccion].
+   JS setea --sec-* en :root al cambiar sección.
+   CSS usa esas variables en componentes de cada sección.
    ════════════════════════════════════════════════════ */
+
+/* ── Variables de tema dinámico (JS las sobreescribe al navegar) ── */
+:root{
+  --sec-color:#2563EB;
+  --sec-rgb:37,99,235;
+  --sec-bg:rgba(37,99,235,.07);
+  --sec-bg-strong:rgba(37,99,235,.13);
+  --sec-border:rgba(37,99,235,.25);
+  --sec-border-strong:rgba(37,99,235,.45);
+  --sec-glow:rgba(37,99,235,.18);
+  --sec-btn-bg:rgba(37,99,235,.1);
+  --sec-btn-color:#2563EB;
+  --sec-btn-border:rgba(37,99,235,.3);
+  --sec-bar:rgba(37,99,235,.85);
+  --sec-tag-bg:rgba(37,99,235,.09);
+  --sec-tag-color:#1d4ed8;
+  --sec-card-top:rgba(37,99,235,.04);
+  --sec-topbar-border:rgba(37,99,235,.3);
+}
+
+/* ── COMPONENTES GLOBALES que adoptan el tema activo ── */
+
+/* Barra de progreso genérica */
+[data-seccion] .mision-progreso-fill:not(.dif-dificil):not(.dif-epica){
+  background:var(--sec-bar);
+}
+[data-seccion] .tracker-progreso-fill:not(.perdido){
+  background:var(--sec-bar);
+}
+
+/* Tags de estado / badges contextuales */
+[data-seccion] .actividad-en-vivo,
+[data-seccion] .actividad-en-vivo-dot{
+  color:var(--sec-color);
+  background:unset;
+}
+[data-seccion] .actividad-en-vivo-dot{
+  background:var(--sec-color);
+  box-shadow:0 0 6px var(--sec-glow);
+}
+
+/* Card hover border con color de sección */
+[data-seccion] .card:hover{
+  border-color:var(--sec-border);
+}
+[data-seccion] .inicio-stat-card:hover{
+  border-color:var(--sec-border);
+}
+
+/* Section-header línea lateral */
+[data-seccion] .section-header{
+  border-left-color:var(--sec-color)!important;
+  background:linear-gradient(135deg,var(--sec-bg) 0%,var(--sec-card-top) 60%,transparent 100%)!important;
+}
+[data-seccion] .section-title{
+  color:var(--sec-color)!important;
+}
+
+/* ── INICIO: Centro de control azul ── */
+[data-seccion="inicio"] .inicio-stat-card{
+  border-top:2px solid var(--sec-border);
+}
+[data-seccion="inicio"] .inicio-stat-icon{
+  background:var(--sec-bg-strong);
+}
+[data-seccion="inicio"] .actividad-fila{
+  border-left-color:var(--sec-border);
+}
+[data-seccion="inicio"] .actividad-fila:hover{
+  border-left-color:var(--sec-color);
+  background:var(--sec-bg);
+}
+[data-seccion="inicio"] .inicio-misiones-aviso{
+  background:var(--sec-bg);
+  border-color:var(--sec-border);
+  color:var(--sec-tag-color);
+}
+[data-seccion="inicio"] .inicio-ticker{
+  border-left:3px solid var(--sec-border);
+}
+[data-seccion="inicio"] .version-badge-nombre{
+  color:var(--sec-color)!important;
+}
+
+/* ── MISIONES: Tablón dorado ── */
+[data-seccion="misiones"] .mision-card{
+  border-top:2px solid var(--sec-border);
+}
+[data-seccion="misiones"] .mision-card:hover{
+  border-color:var(--sec-border-strong);
+  box-shadow:0 4px 20px var(--sec-glow);
+}
+[data-seccion="misiones"] .mision-progreso-fill:not(.dif-dificil):not(.dif-epica){
+  background:linear-gradient(90deg,var(--sec-color),color-mix(in srgb,var(--sec-color) 70%,#fff));
+}
+[data-seccion="misiones"] .btn-mision-reclamar{
+  background:var(--sec-bg-strong);
+  color:var(--sec-btn-color);
+  border-color:var(--sec-border-strong);
+}
+[data-seccion="misiones"] .btn-mision-reclamar:hover{
+  box-shadow:0 4px 18px var(--sec-glow);
+}
+[data-seccion="misiones"] .mision-reclamada-tag{
+  color:var(--sec-color);
+  background:var(--sec-bg);
+  border-color:var(--sec-border);
+}
+[data-seccion="misiones"] .mision-historial-item .mh-recompensa{
+  color:var(--sec-color);
+}
+[data-seccion="misiones"] .card-title{
+  color:var(--sec-tag-color);
+}
+
+/* ── TIENDAS: Mercado rojo ── */
+[data-seccion="tiendas"] .tienda-acceso-card:hover{
+  border-color:var(--sec-border-strong);
+  box-shadow:0 4px 18px var(--sec-glow);
+}
+[data-seccion="tiendas"] .mochila-bar{
+  border-top:2px solid var(--sec-border);
+}
+[data-seccion="tiendas"] .btn-usar{
+  background:var(--sec-bg);
+  color:var(--sec-btn-color);
+  border-color:var(--sec-border);
+}
+[data-seccion="tiendas"] .btn-usar:hover{
+  background:var(--sec-color);
+  color:#fff;
+}
+[data-seccion="tiendas"] .stock-badge-v2.ok{
+  color:var(--sec-color);
+}
+[data-seccion="tiendas"] .item-card:hover{
+  border-color:var(--sec-border);
+}
+
+/* ── RED DE ENTRENADORES: Comunidad turquesa ── */
+[data-seccion="red-entrenadores"] .red-roster-card{
+  border-left-color:var(--sec-border-strong);
+}
+[data-seccion="red-entrenadores"] .red-roster-card:hover{
+  border-color:var(--sec-border-strong);
+  background:var(--sec-bg);
+}
+[data-seccion="red-entrenadores"] .card{
+  border-top:2px solid var(--sec-border);
+}
+
+/* ── EVENTOS: Centro de eventos naranja ── */
+[data-seccion="eventos"] .arena-combate-card{
+  border-color:var(--sec-border);
+  border-left:3px solid var(--sec-color);
+}
+[data-seccion="eventos"] .arena-combate-card:hover{
+  border-color:var(--sec-border-strong);
+  box-shadow:0 0 24px var(--sec-glow);
+}
+[data-seccion="eventos"] .card{
+  border-top:2px solid var(--sec-border);
+}
+
+/* ── DUELOS PvP: Combate carmesí ── */
+[data-seccion="duelos"] .pvp-duelo-activo-card{
+  background:linear-gradient(135deg,var(--sec-bg-strong),var(--sec-bg));
+  border-color:var(--sec-border-strong);
+}
+[data-seccion="duelos"] .pvp-vs-badge{
+  color:var(--sec-color);
+}
+[data-seccion="duelos"] .pvp-ranking-row:hover{
+  border-color:var(--sec-border);
+  background:var(--sec-bg);
+}
+[data-seccion="duelos"] .pvp-historial-card.victoria-a{
+  border-left-color:var(--sec-color);
+}
+[data-seccion="duelos"] .pvp-ranking-elo{
+  color:var(--sec-color);
+}
+
+/* ── TORNEOS: Arena morada ── */
+[data-seccion="torneos"] .torneo-item-card{
+  border-left-color:var(--sec-color);
+}
+[data-seccion="torneos"] .torneo-item-card:hover{
+  border-color:var(--sec-border-strong);
+  background:var(--sec-bg);
+}
+[data-seccion="torneos"] .torneo-item-badge.en-curso{
+  background:var(--sec-bg-strong);
+  color:var(--sec-color);
+}
+[data-seccion="torneos"] .torneo-ronda-titulo{
+  color:var(--sec-color);
+}
+[data-seccion="torneos"] .torneo-jugador-chip.activo{
+  border-color:var(--sec-border-strong);
+  background:var(--sec-bg-strong);
+  color:var(--sec-color);
+}
+[data-seccion="torneos"] .torneo-match-jugador:hover{
+  background:var(--sec-bg);
+}
+
+/* ── ASISTENTE: Digital cian ── */
+[data-seccion="asistente"] .asis-msg{
+  border-left-color:var(--sec-border-strong);
+}
+[data-seccion="asistente"] .asis-msg.nivel-consejo{
+  border-left-color:var(--sec-color);
+  background:linear-gradient(135deg,var(--sec-bg),transparent);
+}
+[data-seccion="asistente"] .asis-msg-badge.nivel-consejo{
+  background:var(--sec-bg-strong);
+  color:var(--sec-color);
+}
+[data-seccion="asistente"] .card{
+  border-top:2px solid var(--sec-border);
+}
+
+/* ── PERFIL: Ficha índigo ── */
+[data-seccion="perfil"] .titulo-chip.activo{
+  border-color:var(--sec-border-strong);
+  background:var(--sec-bg-strong);
+  color:var(--sec-color);
+}
+[data-seccion="perfil"] .titulo-chip.activo button{
+  border-color:var(--sec-color);
+  color:var(--sec-color);
+}
+[data-seccion="perfil"] .titulo-activo-display{
+  color:var(--sec-color);
+}
+[data-seccion="perfil"] .carnet-fondo-opt.activo,
+[data-seccion="perfil"] .carnet-layout-opt.activo{
+  border-color:var(--sec-border-strong);
+  background:var(--sec-bg-strong);
+}
+[data-seccion="perfil"] .carnet-fondo-opt.activo .cf-label,
+[data-seccion="perfil"] .carnet-layout-opt.activo .cl-label{
+  color:var(--sec-color);
+}
+[data-seccion="perfil"] .tema-chip.activo{
+  border-color:var(--sec-border-strong);
+  background:var(--sec-bg-strong);
+}
+[data-seccion="perfil"] .card{
+  border-top:2px solid var(--sec-border);
+}
+
+/* ── VIDAS Y SACRIFICIOS: Estado rosa-rojo ── */
+[data-seccion="vidas-sacrificios"] .card{
+  border-top:2px solid var(--sec-border);
+}
+[data-seccion="vidas-sacrificios"] .card:hover{
+  border-color:var(--sec-border-strong);
+}
+
+/* ── MEDALLAS Y TORNEOS: Palmarés dorado ── */
+[data-seccion="medallas-torneos"] .medallas-card{
+  border-top:2px solid var(--sec-border);
+}
+[data-seccion="medallas-torneos"] .medallas-card:hover{
+  border-color:var(--sec-border-strong);
+  box-shadow:0 4px 20px var(--sec-glow);
+}
+[data-seccion="medallas-torneos"] .medalla-insignia.ganada{
+  filter:drop-shadow(0 0 6px var(--sec-glow));
+}
+[data-seccion="medallas-torneos"] .torneos-numero{
+  color:var(--sec-color);
+}
+
+/* ── BITÁCORA: Diario cian-petróleo ──
+   La bitácora es un overlay flotante (no una section), sus estilos
+   se aplican globalmente ya que siempre usa los mismos componentes. ── */
+.diario-entry{
+  border-left:3px solid rgba(3,105,161,.25);
+}
+.diario-entry:hover{
+  border-left-color:#0369A1;
+}
+.diario-entry::before{
+  background:#0369A1!important;
+  box-shadow:0 0 0 3px var(--bg-base),0 0 8px rgba(3,105,161,.3)!important;
+}
+.diario-logs::before{
+  background:linear-gradient(180deg,rgba(3,105,161,.3),rgba(3,105,161,.04))!important;
+}
+
+/* ── TRACKER: Exploración verde ── */
+[data-seccion="tracker"] .tracker-row:hover{
+  border-color:var(--sec-border);
+  background:var(--sec-bg);
+}
+[data-seccion="tracker"] .tracker-btn-captura{
+  background:var(--sec-bg-strong);
+  border-color:var(--sec-border-strong);
+  color:var(--sec-color);
+}
+[data-seccion="tracker"] .tracker-btn-captura:hover{
+  background:var(--sec-color);
+  color:#fff;
+}
+[data-seccion="tracker"] .tracker-progreso-fill:not(.perdido){
+  background:var(--sec-color);
+}
+[data-seccion="tracker"] .tracker-vista-btn.activo{
+  border-color:var(--sec-border-strong);
+  color:var(--sec-color);
+  background:var(--sec-bg-strong);
+}
+
+/* ── RULETAS: Azar naranja-magenta ── */
+[data-seccion="ruletas"] .card{
+  border-top:2px solid var(--sec-border);
+}
+[data-seccion="ruletas"] .card:hover{
+  border-color:var(--sec-border-strong);
+  box-shadow:0 4px 20px var(--sec-glow);
+}
+
+/* ── HALL OF FAME: Salón dorado oscuro ── */
+[data-seccion="hall-of-fame"] .museo-card{
+  border-top:2px solid var(--sec-border);
+}
+[data-seccion="hall-of-fame"] .museo-card:hover{
+  border-color:var(--sec-border-strong);
+  box-shadow:0 4px 20px var(--sec-glow);
+}
+[data-seccion="hall-of-fame"] #hof-campeones-grid .hof-corona{
+  filter:drop-shadow(0 0 8px var(--sec-glow));
+}
+
+/* ── MUSEO: Archivo oliva ── */
+[data-seccion="museo"] .museo-card{
+  border-top:2px solid var(--sec-border);
+}
+[data-seccion="museo"] .museo-card:hover{
+  border-color:var(--sec-border-strong);
+}
+[data-seccion="museo"] .museo-juego-btn:hover{
+  background:var(--sec-bg-strong)!important;
+  border-color:var(--sec-border-strong)!important;
+}
+
+/* ── ADMIN / MODO DIOS: Panel áureo ── */
+[data-seccion="admin"] .admin-panel{
+  border-top:2px solid var(--sec-border);
+  box-shadow:0 4px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06),0 0 0 1px var(--sec-border);
+}
+[data-seccion="admin"] .admin-section-title{
+  color:var(--sec-color);
+}
+[data-seccion="admin"] .admin-section-title::before{
+  background:var(--sec-color);
+  box-shadow:0 0 6px var(--sec-glow);
+}
+[data-seccion="admin"] .dios-tab.active{
+  background:var(--sec-bg-strong)!important;
+  color:var(--sec-color)!important;
+  border-color:var(--sec-border-strong)!important;
+  box-shadow:0 2px 14px var(--sec-glow);
+}
+[data-seccion="admin"] .admin-panel:hover{
+  border-color:var(--sec-border-strong);
+  box-shadow:0 6px 26px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06),0 0 0 1px var(--sec-border-strong);
+}
+[data-seccion="admin"] .nav-item-dios.active{
+  background:var(--sec-bg-strong)!important;
+  border-color:var(--sec-border-strong)!important;
+  box-shadow:0 0 20px var(--sec-glow);
+}
+[data-seccion="admin"] .topbar{
+  border-bottom-color:var(--sec-border-strong)!important;
+  background:linear-gradient(90deg,rgba(var(--sec-rgb),.03),#fff 40%)!important;
+}
 
 /* Barra de acento en section-header: elemento real */
 .section-accent-bar{
@@ -5106,26 +5485,49 @@ function _aplicarTemaSidebarNav(s){
        asistente         #0D9488  Teal
        admin             #A16207  Oro
   ─────────────────────────────────────────────────────────────────────── */
+  /* ── PALETA DE SECCIONES — v48 (colores revisados para identidad fuerte) ──
+     Cada sección tiene color principal + variante oscura para texto legible.
+     ─────────────────────────────────────────────────────────────────────── */
   var TEMAS={
-    'inicio':           {color:'#2563EB', rgb:'37,99,235'},
-    'tiendas':          {color:'#DC2626', rgb:'220,38,38'},
-    'misiones':         {color:'#CA8A04', rgb:'202,138,4'},
-    'tracker':          {color:'#16A34A', rgb:'22,163,74'},
-    'torneos':          {color:'#7C3AED', rgb:'124,58,237'},
-    'perfil':           {color:'#4F46E5', rgb:'79,70,229'},
-    'vidas-sacrificios':{color:'#E11D48', rgb:'225,29,72'},
-    'medallas-torneos': {color:'#D97706', rgb:'217,119,6'},
-    'eventos':          {color:'#C026D3', rgb:'192,38,211'},
-    'duelos':           {color:'#DB2777', rgb:'219,39,119'},
-    'red-entrenadores': {color:'#0891B2', rgb:'8,145,178'},
-    'hall-of-fame':     {color:'#65A30D', rgb:'101,163,13'},
-    'museo':            {color:'#B45309', rgb:'180,83,9'},
-    'ruletas':          {color:'#EA580C', rgb:'234,88,12'},
-    'asistente':        {color:'#0D9488', rgb:'13,148,136'},
-    'admin':            {color:'#A16207', rgb:'161,98,7'},
+    /* color: acento visual | dark: variante oscura legible como texto | rgb: decimal del color */
+    'inicio':           {color:'#2563EB', dark:'#1d4ed8', rgb:'37,99,235'},
+    'tiendas':          {color:'#DC2626', dark:'#b91c1c', rgb:'220,38,38'},
+    'misiones':         {color:'#B45309', dark:'#92400e', rgb:'180,83,9'},
+    'tracker':          {color:'#16A34A', dark:'#15803d', rgb:'22,163,74'},
+    'torneos':          {color:'#7C3AED', dark:'#6d28d9', rgb:'124,58,237'},
+    'perfil':           {color:'#4338CA', dark:'#3730a3', rgb:'67,56,202'},
+    'vidas-sacrificios':{color:'#E11D48', dark:'#be123c', rgb:'225,29,72'},
+    'medallas-torneos': {color:'#C97B00', dark:'#a16207', rgb:'201,123,0'},
+    'eventos':          {color:'#C026D3', dark:'#a21caf', rgb:'192,38,211'},
+    'duelos':           {color:'#BE123C', dark:'#9f1239', rgb:'190,18,60'},
+    'red-entrenadores': {color:'#0891B2', dark:'#0e7490', rgb:'8,145,178'},
+    'hall-of-fame':     {color:'#B45309', dark:'#92400e', rgb:'180,83,9'},
+    'museo':            {color:'#4D7C0F', dark:'#3f6212', rgb:'77,124,15'},
+    'ruletas':          {color:'#EA580C', dark:'#c2410c', rgb:'234,88,12'},
+    'asistente':        {color:'#0D9488', dark:'#0f766e', rgb:'13,148,136'},
+    'bitacora':         {color:'#0369A1', dark:'#075985', rgb:'3,105,161'},
+    'admin':            {color:'#A16207', dark:'#854d0e', rgb:'161,98,7'},
   };
   var t=TEMAS[s]||TEMAS['inicio'];
-  var c=t.color, r=t.rgb;
+  var c=t.color, r=t.rgb, dk=t.dark||t.color;
+
+  /* ── Setear todas las variables --sec-* en :root para que el CSS las use ── */
+  var root=document.documentElement;
+  root.style.setProperty('--sec-color', c);
+  root.style.setProperty('--sec-rgb', r);
+  root.style.setProperty('--sec-bg', 'rgba('+r+',.07)');
+  root.style.setProperty('--sec-bg-strong', 'rgba('+r+',.13)');
+  root.style.setProperty('--sec-border', 'rgba('+r+',.25)');
+  root.style.setProperty('--sec-border-strong', 'rgba('+r+',.45)');
+  root.style.setProperty('--sec-glow', 'rgba('+r+',.18)');
+  root.style.setProperty('--sec-btn-bg', 'rgba('+r+',.1)');
+  root.style.setProperty('--sec-btn-color', dk);
+  root.style.setProperty('--sec-btn-border', 'rgba('+r+',.3)');
+  root.style.setProperty('--sec-bar', c);
+  root.style.setProperty('--sec-tag-bg', 'rgba('+r+',.09)');
+  root.style.setProperty('--sec-tag-color', dk);
+  root.style.setProperty('--sec-card-top', 'rgba('+r+',.04)');
+  root.style.setProperty('--sec-topbar-border', 'rgba('+r+',.3)');
 
   document.body.setAttribute('data-seccion',s);
 
@@ -8685,8 +9087,43 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 47;
+const APP_VERSION = 48;
 const VERSIONES = [
+  {
+    version: 48,
+    fecha: '2026-08-14',
+    titulo: 'Fase 2 — Identidad visual real por sección',
+    resumen: 'Cada sección tiene ahora su propia identidad visual completa. Sistema de variables CSS dinámicas (--sec-*) seteadas por JS al navegar. Los componentes de cada sección adoptan el color y la personalidad de su temática sin duplicar código.',
+    nuevas: [
+      'Sistema de variables CSS dinámicas --sec-color, --sec-bg, --sec-border, --sec-glow, --sec-bar y otras — seteadas en :root al cambiar de sección',
+      'Bloque CSS con selectores [data-seccion="X"] para cada una de las 17 secciones — los componentes adoptan el tema sin código duplicado',
+      'Paleta de colores revisada y ampliada: cada sección tiene color principal + variante oscura legible como texto',
+    ],
+    mejoras: [
+      'Inicio (Azul) — stat-cards con borde superior coloreado, ticker con acento lateral, actividad feed con hover teñido',
+      'Misiones (Dorado) — cards con borde superior dorado, barra de progreso dorada, botón reclamar con acento áureo',
+      'Tiendas (Rojo) — items con hover de color, botón usar con tinte rojo, mochila con borde superior',
+      'Red de Entrenadores (Turquesa) — roster cards con acento lateral cian, hover teñido',
+      'Eventos (Fucsia) — combat cards con borde izquierdo de color, hover con glow',
+      'Duelos PvP (Carmesí) — tarjeta activa con gradiente carmesí, VS badge coloreado, ELO con acento',
+      'Torneos (Morado) — item cards con borde izquierdo morado, badge en-curso con acento, título de ronda coloreado',
+      'Asistente (Cian) — msgs con borde lateral cian, consejo con fondo teñido, badge coloreado',
+      'Perfil (Índigo) — títulos activos con acento índigo, layout opts con fondo teñido',
+      'Vidas y Sacrificios (Rosa-rojo) — cards con borde superior y hover de color',
+      'Medallas y Torneos (Dorado) — cards con borde superior dorado, número de torneos coloreado, glow en medallas',
+      'Bitácora (Azul petróleo) — línea cronológica y puntos en azul petróleo fijos (overlay independiente)',
+      'Tracker (Verde) — hover de filas teñido, botón captura con tinte verde, barra de progreso verde',
+      'Ruletas (Naranja) — cards con borde superior naranja, hover con glow cálido',
+      'Hall of Fame (Dorado oscuro) — cards con borde superior ámbar, glow en coronas',
+      'Museo (Verde oliva) — cards con borde superior oliva, hover con color',
+      'Modo Dios (Ámbar/Oro) — panels con borde y glow dorado, tabs activas con acento, topbar con tinte áureo, nav-item con glow especial',
+    ],
+    fixes: [],
+    rendimiento: [
+      'Una única función _aplicarTemaSidebarNav setea todas las variables -- en un solo ciclo, sin selectores redundantes',
+      'CSS usa var(--sec-*) en lugar de colores hardcoded por sección — cero duplicación de reglas',
+    ]
+  },
   {
     version: 47,
     fecha: '2026-08-14',
