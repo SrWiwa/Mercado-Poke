@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v57 | Build: 2026-08-17 -->
+<!-- Silph Co v58 | Build: 2026-08-17 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -7736,7 +7736,15 @@ window.trackerCambiarRecaptura = function(idx, nuevoEstado){
   if(nuevoEstado!=='no_hecha' && nuevoEstado!=='hecha' && nuevoEstado!=='perdida') return;
   var u = baseDatos.jugadores[userSesion];
   if(!u.tracker || !u.tracker[idx]) return;
-  u.tracker[idx].recaptura = nuevoEstado;
+  var entrada = u.tracker[idx];
+  var estadoAnterior = _trackerRecapturaEstado(entrada);
+  if(estadoAnterior === nuevoEstado) return; // sin cambio, no registrar
+  entrada.recaptura = nuevoEstado;
+  var nombreRuta = entrada.ruta || ('Ruta ' + (idx + 1));
+  var iconos = { hecha: '✅', perdida: '💀', no_hecha: '○' };
+  var textos = { hecha: 'Recaptura Hecha', perdida: 'Recaptura Perdida', no_hecha: 'Recaptura sin hacer' };
+  var msg = iconos[nuevoEstado] + ' ' + nombreRuta + ' — ' + textos[nuevoEstado] + '.';
+  inyectarEntradaDiarioAutomatica('🔄 ' + msg);
   guardarBD();
   renderizarTracker();
 };
@@ -9403,8 +9411,18 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 57;
+const APP_VERSION = 58;
 const VERSIONES = [
+  {
+    version: 58,
+    fecha: '2026-08-17',
+    titulo: 'Tracker — Recapturas vinculadas a Bitácora y Feed de Actividad',
+    resumen: 'Cada cambio de estado de recaptura (Hecha / Perdida / Sin hacer) queda registrado automáticamente en la Bitácora del jugador y en el Feed de Actividad del Inicio.',
+    nuevas: ['Cambiar el estado de recaptura de una ruta genera una entrada en la Bitácora y en el Feed de Actividad'],
+    mejoras: [],
+    rendimiento: [],
+    fixes: ['Cambiar recaptura al mismo estado que ya tenía no genera entrada duplicada'],
+  },
   {
     version: 57,
     fecha: '2026-08-17',
