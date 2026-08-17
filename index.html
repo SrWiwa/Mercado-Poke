@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v46 | Build: 2026-08-07 -->
+<!-- Silph Co v55 | Build: 2026-08-17 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -812,6 +812,14 @@ body,html{overflow-x:hidden;max-width:100vw}
 .tracker-btn-captura{background:rgba(22,101,52,.08);border:1px solid rgba(22,101,52,.3);color:#15803d;border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-family:var(--font-display);font-weight:700;cursor:pointer;white-space:nowrap}
 .tracker-btn-perdido{background:rgba(185,28,28,.08);border:1px solid rgba(185,28,28,.3);color:#b91c1c;border-radius:var(--r-sm);padding:6px 10px;font-size:11px;font-family:var(--font-display);font-weight:700;cursor:pointer;white-space:nowrap}
 .tracker-btn-reset{background:var(--bg-overlay);border:1px solid var(--borde);color:var(--txt-secondary);border-radius:var(--r-sm);padding:6px 9px;font-size:13px;cursor:pointer;flex-shrink:0}
+.tracker-recaptura{display:flex;align-items:center;gap:6px;margin-top:6px;padding:5px 8px;border-radius:var(--r-sm);border:1px solid var(--borde);background:var(--bg-overlay)}
+.tracker-recaptura-icono{font-size:11px;line-height:1;flex-shrink:0}
+.tracker-recaptura-texto{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-secondary);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tracker-recaptura-select{background:var(--bg-card);color:var(--txt-primary);border:1px solid var(--borde);border-radius:6px;font-family:var(--font-display);font-size:10px;padding:3px 6px;cursor:pointer;flex-shrink:0;-webkit-appearance:none;appearance:none}
+.tracker-recaptura.tracker-recaptura-hecha{border-color:rgba(22,101,52,.35);background:rgba(22,101,52,.08)}
+.tracker-recaptura.tracker-recaptura-hecha .tracker-recaptura-texto{color:#15803d}
+.tracker-recaptura.tracker-recaptura-perdida{border-color:rgba(185,28,28,.35);background:rgba(185,28,28,.08)}
+.tracker-recaptura.tracker-recaptura-perdida .tracker-recaptura-texto{color:#b91c1c}
 .tracker-progreso-bar{height:6px;background:var(--bg-overlay);border-radius:4px;overflow:hidden;display:flex;margin-bottom:14px}
 .tracker-progreso-fill{height:100%;background:var(--neon-legal);transition:width .3s ease}
 .tracker-progreso-fill.perdido{background:var(--neon-ilegal)}
@@ -4707,7 +4715,7 @@ window.confirmarNuevoLocke = function(){
 
 function crearTrackerDesdeRutas(rutas){
   return (rutas||[]).map(function(nombre, i){
-    return { orden:i, ruta:nombre, estado:'pendiente', pokemon:'', mote:'' };
+    return { orden:i, ruta:nombre, estado:'pendiente', pokemon:'', mote:'', recaptura:'no_hecha' };
   });
 }
 
@@ -6646,11 +6654,17 @@ function cargarDatosPerfilEnDOM(){if(!userSesion||!baseDatos.jugadores[userSesio
   document.getElementById('perf-locke-status').value=u.lockeStatus||'jugando';document.getElementById('perf-tipo-medallas').value=u.tipoMedallas||'medallas';document.getElementById('perf-num-medallas').value=u.numMedallas||0;document.getElementById('perf-txt-torneos').textContent=u.torneos||0;document.getElementById('perf-vidas-iniciales').value=u.vidasTotales||20;refrescarSelectsPersonalizados();renderizarInsigniasPerfil();cargarMejorPokemonEnPerfil();aplicarTemaLocke();renderizarBannerLocke();actualizarBadgeGimnasio();renderizarTitulosYTemas();if(document.getElementById('pv-tracker')&&document.getElementById('pv-tracker').classList.contains('active'))renderizarTracker();}
 
 /* ═══════════ TRACKER DE ENCUENTROS ═══════════ */
-/* Estructura por jugador: baseDatos.jugadores[uid].tracker = [{orden, ruta, estado:'pendiente'|'atrapado'|'perdido', pokemon, mote}] */
+/* Estructura por jugador: baseDatos.jugadores[uid].tracker = [{orden, ruta, estado:'pendiente'|'atrapado'|'perdido', pokemon, mote, recaptura:'no_hecha'|'hecha'|'perdida'}]
+   'recaptura' es un estado totalmente independiente de 'estado' (la captura original). Rutas antiguas sin
+   el campo se tratan como 'no_hecha' (ver _trackerRecapturaEstado) sin necesidad de migrar datos guardados. */
 
 function _trackerNombrePoke(entrada){
   if(!entrada.pokemon) return '';
   return entrada.mote ? `${entrada.pokemon} "${entrada.mote}"` : entrada.pokemon;
+}
+
+function _trackerRecapturaEstado(entrada){
+  return (entrada && (entrada.recaptura === 'hecha' || entrada.recaptura === 'perdida')) ? entrada.recaptura : 'no_hecha';
 }
 
 /* ════════════════════════════════════════
@@ -6931,6 +6945,20 @@ window.renderizarTracker = function(){
             + 'value="'+escaparHTML(_trackerNombrePoke(e))+'" '
             + 'onchange="trackerActualizarPokemon('+idx+',this.value)" '
             + 'oninput="trackerSugerirPokemon(this,'+idx+')" autocomplete="off">';
+    }
+    if(e.estado !== 'pendiente'){
+      var recEstado = _trackerRecapturaEstado(e);
+      var recIcono = recEstado==='hecha' ? '✅' : (recEstado==='perdida' ? '💀' : '○');
+      var recTexto = recEstado==='hecha' ? 'Hecha' : (recEstado==='perdida' ? 'Perdida' : 'No hecha');
+      fila += '<div class="tracker-recaptura tracker-recaptura-'+recEstado+'">';
+      fila += '<span class="tracker-recaptura-icono">'+recIcono+'</span>';
+      fila += '<span class="tracker-recaptura-texto">🔄 Recaptura: '+recTexto+'</span>';
+      fila += '<select class="tracker-recaptura-select" onchange="trackerCambiarRecaptura('+idx+',this.value)" title="Cambiar estado de recaptura">';
+      fila += '<option value="no_hecha"'+(recEstado==='no_hecha'?' selected':'')+'>No hecha</option>';
+      fila += '<option value="hecha"'+(recEstado==='hecha'?' selected':'')+'>Hecha</option>';
+      fila += '<option value="perdida"'+(recEstado==='perdida'?' selected':'')+'>Perdida</option>';
+      fila += '</select>';
+      fila += '</div>';
     }
     fila += '</div>';
     if(e.estado === 'pendiente'){
@@ -7691,6 +7719,19 @@ window.trackerCambiarEstado = function(idx, nuevoEstado){
   renderizarTracker();
   if(window.renderizarMapaInicio) renderizarMapaInicio();
   renderizarRankingRachas();
+};
+
+/* Cambia el estado de RECAPTURA de una ruta. Es un campo totalmente independiente
+   de 'estado' (la captura original): nunca lo lee ni lo modifica. No genera
+   estadísticas, contadores ni entradas nuevas — solo persiste junto al resto del tracker. */
+window.trackerCambiarRecaptura = function(idx, nuevoEstado){
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return;
+  if(nuevoEstado!=='no_hecha' && nuevoEstado!=='hecha' && nuevoEstado!=='perdida') return;
+  var u = baseDatos.jugadores[userSesion];
+  if(!u.tracker || !u.tracker[idx]) return;
+  u.tracker[idx].recaptura = nuevoEstado;
+  guardarBD();
+  renderizarTracker();
 };
 
 /* ═══ RACHAS DE CAPTURA / PÉRDIDA (premio y castigo en PF) ═══
@@ -9285,9 +9326,9 @@ window.erGuardarRutas = function(){
     u.tracker = limpias.map(function(nombre, i){
       var existing = trackerActual.find(function(t){ return t.ruta === nombre; });
       if(existing){
-        return { orden: i, ruta: nombre, estado: existing.estado, pokemon: existing.pokemon||'', mote: existing.mote||'' };
+        return { orden: i, ruta: nombre, estado: existing.estado, pokemon: existing.pokemon||'', mote: existing.mote||'', recaptura: _trackerRecapturaEstado(existing) };
       }
-      return { orden: i, ruta: nombre, estado: 'pendiente', pokemon: '', mote: '' };
+      return { orden: i, ruta: nombre, estado: 'pendiente', pokemon: '', mote: '', recaptura: 'no_hecha' };
     });
   });
 
@@ -9322,8 +9363,24 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 54;
+const APP_VERSION = 55;
 const VERSIONES = [
+  {
+    version: 55,
+    fecha: '2026-08-17',
+    titulo: 'Tracker de Rutas — Estado de Recaptura independiente',
+    resumen: 'Cada ruta del Tracker puede registrar ahora, además de la captura principal, un estado de Recaptura totalmente independiente (No hecha / Hecha / Perdida), directamente dentro de la misma tarjeta. No cambia la lógica de capturas ni de rutas existentes.',
+    nuevas: [
+      'Tracker: nuevo bloque "🔄 Recaptura" en cada ruta ya resuelta (capturada o perdida), con selector para marcarla como No hecha, Hecha o Perdida',
+      'El estado de recaptura es independiente del estado de captura original: cambiarlo nunca modifica la captura, el Pokémon ni la ruta',
+      'Cada Locke y cada jugador mantiene su propio estado de recaptura por ruta, guardado junto al resto del Tracker',
+      'Las rutas ya existentes que aún no tenían este dato aparecen automáticamente como "Recaptura: No hecha"',
+    ],
+    mejoras: [
+      'Editor de Rutas (Modo Dios): al guardar rutas, el estado de recaptura de cada jugador se conserva igual que la captura y el Pokémon',
+    ],
+    fixes: [],
+  },
   {
     version: 54,
     fecha: '2026-08-15',
