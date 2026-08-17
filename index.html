@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v56 | Build: 2026-08-17 -->
+<!-- Silph Co v57 | Build: 2026-08-17 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -9363,12 +9363,20 @@ window.erGuardarRutas = function(){
   if(window.renderizarMapaInicio) renderizarMapaInicio();
   if(window.renderizarMapaTracker) renderizarMapaTracker();
 
-  // Guardar en Firebase — async, pero los datos locales ya están actualizados
+  // Guardar en Firebase — async. Guardamos copia local de limpias para reasignarla
+  // después del merge, ya que guardarBD puede sobreescribir baseDatos con datos del
+  // servidor que aún no tienen las rutasDefinidas actualizadas (race condition).
+  var _lipiasSnapshot = limpias.slice();
   guardarBD().then(function(){
-    // Segundo render tras confirmar el guardado en Firebase,
-    // por si el merge de guardarBD actualizó baseDatos con datos del servidor
+    // Re-asegurar que las rutas locales siguen en baseDatos tras el merge de Firebase
+    if(!baseDatos.lockeActivo) baseDatos.lockeActivo = {};
+    if(JSON.stringify(baseDatos.lockeActivo.rutasDefinidas) !== JSON.stringify(_lipiasSnapshot)){
+      baseDatos.lockeActivo.rutasDefinidas = _lipiasSnapshot.slice();
+    }
+    // Segundo render tras confirmar el guardado
     if(window.renderizarTracker) renderizarTracker();
     if(window.renderizarMapaInicio) renderizarMapaInicio();
+    if(window.renderizarMapaTracker) renderizarMapaTracker();
   }).catch(function(){});
 
   logAdmin('🗺️','Editor de Rutas','Rutas actualizadas: '+limpias.length+' rutas');
@@ -9395,8 +9403,22 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 56;
+const APP_VERSION = 57;
 const VERSIONES = [
+  {
+    version: 57,
+    fecha: '2026-08-17',
+    titulo: 'Fix: Mapa de Inicio se actualiza al guardar rutas desde Modo Dios',
+    resumen: 'Corregido el bug por el que el mapa de la sección Inicio no se actualizaba al añadir rutas desde Modo Dios, debido a una race condition entre guardarBD y el listener de Firebase.',
+    nuevas: [],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [
+      'Bug: el mapa de Inicio no se actualizaba tras guardar rutas desde Modo Dios',
+      'Tras el merge de Firebase en guardarBD, se reaseguran las rutasDefinidas locales si el servidor devolvió datos obsoletos',
+      'Segundo render completo del mapa (Inicio y Tracker) tras confirmar el guardado en Firebase',
+    ],
+  },
   {
     version: 56,
     fecha: '2026-08-17',
