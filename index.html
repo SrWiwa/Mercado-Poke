@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v55 | Build: 2026-08-17 -->
+<!-- Silph Co v56 | Build: 2026-08-17 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -6238,7 +6238,14 @@ window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySele
 window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='ficha')renderizarTitulosYTemas();if(tab==='carnet')renderizarPanelCarnet();};
 
 /* ═══ LOGIN ═══ */
-window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;sessionStorage.setItem('silph_user_sesion',id);if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[]),misionesContadores:{}};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.tracker)u.tracker=crearTrackerDesdeRutas((baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[]);if(!u.misionesContadores)u.misionesContadores={};}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();obtenerMisionesJugador(id);actualizarWidgetMisionesInicio();actualizarCountdownMisiones();_actualizarSidebarFooter();_aplicarTemaSidebarNav('inicio');};
+window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;sessionStorage.setItem('silph_user_sesion',id);var _rutasLocke=(baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[];if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas(_rutasLocke),misionesContadores:{}};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.misionesContadores)u.misionesContadores={};
+/* Sincronizar tracker con rutasDefinidas del locke:
+   — Si no tiene tracker, crearlo desde cero.
+   — Si tiene tracker pero el locke ahora tiene rutas que no están en el tracker
+     (caso: locke creado sin rutas y rutas añadidas después desde Modo Dios),
+     añadir las rutas nuevas como 'pendiente' conservando los estados existentes.
+   — No duplicar rutas que ya existen en el tracker.                              */
+if(!u.tracker){u.tracker=crearTrackerDesdeRutas(_rutasLocke);}else if(_rutasLocke.length>0){var _nombresEnTracker=u.tracker.map(function(e){return e.ruta;});var _rutagFaltantes=_rutasLocke.filter(function(r){return _nombresEnTracker.indexOf(r)<0;});if(_rutagFaltantes.length>0){_rutasLocke.forEach(function(nombre,i){var yaExiste=u.tracker.find(function(t){return t.ruta===nombre;});if(!yaExiste){u.tracker.push({orden:i,ruta:nombre,estado:'pendiente',pokemon:'',mote:'',recaptura:'no_hecha'});}else{yaExiste.orden=i;}});}}}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();obtenerMisionesJugador(id);actualizarWidgetMisionesInicio();actualizarCountdownMisiones();_actualizarSidebarFooter();_aplicarTemaSidebarNav('inicio');};
 window.cerrarSesionOperador=function(){reproducirSonido('puerta_cerrar');userSesion=null;sessionStorage.removeItem('silph_user_sesion');document.getElementById('app-shell').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('login-screen').classList.remove('fade-out');document.getElementById('login-nombre').value='';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";cerrarDrawer();};
 function actualizarComprasPorTiempo(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ahora=Date.now(),tr=ahora-u.ultimaRecarga,hoy=new Date().toDateString();if(!u.comprasHoy||u.comprasHoy._fecha!==hoy){u.comprasHoy={_fecha:hoy};}if(tr>=MS_EN_6_HORAS){let cg=Math.floor(tr/MS_EN_6_HORAS);u.comprasDisponibles=Math.min(MAX_COMPRAS,(u.comprasDisponibles||0)+cg);u.ultimaRecarga=u.ultimaRecarga+(cg*MS_EN_6_HORAS);u.comprasHoy._global=Math.max(0,(u.comprasHoy._global||0)-cg);guardarBD();return true;}return false;}
 /* Comprobar la recarga de compras cada 6h de forma periódica, sin necesidad de recargar la página */
@@ -9319,6 +9326,24 @@ window.erGuardarRutas = function(){
   // — rutas existentes (por nombre) conservan su estado y pokémon
   // — rutas nuevas se añaden como 'pendiente'
   // — rutas eliminadas desaparecen del tracker
+  //
+  // IMPORTANTE: antes de modificar baseDatos.jugadores, forzamos que _ultimaBDConocida
+  // refleje el estado ACTUAL de cada jugador (antes de los cambios de tracker).
+  // Esto garantiza que guardarBD detecte el diff correctamente en su merge
+  // inteligente y no descarte los trackers recién calculados por considerarlos
+  // iguales al snapshot anterior del servidor.
+  if(!window._ultimaBDConocida) window._ultimaBDConocida = {};
+  if(!window._ultimaBDConocida.jugadores) window._ultimaBDConocida.jugadores = {};
+  Object.keys(baseDatos.jugadores || {}).forEach(function(uid){
+    // Registrar el estado actual del jugador como "anterior conocido"
+    // para que cualquier cambio posterior (tracker nuevo) sea detectado como diff.
+    window._ultimaBDConocida.jugadores[uid] = JSON.parse(JSON.stringify(baseDatos.jugadores[uid] || {}));
+  });
+  // Registrar también el lockeActivo anterior antes de cambiarlo
+  window._ultimaBDConocida.lockeActivo = JSON.parse(JSON.stringify(
+    window._ultimaBDConocida.lockeActivo || baseDatos.lockeActivo || {}
+  ));
+
   Object.keys(baseDatos.jugadores || {}).forEach(function(uid){
     var u = baseDatos.jugadores[uid];
     if(!u) return;
@@ -9332,14 +9357,21 @@ window.erGuardarRutas = function(){
     });
   });
 
-  guardarBD();
-  logAdmin('🗺️','Editor de Rutas','Rutas actualizadas: '+limpias.length+' rutas');
+  // Refrescar tracker y mapa en tiempo real ANTES de guardarBD (con datos locales ya correctos)
   erRender();
-
-  // Refrescar tracker y mapa en tiempo real para todos los que estén viendo
   if(window.renderizarTracker) renderizarTracker();
   if(window.renderizarMapaInicio) renderizarMapaInicio();
   if(window.renderizarMapaTracker) renderizarMapaTracker();
+
+  // Guardar en Firebase — async, pero los datos locales ya están actualizados
+  guardarBD().then(function(){
+    // Segundo render tras confirmar el guardado en Firebase,
+    // por si el merge de guardarBD actualizó baseDatos con datos del servidor
+    if(window.renderizarTracker) renderizarTracker();
+    if(window.renderizarMapaInicio) renderizarMapaInicio();
+  }).catch(function(){});
+
+  logAdmin('🗺️','Editor de Rutas','Rutas actualizadas: '+limpias.length+' rutas');
 
   var av = document.getElementById('er-aviso-cambios');
   if(av){
@@ -9363,8 +9395,23 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 55;
+const APP_VERSION = 56;
 const VERSIONES = [
+  {
+    version: 56,
+    fecha: '2026-08-17',
+    titulo: 'Fix: Rutas de Modo Dios sincronizadas con el Tracker',
+    resumen: 'Corregido el bug por el que las rutas añadidas desde Modo Dios no aparecían en el Tracker de Rutas cuando el Locke había sido creado originalmente sin rutas.',
+    nuevas: [],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [
+      'Bug: las rutas añadidas desde Modo Dios no aparecían en el Tracker si el Locke fue creado sin rutas',
+      'Al guardar rutas desde Modo Dios, _ultimaBDConocida se actualiza antes del merge de Firebase para que todos los trackers de jugadores se persistan correctamente',
+      'Al iniciar sesión, si el Locke tiene rutas definidas que no están en el tracker del jugador, se añaden automáticamente como pendiente sin duplicar ni borrar estados existentes',
+      'Segundo render del Tracker tras confirmar el guardado en Firebase, evitando race condition entre guardarBD y el listener onValue',
+    ],
+  },
   {
     version: 55,
     fecha: '2026-08-17',
