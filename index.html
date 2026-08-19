@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v58 | Build: 2026-08-17 -->
+<!-- Silph Co v59 | Build: 2026-08-17 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5233,13 +5233,16 @@ async function guardarBD(){
           fresco[campo] = local[campo];
         }
       });
+      /* await set() para que Firebase confirme ANTES de que onValue se dispare.
+         Sin este await, onValue puede llegar con el snapshot pre-guardado y
+         machacar baseDatos (incluido lockeActivo.rutasDefinidas) con datos viejos. */
+      await set(ref(db,'silph_co_market'), fresco);
       baseDatos = fresco;
       window._ultimaBDConocida = JSON.parse(JSON.stringify(fresco));
-      set(ref(db,'silph_co_market'), fresco);
       return;
     }
   }catch(err){ /* si falla la relectura (sin red, etc.), seguimos con el plan B de abajo */ }
-  set(ref(db,'silph_co_market'), local);
+  await set(ref(db,'silph_co_market'), local);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -9371,17 +9374,10 @@ window.erGuardarRutas = function(){
   if(window.renderizarMapaInicio) renderizarMapaInicio();
   if(window.renderizarMapaTracker) renderizarMapaTracker();
 
-  // Guardar en Firebase — async. Guardamos copia local de limpias para reasignarla
-  // después del merge, ya que guardarBD puede sobreescribir baseDatos con datos del
-  // servidor que aún no tienen las rutasDefinidas actualizadas (race condition).
-  var _lipiasSnapshot = limpias.slice();
+  // Guardar en Firebase con await implícito: guardarBD ahora hace await set(), por lo que
+  // el onValue que se dispara después ya tiene los datos correctos (incluyendo rutasDefinidas).
+  // El segundo render tras el guardado garantiza que el mapa refleje siempre el estado final.
   guardarBD().then(function(){
-    // Re-asegurar que las rutas locales siguen en baseDatos tras el merge de Firebase
-    if(!baseDatos.lockeActivo) baseDatos.lockeActivo = {};
-    if(JSON.stringify(baseDatos.lockeActivo.rutasDefinidas) !== JSON.stringify(_lipiasSnapshot)){
-      baseDatos.lockeActivo.rutasDefinidas = _lipiasSnapshot.slice();
-    }
-    // Segundo render tras confirmar el guardado
     if(window.renderizarTracker) renderizarTracker();
     if(window.renderizarMapaInicio) renderizarMapaInicio();
     if(window.renderizarMapaTracker) renderizarMapaTracker();
@@ -9411,8 +9407,21 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 58;
+const APP_VERSION = 59;
 const VERSIONES = [
+  {
+    version: 59,
+    fecha: '2026-08-17',
+    titulo: 'Fix: Mapa se actualiza correctamente tras guardar rutas desde Modo Dios',
+    resumen: 'Corregida la race condition en guardarBD que provocaba que el onValue de Firebase sobreescribiera baseDatos con datos obsoletos del servidor antes de que el set() confirmara, borrando del mapa las rutas recién añadidas.',
+    nuevas: [],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [
+      'guardarBD ahora hace await set() antes de asignar baseDatos = fresco, garantizando que el onValue posterior ya tenga los datos correctos (incluido lockeActivo.rutasDefinidas)',
+      'Eliminada la comprobación redundante de _lipiasSnapshot en erGuardarRutas, innecesaria con el fix de guardarBD',
+    ],
+  },
   {
     version: 58,
     fecha: '2026-08-17',
