@@ -827,13 +827,17 @@ body,html{overflow-x:hidden;max-width:100vw}
 .mision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .mision-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;gap:8px;transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
 .mision-card:hover{border-color:var(--borde-hover);transform:translateY(-2px)}
+.mision-card.dif-normal{border-color:rgba(99,102,241,.25)}
 .mision-card.dif-dificil{border-color:rgba(62,111,166,.3)}
+.mision-card.dif-muydificil{border-color:rgba(168,85,247,.35);background:linear-gradient(135deg,var(--bg-elevated),rgba(168,85,247,.04))}
 .mision-card.dif-epica{border-color:rgba(201,154,46,.4);background:linear-gradient(135deg,var(--bg-elevated),rgba(201,154,46,.05))}
 .mision-card.reclamada{opacity:.6}
 .mision-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .mision-badge-dif{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:9px;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.mision-badge-dif.dif-comun{background:rgba(30,158,115,.1);color:#34d399;border:1px solid rgba(30,158,115,.2)}
+.mision-badge-dif.dif-facil{background:rgba(30,158,115,.1);color:#34d399;border:1px solid rgba(30,158,115,.2)}
+.mision-badge-dif.dif-normal{background:rgba(99,102,241,.1);color:#a5b4fc;border:1px solid rgba(99,102,241,.25)}
 .mision-badge-dif.dif-dificil{background:rgba(62,111,166,.1);color:#93c5fd;border:1px solid rgba(62,111,166,.2)}
+.mision-badge-dif.dif-muydificil{background:rgba(168,85,247,.12);color:#d8b4fe;border:1px solid rgba(168,85,247,.3)}
 .mision-badge-dif.dif-epica{background:rgba(180,83,9,.1);color:#92400e;border:1px solid rgba(180,83,9,.25)}
 .mision-recompensa-chip{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--txt-secondary);white-space:nowrap}
 .mision-icon{font-size:26px}
@@ -841,7 +845,9 @@ body,html{overflow-x:hidden;max-width:100vw}
 .mision-desc{font-size:12px;color:var(--txt-secondary);line-height:1.5;min-height:28px}
 .mision-progreso-bar{width:100%;background:rgba(16,24,40,.08);border-radius:99px;height:8px;overflow:hidden}
 .mision-progreso-fill{height:100%;border-radius:99px;background:var(--neon-legal);transition:width .4s ease}
+.mision-progreso-fill.dif-normal{background:rgba(99,102,241,.75)}
 .mision-progreso-fill.dif-dificil{background:var(--neon-intercambio)}
+.mision-progreso-fill.dif-muydificil{background:rgba(168,85,247,.8)}
 .mision-progreso-fill.dif-epica{background:var(--neon-packs)}
 .mision-progreso-num{font-family:var(--font-display);font-size:11px;color:var(--txt-secondary);text-align:right;font-weight:600}
 .mision-accion{margin-top:4px}
@@ -1189,7 +1195,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 /* ── COMPONENTES GLOBALES que adoptan el tema activo ── */
 
 /* Barra de progreso genérica */
-[data-seccion] .mision-progreso-fill:not(.dif-dificil):not(.dif-epica){
+[data-seccion] .mision-progreso-fill:not(.dif-normal):not(.dif-dificil):not(.dif-muydificil):not(.dif-epica){
   background:var(--sec-bar);
 }
 [data-seccion] .tracker-progreso-fill:not(.perdido){
@@ -1258,7 +1264,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   border-color:var(--sec-border-strong);
   box-shadow:0 4px 20px var(--sec-glow);
 }
-[data-seccion="misiones"] .mision-progreso-fill:not(.dif-dificil):not(.dif-epica){
+[data-seccion="misiones"] .mision-progreso-fill:not(.dif-normal):not(.dif-dificil):not(.dif-muydificil):not(.dif-epica){
   background:linear-gradient(90deg,var(--sec-color),color-mix(in srgb,var(--sec-color) 70%,#fff));
 }
 [data-seccion="misiones"] .btn-mision-reclamar{
@@ -5376,33 +5382,72 @@ function misionMulberry32(seed){
   };
 }
 
-const MISION_POOL_COMUN = [
-  {tipo:'capturas', metaOpts:[2,3,4], titulo:'Cazador Novato', desc:function(m){return `Completa ${m} capturas.`;}, icon:'🎯'},
-  {tipo:'rutas', metaOpts:[1,2], titulo:'De Ruta en Ruta', desc:function(m){return `Completa ${m===1?'una ruta':'dos rutas'}.`;}, icon:'🗺️'},
-  {tipo:'comprados', metaOpts:[2,3], titulo:'Ir de Compras', desc:function(m){return `Compra ${m} objetos.`;}, icon:'🛍️'},
-  {tipo:'dinero', metaOpts:[3000,5000], titulo:'Ahorro Pokéinomano', desc:function(m){return `Consigue ${m.toLocaleString()}$.`;}, icon:'💰'},
-  {tipo:'gachaAbiertas', metaOpts:[1,2], titulo:'Prueba tu Suerte', desc:function(m){return `Abre ${m} Gacha${m>1?'s':''}.`;}, icon:'🎰'},
-  {tipo:'pfGastado', metaOpts:[3,5], titulo:'Invierte tus PF', desc:function(m){return `Gasta ${m} PF.`;}, icon:'🔮'},
-  {tipo:'objetosUsados', metaOpts:[1,2], titulo:'Usa tu Mochila', desc:function(m){return `Usa ${m} objeto${m>1?'s':''} de tu mochila.`;}, icon:'🎒'},
-  {tipo:'manual', metaOpts:[1], titulo:'Recaptura de Emergencia', desc:function(){return 'Usa una recaptura durante tus capturas. Márcalo tú mismo cuando lo hagas.';}, icon:'🔁', manual:true}
+/* ──────────────────────────────────────────────────────────
+   POOLS DE MISIONES — 5 dificultades:
+   facil (×5) · normal (×2) · dificil (×1) · muydificil (×1) · epica (×1)
+
+   Regla de recompensas: las misiones de tipo 'dineroGastado' o 'pfGastado'
+   (gastar dinero/PF) nunca pueden recompensar dinero ni PF respectivamente.
+   Cada misión lleva un campo 'excluirRecompensas' con los tipos vetados.
+   ────────────────────────────────────────────────────────── */
+const MISION_POOL_FACIL = [
+  {tipo:'capturas',      metaOpts:[1,2,3],      titulo:'Primera Captura',       desc:function(m){return `Consigue ${m} captura${m>1?'s':''} hoy.`;},                                          icon:'🎯'},
+  {tipo:'rutas',         metaOpts:[1],           titulo:'En Marcha',             desc:function(){return 'Completa una ruta.';},                                                                  icon:'🗺️'},
+  {tipo:'comprados',     metaOpts:[1,2],         titulo:'Ir de Compras',         desc:function(m){return `Compra ${m} objeto${m>1?'s':''} en la tienda.`;},                                    icon:'🛍️'},
+  {tipo:'dinero',        metaOpts:[1000,2000,3000], titulo:'Primer Ahorro',      desc:function(m){return `Acumula ${m.toLocaleString()} P₠.`;},                                                icon:'💰'},
+  {tipo:'gachaAbiertas', metaOpts:[1],           titulo:'Prueba tu Suerte',      desc:function(){return 'Abre 1 Gacha.';},                                                                      icon:'🎰'},
+  {tipo:'objetosUsados', metaOpts:[1],           titulo:'Usa tu Mochila',        desc:function(){return 'Usa 1 objeto de tu mochila.';},                                                        icon:'🎒'},
+  {tipo:'manual',        metaOpts:[1],           titulo:'Recaptura de Guardia',  desc:function(){return 'Usa una recaptura. Márcala tú mismo cuando lo hagas.';},                              icon:'🔁', manual:true},
+  {tipo:'capturas',      metaOpts:[2,3],         titulo:'Cazador Madrugador',    desc:function(m){return `Completa ${m} capturas antes de que acabe la rotación.`;},                           icon:'🌅'},
+  {tipo:'rutas',         metaOpts:[1,2],         titulo:'Explorador Básico',     desc:function(m){return `Completa ${m===1?'una ruta':'dos rutas'} de tu recorrido.`;},                        icon:'🥾'},
+  {tipo:'comprados',     metaOpts:[2,3],         titulo:'De Compras otra vez',   desc:function(m){return `Compra ${m} objetos en cualquier tienda.`;},                                         icon:'🏪'},
+];
+const MISION_POOL_NORMAL = [
+  {tipo:'capturas',      metaOpts:[4,5],         titulo:'Cazador Novato',        desc:function(m){return `Completa ${m} capturas.`;},                                                           icon:'🎯'},
+  {tipo:'rutas',         metaOpts:[2,3],         titulo:'De Ruta en Ruta',       desc:function(m){return `Completa ${m} rutas.`;},                                                              icon:'🗺️'},
+  {tipo:'dinero',        metaOpts:[4000,6000],   titulo:'Ahorro Pokéinómano',    desc:function(m){return `Acumula ${m.toLocaleString()} P₠.`;},                                                icon:'💰'},
+  {tipo:'gachaAbiertas', metaOpts:[2,3],         titulo:'Apostador Casual',      desc:function(m){return `Abre ${m} Gachas.`;},                                                                 icon:'🎰'},
+  {tipo:'pfGastado',     metaOpts:[3,5],         titulo:'Invierte tus PF',       desc:function(m){return `Gasta ${m} PF en la tienda PF.`;},                                                   icon:'🔮', excluirRecompensas:['pf']},
+  {tipo:'objetosUsados', metaOpts:[2,3],         titulo:'Inventario Activo',     desc:function(m){return `Usa ${m} objetos de tu mochila.`;},                                                  icon:'🎒'},
+  {tipo:'comprados',     metaOpts:[3,4],         titulo:'Gran Comprador',        desc:function(m){return `Compra ${m} objetos hoy.`;},                                                          icon:'🛒'},
+  {tipo:'capturas',      metaOpts:[3,4],         titulo:'Racha de Capturas',     desc:function(m){return `Registra ${m} capturas en la rotación.`;},                                           icon:'📋'},
 ];
 const MISION_POOL_DIFICIL = [
-  {tipo:'medallas', metaOpts:[1], tituloMedallas:'Reto de Gimnasio', tituloKahunas:'Reto de Kahuna', icon:'🏅'},
-  {tipo:'torneosJugados', metaOpts:[1], titulo:'Ponte a Prueba', desc:function(){return 'Participa en un torneo.';}, icon:'🏟️'},
-  {tipo:'dineroGastado', metaOpts:[5000,8000], titulo:'Gran Comprador', desc:function(m){return `Gasta ${m.toLocaleString()}$.`;}, icon:'💸'},
-  {tipo:'capturas', metaOpts:[6,8], titulo:'Cazador Experto', desc:function(m){return `Completa ${m} capturas.`;}, icon:'🎯'},
-  {tipo:'sinMuertes', metaOpts:[1], titulo:'Mano Firme', desc:function(){return 'No pierdas ningún Pokémon durante esta rotación.';}, icon:'🛡️'}
+  {tipo:'medallas',      metaOpts:[1],           tituloMedallas:'Reto de Gimnasio', tituloKahunas:'Reto de Kahuna',                                                                            icon:'🏅'},
+  {tipo:'torneosJugados',metaOpts:[1],           titulo:'Ponte a Prueba',        desc:function(){return 'Participa en un torneo.';},                                                            icon:'🏟️'},
+  {tipo:'dineroGastado', metaOpts:[5000,8000],   titulo:'Gran Derrochador',      desc:function(m){return `Gasta ${m.toLocaleString()} P₠ comprando.`;},                                       icon:'💸', excluirRecompensas:['dinero']},
+  {tipo:'capturas',      metaOpts:[6,8],         titulo:'Cazador Experto',       desc:function(m){return `Completa ${m} capturas.`;},                                                           icon:'🎯'},
+  {tipo:'sinMuertes',    metaOpts:[1],           titulo:'Mano Firme',            desc:function(){return 'No pierdas ningún Pokémon en esta rotación.';},                                       icon:'🛡️'},
+  {tipo:'pfGastado',     metaOpts:[8,10],        titulo:'Maestro PF',            desc:function(m){return `Gasta ${m} PF en la tienda PF.`;},                                                   icon:'🔮', excluirRecompensas:['pf']},
+  {tipo:'rutas',         metaOpts:[3,4],         titulo:'Explorador Avanzado',   desc:function(m){return `Completa ${m} rutas de tu recorrido.`;},                                             icon:'🗺️'},
+  {tipo:'gachaAbiertas', metaOpts:[4,5],         titulo:'Adicto a la Gacha',     desc:function(m){return `Abre ${m} Gachas.`;},                                                                 icon:'🎰'},
+];
+const MISION_POOL_MUYDIFICIL = [
+  {tipo:'medallas',      metaOpts:[1],           tituloMedallas:'Líder al Límite', tituloKahunas:'Kahuna al Límite',                                                                           icon:'🏅'},
+  {tipo:'sinMuertes',    metaOpts:[1],           titulo:'Intocable',             desc:function(){return 'Completa la rotación sin perder ningún Pokémon.';},                                    icon:'🛡️'},
+  {tipo:'capturas',      metaOpts:[10,12],       titulo:'Coleccionista Serio',   desc:function(m){return `Consigue ${m} capturas en esta rotación.`;},                                         icon:'🎯'},
+  {tipo:'torneosGanados',metaOpts:[1],           titulo:'No Hay Segunda Lugar',  desc:function(){return 'Gana un torneo.';},                                                                    icon:'🏆'},
+  {tipo:'dineroGastado', metaOpts:[12000,15000], titulo:'Magnate Pokémon',       desc:function(m){return `Gasta ${m.toLocaleString()} P₠ en la tienda.`;},                                    icon:'💸', excluirRecompensas:['dinero']},
+  {tipo:'rutas',         metaOpts:[4,5],         titulo:'Nuzlocker Incansable',  desc:function(m){return `Completa ${m} rutas en esta rotación.`;},                                            icon:'🗺️'},
+  {tipo:'manual',        metaOpts:[1],           titulo:'Último Recurso',        desc:function(){return 'Usa una recaptura en un momento crítico. Márcalo tú mismo.';},                        icon:'🔁', manual:true},
 ];
 const MISION_POOL_EPICA = [
-  {tipo:'torneosGanados', metaOpts:[1], titulo:'Campeón del Día', desc:function(){return 'Gana un torneo.';}, icon:'🏆'},
-  {tipo:'revividos', metaOpts:[1], titulo:'Segunda Oportunidad', desc:function(){return 'Sacrifica un Pokémon para recuperar vidas (si tu modalidad lo permite).';}, icon:'🔥'},
-  {tipo:'rutas', metaOpts:[3,4], titulo:'Explorador Incansable', desc:function(m){return `Completa ${m} rutas.`;}, icon:'🗺️'},
-  {tipo:'sinMuertes', metaOpts:[1], titulo:'Racha Perfecta', desc:function(){return 'Sobrevive toda la rotación sin ninguna baja.';}, icon:'✨'}
+  {tipo:'torneosGanados',metaOpts:[1],           titulo:'Campeón del Día',       desc:function(){return 'Gana un torneo.';},                                                                    icon:'🏆'},
+  {tipo:'revividos',     metaOpts:[1],           titulo:'Segunda Oportunidad',   desc:function(){return 'Sacrifica un Pokémon para recuperar vidas (si tu modalidad lo permite).';},          icon:'🔥'},
+  {tipo:'rutas',         metaOpts:[5,6],         titulo:'Explorador Legendario', desc:function(m){return `Completa ${m} rutas.`;},                                                              icon:'🗺️'},
+  {tipo:'sinMuertes',    metaOpts:[1],           titulo:'Racha Perfecta',        desc:function(){return 'Sobrevive toda la rotación sin ninguna baja.';},                                      icon:'✨'},
+  {tipo:'capturas',      metaOpts:[14,16],       titulo:'Dex Completa',          desc:function(m){return `Registra ${m} capturas.`;},                                                           icon:'📖'},
+  {tipo:'medallas',      metaOpts:[1],           tituloMedallas:'Desafío Élite', tituloKahunas:'Desafío Gran Kahuna',                                                                          icon:'🏅'},
 ];
+
+/* Recompensas por dificultad.
+   Las misiones con 'excluirRecompensas' filtran automáticamente los tipos vetados. */
 const MISION_RECOMPENSA_POOLS = {
-  comun:[{tipo:'pf',min:2,max:4},{tipo:'dinero',min:300,max:600}],
-  dificil:[{tipo:'dinero',min:800,max:1500},{tipo:'pf',min:5,max:8},{tipo:'gacha',min:1,max:1}],
-  epica:[{tipo:'gacha',min:1,max:1},{tipo:'dinero',min:2000,max:3500},{tipo:'ticket',min:1,max:1},{tipo:'vida',min:1,max:1}]
+  facil:      [{tipo:'dinero',min:200,max:500},   {tipo:'pf',min:1,max:3},       {tipo:'gacha',min:1,max:1},  {tipo:'recaptura',min:1,max:1}],
+  normal:     [{tipo:'dinero',min:500,max:1000},  {tipo:'pf',min:3,max:6},       {tipo:'gacha',min:1,max:1},  {tipo:'gachaPf',min:1,max:1},  {tipo:'recaptura',min:1,max:1}],
+  dificil:    [{tipo:'dinero',min:800,max:1500},  {tipo:'pf',min:5,max:8},       {tipo:'gacha',min:1,max:1},  {tipo:'gachaPf',min:1,max:1},  {tipo:'vida',min:1,max:1}],
+  muydificil: [{tipo:'dinero',min:1500,max:2500}, {tipo:'pf',min:8,max:12},      {tipo:'gacha',min:1,max:1},  {tipo:'gachaPf',min:1,max:1},  {tipo:'vida',min:1,max:2},    {tipo:'recaptura',min:1,max:1}],
+  epica:      [{tipo:'ticket',min:1,max:1}]
 };
 const MISION_ITEMS_ALEATORIOS = [
   {nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},
@@ -5416,9 +5461,12 @@ function misionElegirDePool(pool, usados, rnd){
   usados.push(pool[idx].tipo);
   return pool[idx];
 }
-function misionGenerarRecompensa(dificultad, rnd){
+function misionGenerarRecompensa(dificultad, rnd, excluir){
   var pool = MISION_RECOMPENSA_POOLS[dificultad];
-  var opt = pool[Math.floor(rnd()*pool.length)];
+  // Filtrar tipos vetados por la misión (ej: gastar dinero → no dar dinero)
+  var poolFiltrado = excluir && excluir.length ? pool.filter(function(o){ return excluir.indexOf(o.tipo)===-1; }) : pool;
+  if(!poolFiltrado.length) poolFiltrado = pool; // fallback por si todo queda excluido
+  var opt = poolFiltrado[Math.floor(rnd()*poolFiltrado.length)];
   var valor = opt.min===opt.max ? opt.min : (opt.min + Math.floor(rnd()*(opt.max-opt.min+1)));
   return {tipo:opt.tipo, valor:valor};
 }
@@ -5435,18 +5483,30 @@ function misionConstruir(def, dificultad, rnd){
     tituloKahunas: def.tituloKahunas,
     descFn: def.desc,
     manual: !!def.manual,
-    recompensa: misionGenerarRecompensa(dificultad, rnd)
+    recompensa: misionGenerarRecompensa(dificultad, rnd, def.excluirRecompensas||[])
   };
 }
 function obtenerRotacionMisiones(){
   var rotationId = Math.floor(Date.now()/MISION_MS_ROTACION);
   var rnd = misionMulberry32(rotationId*7919+13);
-  var usados = [];
+  // Usados independientes por pool para evitar colisiones entre dificultades distintas
+  var usadosFacil = [], usadosNormal = [], usadosDificil = [], usadosMuydificil = [], usadosEpica = [];
   var misiones = [
-    misionConstruir(misionElegirDePool(MISION_POOL_COMUN, usados, rnd), 'comun', rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_COMUN, usados, rnd), 'comun', rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_DIFICIL, usados, rnd), 'dificil', rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_EPICA, usados, rnd), 'epica', rnd)
+    // 5 fáciles
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
+    // 2 normales
+    misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd),
+    // 1 difícil
+    misionConstruir(misionElegirDePool(MISION_POOL_DIFICIL,    usadosDificil,    rnd), 'dificil',    rnd),
+    // 1 muy difícil
+    misionConstruir(misionElegirDePool(MISION_POOL_MUYDIFICIL, usadosMuydificil, rnd), 'muydificil', rnd),
+    // 1 épica — recompensa siempre ticket del mercader
+    misionConstruir(misionElegirDePool(MISION_POOL_EPICA,      usadosEpica,      rnd), 'epica',      rnd),
   ];
   return {rotationId:rotationId, rotationStart:rotationId*MISION_MS_ROTACION, rotationEnd:(rotationId+1)*MISION_MS_ROTACION, misiones:misiones};
 }
@@ -5460,12 +5520,14 @@ function misionDescRender(m,u){
 }
 function misionFormatearRecompensa(r){
   switch(r.tipo){
-    case 'pf': return `🔮 +${r.valor} PF`;
-    case 'dinero': return `💰 +${r.valor.toLocaleString()} P₠`;
-    case 'gacha': return `🎰 Gacha`;
-    case 'ticket': return `🎫 Ticket Especial`;
-    case 'vida': return `❤️ +1 Vida`;
-    default: return '';
+    case 'pf':        return '🔮 +'+r.valor+' PF';
+    case 'dinero':    return '💰 +'+r.valor.toLocaleString()+' P₠';
+    case 'gacha':     return '🎰 Gacha Normal';
+    case 'gachaPf':   return '🔮 Gacha PF';
+    case 'ticket':    return '🎫 Ticket Mercader';
+    case 'vida':      return '❤️ +'+(r.valor>1?r.valor+' Vidas':'1 Vida');
+    case 'recaptura': return '🔁 Recaptura';
+    default:          return '';
   }
 }
 function regContadorMision(u, campo, cantidad){
@@ -5554,7 +5616,16 @@ function misionAplicarRecompensa(u, recompensa){
       var item = MISION_ITEMS_ALEATORIOS[Math.floor(Math.random()*MISION_ITEMS_ALEATORIOS.length)];
       if(!u.inventario) u.inventario=[];
       u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString(),tienda:"mision"});
-      return {texto:`${item.icon} ${item.nombre}`, gachaReveal:{rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Recompensa de misión diaria · Añadido a tu mochila'}};
+      return {texto:item.icon+' '+item.nombre, gachaReveal:{rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Gacha Normal · Añadido a tu mochila'}};
+    case 'gachaPf':
+      var itemPf = MISION_ITEMS_ALEATORIOS[Math.floor(Math.random()*MISION_ITEMS_ALEATORIOS.length)];
+      if(!u.inventario) u.inventario=[];
+      u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:'[PF] '+itemPf.nombre,icon:itemPf.icon,fecha:new Date().toLocaleDateString(),tienda:"mision_pf"});
+      return {texto:itemPf.icon+' '+itemPf.nombre+' (PF)', gachaReveal:{rareza:'item',icono:itemPf.icon,nombre:itemPf.nombre,detalle:'Gacha PF · Añadido a tu mochila'}};
+    case 'recaptura':
+      if(!u.inventario) u.inventario=[];
+      u.inventario.push({uid:"item_"+Date.now()+Math.floor(Math.random()*100),nombre:'Recaptura',icon:'🔁',desc:'Recaptura ganada por misión diaria.',tienda:"mision",fecha:new Date().toLocaleDateString()});
+      return {texto:'🔁 Recaptura', gachaReveal:{rareza:'especial',icono:'🔁',nombre:'Recaptura',detalle:'Añadido a tu mochila',especial:true}};
     default:
       return {texto:'', gachaReveal:null};
   }
@@ -5572,7 +5643,7 @@ function renderizarMisiones(){
       var reclamada = mj.reclamadas.indexOf(m.id)!==-1;
       var pct = m.meta>0 ? Math.min(100,Math.round((progreso/m.meta)*100)) : 0;
       var titulo = misionTituloRender(m,u), desc = misionDescRender(m,u);
-      var dificLabel = {comun:'Común',dificil:'Difícil',epica:'Épica'}[m.dificultad];
+      var dificLabel = {facil:'Fácil',normal:'Normal',dificil:'Difícil',muydificil:'Muy Difícil',epica:'Épica'}[m.dificultad]||m.dificultad;
       var recompensaTxt = misionFormatearRecompensa(m.recompensa);
       var accion = '';
       if(reclamada){
@@ -9507,8 +9578,28 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 60;
+const APP_VERSION = 62;
 const VERSIONES = [
+  {
+    version: 62,
+    fecha: '2026-08-24',
+    titulo: 'Misiones Diarias: 5 dificultades, 10 misiones, recompensas coherentes',
+    resumen: 'Rediseño completo del sistema de misiones diarias: 5 dificultades (Fácil·Normal·Difícil·Muy Difícil·Épica), 10 misiones por rotación, recompensas ampliadas (Gacha Normal, Gacha PF, Recaptura) y la épica siempre da Ticket del Mercader.',
+    nuevas: [
+      '5 dificultades: Fácil (×5), Normal (×2), Difícil (×1), Muy Difícil (×1), Épica (×1) = 10 misiones diarias',
+      'Nuevas recompensas: Gacha PF, Recaptura (además de Gacha Normal, Dinero, PF, Vidas y Ticket)',
+      'La misión Épica siempre recompensa con Ticket del Mercader, sin excepción',
+      'Pools ampliados: 10 misiones Fáciles, 8 Normales, 8 Difíciles, 7 Muy Difíciles, 6 Épicas',
+      'Las misiones de gastar dinero nunca recompensan con dinero; las de gastar PF nunca con PF',
+    ],
+    mejoras: [
+      'Cada dificultad tiene su propio pool de recompensas proporcional a su exigencia',
+      'Los pools de dificultad son independientes entre sí (sin colisiones entre niveles)',
+      'Nuevos estilos visuales: Normal (índigo), Muy Difícil (violeta)',
+    ],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: 60,
     fecha: '2026-08-24',
