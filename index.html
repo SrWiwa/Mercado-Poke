@@ -383,7 +383,8 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .inicio-ticker-fade{animation:tickerFade .3s ease}
 @keyframes tickerFade{0%{opacity:0;transform:translateY(3px)}100%{opacity:1;transform:translateY(0)}}.inicio-stat-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px 20px;display:flex;align-items:center;gap:14px;transition:transform .18s ease,border-color .18s ease;animation:misionCardEntrada .3s ease backwards}.inicio-stat-card:hover{transform:translateY(-1px);border-color:var(--borde-hover)}.inicio-stat-icon{width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.inicio-stat-label{font-size:11px;color:var(--txt-secondary);font-family:var(--font-display);letter-spacing:.3px;text-transform:uppercase;margin-bottom:3px;font-weight:600}.inicio-stat-value{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--txt-primary)}
 .tiendas-acceso-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tienda-acceso-card{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px 12px;cursor:pointer;transition:all .2s ease;text-align:center}.tienda-acceso-card:hover{border-color:var(--borde-hover);transform:translateY(-2px);box-shadow:var(--shadow-md)}.tienda-acceso-icon{font-size:22px;margin-bottom:7px}.tienda-acceso-name{font-family:var(--font-display);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}.tienda-acceso-estado{font-size:9px;font-family:var(--font-display);padding:2px 8px;border-radius:99px;display:inline-block}.estado-abierta{color:#166534;background:rgba(21,128,61,.08);border:1px solid rgba(21,128,61,.2)}.estado-cerrada{color:#b91c1c;background:rgba(185,28,28,.08);border:1px solid rgba(185,28,28,.2)}
-.tienda-tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}.tienda-tab{padding:8px 16px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-secondary);transition:all .2s cubic-bezier(.4,0,.2,1)}.tienda-tab:hover{color:var(--txt-primary);border-color:var(--borde-hover);background:var(--bg-overlay);transform:translateY(-1px)}.tienda-tab.active-legal{background:rgba(21,128,61,.1);color:#166534;border-color:rgba(21,128,61,.3);transform:translateY(-1px)}.tienda-tab.active-pack{background:rgba(180,83,9,.1);color:#92400e;border-color:rgba(180,83,9,.3);transform:translateY(-1px)}.tienda-tab.active-illegal{background:rgba(109,40,217,.1);color:#5b21b6;border-color:rgba(109,40,217,.3);transform:translateY(-1px)}
+.tienda-tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}.tienda-tab{padding:8px 16px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-secondary);transition:all .2s cubic-bezier(.4,0,.2,1)}.tienda-tab:hover{color:var(--txt-primary);border-color:var(--borde-hover);background:var(--bg-overlay);transform:translateY(-1px)}.tienda-tab.active-legal{background:rgba(21,128,61,.1);color:#166534;border-color:rgba(21,128,61,.3);transform:translateY(-1px)}.tienda-tab.active-pack{background:rgba(180,83,9,.1);color:#92400e;border-color:rgba(180,83,9,.3);transform:translateY(-1px)}.tienda-tab.active-illegal{background:rgba(109,40,217,.1);color:#5b21b6;border-color:rgba(109,40,217,.3);transform:translateY(-1px)}.tienda-tab.active-ticket{background:rgba(201,126,0,.12);color:#92580a;border-color:rgba(201,126,0,.35);transform:translateY(-1px)}
+.ticket-canje-panel{padding:4px 0 8px}.ticket-canje-header{display:flex;align-items:center;gap:10px;margin-bottom:18px}.ticket-canje-icon{font-size:28px}.ticket-canje-titulo{font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--txt-primary)}.ticket-canje-sub{font-size:11px;color:var(--txt-muted);margin-top:1px}.ticket-canje-empty{text-align:center;padding:48px 20px;color:var(--txt-muted);border:1px dashed var(--borde);border-radius:var(--r-xl);background:var(--bg-elevated)}.ticket-canje-empty-icon{font-size:36px;margin-bottom:10px}.ticket-canje-empty-txt{font-family:var(--font-display);font-size:11px;text-transform:uppercase;letter-spacing:1.2px}.ticket-lista{display:flex;flex-direction:column;gap:10px}.ticket-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-elevated);border:1px solid var(--borde);border-left:3px solid rgba(201,126,0,.5);border-radius:var(--r-md);padding:12px 14px}.ticket-item-info{display:flex;align-items:center;gap:10px;min-width:0}.ticket-item-icon{font-size:22px;flex-shrink:0}.ticket-item-nombre{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--txt-primary)}.ticket-item-fecha{font-size:10px;color:var(--txt-muted);margin-top:2px}.ticket-item-btn{flex-shrink:0;background:rgba(201,126,0,.1);color:#7a4e08;border:1px solid rgba(201,126,0,.3);padding:7px 16px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.4px;cursor:pointer;transition:all .18s ease;white-space:nowrap}.ticket-item-btn:hover{background:rgba(201,126,0,.22);border-color:rgba(201,126,0,.5)}
 .tienda-view{display:none}.tienda-view.active{display:block}
 .tienda-cerrada-box{text-align:center;padding:80px 20px;background:var(--bg-elevated);border:1px dashed var(--gris-700);border-radius:var(--r-xl)}.tienda-cerrada-icon{font-size:40px;margin-bottom:14px;opacity:.4}.tienda-cerrada-txt{font-family:var(--font-display);font-size:13px;color:var(--txt-muted);text-transform:uppercase;letter-spacing:2px}
 .filtro-categoria{background:var(--bg-card);color:var(--txt-primary);border:1px solid var(--borde);padding:8px 14px;border-radius:var(--r-md);margin-bottom:18px;font-family:var(--font-display);font-size:11px;cursor:pointer;width:100%;max-width:280px;transition:border-color .18s;-webkit-appearance:none;appearance:none}.filtro-categoria:focus{outline:none;border-color:var(--neon-legal)}
@@ -1853,6 +1854,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="tienda-tab active-legal" id="ttab-legal" onclick="cambiarTiendaTab('legal')">🟢 Legal</button>
         <button class="tienda-tab" id="ttab-pack" onclick="cambiarTiendaTab('pack')">🟡 PF Pack</button>
         <button class="tienda-tab" id="ttab-illegal" onclick="cambiarTiendaTab('illegal')">🟣 Ilegalidades</button>
+        <button class="tienda-tab" id="ttab-ticket" onclick="cambiarTiendaTab('ticket')">🎫 Canjear Ticket</button>
       </div>
       <div id="tv-legal" class="tienda-view active legal-zone">
         <select id="filtro-categoria-legal" class="filtro-categoria" onchange="aplicarFiltroCategoriaLegal()">
@@ -1877,6 +1879,9 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
       <div id="tv-pack" class="tienda-view pack-zone"><div id="contenedor-pack-view"></div></div>
       <div id="tv-illegal" class="tienda-view illegal-zone"><div id="contenedor-hacker-view"></div></div>
+      <div id="tv-ticket" class="tienda-view">
+        <div class="ticket-canje-panel" id="ticket-canje-contenido"></div>
+      </div>
     </section>
     <!-- RED DE ENTRENADORES -->
     <section id="section-red-entrenadores" class="page-section">
@@ -6261,7 +6266,7 @@ window.museoRenderAdmin = function(){
 
 
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
-window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');sec.classList.add(`zona-${tab}`);}};
+window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal','active-ticket'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');if(tab!=='ticket')sec.classList.add(`zona-${tab}`);}if(tab==='ticket')renderizarPanelCanjearTicket();};
 window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.evento-tab').forEach(t=>t.classList.remove('active-arena','active-camara'));document.querySelectorAll('.evento-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`etab-${tab}`),ve=document.getElementById(`ev-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);if(tab==='camara')renderizarCamaraPublica();};
 window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='ficha')renderizarTitulosYTemas();if(tab==='carnet')renderizarPanelCarnet();};
 
@@ -6589,6 +6594,76 @@ window.comprarObjetoGamer=async function(id){
   mostrarNotificacion(`Has adquirido ${p.nombre}.${cont}`,'exito',p.icon||'✅','Compra realizada',true);
   refrescarPantallaGamer();
 };
+/* ═══ CANJE DE TICKETS DEL MERCADER ═══ */
+window.renderizarPanelCanjearTicket=function(){
+  let con=document.getElementById('ticket-canje-contenido');
+  if(!con)return;
+  let tickets=[];
+  if(userSesion&&baseDatos.jugadores[userSesion]&&baseDatos.jugadores[userSesion].inventario){
+    tickets=baseDatos.jugadores[userSesion].inventario.filter(i=>i.nombre==='Ticket Especial del Mercader');
+  }
+  let html=`<div class="ticket-canje-header"><div class="ticket-canje-icon">🎫</div><div><div class="ticket-canje-titulo">Canjear Ticket del Mercader</div><div class="ticket-canje-sub">Cada ticket otorga una recompensa aleatoria al instante</div></div></div>`;
+  if(!tickets.length){
+    html+=`<div class="ticket-canje-empty"><div class="ticket-canje-empty-icon">🎫</div><div class="ticket-canje-empty-txt">No tienes tickets en la mochila</div><div style="font-size:11px;color:var(--txt-muted);margin-top:6px">Completa misiones épicas para conseguirlos</div></div>`;
+  }else{
+    html+=`<div class="ticket-lista">`;
+    tickets.forEach(t=>{
+      html+=`<div class="ticket-item"><div class="ticket-item-info"><div class="ticket-item-icon">🎫</div><div><div class="ticket-item-nombre">Ticket Especial del Mercader</div><div class="ticket-item-fecha">Obtenido: ${t.fecha||'—'}</div></div></div><button class="ticket-item-btn" onclick="canjearTicketMercader('${t.uid}')">🎰 Canjear</button></div>`;
+    });
+    html+=`</div>`;
+  }
+  con.innerHTML=html;
+};
+
+window.canjearTicketMercader=async function(uid){
+  if(!userSesion||!baseDatos.jugadores[userSesion])return;
+  let u=baseDatos.jugadores[userSesion];
+  if(!u.inventario)return;
+  let idx=u.inventario.findIndex(i=>i.uid===uid);
+  if(idx===-1){mostrarNotificacion('Ticket no encontrado.','error','🎫');return;}
+
+  let cf=await mostrarConfirmacion({icono:'🎫',titulo:'¿Canjear Ticket del Mercader?',descripcion:'Recibirás una recompensa aleatoria:\n💰 20.000–50.000 P₠\n🔮 10–20 PF\n🟣 +1 Crédito de Ilegalidad (acumulable)',textoConfirmar:'Canjear',tipo:'normal',sonidoConfirmar:'monedas'});
+  if(!cf)return;
+
+  // Eliminar el ticket de la mochila
+  u.inventario.splice(idx,1);
+
+  // Determinar recompensa aleatoria
+  let r=Math.random(),reveal={},msgDiario='',msgNotif='';
+  if(r<0.34){
+    // Dinero: 20.000–50.000
+    let ganancia=Math.floor(Math.random()*30001)+20000;
+    u.dinero=(u.dinero||0)+ganancia;
+    msgDiario=`🎫 Ticket canjeado — +${ganancia.toLocaleString()} P₠ del Mercader.`;
+    msgNotif=`+${ganancia.toLocaleString()} P₠`;
+    reveal={rareza:'dinero',icono:'💰',nombre:`+${ganancia.toLocaleString()} P₠`,detalle:'Premio del Ticket del Mercader',especial:ganancia>=40000};
+  }else if(r<0.67){
+    // PF: 10–20
+    let pfg=Math.floor(Math.random()*11)+10;
+    u.pf=(u.pf||0)+pfg;
+    msgDiario=`🎫 Ticket canjeado — +${pfg} PF del Mercader.`;
+    msgNotif=`+${pfg} PF`;
+    reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Premio del Ticket del Mercader',especial:pfg>=18};
+  }else{
+    // Crédito de ilegalidad acumulable
+    let hoy=new Date().toDateString();
+    if(!u.comprasHoy)u.comprasHoy={};
+    if(u.comprasHoy._fecha!==hoy)u.comprasHoy={_fecha:hoy};
+    let ilActual=u.comprasHoy._illegal||0;
+    u.comprasHoy._illegal=ilActual+1;
+    let totalAhora=u.comprasHoy._illegal;
+    msgDiario=`🎫 Ticket canjeado — +1 Crédito de Ilegalidad del Mercader. (${totalAhora} acumulado${totalAhora!==1?'s':''} hoy)`;
+    msgNotif=`+1 Crédito Ilegalidad (${totalAhora}/${totalAhora} hoy)`;
+    reveal={rareza:'item',icono:'🟣',nombre:'+1 Crédito de Ilegalidad',detalle:`Créditos acumulados hoy: ${totalAhora}`,especial:true};
+  }
+
+  inyectarEntradaDiarioAutomatica(msgDiario);
+  guardarBD();
+  renderizarPanelCanjearTicket();
+  mostrarRevelacionGacha(reveal);
+};
+/* ══════════════════════════════════════════════ */
+
 window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];if(!u.inventario)return;let i=u.inventario.findIndex(x=>x.uid===uid);if(i!==-1){let item=u.inventario[i];let desc=item.desc||'';u.inventario.splice(i,1);let esIlegal=item.tienda==='illegal';let parteDesc=desc?` Descripción: ${desc}.`:'';let parteBeneficio=esIlegal&&item.beneficio?` ✅ Beneficio: ${item.beneficio}.`:'';let parteCastigo=esIlegal&&item.castigo?` ⚠️ Castigo si detectado: ${item.castigo}.`:'';let entradaDiario=esIlegal?`🟣 Activó módulo prohibido: ${icon} '${nombre}'.${parteDesc}${parteBeneficio}${parteCastigo}`:(desc?`Utilizó el objeto ${icon} '${nombre}'. Contenido: ${desc}.`:`Utilizó el objeto ${icon} '${nombre}'. Consumido.`);inyectarEntradaDiarioAutomatica(entradaDiario);regContadorMision(u,'objetosUsados',1);guardarBD();reproducirSonido('usar_objeto');mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true);}};
 
 /* ═══ MODAL BAJA ═══ */
