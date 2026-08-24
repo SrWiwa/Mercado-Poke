@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v59 | Build: 2026-08-17 -->
+<!-- Silph Co v60 | Build: 2026-08-24 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -4745,24 +4745,49 @@ function ejecutarNuevoLocke(tipo, juego, vidasIni, rutas, modalidades){
   // Resetear todos los jugadores
   Object.keys(baseDatos.jugadores||{}).forEach(function(id){
     var u = baseDatos.jugadores[id];
-    u.dinero       = 0;
-    u.pf           = 0;
-    u.vidasActuales= vidasIni;
-    u.vidasTotales = vidasIni;
-    u.inventario   = [];
-    u.muertes      = [];
-    u.sacrificios  = [];
-    u.diarioLogs   = [{timestamp:'Inicio', texto:'Nuevo Locke iniciado.'}];
-    u.comprasHoy   = {};
-    u.mejorPokemon = null;
-    u.cementerio   = [];
-    u.tracker      = crearTrackerDesdeRutas(rutas);
-    // NO tocar: numMedallas, tipoMedallas, torneos, lockeStatus
-    u.lockeStatus  = 'jugando';
+    // ── Economía ──
+    u.dinero            = 0;
+    u.pf                = 0;
+    u.comprasDisponibles= MAX_COMPRAS;
+    u.ultimaRecarga     = Date.now();
+    u.comprasHoy        = {};
+    // ── Vidas y estado ──
+    u.vidasActuales     = vidasIni;
+    u.vidasTotales      = vidasIni;
+    u.lockeStatus       = 'jugando';
+    // ── Historial de partida ──
+    u.inventario        = [];
+    u.muertes           = [];
+    u.sacrificios       = [];
+    u.cementerio        = [];
+    u.diarioLogs        = [{timestamp:'Inicio', texto:'Nuevo Locke iniciado.'}];
+    u.mejorPokemon      = null;
+    u.tracker           = crearTrackerDesdeRutas(rutas);
+    // ── Rachas — se reinician con el locke ──
+    u.rachaActual       = 0;
+    u.mejorRachaCapturas= 0;
+    u.mejorRachaPerdida = 0;
+    // ── Progresión del locke ──
+    u.numMedallas       = 0;
+    u.torneos           = 0;
+    u.misionesContadores= {};
+    // ── Se conservan: tipoMedallas (preferencia personal), baneado ──
   });
 
   // Limpiar feed de actividad global
   baseDatos.actividadGlobal = [];
+  // Limpiar arena (combates y encuestas del locke anterior)
+  baseDatos.arena = {};
+  // Limpiar cámara del locke anterior
+  baseDatos.camara = {};
+  // Limpiar intercambios del locke anterior
+  baseDatos.intercambios = {};
+  // Limpiar torneos del locke anterior
+  baseDatos.torneos = {};
+  // Limpiar PvP (elo y rachas son por locke)
+  baseDatos.pvp = { duelos: [], elo: {} };
+  // Limpiar gimnasio activo
+  baseDatos.gimnasioActivo = null;
   // Guardar info del locke activo
   if(!baseDatos.lockeActivo) baseDatos.lockeActivo = {};
   baseDatos.lockeActivo.tipo   = tipo;
@@ -9407,8 +9432,29 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 59;
+const APP_VERSION = 60;
 const VERSIONES = [
+  {
+    version: 60,
+    fecha: '2026-08-24',
+    titulo: 'Nuevo Locke: reset completo de la partida',
+    resumen: 'Al iniciar un nuevo Locke ahora se reinician todos los datos de la partida anterior: rachas, medallas, PvP, arena, torneos, cámara, intercambios y gimnasio. Solo se conservan los jugadores, el museo y la radio.',
+    nuevas: [],
+    mejoras: [
+      'Nuevo Locke reinicia rachaActual, mejorRachaCapturas y mejorRachaPerdida de cada jugador',
+      'Nuevo Locke reinicia numMedallas y torneos de cada jugador',
+      'Nuevo Locke reinicia comprasDisponibles, ultimaRecarga y comprasHoy de cada jugador',
+      'Nuevo Locke reinicia misionesContadores de cada jugador',
+      'Nuevo Locke limpia Arena (combates y encuestas del locke anterior)',
+      'Nuevo Locke limpia Cámara y tablon de intercambios',
+      'Nuevo Locke limpia todos los torneos',
+      'Nuevo Locke reinicia el PvP completo (duelos, elo y rachas)',
+      'Nuevo Locke limpia el gimnasio activo',
+      'Se conservan: jugadores (identidad), museo/historial de lockes, radio, catálogo de productos, log de admin, tipoMedallas de cada jugador',
+    ],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: 59,
     fecha: '2026-08-17',
