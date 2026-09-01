@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v68 | Build: 2026-08-24 -->
+<!-- Silph Co v69 | Build: 2026-08-24 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1014,20 +1014,40 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 .torneo-match-vacio{color:var(--txt-muted);font-style:italic}
 
 /* ═══ ASISTENTE ═══ */
-.asis-msg{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--bg-card);border:1px solid var(--borde);border-left:3px solid var(--borde);border-radius:var(--r-md)}
+/* ── Asistente flotante ── */
+.asis-float{position:fixed;bottom:76px;right:14px;z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
+.asis-float *{pointer-events:auto}
+.asis-burbuja{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#5b52c7,#8e4fc7);border:2px solid rgba(255,255,255,.15);box-shadow:0 4px 18px rgba(0,0,0,.45),0 0 0 0 rgba(139,92,246,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .18s,box-shadow .18s;flex-shrink:0;user-select:none}
+.asis-burbuja:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 0 6px rgba(139,92,246,.18)}
+.asis-burbuja.nivel-critico{background:linear-gradient(135deg,#b91c1c,#e2646f);animation:asisBurbujaUrgente 1.6s ease-in-out infinite}
+.asis-burbuja.nivel-importante{background:linear-gradient(135deg,#92400e,#c99a2e)}
+.asis-badge-punto{position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:#e2646f;border:2px solid var(--bg-base);display:none}
+.asis-burbuja.tiene-critico .asis-badge-punto{display:block}
+.asis-panel{width:290px;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.5);overflow:hidden;transform-origin:bottom right;transform:scale(.9) translateY(8px);opacity:0;pointer-events:none;transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .18s ease;max-height:420px;display:flex;flex-direction:column}
+.asis-panel.abierto{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
+.asis-panel-header{padding:12px 14px 10px;border-bottom:1px solid var(--borde);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.asis-panel-nombre{font-family:var(--font-display);font-size:12px;font-weight:800;color:var(--txt-primary);display:flex;align-items:center;gap:6px}
+.asis-panel-seccion{font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px}
+.asis-panel-cerrar{background:none;border:none;color:var(--txt-muted);font-size:16px;cursor:pointer;padding:0 2px;line-height:1}
+.asis-panel-body{overflow-y:auto;flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.asis-msg{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--borde);border-left:3px solid var(--borde);border-radius:var(--r-md);animation:asisMsgEntrada .22s ease backwards}
 .asis-msg.nivel-critico{border-left-color:#e2646f;background:linear-gradient(135deg,rgba(226,100,111,.08),transparent)}
 .asis-msg.nivel-importante{border-left-color:#c99a2e;background:linear-gradient(135deg,rgba(201,154,46,.07),transparent)}
 .asis-msg.nivel-consejo{border-left-color:var(--neon-legal)}
-.asis-msg-icono{font-size:20px;line-height:1;flex-shrink:0;margin-top:1px}
+.asis-msg-icono{font-size:18px;line-height:1;flex-shrink:0;margin-top:1px}
 .asis-msg-cuerpo{flex:1;min-width:0}
-.asis-msg-titulo{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--txt-primary);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.asis-msg-desc{font-size:11.5px;color:var(--txt-secondary);margin-top:4px;line-height:1.5}
-.asis-msg-badge{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.asis-msg-titulo{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--txt-primary);margin-bottom:3px}
+.asis-msg-desc{font-size:11px;color:var(--txt-secondary);line-height:1.5}
+.asis-nav-dots{display:flex;justify-content:center;gap:5px;padding:8px 0 10px;flex-shrink:0}
+.asis-dot{width:6px;height:6px;border-radius:50%;background:var(--borde);transition:background .2s,transform .2s;cursor:pointer}
+.asis-dot.activo{background:var(--txt-secondary);transform:scale(1.25)}
+.asis-msg-badge{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:99px;white-space:nowrap;margin-left:6px}
 .asis-msg-badge.nivel-critico{background:rgba(185,28,28,.1);color:#b91c1c}
 .asis-msg-badge.nivel-importante{background:rgba(180,83,9,.1);color:#92400e}
 .asis-msg-badge.nivel-consejo{background:rgba(21,128,61,.1);color:#166534}
 @keyframes asisMsgEntrada{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
 .asis-msg{animation:asisMsgEntrada .25s ease backwards}
+@keyframes asisBurbujaUrgente{0%,100%{box-shadow:0 4px 18px rgba(0,0,0,.45),0 0 0 0 rgba(226,100,111,.5)}50%{box-shadow:0 4px 18px rgba(0,0,0,.45),0 0 0 8px rgba(226,100,111,0)}}
 @keyframes asisCriticoPulso{0%{box-shadow:0 0 0 0 rgba(185,28,28,.25)}70%{box-shadow:0 0 0 6px rgba(185,28,28,0)}100%{box-shadow:0 0 0 0 rgba(185,28,28,0)}}
 .asis-msg.nivel-critico{animation:asisMsgEntrada .25s ease backwards, asisCriticoPulso 2.4s ease-out .25s 1}
 @keyframes asisIconoRespira{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
@@ -2156,14 +2176,13 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <!-- ASISTENTE -->
     <section id="section-asistente" class="page-section">
       <div class="hero-strip">
-        <div class="section-title">🤖 Asistente</div>
-        <div class="section-subtitle">Consejos y avisos generados a partir de tu propia partida</div>
+        <div class="section-title">🤖 Mercader</div>
+        <div class="section-subtitle">El Mercader ahora es flotante — pulsa el botón morado abajo a la derecha</div>
       </div>
-
-      <div class="card">
-        <div class="card-title"><span class="asis-icono-vivo" style="display:inline-block">🤖</span> Asistente</div>
-        <div id="asistente-lista" style="display:flex;flex-direction:column;gap:10px"></div>
-        <div id="asistente-vacio" style="display:none;font-size:11px;color:var(--txt-muted);font-style:italic;text-align:center;padding:16px 0">Todo en orden por ahora. Vuelve más tarde.</div>
+      <div class="card" style="text-align:center;padding:32px 16px">
+        <div style="font-size:40px;margin-bottom:12px">🤖</div>
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--txt-primary);margin-bottom:6px">El Mercader está flotando</div>
+        <div style="font-size:12px;color:var(--txt-muted)">Busca el botón morado 🤖 en la esquina inferior derecha de cualquier pantalla.</div>
       </div>
     </section>
 
@@ -5266,7 +5285,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
         return;
     }
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
@@ -6198,7 +6217,7 @@ window.navegarA=function(s){
   /* IMPORTANTE: _aplicarTemaSidebarNav DEBE llamarse DESPUÉS de añadir
      .active al nav-item, porque lee classList.contains('active') para saber
      qué item pintar. Si se llama antes, pinta el item anterior. */
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();_asisSetSeccion(s);if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
 window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
@@ -6555,7 +6574,7 @@ window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre
      (caso: locke creado sin rutas y rutas añadidas después desde Modo Dios),
      añadir las rutas nuevas como 'pendiente' conservando los estados existentes.
    — No duplicar rutas que ya existen en el tracker.                              */
-if(!u.tracker){u.tracker=crearTrackerDesdeRutas(_rutasLocke);}else if(_rutasLocke.length>0){var _nombresEnTracker=u.tracker.map(function(e){return e.ruta;});var _rutagFaltantes=_rutasLocke.filter(function(r){return _nombresEnTracker.indexOf(r)<0;});if(_rutagFaltantes.length>0){_rutasLocke.forEach(function(nombre,i){var yaExiste=u.tracker.find(function(t){return t.ruta===nombre;});if(!yaExiste){u.tracker.push({orden:i,ruta:nombre,estado:'pendiente',pokemon:'',mote:'',recaptura:'no_hecha'});}else{yaExiste.orden=i;}});}}}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();obtenerMisionesJugador(id);actualizarWidgetMisionesInicio();actualizarCountdownMisiones();_actualizarSidebarFooter();_aplicarTemaSidebarNav('inicio');};
+if(!u.tracker){u.tracker=crearTrackerDesdeRutas(_rutasLocke);}else if(_rutasLocke.length>0){var _nombresEnTracker=u.tracker.map(function(e){return e.ruta;});var _rutagFaltantes=_rutasLocke.filter(function(r){return _nombresEnTracker.indexOf(r)<0;});if(_rutagFaltantes.length>0){_rutasLocke.forEach(function(nombre,i){var yaExiste=u.tracker.find(function(t){return t.ruta===nombre;});if(!yaExiste){u.tracker.push({orden:i,ruta:nombre,estado:'pendiente',pokemon:'',mote:'',recaptura:'no_hecha'});}else{yaExiste.orden=i;}});}}}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();obtenerMisionesJugador(id);actualizarWidgetMisionesInicio();actualizarCountdownMisiones();_actualizarSidebarFooter();_aplicarTemaSidebarNav('inicio');setTimeout(function(){renderizarAsistente();_asisSetSeccion('inicio');},600);};
 window.cerrarSesionOperador=function(){reproducirSonido('puerta_cerrar');userSesion=null;sessionStorage.removeItem('silph_user_sesion');document.getElementById('app-shell').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('login-screen').classList.remove('fade-out');document.getElementById('login-nombre').value='';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";cerrarDrawer();};
 function actualizarComprasPorTiempo(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ahora=Date.now(),tr=ahora-u.ultimaRecarga,hoy=new Date().toDateString();if(!u.comprasHoy||u.comprasHoy._fecha!==hoy){u.comprasHoy={_fecha:hoy};}if(tr>=MS_EN_6_HORAS){let cg=Math.floor(tr/MS_EN_6_HORAS);u.comprasDisponibles=Math.min(MAX_COMPRAS,(u.comprasDisponibles||0)+cg);u.ultimaRecarga=u.ultimaRecarga+(cg*MS_EN_6_HORAS);u.comprasHoy._global=Math.max(0,(u.comprasHoy._global||0)-cg);guardarBD();return true;}return false;}
 /* Comprobar la recarga de compras cada 6h de forma periódica, sin necesidad de recargar la página */
@@ -7865,27 +7884,239 @@ function generarConsejosAsistente(u){
   return msgs;
 }
 
-function renderizarAsistente(){
-  var lista = document.getElementById('asistente-lista');
-  var vacio = document.getElementById('asistente-vacio');
-  if(!lista) return;
-  if(!userSesion || !baseDatos.jugadores[userSesion]){
-    lista.innerHTML=''; if(vacio) vacio.style.display='block';
-    return;
+/* ══ ASISTENTE FLOTANTE — motor ══ */
+var _asisAbierto = false;
+var _asisMsgs = [];
+var _asisMsgActual = 0;
+var _asisTimer = null;
+var _asisSeccionActual = 'inicio';
+
+/* Etiquetas y nombres de sección para el header */
+var _SECCION_NOMBRES = {
+  inicio:'Inicio', tiendas:'Tienda', eventos:'Arena & Cámara',
+  tracker:'Tracker de Rutas', misiones:'Misiones Diarias',
+  perfil:'Tu Perfil', 'vidas-sacrificios':'Vidas y Sacrificios',
+  'medallas-torneos':'Medallas y Torneos', torneos:'Torneos',
+  duelos:'Duelos PvP', 'red-entrenadores':'Red de Entrenadores',
+  ruletas:'Ruletas', 'hall-of-fame':'Hall of Fame',
+  museo:'Museo', admin:'Modo Dios', asistente:'Mercader'
+};
+
+/* Mensajes contextuales por sección — complementan los globales */
+function _asisContextoSeccion(u, seccion){
+  var msgs = [];
+  function add(nivel, icono, titulo, desc){ msgs.push({nivel:nivel,icono:icono,titulo:titulo,desc:desc}); }
+  var dinero = u.dinero||0, pf = u.pf||0;
+  var vidasAct = u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20);
+  var vidasTot = u.vidasTotales||20;
+  var vidasExtra = u.vidasExtra||0;
+  var tracker = u.tracker||[];
+  var pendientes = tracker.filter(function(e){return e.estado==='pendiente';}).length;
+  var atrapadas = tracker.filter(function(e){return e.estado==='atrapado';}).length;
+  var perdidosT = tracker.filter(function(e){return e.estado==='perdido';}).length;
+  var numMed = u.numMedallas||0;
+  var cementerio = (u.cementerio||[]).length;
+  var sacrificios = (u.sacrificios||[]).length;
+  var inventario = (u.inventario||[]).filter(function(i){return i.uid!=='init';});
+  var compDisp = u.comprasDisponibles||0;
+  var rachaActual = u.rachaActual||0;
+  var torneos = u.torneos||0;
+  var tipoMed = u.tipoMedallas==='kahunas'?'pruebas':'medallas';
+  var ahora = Date.now(), unDia = 24*60*60*1000;
+  var gachaListo = (ahora-(u.ultimoHackeo||0))>=unDia;
+  var gachaPFListo = (ahora-(u.ultimoGachaPF||0))>=unDia;
+  var n = userSesion?userSesion.toUpperCase():'ENTRENADOR';
+
+  switch(seccion){
+    case 'inicio':
+      if(gachaListo&&gachaPFListo) add('importante','🎁','Dos regalos te esperan','Tienes el Gacha normal y el PF Gacha disponibles ahora mismo. ¿Qué haces todavía aquí?');
+      else if(gachaListo) add('consejo','⚡','Gacha disponible','Tu Gacha gratuito de hoy espera en la tienda. Entra y gíralo.');
+      else if(gachaPFListo) add('consejo','🔮','PF Gacha disponible','El PF Gacha del día está listo. No lo dejes expirar.');
+      if(dinero>=8000) add('consejo','💰',n+' tiene músculo económico','Con '+dinero.toLocaleString('es-ES')+' P₠ puedes permitirte casi cualquier cosa. No los dejes oxidarse.');
+      else if(dinero<500) add('importante','💸','Fondos bajo mínimos','Solo '+dinero.toLocaleString('es-ES')+' P₠. La tienda va a ser un museo para ti si no lo remedias.');
+      if(pendientes>0) add('consejo','🗺️','Rutas por resolver',pendientes+' ruta'+( pendientes===1?'':'s')+' pendiente'+(pendientes===1?'':'s')+' en el tracker. No se capturan solas.');
+      break;
+
+    case 'tiendas':
+      if(compDisp===0) add('importante','🛍️','Sin compras','Has agotado tus '+MAX_COMPRAS+' compras. Vuelve en 3 horas o espera al mercader.');
+      else add('consejo','🛍️',compDisp+' compra'+(compDisp===1?'':'s')+' disponible'+(compDisp===1?'':'s'),'Tienes '+dinero.toLocaleString('es-ES')+' P₠ y '+pf+' PF para gastar. '+(compDisp===MAX_COMPRAS?'Mochila lista para recargar.':'Aprovecha lo que te queda.'));
+      if(inventario.length>=6) add('consejo','🎒','Mochila cargada','Llevas '+inventario.length+' objetos. Antes de comprar más, mira si algo de lo que tienes ya te sirve.');
+      var _ev = baseDatos.eventoSistema;
+      if(_ev==='rebajas') add('importante','📉','¡REBAJAS ACTIVAS!','Descuentos en toda la tienda legal y packs ahora mismo. Mejor momento para gastar.');
+      else if(_ev==='inflacion') add('importante','⚠️','Inflación activa','Los precios han subido. Compra solo lo esencial hasta que pase.');
+      else if(_ev==='bonus_pf') add('importante','🪙','Doble PF activo','Cada compra te da el doble de PF. Momento de invertir en la tienda PF.');
+      if(gachaListo) add('consejo','🎰','Gacha disponible','El Gacha gratuito de hoy está en esta misma sección. Toca el ícono de la ruleta.');
+      break;
+
+    case 'tracker':
+      if(tracker.length===0) add('consejo','🗺️','Sin rutas definidas','El administrador todavía no ha configurado rutas para este Locke. Paciencia.');
+      else if(pendientes===0&&tracker.length>0) add('consejo','✅','Tracker completado','Has resuelto todas las rutas. '+atrapadas+' capturas y '+perdidosT+' pérdidas. Buen trabajo, '+n+'.');
+      else add('consejo','🗺️',pendientes+' ruta'+(pendientes===1?'':'s')+' por resolver','Llevas '+atrapadas+' capturas y '+perdidosT+' perdidos. '+(pendientes<=2?'Casi lo tienes.':'Queda faena.'));
+      if(rachaActual>=3) add('consejo','🔥','Racha de '+rachaActual,'Sin fallos en las últimas '+rachaActual+' rutas. No rompas la racha ahora.');
+      else if(rachaActual<=-3) add('importante','📉',Math.abs(rachaActual)+' pérdidas seguidas','Algo va mal. Cambia la estrategia antes de la siguiente ruta.');
+      break;
+
+    case 'vidas-sacrificios':
+      if(vidasAct===1&&vidasExtra===0) add('critico','💀','ÚLTIMA VIDA, '+n,'Una sola. La próxima muerte acaba el Locke. Juega como si fuera la última vez. Porque lo es.');
+      else if(vidasAct<=Math.ceil(vidasTot*0.25)) add('importante','❤️‍🩹','Zona de peligro',''+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':'')+' vidas. Empieza a jugar muy conservador.');
+      else add('consejo','❤️','Estado vital',''+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':'')+' vidas. '+(vidasExtra>0?'Las extras son tu colchón.':'Por encima del 25%, bien.'));
+      if(cementerio>0) add('consejo','⚰️','Cementerio: '+cementerio+' caído'+(cementerio===1?'':'s'),cementerio===1?'Una baja en el Locke. Que descanse.':''+cementerio+' Pokémon perdidos en este Locke. Cada uno cuenta.');
+      if(sacrificios>0) add('consejo','🔥',''+sacrificios+' sacrificio'+(sacrificios===1?'':'s')+' realizados','Has sacrificado '+sacrificios+' Pokémon para recuperar vidas. El precio del Locke.');
+      break;
+
+    case 'medallas-torneos':
+    case 'torneos':
+      add('consejo',tipoMed==='pruebas'?'🌺':'🏅','Progreso Liga',''+numMed+'/8 '+tipoMed+'. '+(numMed>=8?'¡Completas! Ya puedes con el Alto Mando.':8-numMed+' '+tipoMed+' para terminar el recorrido.'));
+      if(torneos>=3) add('consejo','🏆',torneos+' torneos ganados','Eres de los que ganan. Sigue así.');
+      else if(torneos===0) add('consejo','🏟️','Sin victorias en torneos','Todavía sin ganar un torneo. Apúntate al siguiente y cambia eso.');
+      else add('consejo','🥈',torneos+' torneo'+(torneos===1?'':'s')+' ganado'+(torneos===1?'':'s'),'Vas bien. Más torneos, más premios.');
+      break;
+
+    case 'misiones':
+      if(gachaListo) add('consejo','⚡','Gacha pendiente','Mientras haces misiones, no olvides que el Gacha gratuito de hoy está disponible.');
+      add('consejo','📋','Misiones de hoy','Completa las fáciles primero para calentar. Épica y Especial son las que más dan.');
+      break;
+
+    case 'duelos':
+      if(pf>0) add('consejo','🔮',''+pf+' PF en juego','Un duelo ganado puede darte más PF. Úsalos bien o guárdalos para la tienda.');
+      add('consejo','🥊','El duelo es decisión','Analiza bien a tu rival antes de aceptar. Perder tiene consecuencias reales.');
+      break;
+
+    case 'ruletas':
+      add('consejo','🎡','Ruleta de decisiones','Lo que caiga, va. Sin excusas. Eso es la magia de una ruleta.');
+      if(baseDatos.ruletas&&Object.keys(baseDatos.ruletas).length>0) add('consejo','🎰',Object.keys(baseDatos.ruletas).length+' ruleta'+(Object.keys(baseDatos.ruletas).length===1?'':'s')+' disponible'+(Object.keys(baseDatos.ruletas).length===1?'':'s'),'Escoge una y gírala. El azar tiene la última palabra.');
+      break;
+
+    case 'eventos':
+      add('consejo','⚔️','Arena y Cámara','Aquí se ventilan los asuntos. Encuestas, duelos de arena y el ojo que todo lo ve.');
+      break;
+
+    case 'perfil':
+      add('consejo','👤','Tu ficha de entrenador','Aquí está todo tu historial. Las victorias y las derrotas cuentan por igual.');
+      if(numMed>=8) add('consejo','🏆','Insignias completas','Las 8 '+tipoMed+' en tu poder. No mucha gente llega a esto.');
+      break;
+
+    default:
+      if(vidasAct<=Math.ceil(vidasTot*0.25)&&vidasAct>0) add('importante','❤️‍🩹','Pocas vidas',vidasAct+'/'+vidasTot+' vidas. Ojo con lo que haces.');
+      else if(dinero<500) add('importante','💸','Sin fondos',dinero.toLocaleString('es-ES')+' P₠. Nada.');
+      else add('consejo','🤖','El Mercader te observa','Pulsa en cualquier momento para ver cómo va tu partida.');
   }
+  return msgs;
+}
+
+function _asisGenerarTodos(u, seccion){
+  var globales = generarConsejosAsistente(u);
+  var contexto = _asisContextoSeccion(u, seccion||'inicio');
+  // Poner contextuales primero, luego globales sin duplicar por título
+  var titulosCtx = contexto.map(function(m){return m.titulo;});
+  var extras = globales.filter(function(m){return titulosCtx.indexOf(m.titulo)===-1;});
+  return contexto.concat(extras);
+}
+
+function _asisRenderMsgActual(){
+  var body = document.getElementById('asis-panel-body');
+  var dots = document.getElementById('asis-nav-dots');
+  if(!body || !_asisMsgs.length) return;
+  var m = _asisMsgs[_asisMsgActual];
+  var badges = {critico:'🔴 Crítico',importante:'🟠 Importante',consejo:'🟢 Info'};
+  body.innerHTML = '<div class="asis-msg nivel-'+m.nivel+'">'
+    +'<div class="asis-msg-icono">'+m.icono+'</div>'
+    +'<div class="asis-msg-cuerpo">'
+    +'<div class="asis-msg-titulo">'+escaparHTML(m.titulo)
+    +'<span class="asis-msg-badge nivel-'+m.nivel+'">'+badges[m.nivel]+'</span></div>'
+    +'<div class="asis-msg-desc">'+escaparHTML(m.desc)+'</div>'
+    +'</div></div>';
+  if(dots){
+    dots.innerHTML = _asisMsgs.map(function(_,i){
+      return '<div class="asis-dot'+(i===_asisMsgActual?' activo':'')+'" onclick="asisIrA('+i+')"></div>';
+    }).join('');
+  }
+}
+
+window.asisIrA = function(idx){
+  _asisMsgActual = Math.max(0, Math.min(idx, _asisMsgs.length-1));
+  _asisRenderMsgActual();
+  _asisReiniciarTimer();
+};
+
+function _asisAvanzar(){
+  if(_asisMsgs.length>1){
+    _asisMsgActual = (_asisMsgActual+1) % _asisMsgs.length;
+    _asisRenderMsgActual();
+  }
+}
+function _asisReiniciarTimer(){
+  if(_asisTimer) clearInterval(_asisTimer);
+  _asisTimer = setInterval(_asisAvanzar, 18000);
+}
+
+function _asisActualizarBurbuja(){
+  var burbuja = document.getElementById('asis-burbuja');
+  var badge = document.getElementById('asis-badge-punto');
+  if(!burbuja || !_asisMsgs.length) return;
+  var nivelMax = _asisMsgs.reduce(function(acc,m){
+    if(m.nivel==='critico') return 'critico';
+    if(m.nivel==='importante'&&acc!=='critico') return 'importante';
+    return acc;
+  },'consejo');
+  burbuja.className = 'asis-burbuja'+(nivelMax!=='consejo'?' nivel-'+nivelMax:'');
+  if(badge) badge.style.display = nivelMax==='critico'?'block':'none';
+}
+
+window.renderizarAsistente = function(){
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return;
   var u = baseDatos.jugadores[userSesion];
-  var msgs = generarConsejosAsistente(u).slice(0,8);
-  if(!msgs.length){ lista.innerHTML=''; vacio.style.display='block'; return; }
-  vacio.style.display='none';
-  var etiquetas = {critico:'🔴 Muy importante', importante:'🟠 Recomendado', consejo:'🟢 Consejo'};
-  lista.innerHTML = msgs.map(function(m,i){
-    return '<div class="asis-msg nivel-'+m.nivel+'" style="animation-delay:'+(i*60)+'ms">'
-      +'<div class="asis-msg-icono'+(m.nivel==='critico'?' asis-icono-vivo':'')+'">'+m.icono+'</div>'
-      +'<div class="asis-msg-cuerpo">'
-      +'<div class="asis-msg-titulo">'+escaparHTML(m.titulo)+' <span class="asis-msg-badge nivel-'+m.nivel+'">'+etiquetas[m.nivel]+'</span></div>'
-      +'<div class="asis-msg-desc">'+escaparHTML(m.desc)+'</div>'
-      +'</div></div>';
-  }).join('');
+  var float_ = document.getElementById('asis-float');
+  if(float_) float_.style.display='flex';
+  _asisMsgs = _asisGenerarTodos(u, _asisSeccionActual);
+  if(_asisMsgActual >= _asisMsgs.length) _asisMsgActual = 0;
+  if(_asisAbierto) _asisRenderMsgActual();
+  _asisActualizarBurbuja();
+  var secEl = document.getElementById('asis-panel-seccion');
+  if(secEl) secEl.textContent = _SECCION_NOMBRES[_asisSeccionActual]||_asisSeccionActual;
+};
+
+window.toggleAsistenteFloat = function(){
+  _asisAbierto ? cerrarAsistenteFloat() : abrirAsistenteFloat();
+};
+window.abrirAsistenteFloat = function(){
+  _asisAbierto = true;
+  var panel = document.getElementById('asis-panel');
+  if(panel) panel.classList.add('abierto');
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  _asisMsgs = _asisGenerarTodos(u, _asisSeccionActual);
+  _asisMsgActual = 0;
+  _asisRenderMsgActual();
+  _asisActualizarBurbuja();
+  _asisReiniciarTimer();
+};
+window.cerrarAsistenteFloat = function(){
+  _asisAbierto = false;
+  var panel = document.getElementById('asis-panel');
+  if(panel) panel.classList.remove('abierto');
+  if(_asisTimer){ clearInterval(_asisTimer); _asisTimer=null; }
+};
+
+/* Actualiza el asistente cuando cambia la sección */
+function _asisSetSeccion(s){
+  _asisSeccionActual = s;
+  if(_asisAbierto){
+    if(!userSesion||!baseDatos.jugadores[userSesion]) return;
+    var u = baseDatos.jugadores[userSesion];
+    _asisMsgs = _asisGenerarTodos(u, s);
+    _asisMsgActual = 0;
+    _asisRenderMsgActual();
+    _asisActualizarBurbuja();
+    _asisReiniciarTimer();
+  } else {
+    if(userSesion&&baseDatos.jugadores[userSesion]){
+      _asisMsgs = _asisGenerarTodos(baseDatos.jugadores[userSesion], s);
+      _asisActualizarBurbuja();
+    }
+  }
+  var secEl = document.getElementById('asis-panel-seccion');
+  if(secEl) secEl.textContent = _SECCION_NOMBRES[s]||s;
 }
 
 /* ═══════════ RULETAS ═══════════ */
@@ -9844,8 +10075,26 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 68;
+const APP_VERSION = 69;
 const VERSIONES = [
+  {
+    version: 69,
+    fecha: '2026-08-24',
+    titulo: 'Asistente flotante contextual — El Mercader siempre contigo',
+    resumen: 'El asistente deja de ser una sección aparte y se convierte en un widget flotante permanente. Lee tu sección actual, tus datos reales y rota mensajes personalizados cada 18 segundos.',
+    nuevas: [
+      'Widget flotante permanente en esquina inferior derecha — visible en todas las secciones',
+      'Mensajes contextuales por sección: Inicio, Tienda, Tracker, Vidas, Medallas, Misiones, Duelos, Ruletas, Eventos y Perfil',
+      'Navegación entre mensajes con puntos (dots) táctiles',
+      'Burbuja cambia de color según urgencia (morado → naranja → rojo pulsante)',
+      'Punto rojo en la burbuja cuando hay avisos críticos pendientes',
+      'Rotación automática de mensajes cada 18 segundos cuando el panel está abierto',
+      'La sección activa actualiza los mensajes instantáneamente al navegar',
+    ],
+    mejoras: ['La sección Asistente en el menú ahora redirige al widget flotante'],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: 68,
     fecha: '2026-08-24',
@@ -10636,6 +10885,25 @@ document.addEventListener('DOMContentLoaded', function(){
     <div id="novedades-lista" style="overflow-y:auto;padding:0 22px 22px;flex:1"></div>
   </div>
 </div>
+
+  <!-- ══ ASISTENTE FLOTANTE ══ -->
+  <div class="asis-float" id="asis-float" style="display:none">
+    <div class="asis-panel" id="asis-panel">
+      <div class="asis-panel-header">
+        <div>
+          <div class="asis-panel-nombre">🤖 Mercader</div>
+          <div class="asis-panel-seccion" id="asis-panel-seccion">— analizando tu partida —</div>
+        </div>
+        <button class="asis-panel-cerrar" onclick="cerrarAsistenteFloat()">✕</button>
+      </div>
+      <div class="asis-panel-body" id="asis-panel-body"></div>
+      <div class="asis-nav-dots" id="asis-nav-dots"></div>
+    </div>
+    <div style="position:relative;display:inline-block">
+      <div class="asis-burbuja" id="asis-burbuja" onclick="toggleAsistenteFloat()">🤖</div>
+      <div class="asis-badge-punto" id="asis-badge-punto"></div>
+    </div>
+  </div>
 
 </body>
 </html>
