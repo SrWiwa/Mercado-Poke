@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v60 | Build: 2026-08-24 -->
+<!-- Silph Co v68 | Build: 2026-08-24 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -2200,6 +2200,20 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
     </section>
 
+    <!-- OVERLAY: usar Revivir -->
+    <div id="revivir-modal-overlay" class="overlay-modal" style="display:none">
+      <div class="modal-box" style="max-width:400px;position:relative">
+        <button onclick="cerrarModalRevivir()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--txt-muted);font-size:16px;cursor:pointer">✕</button>
+        <div style="font-family:var(--font-display);font-size:15px;font-weight:900;color:var(--amarillo);margin-bottom:4px">🔺 Usar Revivir</div>
+        <div style="font-size:11px;color:var(--txt-muted);margin-bottom:16px">Revive a un Pokémon caído de tu cementerio.</div>
+        <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">¿A qué Pokémon revives?</label>
+        <input type="text" id="revivir-nombre" class="admin-input" placeholder="Nombre del Pokémon" style="font-family:var(--font-body)">
+        <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px;margin-top:10px">Mote (opcional)</label>
+        <input type="text" id="revivir-mote" class="admin-input" placeholder="Mote o apodo" style="font-family:var(--font-body)">
+        <button class="btn-admin legal" style="margin-top:16px" onclick="confirmarRevivir()">🔺 Revivir</button>
+      </div>
+    </div>
+
     <!-- OVERLAY: girar ruleta -->
     <div id="ruleta-girar-overlay" class="overlay-modal">
       <div class="modal-box" style="max-width:420px;text-align:center;position:relative">
@@ -2214,7 +2228,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
         <div style="margin-bottom:12px">
           <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">¿Quién tira la ruleta?</label>
-          <select id="ruleta-jugador-selector" class="admin-input" style="margin-bottom:0;font-family:var(--font-body)"></select>
+          <select id="ruleta-jugador-selector" class="admin-input" style="margin-bottom:0;font-family:var(--font-body);max-height:160px;overflow-y:auto"></select>
         </div>
         <button class="btn-admin packs" id="ruleta-btn-girar" style="max-width:200px;margin:0 auto" onclick="ejecutarGiroRuleta()">🎡 ¡Girar!</button>
         <div id="ruleta-resultado" style="display:none;margin-top:16px;background:rgba(245,185,21,.1);border:1px solid rgba(245,185,21,.35);border-radius:var(--r-lg);padding:14px">
@@ -3002,7 +3016,7 @@ const baseDatosInicial=[
 let baseDatos={productos:[],jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[]};
 let userSesion=sessionStorage.getItem('silph_user_sesion')||null;
 let filtroCategoriaGlobal="";
-const MAX_COMPRAS=3,MS_EN_6_HORAS=6*60*60*1000;
+const MAX_COMPRAS=3,MS_EN_6_HORAS=3*60*60*1000; // 3h (antes 6h)
 const SACRIFICIO_VALORES={basura:{vidas:1,etiqueta:'Basura / Muy común'},normal:{vidas:2,etiqueta:'Normal / Utilidad media'},fuerte:{vidas:3,etiqueta:'Fuerte / Evolución final'},pseudo:{vidas:5,etiqueta:'Pseudo-legendario'},ultra:{vidas:6,etiqueta:'Ultraente'},legendario:{vidas:7,etiqueta:'Legendario / Singular'}};
 function escaparHTML(str){if(!str)return '';return str.replace(/[&<>'"]/g,tag=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]||tag));}
 
@@ -5227,7 +5241,7 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -5301,7 +5315,8 @@ async function guardarBD(){
    Determinista por tiempo (sin escrituras globales en Firebase):
    todos los clientes calculan la misma rotación a partir de la hora.
    ═══════════════════════════════════════════════════════════════ */
-const MISION_MS_ROTACION = 12*60*60*1000;
+const MISION_MS_ROTACION       = 24*60*60*1000; // 24h — misiones normales
+const MISION_MS_ROTACION_LARGA = 48*60*60*1000; // 48h — épicas y especiales
 
 function dispararConfetti(origenEl){
   if(!origenEl) return;
@@ -5458,10 +5473,42 @@ const MISION_POOL_EPICA = [
 /* Recompensas por dificultad.
    Las misiones con 'excluirRecompensas' filtran automáticamente los tipos vetados. */
 const MISION_RECOMPENSA_POOLS = {
-  facil:      [{tipo:'dinero',min:200,max:500},   {tipo:'pf',min:1,max:3},       {tipo:'gacha',min:1,max:1},  {tipo:'recaptura',min:1,max:1}],
-  normal:     [{tipo:'dinero',min:500,max:1000},  {tipo:'pf',min:3,max:6},       {tipo:'gacha',min:1,max:1},  {tipo:'gachaPf',min:1,max:1},  {tipo:'recaptura',min:1,max:1}],
-  dificil:    [{tipo:'dinero',min:800,max:1500},  {tipo:'pf',min:5,max:8},       {tipo:'gacha',min:1,max:1},  {tipo:'gachaPf',min:1,max:1},  {tipo:'vida',min:1,max:1}],
-  muydificil: [{tipo:'dinero',min:1500,max:2500}, {tipo:'pf',min:8,max:12},      {tipo:'gacha',min:1,max:1},  {tipo:'gachaPf',min:1,max:1},  {tipo:'vida',min:1,max:2},    {tipo:'recaptura',min:1,max:1}],
+  facil:      [
+    {tipo:'dinero',   min:200,  max:600},
+    {tipo:'pf',       min:1,    max:4},
+    {tipo:'gacha',    min:1,    max:1},
+    {tipo:'recaptura',min:1,    max:1},
+    {tipo:'dinero',   min:300,  max:800},   // peso extra a dinero para variedad de cantidades
+    {tipo:'pf',       min:2,    max:5},
+  ],
+  normal:     [
+    {tipo:'dinero',   min:600,  max:1200},
+    {tipo:'pf',       min:4,    max:8},
+    {tipo:'gacha',    min:1,    max:1},
+    {tipo:'gachaPf',  min:1,    max:1},
+    {tipo:'recaptura',min:1,    max:1},
+    {tipo:'dinero',   min:800,  max:1500},
+    {tipo:'pf',       min:3,    max:7},
+  ],
+  dificil:    [
+    {tipo:'dinero',   min:1000, max:2000},
+    {tipo:'pf',       min:6,    max:10},
+    {tipo:'gacha',    min:1,    max:1},
+    {tipo:'gachaPf',  min:1,    max:1},
+    {tipo:'vida',     min:1,    max:1},
+    {tipo:'recaptura',min:1,    max:1},
+    {tipo:'dinero',   min:1500, max:2500},
+  ],
+  muydificil: [
+    {tipo:'dinero',   min:2000, max:4000},
+    {tipo:'pf',       min:10,   max:15},
+    {tipo:'gacha',    min:1,    max:1},
+    {tipo:'gachaPf',  min:1,    max:1},
+    {tipo:'vida',     min:1,    max:2},
+    {tipo:'recaptura',min:1,    max:1},
+    {tipo:'dinero',   min:3000, max:5000},
+    {tipo:'pf',       min:12,   max:18},
+  ],
   epica:      [{tipo:'ticket',min:1,max:1}]
 };
 const MISION_ITEMS_ALEATORIOS = [
@@ -5525,7 +5572,7 @@ const MISION_ESPECIAL_VICTORIAS = [
 ];
 
 function obtenerMisionEspecialRotacion(){
-  var rotationId = Math.floor(Date.now()/MISION_MS_ROTACION);
+  var rotationId = Math.floor(Date.now()/MISION_MS_ROTACION_LARGA);
   var rnd = misionMulberry32(rotationId*3571+97);
   var def = MISION_POOL_ESPECIAL[Math.floor(rnd()*MISION_POOL_ESPECIAL.length)];
   var vic = MISION_ESPECIAL_VICTORIAS[Math.floor(rnd()*MISION_ESPECIAL_VICTORIAS.length)];
@@ -5603,27 +5650,27 @@ window.resolverMisionEspecial = function(resultado){
 };
 
 function obtenerRotacionMisiones(){
-  var rotationId = Math.floor(Date.now()/MISION_MS_ROTACION);
+  var rotationId     = Math.floor(Date.now()/MISION_MS_ROTACION);
   var rnd = misionMulberry32(rotationId*7919+13);
-  // Usados independientes por pool para evitar colisiones entre dificultades distintas
   var usadosFacil = [], usadosNormal = [], usadosDificil = [], usadosMuydificil = [], usadosEpica = [];
   var misiones = [
-    // 5 fáciles
     misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
     misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
     misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
     misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
     misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    // 2 normales
     misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd),
     misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd),
-    // 1 difícil
     misionConstruir(misionElegirDePool(MISION_POOL_DIFICIL,    usadosDificil,    rnd), 'dificil',    rnd),
-    // 1 muy difícil
     misionConstruir(misionElegirDePool(MISION_POOL_MUYDIFICIL, usadosMuydificil, rnd), 'muydificil', rnd),
-    // 1 épica — recompensa siempre ticket del mercader
-    misionConstruir(misionElegirDePool(MISION_POOL_EPICA,      usadosEpica,      rnd), 'epica',      rnd),
   ];
+  // Épica: rota cada 48h independientemente
+  var rotIdEpica = Math.floor(Date.now()/MISION_MS_ROTACION_LARGA);
+  var rndE = misionMulberry32(rotIdEpica*6271+7);
+  var usadosE2 = [];
+  var misionEpica = misionConstruir(misionElegirDePool(MISION_POOL_EPICA, usadosE2, rndE), 'epica', rndE);
+  misionEpica._rotationEnd = (rotIdEpica+1)*MISION_MS_ROTACION_LARGA;
+  misiones.push(misionEpica);
   return {rotationId:rotationId, rotationStart:rotationId*MISION_MS_ROTACION, rotationEnd:(rotationId+1)*MISION_MS_ROTACION, misiones:misiones};
 }
 function misionTituloRender(m,u){
@@ -6853,40 +6900,19 @@ window.canjearTicketMercader=async function(uid){
   let idx=u.inventario.findIndex(i=>i.uid===uid);
   if(idx===-1){mostrarNotificacion('Ticket no encontrado.','error','🎫');return;}
 
-  let cf=await mostrarConfirmacion({icono:'🎫',titulo:'¿Canjear Ticket del Mercader?',descripcion:'Recibirás una recompensa aleatoria:\n💰 20.000–50.000 P₠\n🔮 10–20 PF\n🟣 +1 Crédito de Ilegalidad (acumulable)',textoConfirmar:'Canjear',tipo:'normal',sonidoConfirmar:'monedas'});
+  let cf=await mostrarConfirmacion({icono:'🎫',titulo:'¿Canjear Ticket del Mercader?',descripcion:'Recibirás dinero Y PF simultáneamente.\n💰 5.000–12.000 P₠\n🔮 5–12 PF',textoConfirmar:'Canjear',tipo:'normal',sonidoConfirmar:'monedas'});
   if(!cf)return;
 
   // Eliminar el ticket de la mochila
   u.inventario.splice(idx,1);
 
-  // Determinar recompensa aleatoria
-  let r=Math.random(),reveal={},msgDiario='',msgNotif='';
-  if(r<0.34){
-    // Dinero: 20.000–50.000
-    let ganancia=Math.floor(Math.random()*30001)+20000;
-    u.dinero=(u.dinero||0)+ganancia;
-    msgDiario=`🎫 Ticket canjeado — +${ganancia.toLocaleString()} P₠ del Mercader.`;
-    msgNotif=`+${ganancia.toLocaleString()} P₠`;
-    reveal={rareza:'dinero',icono:'💰',nombre:`+${ganancia.toLocaleString()} P₠`,detalle:'Premio del Ticket del Mercader',especial:ganancia>=40000};
-  }else if(r<0.67){
-    // PF: 10–20
-    let pfg=Math.floor(Math.random()*11)+10;
-    u.pf=(u.pf||0)+pfg;
-    msgDiario=`🎫 Ticket canjeado — +${pfg} PF del Mercader.`;
-    msgNotif=`+${pfg} PF`;
-    reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Premio del Ticket del Mercader',especial:pfg>=18};
-  }else{
-    // Crédito de ilegalidad extra acumulable: aumenta el tope de compras ilegales del día
-    let hoy=new Date().toDateString();
-    if(!u.comprasHoy)u.comprasHoy={};
-    if(u.comprasHoy._fecha!==hoy)u.comprasHoy={_fecha:hoy,_illegalCreditos:0};
-    if(u.comprasHoy._illegalCreditos===undefined)u.comprasHoy._illegalCreditos=0;
-    u.comprasHoy._illegalCreditos=(u.comprasHoy._illegalCreditos||0)+1;
-    let credAhora=u.comprasHoy._illegalCreditos;
-    msgDiario=`🎫 Ticket canjeado — +1 Crédito de Ilegalidad extra. Tope hoy: ${1+credAhora} ilegalidad${1+credAhora!==1?'es':''}.`;
-    msgNotif=`+1 Crédito Ilegalidad (tope: ${1+credAhora})`;
-    reveal={rareza:'item',icono:'🟣',nombre:'+1 Crédito de Ilegalidad',detalle:`Tope de ilegales hoy: ${1+credAhora}`,especial:true};
-  }
+  // Siempre da Dinero + PF (ambos, menos cantidad que antes)
+  let ganancia=Math.floor(Math.random()*7001)+5000;
+  let pfg=Math.floor(Math.random()*8)+5;
+  u.dinero=(u.dinero||0)+ganancia;
+  u.pf=(u.pf||0)+pfg;
+  let msgDiario=`🎫 Ticket canjeado — +${ganancia.toLocaleString()} P₠ y +${pfg} PF del Mercader.`;
+  let reveal={rareza:'dinero',icono:'🎫',nombre:`+${ganancia.toLocaleString()} P₠ · +${pfg} PF`,detalle:'Premio del Ticket del Mercader',especial:ganancia>=10000};
 
   inyectarEntradaDiarioAutomatica(msgDiario);
   guardarBD();
@@ -6895,9 +6921,42 @@ window.canjearTicketMercader=async function(uid){
 };
 /* ══════════════════════════════════════════════ */
 
+window._revivirItemUid = null;
+window.abrirModalRevivir = function(uid){
+  window._revivirItemUid = uid;
+  document.getElementById('revivir-nombre').value='';
+  document.getElementById('revivir-mote').value='';
+  refrescarSelectsPersonalizados();
+  document.getElementById('revivir-modal-overlay').style.display='flex';
+};
+window.cerrarModalRevivir = function(){
+  document.getElementById('revivir-modal-overlay').style.display='none';
+};
+window.confirmarRevivir = function(){
+  var uid = window._revivirItemUid;
+  var nombre = document.getElementById('revivir-nombre').value.trim();
+  if(!nombre){ mostrarNotificacion('Indica qué Pokémon revives.','error','🔺'); return; }
+  var mote = document.getElementById('revivir-mote').value.trim();
+  var nc = mote ? nombre+' "'+mote+'"' : nombre;
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return;
+  var u = baseDatos.jugadores[userSesion];
+  if(!u.inventario) return;
+  var i = u.inventario.findIndex(function(x){ return x.uid===uid; });
+  if(i===-1){ mostrarNotificacion('El Revivir ya no está en la mochila.','error','🔺'); cerrarModalRevivir(); return; }
+  u.inventario.splice(i,1);
+  inyectarEntradaDiarioAutomatica('🔺 REVIVIR: '+nc+' ha sido revivido.');
+  regContadorMision(u,'objetosUsados',1);
+  guardarBD();
+  cerrarModalRevivir();
+  reproducirSonido('revivir');
+  mostrarNotificacion(nc+' ha vuelto a la vida.','exito','🔺',null,true);
+  refrescarPantallaGamer();
+};
 window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];if(!u.inventario)return;let i=u.inventario.findIndex(x=>x.uid===uid);if(i===-1)return;let item=u.inventario[i];
-  // El Ticket del Mercader se canjea con su flujo propio (con confirmación y reveal)
+  // El Ticket del Mercader se canjea con su flujo propio
   if(item.nombre==='Ticket Especial del Mercader'){canjearTicketMercader(uid);return;}
+  // El Revivir abre su propio modal
+  if(item.nombre==='Revivir'){abrirModalRevivir(uid);return;}
   let desc=item.desc||'';u.inventario.splice(i,1);let esIlegal=item.tienda==='illegal';let parteDesc=desc?` Descripción: ${desc}.`:'';let parteBeneficio=esIlegal&&item.beneficio?` ✅ Beneficio: ${item.beneficio}.`:'';let parteCastigo=esIlegal&&item.castigo?` ⚠️ Castigo si detectado: ${item.castigo}.`:'';let entradaDiario=esIlegal?`🟣 Activó módulo prohibido: ${icon} '${nombre}'.${parteDesc}${parteBeneficio}${parteCastigo}`:(desc?`Utilizó el objeto ${icon} '${nombre}'. Contenido: ${desc}.`:`Utilizó el objeto ${icon} '${nombre}'. Consumido.`);inyectarEntradaDiarioAutomatica(entradaDiario);regContadorMision(u,'objetosUsados',1);guardarBD();reproducirSonido('usar_objeto');mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true);};
 
 /* ═══ MODAL BAJA ═══ */
@@ -7661,18 +7720,26 @@ function generarConsejosAsistente(u){
   }
 
   // ── SUPERVIVENCIA ──
-  if(vidasTot>0 && vidasAct===1){
-    add('critico','💀','¡Última vida en juego!', `Solo te queda 1 vida de ${vidasTot}. Un fallo más y toca hablar con el Cementerio.`);
+  var vidasExtra2 = u.vidasExtra||0;
+  if(vidasTot>0 && vidasAct===1 && vidasExtra2===0){
+    var frasesUltima=['Una sola vida, '+userSesion.toUpperCase()+'. Una. Sola. No la cagues.','Última vida. Si pierdes un pokémon, fin del locke. Sin drama.',''+vidasAct+'/'+vidasTot+' vidas. La próxima muerte es la tuya. Literalmente.'];
+    add('critico','💀','¡Última vida!', frasesUltima[numMed%frasesUltima.length]);
   } else if(vidasTot>0 && vidasAct<=Math.max(1,Math.ceil(vidasTot*0.25))){
-    add('importante','❤️‍🩹','Vidas bajo mínimos', `Te quedan ${vidasAct}/${vidasTot} vidas. Puede ser buen momento para jugar sobre seguro.`);
+    add('importante','❤️‍🩹','Pocas vidas', vidasAct+'/'+vidasTot+' vidas. Empieza a jugar con cabeza, '+userSesion.toUpperCase()+'.');
+  } else if(vidasExtra2>0){
+    add('consejo','❤️','Vidas extra activas', 'Tienes '+vidasAct+'/'+vidasTot+'+'+vidasExtra2+' extra. Esas extra son tu colchón de seguridad.');
   }
   if(rachaActual<=-3){
-    add('importante','📉','Racha de pérdidas', `Llevas ${Math.abs(rachaActual)} capturas perdidas seguidas. Respira antes de la siguiente ruta.`);
+    var frasesRacha=['Llevas '+Math.abs(rachaActual)+' capturas fallidas seguidas. Esto empieza a preocupar.',''+Math.abs(rachaActual)+' pérdidas consecutivas. Cambia de estrategia ya.','Mala racha de '+Math.abs(rachaActual)+'. Respira. Piensa. Captura.'];
+    add('importante','📉','Racha negativa', frasesRacha[pendientes%frasesRacha.length]);
   } else if(rachaActual>=6){
-    add('consejo','🔥','¡Buena racha!', `Llevas ${rachaActual} capturas seguidas sin fallar. ¡Sigue así!`);
+    var frasesBuena=[''+rachaActual+' capturas seguidas sin fallo. Eres una máquina.','Racha de '+rachaActual+'. El Mercader está impresionado (y eso no es fácil).',''+rachaActual+' seguidas. No lo rompas siendo imprudente.'];
+    add('consejo','🔥','Racha épica', frasesBuena[torneosGanados%frasesBuena.length]);
+  } else if(rachaActual>=3){
+    add('consejo','✨','Buena racha', rachaActual+' capturas seguidas. Vas bien.');
   }
-  if(perdidos>=5 && rachaActual>-3){
-    add('consejo','⚰️','Bajas en el Locke', `Llevas ${perdidos} Pokémon perdidos en total en esta partida.`);
+  if(perdidos>=5){
+    add('consejo','⚰️','Muchas bajas', perdidos+' Pokémon perdidos. El cementerio crece. Cuídate.');
   }
 
   // ── PROGRESO (tracker) ──
@@ -7693,29 +7760,32 @@ function generarConsejosAsistente(u){
     add('consejo','🏆','¡Insignias completas!', `Has conseguido las 8 ${tipoMed}. ¿Ya vas por la Liga o el Alto Mando?`);
   }
 
-  // ── ECONOMÍA (siempre aporta 2 mensajes, cubriendo todos los rangos) ──
+  // ── ECONOMÍA ──
   if(dinero<500){
-    add('importante','💸','Fondos bajos', `Solo te quedan ${dinero.toLocaleString('es-ES')} P₠. Ahorra antes del próximo gasto grande.`);
-  } else if(dinero>=5000){
-    add('consejo','💰','Buena economía', `Tienes ${dinero.toLocaleString('es-ES')} P₠ acumulados. Casi cualquier objeto está a tu alcance.`);
+    var frasesPobres=['Con '+dinero.toLocaleString('es-ES')+' P₠ no llegas ni a la primera ruta. Urgente.','¿'+dinero.toLocaleString('es-ES')+' P₠? Eso no da ni pa una Poké Ball. Muévete.','La tesorería está en estado crítico: '+dinero.toLocaleString('es-ES')+' P₠. Activa el modo ahorro ya.'];
+    add('importante','💸','Fondos bajos', frasesPobres[numMed%frasesPobres.length]);
+  } else if(dinero>=8000){
+    var frasesRico=[''+dinero.toLocaleString('es-ES')+' P₠ y sin gastarlos. ¿Estás coleccionando números?','Acumulando '+dinero.toLocaleString('es-ES')+' P₠. El Mercader te mira con envidia.','Con '+dinero.toLocaleString('es-ES')+' P₠ puedes arrasar la tienda entera. El momento es ahora.'];
+    add('consejo','💰','Economía saneada', frasesRico[pendientes%frasesRico.length]);
   } else {
-    add('consejo','💵','Economía estable', `Llevas ${dinero.toLocaleString('es-ES')} P₠ en el bolsillo.`);
+    var frasesNormal=[''+dinero.toLocaleString('es-ES')+' P₠ en el bolsillo. Ni pobre ni rico, lo justo.','La cuenta corriente: '+dinero.toLocaleString('es-ES')+' P₠. Gasta con cabeza.','Tienes '+dinero.toLocaleString('es-ES')+' P₠. Suficiente para algo decente si no te vuelves loco.'];
+    add('consejo','💵','Economía estable', frasesNormal[torneosGanados%frasesNormal.length]);
   }
   if(pf>=30){
-    add('consejo','🔮','PF acumulados', `Tienes ${pf} PF sin gastar. Podrías invertirlos en la tienda o en el PF Gacha.`);
+    add('consejo','🔮','PF acumulados', pf+' PF sin gastar. O los inviertes o el Mercader te va a cobrar impuestos.');
   } else if(pf===0){
-    add('consejo','🔮','Sin PF ahora mismo', `No te queda ningún PF disponible. El Gacha o el PF Gacha pueden darte algunos.`);
+    add('consejo','🔮','Sin PF', 'Cero PF. El Gacha gratuito sigue ahí, por si no lo sabías.');
   } else {
-    add('consejo','🔮','PF disponibles', `Tienes ${pf} PF listos para gastar cuando quieras.`);
+    add('consejo','🔮','PF disponibles', pf+' PF disponibles. Para algo sirven.');
   }
 
   // ── GACHA ──
   if(gachaListo && gachaPFListo){
-    add('importante','🎁','2 recompensas esperando', `Tienes el Gacha normal Y el PF Gacha disponibles para reclamar hoy.`);
+    add('importante','🎁','¡Dos recompensas esperando!', 'El Gacha normal Y el PF Gacha están disponibles ahora mismo. Qué esperas.');
   } else if(gachaListo){
-    add('consejo','⚡','Gacha disponible', `Ya puedes reclamar tu recompensa diaria del Gacha.`);
+    add('consejo','⚡','Gacha disponible', 'El Gacha gratuito de hoy está listo para girar. Entra y reclámalo.');
   } else if(gachaPFListo){
-    add('consejo','🔮','PF Gacha disponible', `Ya puedes reclamar tu PF Gacha de hoy.`);
+    add('consejo','🔮','PF Gacha disponible', 'El PF Gacha está disponible. No lo dejes pasar.');
   }
 
   // ── INVENTARIO ──
@@ -7740,8 +7810,11 @@ function generarConsejosAsistente(u){
   }
 
   // ── COMPRAS ──
-  if((u.comprasDisponibles||0)===0){
-    add('consejo','🛍️','Compras agotadas por hoy', `Ya has usado tus compras disponibles. Se recargan automáticamente cada 6 horas.`);
+  var compDisp=u.comprasDisponibles||0;
+  if(compDisp===0){
+    add('consejo','🛍️','Sin compras disponibles', 'Has quemado todas tus compras. Se recargan cada 3 horas. Paciencia.');
+  } else if(compDisp===MAX_COMPRAS){
+    add('consejo','🛍️','Compras al máximo', compDisp+' compras disponibles sin usar. La tienda te espera.');
   }
 
   // ── MISIONES DIARIAS ──
@@ -7782,8 +7855,9 @@ function generarConsejosAsistente(u){
     add('importante','📓','Sin actividad hoy', `Todavía no has registrado ninguna acción hoy en tu Locke.`);
   }
 
-  if(baseDatos.eventoSistema && baseDatos.eventoSistema !== 'normal'){
-    add('consejo','🌟','Evento activo', `Hay un evento especial en marcha ahora mismo: ${baseDatos.eventoSistema}.`);
+  var _evDesc={'rebajas':'📉 Rebajas activas — 25% de descuento en la tienda legal y packs. Aprovéchalo.','inflacion':'⚠️ Inflación — los precios P₠ han subido un 50%. Gasta solo lo necesario.','bonus_pf':'🪙 Bonus PF — doble PF por compras. Momento de invertir.'};
+  if(baseDatos.eventoSistema && baseDatos.eventoSistema!=='normal' && _evDesc[baseDatos.eventoSistema]){
+    add('importante','🌟','Evento de tienda activo', _evDesc[baseDatos.eventoSistema]);
   }
 
   var orden = {critico:0, importante:1, consejo:2};
@@ -7834,16 +7908,22 @@ window.renderizarRuletas = function(){
   if(vacio) vacio.style.display = 'none';
   grid.innerHTML = ids.map(function(id){
     var r = ruletas[id];
-    var opts = r.opciones || [];
-    return '<div class="card" style="padding:16px">'
-      + '<div style="font-family:var(--font-display);font-size:13px;font-weight:800;color:var(--blanco);margin-bottom:4px">🎡 '+escaparHTML(r.nombre)+'</div>'
-      + '<div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:12px">'+opts.length+' opciones · por '+escaparHTML((r.autor||'?').toUpperCase())+'</div>'
-      + '<div style="display:flex;gap:6px">'
-      + '<button class="btn-admin packs" style="margin-bottom:0;flex:1" onclick="abrirGirarRuleta(\''+id+'\')">🎡 Girar</button>'
-      + '<button class="btn-admin-sm" style="border:1px solid var(--borde);background:var(--bg-overlay);color:var(--txt-secondary)" onclick="abrirEditorRuleta(\''+id+'\')">✏️</button>'
-      + '<button class="btn-admin-sm danger" onclick="eliminarRuleta(\''+id+'\')">🗑️</button>'
-      + '</div>'
-      + '</div>';
+     var opts = (r.opciones||[]).filter(function(o){ return o&&o.trim(); });
+     var preview = opts.slice(0,4).map(function(o){ return '<span style="background:var(--bg-overlay);border:1px solid var(--borde);border-radius:99px;padding:2px 8px;font-size:10px;color:var(--txt-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;display:inline-block">'+escaparHTML(o)+'</span>'; }).join('');
+     var masOpts = opts.length>4 ? '<span style="font-size:10px;color:var(--txt-muted)">+'+(opts.length-4)+' más</span>' : '';
+     return '<div class="card" style="padding:18px;display:flex;flex-direction:column;gap:12px">'
+       + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">'
+       + '<div>'
+       + '<div style="font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--blanco);line-height:1.2">🎡 '+escaparHTML(r.nombre)+'</div>'
+       + '<div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-top:2px">'+opts.length+' opciones · '+escaparHTML((r.autor||'?').toUpperCase())+'</div>'
+       + '</div>'
+       + '<div style="display:flex;gap:4px;flex-shrink:0">'
+       + '<button class="btn-admin-sm" style="border:1px solid var(--borde);background:var(--bg-overlay);color:var(--txt-secondary)" onclick="abrirEditorRuleta(\''+id+'\')">✏️</button>'
+       + '<button class="btn-admin-sm danger" onclick="eliminarRuleta(\''+id+'\')">🗑️</button>'
+       + '</div></div>'
+       + '<div style="display:flex;flex-wrap:wrap;gap:4px;min-height:22px">'+preview+masOpts+'</div>'
+       + '<button class="btn-admin packs" style="margin-bottom:0;width:100%" onclick="abrirGirarRuleta(\''+id+'\')">🎡 Girar ruleta</button>'
+       + '</div>';
   }).join('');
 };
 
@@ -9151,7 +9231,29 @@ window.desbanearJugador=function(){
 };
 window.restablecerGachaDiarioDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-gacha-usuario').value;if(!t||!baseDatos.jugadores[t]){mostrarNotificacion("Entrenador no encontrado.","error","⚡");return;}baseDatos.jugadores[t].ultimoHackeo=0;logAdmin('Resetear gacha diario',`${t.toUpperCase()}`);reproducirSonido('exito');mostrarNotificacion(`Gacha de ${t.toUpperCase()} reiniciado.`,"exito","⚡");};
 window.restablecerGachaPFDesdeMercader=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('adm-reset-gacha-pf-usuario').value;if(!t||!baseDatos.jugadores[t]){mostrarNotificacion("Entrenador no encontrado.","error","⚡");return;}baseDatos.jugadores[t].ultimoGachaPF=0;logAdmin('Resetear PF Gacha',`${t.toUpperCase()}`);reproducirSonido('exito');mostrarNotificacion(`PF Gacha de ${t.toUpperCase()} reiniciado.`,"exito","🔮");};
-window.emitirOrdenEconomicaGlobal=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}baseDatos.eventoSistema=document.getElementById('adm-evento-economico').value;logAdmin('Orden económica global',`${baseDatos.eventoSistema}`);reproducirSonido('exito');mostrarNotificacion("Orden de Red distribuida.","exito","📢");};
+/* Rotación automática del evento de tienda cada 12h.
+   La semilla se calcula a partir del número de período de 12h desde epoch,
+   igual para todos los clientes — sin necesidad de Firebase. */
+function _eventoAutomaticoActual(){
+  var EVENTOS=['normal','normal','normal','rebajas','inflacion','bonus_pf'];
+  var periodo=Math.floor(Date.now()/(12*60*60*1000));
+  var semilla=periodo*2654435761;
+  var idx=((semilla>>>0)%EVENTOS.length);
+  return EVENTOS[idx];
+}
+function _aplicarEventoAutomatico(){
+  // Solo cambia si no hay un evento manual fijado explícitamente
+  // El evento automático se almacena en _eventoAuto — si el admin no toca el select, se usa este
+  var eventoAuto=_eventoAutomaticoActual();
+  if(!baseDatos._eventoManualFijado){
+    if(baseDatos.eventoSistema!==eventoAuto){
+      baseDatos.eventoSistema=eventoAuto;
+      guardarBD();
+    }
+  }
+}
+
+window.emitirOrdenEconomicaGlobal=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}baseDatos.eventoSistema=document.getElementById('adm-evento-economico').value;baseDatos._eventoManualFijado=true;logAdmin('Orden económica global',`${baseDatos.eventoSistema}`);guardarBD();reproducirSonido('exito');mostrarNotificacion("Orden de Red distribuida.","exito","📢");};
 window.cargarTituloManualEnAdmin=function(){let uid=document.getElementById('adm-titulo-usuario').value,inp=document.getElementById('adm-titulo-texto');if(!uid||!inp)return;let u=baseDatos.jugadores[uid];inp.value=(u&&u.tituloManual)?u.tituloManual:'';};
 window.asignarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value,txt=document.getElementById('adm-titulo-texto').value.trim();if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}if(!txt){mostrarNotificacion("Escribe el texto del título.","error","🏷️");return;}let u=baseDatos.jugadores[uid];u.tituloManual=txt;u.tituloActivo='manual';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader te otorgó el título 🏷️ "${txt}".`);logAdmin('Asignar título',`${uid.toUpperCase()}: "${txt}"`);reproducirSonido('exito');mostrarNotificacion(`Título "${txt}" otorgado a ${uid.toUpperCase()}.`,"exito","🏷️");if(userSesion===uid)renderizarTitulosYTemas();};
 window.quitarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value;if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}let u=baseDatos.jugadores[uid];if(!u.tituloManual){mostrarNotificacion("Este entrenador no tiene título manual.","error","🏷️");return;}delete u.tituloManual;if(u.tituloActivo==='manual')u.tituloActivo=null;logAdmin('Quitar título',`${uid.toUpperCase()}`);document.getElementById('adm-titulo-texto').value='';reproducirSonido('click');mostrarNotificacion(`Título manual eliminado de ${uid.toUpperCase()}.`,"info","🗑️");if(userSesion===uid)renderizarTitulosYTemas();};
@@ -9742,8 +9844,31 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 67;
+const APP_VERSION = 68;
 const VERSIONES = [
+  {
+    version: 68,
+    fecha: '2026-08-24',
+    titulo: 'Megapatch: ticket, eventos, recargas, misiones, asistente, revivir, ruletas',
+    resumen: 'Ticket siempre da Dinero+PF. Eventos auto cada 12h. Recargas cada 3h. Misiones 24h (épicas/especiales 48h). Asistente personalizado. Modal Revivir. Ruletas rediseñadas.',
+    nuevas: [
+      'Modal de Revivir: al usar el Revivir desde la mochila se pide el nombre del Pokémon antes de consumirlo',
+      'Eventos de tienda con rotación automática cada 12h (determinista, igual para todos)',
+    ],
+    mejoras: [
+      'Ticket Mercader: siempre da Dinero + PF simultáneamente (5k-12k P₠ · 5-12 PF)',
+      'Recargas de compras normales: de 6h a 3h',
+      'Misiones diarias: rotación cada 24h (antes 12h)',
+      'Misiones épicas y especiales: rotación cada 48h independiente',
+      'Recompensas de misiones con mayor variedad de cantidades por pool duplicado',
+      'Asistente: mensajes personalizados con el nombre del jugador, frases variadas y tono más directo',
+      'Asistente: detecta vidasExtra, racha positiva moderada, número exacto de compras disponibles, descripción detallada del evento activo',
+      'Ruletas: cards rediseñadas con preview de opciones y botones reorganizados',
+      'Ruletas: selector de jugador con scroll cuando hay muchos usuarios',
+    ],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: 67,
     fecha: '2026-08-24',
