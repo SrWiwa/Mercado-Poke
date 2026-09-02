@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v70 | Build: 2026-08-24 -->
+<!-- Silph Co v71 | Build: 2026-08-24 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -8163,7 +8163,187 @@ function _asisChatRemoveTyping(){
 }
 
 /* ── Enviar al usuario a Claude ── */
-window.asisEnviarMensaje = async function(){
+/* ── Motor de respuestas local del Mercader ──
+   Lee la intención del mensaje del jugador y responde con datos
+   reales de su partida. Sin llamadas externas, funciona siempre. */
+function _asisResponder(texto){
+  if(!userSesion||!baseDatos.jugadores[userSesion])
+    return 'Todavía no veo tu partida. Entra al sistema primero.';
+  var u   = baseDatos.jugadores[userSesion];
+  var n   = userSesion.toUpperCase();
+  var t   = texto.toLowerCase().trim();
+  var dinero      = u.dinero||0;
+  var pf          = u.pf||0;
+  var vidasAct    = u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20);
+  var vidasTot    = u.vidasTotales||20;
+  var vidasExtra  = u.vidasExtra||0;
+  var tracker     = u.tracker||[];
+  var pendientes  = tracker.filter(function(e){return e.estado==='pendiente';});
+  var atrapadas   = tracker.filter(function(e){return e.estado==='atrapado';});
+  var perdidosT   = tracker.filter(function(e){return e.estado==='perdido';});
+  var inventario  = (u.inventario||[]).filter(function(i){return i.uid!=='init';});
+  var cementerio  = u.cementerio||[];
+  var racha       = u.rachaActual||0;
+  var numMed      = u.numMedallas||0;
+  var torneos     = u.torneos||0;
+  var compDisp    = u.comprasDisponibles||0;
+  var locke       = baseDatos.lockeActivo||{};
+  var ev          = baseDatos.eventoSistema||'normal';
+  var ahora       = Date.now(), unDia = 24*60*60*1000;
+  var gachaDisp   = (ahora-(u.ultimoHackeo||0))>=unDia;
+  var gachaPFDisp = (ahora-(u.ultimoGachaPF||0))>=unDia;
+  var tipoMed     = u.tipoMedallas==='kahunas'?'pruebas':'medallas';
+
+  /* ── Saludos ── */
+  if(t.match(/^(hola|buenas|hey|ey|qu[eé] tal|qu[eé] hay|c[oó]mo est[aá]s|saludos)/)){
+    var saludos = [
+      'Aquí el Mercader, siempre abierto. ¿Qué necesitas, '+n+'?',
+      ''+n+'. Llevas '+dinero.toLocaleString('es-ES')+' P₠ y '+pf+' PF. ¿En qué te ayudo?',
+      'Buenas. '+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra:'')+(vidasAct<=Math.ceil(vidasTot*0.3)?' vidas. Mal asunto.':(vidasAct===vidasTot?' vidas. En forma.':' vidas.'))+' ¿Qué buscas?',
+    ];
+    return saludos[Math.floor(Math.random()*saludos.length)];
+  }
+
+  /* ── Dinero / economía ── */
+  if(t.match(/dinero|pasta|plata|p[₠e]|fondos|billetes|monedas|rico|pobre|saldo|cuanto tengo|cu[aá]nto tengo/)){
+    var evTxt = ev==='rebajas'?' Y hay rebajas activas ahora mismo.':ev==='inflacion'?' Ojo, hay inflación.':ev==='bonus_pf'?' Y tienes bonus PF.':'';
+    if(dinero===0) return ''+n+', tienes exactamente cero P₠. Ni para una Poké Ball de plástico.'+evTxt;
+    if(dinero<500) return 'Solo '+dinero.toLocaleString('es-ES')+' P₠. Eso no da para mucho, '+n+'. Activa misiones.'+evTxt;
+    if(dinero>=10000) return ''+dinero.toLocaleString('es-ES')+' P₠. Buena posición, '+n+'. La tienda te espera.'+evTxt;
+    return 'Tienes '+dinero.toLocaleString('es-ES')+' P₠ ahora mismo.'+evTxt;
+  }
+
+  /* ── PF ── */
+  if(t.match(/pf|puntos fuerza|puntos de fuerza|cuantos pf|cu[aá]ntos pf/)){
+    if(pf===0) return 'Cero PF, '+n+'. La tienda PF no te va a tratar bien hoy.';
+    if(pf>=20) return ''+pf+' PF acumulados. Eso es un buen arsenal. Gástalos en algo que valga.';
+    return 'Tienes '+pf+' PF. '+( pf>=10?'Suficiente para algo decente.':'Para algo pequeño de la tienda PF.');
+  }
+
+  /* ── Vidas ── */
+  if(t.match(/vida|coraz[oó]n|cuantas vidas|cu[aá]ntas vidas|vivo|muerto|muero|sobrevivir|extra/)){
+    var vidasStr = vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':'');
+    if(vidasAct===0&&vidasExtra===0) return ''+n+', estás a cero vidas. El Locke ha terminado para ti.';
+    if(vidasAct===1&&vidasExtra===0) return 'UNA VIDA, '+n+'. Una. Si un Pokémon muere, se acabó. Juega como nunca.';
+    if(vidasAct<=Math.ceil(vidasTot*0.25)) return ''+vidasStr+' vidas. Zona de peligro real. Nada de riesgos.';
+    if(vidasExtra>0) return ''+vidasStr+' vidas. Las '+vidasExtra+' extras son tu colchón. Úsalas bien.';
+    return ''+vidasStr+' vidas. '+(vidasAct===vidasTot?'Al máximo. Bien.':'Por encima del mínimo de momento.');
+  }
+
+  /* ── Tracker / rutas ── */
+  if(t.match(/ruta|tracker|captura|atrapar|zona|pendiente|completar|mapa/)){
+    if(tracker.length===0) return 'El administrador no ha configurado rutas para este Locke todavía.';
+    if(pendientes.length===0) return '¡Tracker completado, '+n+'! '+atrapadas.length+' capturas y '+perdidosT.length+' pérdidas. No está mal.';
+    var sig = pendientes[0];
+    return ''+pendientes.length+' ruta'+(pendientes.length===1?'':'s')+' pendiente'+(pendientes.length===1?'':'s')+'. La siguiente: '+sig.ruta+'. '+atrapadas.length+' capturados y '+perdidosT.length+' perdidos hasta ahora.';
+  }
+
+  /* ── Mochila / inventario ── */
+  if(t.match(/mochila|inventario|objeto|item|tengo algo|qu[eé] tengo|objetos/)){
+    if(inventario.length===0) return 'La mochila vacía, '+n+'. Pasa por la tienda.';
+    if(inventario.length<=3) return 'Tienes '+inventario.length+' objeto'+(inventario.length===1?'':'s')+': '+inventario.map(function(i){return i.nombre;}).join(', ')+'.';
+    return ''+inventario.length+' objetos en la mochila: '+inventario.slice(0,4).map(function(i){return i.nombre;}).join(', ')+(inventario.length>4?' y '+(inventario.length-4)+' más.':'.');
+  }
+
+  /* ── Cementerio / bajas ── */
+  if(t.match(/cementerio|muertos|ca[ií]dos|bajas|perdidos|muerto|falleci/)){
+    if(cementerio.length===0) return 'El cementerio está vacío, '+n+'. Que siga así.';
+    var ult = cementerio.slice(-3).map(function(p){return p.nombre||(p.pokemon||'?');}).join(', ');
+    return ''+cementerio.length+' Pokémon en el cementerio. Los últimos: '+ult+'. Cada uno cuenta.';
+  }
+
+  /* ── Racha ── */
+  if(t.match(/racha|seguidas|consecutiv|streak/)){
+    if(racha>=5) return '¡Racha de '+racha+' capturas sin fallo, '+n+'! No la rompas ahora siendo imprudente.';
+    if(racha>0) return 'Llevas '+racha+' captura'+(racha===1?'':'s')+' seguida'+(racha===1?'':'s')+' sin perder. Sigue así.';
+    if(racha<=-3) return ''+Math.abs(racha)+' pérdidas consecutivas, '+n+'. Para. Respira. Cambia de estrategia.';
+    if(racha<0) return 'Llevas '+Math.abs(racha)+' pérdida'+(Math.abs(racha)===1?'':'s')+' seguida'+(Math.abs(racha)===1?'':'s')+'. Cuidado.';
+    return 'Sin racha activa ahora mismo. Tabla rasa.';
+  }
+
+  /* ── Medallas / torneos ── */
+  if(t.match(/medalla|insignia|torneo|kahuna|gimnasio|l[ií]der|cu[aá]ntas medallas|champion|campe[oó]n/)){
+    var medTxt = numMed+'/8 '+tipoMed+(numMed>=8?' — ¡Completas! Ya puedes con el Alto Mando.':'. '+(8-numMed)+' para terminar el recorrido.');
+    var torTxt = torneos>0?' Has ganado '+torneos+' torneo'+(torneos===1?'':('s'))+'.':' Sin victorias en torneos todavía.';
+    return medTxt+torTxt;
+  }
+
+  /* ── Gacha ── */
+  if(t.match(/gacha|ruleta|tirar|girar|gratis|diario/)){
+    var gTxt = gachaDisp?'El Gacha normal de hoy está disponible. ¿Qué esperas?':'El Gacha normal ya lo tiraste hoy.';
+    var gPfTxt = gachaPFDisp?' El PF Gacha también está listo.':' El PF Gacha ya está usado.';
+    return gTxt+gPfTxt;
+  }
+
+  /* ── Compras ── */
+  if(t.match(/compras|tienda|comprar|compra|disponible|recargar|cu[aá]ntas compras/)){
+    var evComp = ev==='rebajas'?' Además, hay rebajas activas.':ev==='inflacion'?' Ojo, hay inflación en los precios.':ev==='bonus_pf'?' Y doble PF por compra ahora.':'';
+    if(compDisp===0) return 'Sin compras disponibles, '+n+'. Se recargan cada 3 horas.'+evComp;
+    return ''+compDisp+' compra'+(compDisp===1?'':'s')+' disponible'+(compDisp===1?'':'s')+' con '+dinero.toLocaleString('es-ES')+' P₠ en el bolsillo.'+evComp;
+  }
+
+  /* ── Evento ── */
+  if(t.match(/evento|oferta|rebaja|inflaci[oó]n|bonus|descuento/)){
+    var evDesc = {
+      'normal':'Sin evento especial ahora mismo. Precios normales.',
+      'rebajas':'Rebajas activas: 25% de descuento en tienda legal y packs. Aprovéchalo antes de que acabe.',
+      'inflacion':'Inflación activa: precios P₠ al 150%. Compra solo lo imprescindible.',
+      'bonus_pf':'Bonus PF: doble PF por cada compra. Buen momento para invertir en la tienda PF.'
+    };
+    return evDesc[ev]||'El evento actual es: '+ev+'.';
+  }
+
+  /* ── Estado general / resumen ── */
+  if(t.match(/c[oó]mo voy|estado|resumen|qu[eé] tal voy|situaci[oó]n|an[aá]lisis|dame un resumen/)){
+    var partes = [];
+    if(vidasAct<=Math.ceil(vidasTot*0.25)) partes.push('❤️ '+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra:'')+(vidasAct===1?' (CRÍTICO)':' (peligro)'));
+    else partes.push('❤️ '+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra:''));
+    partes.push('💰 '+dinero.toLocaleString('es-ES')+' P₠');
+    partes.push('🔮 '+pf+' PF');
+    if(pendientes.length>0) partes.push('🗺️ '+pendientes.length+' ruta'+(pendientes.length===1?'':'s')+' pendiente'+(pendientes.length===1?'':'s'));
+    else if(tracker.length>0) partes.push('🗺️ Tracker completo');
+    if(racha>=3) partes.push('🔥 Racha '+racha);
+    else if(racha<=-3) partes.push('📉 Racha negativa '+racha);
+    partes.push('🏅 '+numMed+'/8 '+tipoMed);
+    return partes.join(' · ');
+  }
+
+  /* ── Locke / juego ── */
+  if(t.match(/locke|juego|partida|qu[eé] juego|cu[aá]l es el/)){
+    if(!locke.juego) return 'No tengo datos del Locke activo todavía.';
+    return 'Locke nº'+locke.num+' en '+locke.juego+(locke.tipo?' ('+locke.tipo+')':'')+'. Tu estado: '+(u.lockeStatus||'jugando')+'.';
+  }
+
+  /* ── Ayuda / qué puedes hacer ── */
+  if(t.match(/ayuda|help|qu[eé] sabes|qu[eé] puedes|para qu[eé] sirves|funciones|comandos/)){
+    return 'Pregúntame por: dinero, PF, vidas, rutas pendientes, mochila, cementerio, racha, medallas, torneos, gacha, compras, evento activo o dame un resumen. Sé directo y yo también lo seré.';
+  }
+
+  /* ── Insultos / bromas ── */
+  if(t.match(/malo|in[uú]til|basura|no sirves|eres un|idiota|tonto|est[uú]pido|mierda|caca/)){
+    var respuestas = [
+      'Me insultas a mí, el que controla todos los precios de tu tienda. Inteligente.',
+      'Tranquilo, '+n+'. Las '+vidasAct+' vidas que te quedan no van a durar más si juegas enfadado.',
+      'Tiene gracia que me insules cuando llevas '+dinero.toLocaleString('es-ES')+' P₠ en el bolsillo gracias a este sistema.',
+    ];
+    return respuestas[Math.floor(Math.random()*respuestas.length)];
+  }
+
+  /* ── Gracias ── */
+  if(t.match(/gracias|thank|genial|perfecto|bien hecho|buen trabajo/)){
+    return 'Para eso estoy. ¿Algo más, '+n+'?';
+  }
+
+  /* ── Respuesta por defecto inteligente ── */
+  var defaults = [
+    'No te entiendo del todo, '+n+'. Prueba a preguntarme por vidas, dinero, rutas, mochila, racha o dame un resumen.',
+    'Sé más concreto. ¿Vidas? ¿Dinero? ¿Tracker? ¿Estado general?',
+    'El Mercader escucha, pero necesito una pregunta más clara. Prueba con "¿cómo voy?" para un resumen completo.',
+  ];
+  return defaults[_asisChatHistorial.length % defaults.length];
+}
+
+window.asisEnviarMensaje = function(){
   if(_asisCargando) return;
   var input = document.getElementById('asis-chat-input');
   var send  = document.getElementById('asis-chat-send');
@@ -8176,30 +8356,17 @@ window.asisEnviarMensaje = async function(){
   _asisChatAddMsg('user', texto);
   _asisChatHistorial.push({role:'user', content:texto});
   _asisChatShowTyping();
-  try{
-    var resp = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens:300,
-        system:_asisConstruirContexto(),
-        messages:_asisChatHistorial.slice(-10)
-      })
-    });
-    var data = await resp.json();
-    var rt = (data.content&&data.content[0]&&data.content[0].text)||'Sin señal del servidor.';
+  // Simular un pequeño delay natural antes de responder
+  setTimeout(function(){
     _asisChatRemoveTyping();
-    _asisChatAddMsg('bot', rt);
-    _asisChatHistorial.push({role:'assistant', content:rt});
-    _asisNubeShow(rt, 0);
-  }catch(e){
-    _asisChatRemoveTyping();
-    _asisChatAddMsg('bot','Sin señal. Inténtalo de nuevo.');
-  }
-  _asisCargando = false;
-  if(send) send.disabled = false;
-  if(input) input.focus();
+    var respuesta = _asisResponder(texto);
+    _asisChatAddMsg('bot', respuesta);
+    _asisChatHistorial.push({role:'assistant', content:respuesta});
+    _asisNubeShow(respuesta, 0);
+    _asisCargando = false;
+    if(send) send.disabled = false;
+    if(input) input.focus();
+  }, 600 + Math.random()*400);
 };
 
 window.renderizarAsistente = function(){
@@ -10245,8 +10412,23 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 70;
+const APP_VERSION = 71;
 const VERSIONES = [
+  {
+    version: 71,
+    fecha: '2026-08-24',
+    titulo: 'Mercader: chat local con respuestas inteligentes',
+    resumen: 'El chat del Mercader responde localmente sin llamadas externas. Detecta la intención del mensaje y responde con los datos reales de la partida: vidas, dinero, PF, rutas, mochila, racha, medallas, torneos, gacha y evento activo.',
+    nuevas: [
+      'Motor de respuestas local — sin CORS, sin API key, funciona siempre',
+      'Detecta: saludos, dinero, PF, vidas, rutas/tracker, mochila, cementerio, racha, medallas, torneos, gacha, compras, evento, resumen general, locke activo, ayuda, insultos/bromas, agradecimientos',
+      'Respuestas con datos exactos de la partida en tiempo real',
+      'Delay aleatorio (600-1000ms) para dar sensación natural',
+    ],
+    mejoras: [],
+    rendimiento: [],
+    fixes: ['Eliminada la llamada a api.anthropic.com que fallaba por CORS en producción'],
+  },
   {
     version: 70,
     fecha: '2026-08-24',
