@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v73 | Build: 2026-09-02 -->
+<!-- Silph Co v74 | Build: 2026-09-02 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -7034,6 +7034,30 @@ window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!bas
   if(item.nombre==='Ticket Especial del Mercader'){canjearTicketMercader(uid);return;}
   if(item.nombre==='Revivir'){abrirModalRevivir(uid);return;}
   if(item.nombre==='Recaptura'||item.nombre==='Recaptura 🔁'){abrirModalRecaptura(uid);return;}
+  // Objetos de vida de ruleta → suma vidasExtra
+  if(item.tienda==='ruleta_vida'){
+    let cant=item._cantidad||1;
+    u.inventario.splice(i,1);
+    u.vidasExtra=(u.vidasExtra||0)+cant;
+    inyectarEntradaDiarioAutomatica('❤️ Usó '+item.nombre+' (ruleta): +'+cant+' vida'+(cant>1?'s':'')+' extra.');
+    regContadorMision(u,'objetosUsados',1);
+    guardarBD();reproducirSonido('usar_objeto');
+    actualizarBarraVidasDesdeDB();refrescarPantallaGamer();
+    mostrarNotificacion('+'+cant+' vida'+(cant>1?'s':'')+' extra sumada'+(cant>1?'s':'')+'.','exito','❤️',null,true);
+    return;
+  }
+  // Objetos de PF de ruleta → suma PF
+  if(item.tienda==='ruleta_pf'){
+    let cant=item._cantidad||1;
+    u.inventario.splice(i,1);
+    u.pf=(u.pf||0)+cant;
+    inyectarEntradaDiarioAutomatica('🔮 Usó '+item.nombre+' (ruleta): +'+cant+' PF.');
+    regContadorMision(u,'objetosUsados',1);
+    guardarBD();reproducirSonido('usar_objeto');
+    refrescarPantallaGamer();
+    mostrarNotificacion('+'+cant+' PF sumados.','exito','🔮',null,true);
+    return;
+  }
   let desc=item.desc||'';u.inventario.splice(i,1);let esIlegal=item.tienda==='illegal';let parteDesc=desc?` Descripción: ${desc}.`:'';let parteBeneficio=esIlegal&&item.beneficio?` ✅ Beneficio: ${item.beneficio}.`:'';let parteCastigo=esIlegal&&item.castigo?` ⚠️ Castigo si detectado: ${item.castigo}.`:'';let entradaDiario=esIlegal?`🟣 Activó módulo prohibido: ${icon} '${nombre}'.${parteDesc}${parteBeneficio}${parteCastigo}`:(desc?`Utilizó el objeto ${icon} '${nombre}'. Contenido: ${desc}.`:`Utilizó el objeto ${icon} '${nombre}'. Consumido.`);inyectarEntradaDiarioAutomatica(entradaDiario);regContadorMision(u,'objetosUsados',1);guardarBD();reproducirSonido('usar_objeto');mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true);};
 
 /* ═══ MODAL BAJA ═══ */
@@ -8650,19 +8674,25 @@ function _ruletaAplicarPremio(uid, texto){
   var m=texto.match(/\d+/);
   var num=m?parseInt(m[0]):1;
   if(num<1)num=1;
-  if(t.match(/vida|vidas|coraz/)){
-    u.vidasExtra=(u.vidasExtra||0)+num;
-    return '+'+num+' vida'+(num>1?'s':'')+' extra';
+  if(!u.inventario)u.inventario=[];
+  // Vida → objeto en mochila (se aplica al usarlo)
+  if(t.match(/\bvida\b|\bvidas\b|coraz/)){
+    var nombreVida=num===1?'1 Vida':''+num+' Vidas';
+    u.inventario.push({uid:'ruleta_'+Date.now(),nombre:nombreVida,icon:'❤️',desc:'Premio de ruleta. Al usar: suma '+num+' vida'+(num>1?'s':'')+' extra.',tienda:'ruleta_vida',_cantidad:num,fecha:new Date().toLocaleDateString()});
+    return nombreVida+' añadido a mochila';
   }
-  if(t.match(/pf|puntos fuerza/)){
-    u.pf=(u.pf||0)+num;
-    return '+'+num+' PF';
+  // PF → objeto en mochila (se aplica al usarlo)
+  if(t.match(/\bpf\b|puntos fuerza/)){
+    var nombrePF=num+' PF';
+    u.inventario.push({uid:'ruleta_'+Date.now(),nombre:nombrePF,icon:'🔮',desc:'Premio de ruleta. Al usar: suma '+num+' PF a tu contador.',tienda:'ruleta_pf',_cantidad:num,fecha:new Date().toLocaleDateString()});
+    return nombrePF+' añadido a mochila';
   }
+  // Dinero → directo
   if(t.match(/dinero|p₠|pokedolar|pokédolar|\$|moneda/)){
     u.dinero=(u.dinero||0)+num;
     return '+'+num.toLocaleString('es-ES')+' P₠';
   }
-  if(!u.inventario)u.inventario=[];
+  // Generico → mochila
   u.inventario.push({uid:'ruleta_'+Date.now(),nombre:texto,icon:'🎡',desc:'Premio de ruleta.',tienda:'ruleta',fecha:new Date().toLocaleDateString()});
   return 'añadido a mochila';
 }
@@ -10471,8 +10501,22 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 73;
+const APP_VERSION = 74;
 const VERSIONES = [
+  {
+    version: 74,
+    fecha: '2026-09-02',
+    titulo: 'Objetos vida y PF de ruleta se aplican al usar desde mochila',
+    resumen: 'Cuando la ruleta da una vida o PF, el objeto va a la mochila. Al pulsar "Usar" desde la mochila, la vida se suma a vidasExtra y el PF se suma al contador de PF.',
+    nuevas: [],
+    mejoras: [
+      'Ruleta: vida y PF van a la mochila como objetos (❤️ / 🔮) en vez de aplicarse al instante',
+      'Al usar ❤️ N Vida(s) desde mochila: suma N vidasExtra y actualiza la barra',
+      'Al usar 🔮 N PF desde mochila: suma N PF y refresca el panel',
+    ],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: 73,
     fecha: '2026-09-02',
