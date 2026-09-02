@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v71 | Build: 2026-08-24 -->
+<!-- Silph Co v72 | Build: 2026-08-24 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1691,7 +1691,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
   <div class="bn-item active" id="bn-inicio" onclick="navegarA('inicio')"><span class="bn-icon">🏠</span><span class="bn-label">Inicio</span></div>
   <div class="bn-item" id="bn-tiendas" onclick="navegarA('tiendas')"><span class="bn-icon">🏪</span><span class="bn-label">Tienda</span></div>
   <div class="bn-item" id="bn-eventos" onclick="navegarA('eventos')"><span class="bn-icon">⚔️</span><span class="bn-label">Eventos</span></div>
-  <div class="bn-item" id="bn-tracker" onclick="navegarA('tracker')"><span class="bn-icon">🗺️</span><span class="bn-label">Tracker</span></div>
+  
   <div class="bn-item" id="bn-misiones" onclick="navegarA('misiones')"><span class="bn-icon">📋</span><span class="bn-label">Misiones</span></div>
   <div class="bn-item" id="bn-perfil" onclick="navegarA('perfil')"><span class="bn-icon">👤</span><span class="bn-label">Perfil</span></div>
   <div class="bn-item" id="bn-mas" onclick="abrirMasSheet()"><span class="bn-icon">☰</span><span class="bn-label">Más</span></div>
@@ -1775,7 +1775,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-vidas-sacrificios" onclick="navegarA('vidas-sacrificios')"><span class="nav-icon">❤️</span><span class="nav-label">Vidas y Sacrificios</span></div>
       <div class="nav-item" id="nav-medallas-torneos" onclick="navegarA('medallas-torneos')"><span class="nav-icon">🏆</span><span class="nav-label">Medallas y Torneos</span></div>
       <div class="nav-item" onclick="abrirOverlayDiarioNativo()"><span class="nav-icon">📖</span><span class="nav-label">Bitácora</span></div>
-      <div class="nav-item" id="nav-tracker" onclick="navegarA('tracker')"><span class="nav-icon">🗺️</span><span class="nav-label">Tracker</span></div>
+      
 
       <div class="nav-section-label">Explorar</div>
       <div class="nav-item" id="nav-ruletas" onclick="navegarA('ruletas')"><span class="nav-icon">🎡</span><span class="nav-label">Ruletas</span></div>
@@ -1880,15 +1880,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div id="pvp-historial-inicio" style="display:flex;flex-direction:column;gap:8px"></div>
         <div id="pvp-historial-inicio-vacio" style="display:none;text-align:center;padding:20px;color:var(--txt-muted);font-size:11px;font-family:var(--font-display)">Aún no se ha resuelto ningún duelo.</div>
       </div>
-      <!-- MAPA COMPARTIDO DEL LOCKE -->
-      <div class="card" id="inicio-mapa-card" style="display:none;border-color:rgba(91,82,199,.3);background:linear-gradient(135deg,var(--bg-elevated),rgba(91,82,199,.04))">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(216,41,63,.18)">
-          <div class="card-title" style="margin-bottom:0;padding-bottom:0;border-bottom:none">🗺️ Mapa del Locke</div>
-          <span class="actividad-en-vivo"><span class="actividad-en-vivo-dot"></span>EN VIVO</span>
-        </div>
-        <div id="inicio-mapa-leyenda" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px"></div>
-        <div id="inicio-mapa-svg" style="width:100%;overflow-x:auto"></div>
-      </div>
+
     </section>
     <!-- MISIONES DIARIAS -->
     <section id="section-misiones" class="page-section">
@@ -2215,22 +2207,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     </section>
 
     <!-- TRACKER DE RUTAS -->
-    <section id="section-tracker" class="page-section">
-      <div class="hero-strip">
-        <div class="section-title">🗺️ Tracker de Encuentros</div>
-        <div class="section-subtitle">Tu progreso ruta por ruta en este Locke</div>
-      </div>
-      <div class="card">
-        <div style="font-size:11px;color:var(--txt-secondary);margin-bottom:12px">Cada cambio queda registrado automáticamente en tu Bitácora.</div>
-        <div id="tracker-progreso-resumen" style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:6px">—</div>
-        <div class="tracker-progreso-bar"><div id="tracker-progreso-fill" class="tracker-progreso-fill" style="width:0%"></div></div>
-        <!-- Vista lista -->
-        <div id="tracker-vista-lista">
-          <div id="tracker-lista" style="display:flex;flex-direction:column;margin-top:4px"></div>
-          <div id="tracker-vacio" style="display:none;text-align:center;padding:20px 10px;color:var(--txt-muted);font-size:11px;font-style:italic">El administrador aún no ha definido rutas para este Locke.</div>
-        </div>
-      </div>
-    </section>
+    
 
     <section id="section-ruletas" class="page-section">
       <div class="section-header">
@@ -2247,7 +2224,23 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
     </section>
 
-    <!-- OVERLAY: usar Revivir -->
+    <!-- OVERLAY: usar Recaptura -->
+  <div id="recaptura-modal-overlay" class="overlay-modal" style="display:none">
+    <div class="modal-box" style="max-width:400px;position:relative">
+      <button onclick="cerrarModalRecaptura()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--txt-muted);font-size:16px;cursor:pointer">✕</button>
+      <div style="font-family:var(--font-display);font-size:15px;font-weight:900;color:var(--amarillo);margin-bottom:4px">🔁 Usar Recaptura</div>
+      <div style="font-size:11px;color:var(--txt-muted);margin-bottom:16px">Registra la captura extra que acabas de conseguir.</div>
+      <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px">¿Qué Pokémon has capturado?</label>
+      <input type="text" id="recaptura-pokemon" class="admin-input" placeholder="Nombre del Pokémon" style="font-family:var(--font-body)">
+      <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px;margin-top:8px">¿Dónde lo has capturado?</label>
+      <input type="text" id="recaptura-lugar" class="admin-input" placeholder="Ruta, ciudad o lugar" style="font-family:var(--font-body)">
+      <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:4px;margin-top:8px">Mote (opcional)</label>
+      <input type="text" id="recaptura-mote" class="admin-input" placeholder="Apodo" style="font-family:var(--font-body)">
+      <button class="btn-admin legal" style="margin-top:16px" onclick="confirmarRecaptura()">🔁 Confirmar Recaptura</button>
+    </div>
+  </div>
+
+  <!-- OVERLAY: usar Revivir -->
     <div id="revivir-modal-overlay" class="overlay-modal" style="display:none">
       <div class="modal-box" style="max-width:400px;position:relative">
         <button onclick="cerrarModalRevivir()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--txt-muted);font-size:16px;cursor:pointer">✕</button>
@@ -2395,7 +2388,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
         <button class="dios-tab" id="dtab-museo" onclick="cambiarAdminTab('museo')" style="color:#818cf8;border-color:rgba(129,140,248,.3)">📜 Museo</button>
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#e2646f;border-color:rgba(216,41,63,.3)">🔄 Nuevo Locke</button>
-        <button class="dios-tab" id="dtab-rutas" onclick="cambiarAdminTab('rutas')" style="color:#34d399;border-color:rgba(52,211,153,.3)">🗺️ Rutas</button>
+        
       </div>
       <!-- RESETEOS -->
       <div id="dv-reset" class="dios-view active">
@@ -5321,7 +5314,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
    sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
-const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos'];
+const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado'];
 async function guardarBD(){
   const local = baseDatos;
   try{
@@ -6999,11 +6992,41 @@ window.confirmarRevivir = function(){
   mostrarNotificacion(nc+' ha vuelto a la vida.','exito','🔺',null,true);
   refrescarPantallaGamer();
 };
+window._recapturaItemUid = null;
+window.abrirModalRecaptura = function(uid){
+  window._recapturaItemUid = uid;
+  ['recaptura-pokemon','recaptura-lugar','recaptura-mote'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('recaptura-modal-overlay').style.display='flex';
+};
+window.cerrarModalRecaptura = function(){
+  document.getElementById('recaptura-modal-overlay').style.display='none';
+};
+window.confirmarRecaptura = function(){
+  var uid   = window._recapturaItemUid;
+  var poke  = (document.getElementById('recaptura-pokemon')||{value:''}).value.trim();
+  var lugar = (document.getElementById('recaptura-lugar')||{value:''}).value.trim();
+  var mote  = (document.getElementById('recaptura-mote')||{value:''}).value.trim();
+  if(!poke){mostrarNotificacion('Indica qué Pokémon capturaste.','error','🔁');return;}
+  if(!lugar){mostrarNotificacion('Indica dónde lo capturaste.','error','🔁');return;}
+  if(!userSesion||!baseDatos.jugadores[userSesion])return;
+  var u=baseDatos.jugadores[userSesion];
+  if(!u.inventario)return;
+  var i=u.inventario.findIndex(function(x){return x.uid===uid;});
+  if(i===-1){mostrarNotificacion('El objeto ya no está en la mochila.','error','🔁');cerrarModalRecaptura();return;}
+  u.inventario.splice(i,1);
+  var nombre2=mote?poke+' "'+mote+'"':poke;
+  inyectarEntradaDiarioAutomatica('🔁 RECAPTURA: '+nombre2+' capturado en '+lugar+'.');
+  regContadorMision(u,'objetosUsados',1);
+  guardarBD();cerrarModalRecaptura();
+  reproducirSonido('exito');
+  mostrarNotificacion(nombre2+' registrado en '+lugar+'.','exito','🔁',null,true);
+  refrescarPantallaGamer();
+};
 window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];if(!u.inventario)return;let i=u.inventario.findIndex(x=>x.uid===uid);if(i===-1)return;let item=u.inventario[i];
   // El Ticket del Mercader se canjea con su flujo propio
   if(item.nombre==='Ticket Especial del Mercader'){canjearTicketMercader(uid);return;}
-  // El Revivir abre su propio modal
   if(item.nombre==='Revivir'){abrirModalRevivir(uid);return;}
+  if(item.nombre==='Recaptura'||item.nombre==='Recaptura 🔁'){abrirModalRecaptura(uid);return;}
   let desc=item.desc||'';u.inventario.splice(i,1);let esIlegal=item.tienda==='illegal';let parteDesc=desc?` Descripción: ${desc}.`:'';let parteBeneficio=esIlegal&&item.beneficio?` ✅ Beneficio: ${item.beneficio}.`:'';let parteCastigo=esIlegal&&item.castigo?` ⚠️ Castigo si detectado: ${item.castigo}.`:'';let entradaDiario=esIlegal?`🟣 Activó módulo prohibido: ${icon} '${nombre}'.${parteDesc}${parteBeneficio}${parteCastigo}`:(desc?`Utilizó el objeto ${icon} '${nombre}'. Contenido: ${desc}.`:`Utilizó el objeto ${icon} '${nombre}'. Consumido.`);inyectarEntradaDiarioAutomatica(entradaDiario);regContadorMision(u,'objetosUsados',1);guardarBD();reproducirSonido('usar_objeto');mostrarNotificacion(`Has usado '${nombre}'.`,'exito',icon||'🎒',null,true);};
 
 /* ═══ MODAL BAJA ═══ */
@@ -8616,6 +8639,29 @@ function _pintarSegmentosRuleta(opciones){
       + '</div>';
   }).join('');
 }
+function _ruletaAplicarPremio(uid, texto){
+  var u=baseDatos.jugadores&&baseDatos.jugadores[uid];
+  if(!u)return null;
+  var t=texto.toLowerCase();
+  var m=texto.match(/\d+/);
+  var num=m?parseInt(m[0]):1;
+  if(num<1)num=1;
+  if(t.match(/vida|vidas|coraz/)){
+    u.vidasExtra=(u.vidasExtra||0)+num;
+    return '+'+num+' vida'+(num>1?'s':'')+' extra';
+  }
+  if(t.match(/pf|puntos fuerza/)){
+    u.pf=(u.pf||0)+num;
+    return '+'+num+' PF';
+  }
+  if(t.match(/dinero|p₠|pokedolar|pokédolar|\$|moneda/)){
+    u.dinero=(u.dinero||0)+num;
+    return '+'+num.toLocaleString('es-ES')+' P₠';
+  }
+  if(!u.inventario)u.inventario=[];
+  u.inventario.push({uid:'ruleta_'+Date.now(),nombre:texto,icon:'🎡',desc:'Premio de ruleta.',tienda:'ruleta',fecha:new Date().toLocaleDateString()});
+  return 'añadido a mochila';
+}
 window.ejecutarGiroRuleta = function(){
   if(_ruletaGirando) return;
   var r = baseDatos.ruletas && baseDatos.ruletas[_ruletaActivaId];
@@ -8675,10 +8721,12 @@ window.ejecutarGiroRuleta = function(){
       var resultado = r.opciones[idxGanador];
       document.getElementById('ruleta-resultado-texto').textContent = resultado;
       document.getElementById('ruleta-resultado').style.display = 'block';
-      var textoLog = '🎡 Tiró la ruleta "'+r.nombre+'" → '+resultado;
+      var premioAplicado = _ruletaAplicarPremio(jugadorTiro, resultado);
+      var textoLog = '🎡 Tiró la ruleta "'+r.nombre+'" → '+resultado+(premioAplicado?' ('+premioAplicado+')':'');
       inyectarEntradaDiarioAutomaticaPara(jugadorTiro, textoLog);
       guardarBD();
       renderizarActividadGlobalInicio();
+      if(jugadorTiro===userSesion){refrescarPantallaGamer();actualizarBarraVidasDesdeDB();}
     }
   }
   requestAnimationFrame(_tick);
@@ -10412,8 +10460,18 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 71;
+const APP_VERSION = 72;
 const VERSIONES = [
+  {
+    version: 72,
+    fecha: '2026-08-24',
+    titulo: 'Fix museo, sin tracker/mapa, recaptura con formulario, ruleta aplica premios',
+    resumen: 'Fix crítico del museo (historialLockes faltaba en campos globales). Tracker, mapa y tab Rutas eliminados. Recaptura pide Pokémon y lugar. Ruleta aplica premios automáticamente.',
+    nuevas: ['Modal Recaptura: pide Pokémon, lugar y mote antes de consumir','Ruleta aplica premios: vidas→extra, PF, dinero, objetos→mochila'],
+    mejoras: [],
+    rendimiento: [],
+    fixes: ['Bug: historialLockes no estaba en _CAMPOS_GLOBALES_BD — museo no se guardaba','Eliminados Tracker, mapa de Inicio y tab Rutas de Modo Dios'],
+  },
   {
     version: 71,
     fecha: '2026-08-24',
