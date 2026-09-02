@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v69 | Build: 2026-08-24 -->
+<!-- Silph Co v70 | Build: 2026-08-24 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1017,12 +1017,40 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 /* ── Asistente flotante ── */
 .asis-float{position:fixed;bottom:76px;right:14px;z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
 .asis-float *{pointer-events:auto}
-.asis-burbuja{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#5b52c7,#8e4fc7);border:2px solid rgba(255,255,255,.15);box-shadow:0 4px 18px rgba(0,0,0,.45),0 0 0 0 rgba(139,92,246,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .18s,box-shadow .18s;flex-shrink:0;user-select:none}
-.asis-burbuja:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 0 6px rgba(139,92,246,.18)}
+.asis-burbuja{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#5b52c7,#8e4fc7);border:2px solid rgba(255,255,255,.15);box-shadow:0 4px 18px rgba(0,0,0,.45);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .18s,box-shadow .18s;flex-shrink:0;user-select:none;position:relative}
+.asis-burbuja:hover{transform:scale(1.08)}
 .asis-burbuja.nivel-critico{background:linear-gradient(135deg,#b91c1c,#e2646f);animation:asisBurbujaUrgente 1.6s ease-in-out infinite}
 .asis-burbuja.nivel-importante{background:linear-gradient(135deg,#92400e,#c99a2e)}
-.asis-badge-punto{position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:#e2646f;border:2px solid var(--bg-base);display:none}
+.asis-badge-punto{position:absolute;top:-2px;right:-2px;width:10px;height:10px;border-radius:50%;background:#e2646f;border:2px solid var(--bg-base);display:none}
 .asis-burbuja.tiene-critico .asis-badge-punto{display:block}
+/* Nube siempre visible */
+.asis-nube{max-width:210px;background:var(--bg-elevated);border:1px solid rgba(139,92,246,.35);border-radius:14px 14px 4px 14px;box-shadow:0 4px 18px rgba(0,0,0,.38);padding:9px 12px;cursor:pointer;transition:opacity .3s,transform .2s}
+.asis-nube:hover{transform:translateY(-2px)}
+.asis-nube-texto{font-size:11.5px;color:var(--txt-primary);line-height:1.45;font-style:italic}
+.asis-nube-typing{display:inline-flex;gap:3px;align-items:center;height:14px}
+.asis-nube-typing span{width:5px;height:5px;border-radius:50%;background:var(--txt-muted);animation:asisTyping 1.1s ease-in-out infinite}
+.asis-nube-typing span:nth-child(2){animation-delay:.18s}
+.asis-nube-typing span:nth-child(3){animation-delay:.36s}
+@keyframes asisTyping{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-5px);opacity:1}}
+/* Chat expandible */
+.asis-chat{width:300px;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.55);overflow:hidden;transform-origin:bottom right;transform:scale(.88) translateY(10px);opacity:0;pointer-events:none;transition:transform .22s cubic-bezier(.34,1.56,.64,1),opacity .18s ease;max-height:480px;display:flex;flex-direction:column;position:absolute;bottom:58px;right:0}
+.asis-chat.abierto{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
+.asis-chat-header{padding:10px 14px 8px;border-bottom:1px solid var(--borde);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:linear-gradient(135deg,rgba(91,82,199,.1),transparent)}
+.asis-chat-nombre{font-family:var(--font-display);font-size:12px;font-weight:800;color:var(--txt-primary)}
+.asis-chat-sub{font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.3px;margin-top:1px}
+.asis-chat-cerrar{background:none;border:none;color:var(--txt-muted);font-size:15px;cursor:pointer;line-height:1}
+.asis-chat-mensajes{overflow-y:auto;flex:1;padding:10px 10px 4px;display:flex;flex-direction:column;gap:8px;min-height:120px;max-height:290px}
+.asis-chat-burbuja{max-width:88%;padding:8px 11px;border-radius:12px;font-size:11.5px;line-height:1.5;animation:asisMsgEntrada .2s ease backwards}
+.asis-chat-burbuja.bot{background:rgba(91,82,199,.1);border:1px solid rgba(91,82,199,.18);color:var(--txt-primary);align-self:flex-start;border-bottom-left-radius:3px}
+.asis-chat-burbuja.user{background:rgba(91,82,199,.22);border:1px solid rgba(91,82,199,.3);color:var(--txt-primary);align-self:flex-end;border-bottom-right-radius:3px}
+.asis-chat-burbuja.typing-indicator{padding:10px 14px}
+.asis-chat-input-row{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--borde);flex-shrink:0}
+.asis-chat-input{flex:1;background:var(--bg-card);border:1px solid var(--borde);border-radius:20px;padding:7px 12px;font-size:12px;color:var(--txt-primary);font-family:var(--font-body);outline:none;transition:border-color .15s}
+.asis-chat-input:focus{border-color:rgba(139,92,246,.5)}
+.asis-chat-send{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#5b52c7,#8e4fc7);border:none;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
+.asis-chat-send:hover{transform:scale(1.1)}
+.asis-chat-send:disabled{opacity:.4;cursor:not-allowed}
+/* Mantener panel anterior como fallback */
 .asis-panel{width:290px;background:var(--bg-elevated);border:1px solid var(--borde);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.5);overflow:hidden;transform-origin:bottom right;transform:scale(.9) translateY(8px);opacity:0;pointer-events:none;transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .18s ease;max-height:420px;display:flex;flex-direction:column}
 .asis-panel.abierto{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
 .asis-panel-header{padding:12px 14px 10px;border-bottom:1px solid var(--borde);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -8063,6 +8091,117 @@ function _asisActualizarBurbuja(){
   if(badge) badge.style.display = nivelMax==='critico'?'block':'none';
 }
 
+/* ── Nube de texto animada ── */
+var _asisChatHistorial = [];
+var _asisCargando = false;
+
+function _asisNubeShow(texto, delay){
+  var nube = document.getElementById('asis-nube');
+  var nubeT = document.getElementById('asis-nube-texto');
+  if(!nube||!nubeT) return;
+  if(delay){setTimeout(function(){_asisNubeShow(texto,0);},delay);return;}
+  nube.style.display = 'block';
+  nubeT.innerHTML = '<span class="asis-nube-typing"><span></span><span></span><span></span></span>';
+  setTimeout(function(){nubeT.textContent = texto;}, 800);
+}
+
+/* ── Contexto completo de la partida para Claude ── */
+function _asisConstruirContexto(){
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return '';
+  var u = baseDatos.jugadores[userSesion];
+  var n = userSesion.toUpperCase();
+  var tracker = u.tracker||[];
+  var pendientes = tracker.filter(function(e){return e.estado==='pendiente';}).length;
+  var atrapadas  = tracker.filter(function(e){return e.estado==='atrapado';}).length;
+  var perdidosT  = tracker.filter(function(e){return e.estado==='perdido';}).length;
+  var inventario = (u.inventario||[]).filter(function(i){return i.uid!=='init';});
+  var cementerio = (u.cementerio||[]).slice(-5).map(function(p){return p.nombre||(p.pokemon||'?');}).join(', ');
+  var locke = baseDatos.lockeActivo||{};
+  var ev = baseDatos.eventoSistema||'normal';
+  var ahora = Date.now(), unDia = 24*60*60*1000;
+  return [
+    'Eres el Mercader, el asistente del Nuzlocke grupal "Silph Co". Hablas en español, tono directo con humor seco, sin relleno. Das consejos reales con los datos exactos del jugador. Nunca dices que eres una IA.',
+    '== SECCIÓN ACTIVA: '+(_SECCION_NOMBRES[_asisSeccionActual]||_asisSeccionActual)+' ==',
+    '== DATOS DE '+n+' ==',
+    'Dinero: '+((u.dinero||0).toLocaleString('es-ES'))+' P₠ | PF: '+(u.pf||0),
+    'Vidas: '+(u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20))+'/'+(u.vidasTotales||20)+(u.vidasExtra>0?' +'+u.vidasExtra+' extra':''),
+    'Racha: '+(u.rachaActual||0)+' | Medallas: '+(u.numMedallas||0)+'/8 | Torneos ganados: '+(u.torneos||0),
+    'Tracker: '+atrapadas+' capturados, '+perdidosT+' perdidos, '+pendientes+' pendientes de '+tracker.length+' rutas',
+    'Cementerio reciente: '+(cementerio||'vacío'),
+    'Mochila: '+(inventario.length?inventario.map(function(i){return i.nombre;}).join(', '):'vacía'),
+    'Compras disponibles: '+(u.comprasDisponibles||0)+'/'+MAX_COMPRAS,
+    'Estado: '+(u.lockeStatus||'jugando')+' | Juego: '+(locke.juego||'?')+' | Locke #'+(locke.num||'?'),
+    'Evento tienda: '+ev,
+    'Gacha disponible: '+((ahora-(u.ultimoHackeo||0))>=unDia?'SÍ':'NO')+' | PF Gacha: '+((ahora-(u.ultimoGachaPF||0))>=unDia?'SÍ':'NO'),
+    'Responde en 2-3 frases naturales. Usa los datos exactos cuando te los pregunten.',
+  ].join(String.fromCharCode(10));
+}
+
+/* ── Chat: helpers ── */
+function _asisChatAddMsg(role, texto){
+  var box = document.getElementById('asis-chat-mensajes');
+  if(!box) return;
+  var div = document.createElement('div');
+  div.className = 'asis-chat-burbuja '+(role==='user'?'user':'bot');
+  div.textContent = texto;
+  box.appendChild(div);
+  setTimeout(function(){box.scrollTop = box.scrollHeight;},30);
+}
+function _asisChatShowTyping(){
+  var box = document.getElementById('asis-chat-mensajes');
+  if(!box) return;
+  var div = document.createElement('div');
+  div.className = 'asis-chat-burbuja bot typing-indicator';
+  div.id = 'asis-typing-bubble';
+  div.innerHTML = '<span class="asis-nube-typing"><span></span><span></span><span></span></span>';
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+function _asisChatRemoveTyping(){
+  var t = document.getElementById('asis-typing-bubble');
+  if(t) t.remove();
+}
+
+/* ── Enviar al usuario a Claude ── */
+window.asisEnviarMensaje = async function(){
+  if(_asisCargando) return;
+  var input = document.getElementById('asis-chat-input');
+  var send  = document.getElementById('asis-chat-send');
+  if(!input) return;
+  var texto = input.value.trim();
+  if(!texto) return;
+  input.value = '';
+  _asisCargando = true;
+  if(send) send.disabled = true;
+  _asisChatAddMsg('user', texto);
+  _asisChatHistorial.push({role:'user', content:texto});
+  _asisChatShowTyping();
+  try{
+    var resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:300,
+        system:_asisConstruirContexto(),
+        messages:_asisChatHistorial.slice(-10)
+      })
+    });
+    var data = await resp.json();
+    var rt = (data.content&&data.content[0]&&data.content[0].text)||'Sin señal del servidor.';
+    _asisChatRemoveTyping();
+    _asisChatAddMsg('bot', rt);
+    _asisChatHistorial.push({role:'assistant', content:rt});
+    _asisNubeShow(rt, 0);
+  }catch(e){
+    _asisChatRemoveTyping();
+    _asisChatAddMsg('bot','Sin señal. Inténtalo de nuevo.');
+  }
+  _asisCargando = false;
+  if(send) send.disabled = false;
+  if(input) input.focus();
+};
+
 window.renderizarAsistente = function(){
   if(!userSesion||!baseDatos.jugadores[userSesion]) return;
   var u = baseDatos.jugadores[userSesion];
@@ -8074,6 +8213,19 @@ window.renderizarAsistente = function(){
   _asisActualizarBurbuja();
   var secEl = document.getElementById('asis-panel-seccion');
   if(secEl) secEl.textContent = _SECCION_NOMBRES[_asisSeccionActual]||_asisSeccionActual;
+  var sub = document.getElementById('asis-chat-sub');
+  if(sub) sub.textContent = _SECCION_NOMBRES[_asisSeccionActual]||_asisSeccionActual;
+  if(_asisMsgs.length){
+    var m0 = _asisMsgs[0];
+    _asisNubeShow(m0.icono+' '+m0.desc, 1000);
+    if(_asisNubeTimer) clearInterval(_asisNubeTimer);
+    _asisNubeTimer = setInterval(function(){
+      if(!_asisMsgs.length) return;
+      _asisMsgActual = (_asisMsgActual+1) % _asisMsgs.length;
+      var mm = _asisMsgs[_asisMsgActual];
+      _asisNubeShow(mm.icono+' '+mm.desc, 0);
+    }, 18000);
+  }
 };
 
 window.toggleAsistenteFloat = function(){
@@ -8081,18 +8233,35 @@ window.toggleAsistenteFloat = function(){
 };
 window.abrirAsistenteFloat = function(){
   _asisAbierto = true;
+  // Abrir chat nuevo
+  var chat = document.getElementById('asis-chat');
+  if(chat) chat.classList.add('abierto');
+  // Compatibilidad con panel antiguo
   var panel = document.getElementById('asis-panel');
   if(panel) panel.classList.add('abierto');
   if(!userSesion||!baseDatos.jugadores[userSesion]) return;
   var u = baseDatos.jugadores[userSesion];
   _asisMsgs = _asisGenerarTodos(u, _asisSeccionActual);
   _asisMsgActual = 0;
-  _asisRenderMsgActual();
   _asisActualizarBurbuja();
-  _asisReiniciarTimer();
+  // Poblar chat con los primeros mensajes si está vacío
+  var box = document.getElementById('asis-chat-mensajes');
+  if(box && !box.children.length && _asisMsgs.length){
+    _asisChatAddMsg('bot', _asisMsgs[0].icono+' '+_asisMsgs[0].desc);
+    _asisChatHistorial.push({role:'assistant', content:_asisMsgs[0].icono+' '+_asisMsgs[0].desc});
+    if(_asisMsgs.length>1){
+      setTimeout(function(){
+        _asisChatAddMsg('bot', _asisMsgs[1].icono+' '+_asisMsgs[1].desc);
+        _asisChatHistorial.push({role:'assistant', content:_asisMsgs[1].icono+' '+_asisMsgs[1].desc});
+      }, 700);
+    }
+  }
+  setTimeout(function(){var i=document.getElementById('asis-chat-input');if(i)i.focus();},300);
 };
 window.cerrarAsistenteFloat = function(){
   _asisAbierto = false;
+  var chat = document.getElementById('asis-chat');
+  if(chat) chat.classList.remove('abierto');
   var panel = document.getElementById('asis-panel');
   if(panel) panel.classList.remove('abierto');
   if(_asisTimer){ clearInterval(_asisTimer); _asisTimer=null; }
@@ -8101,22 +8270,23 @@ window.cerrarAsistenteFloat = function(){
 /* Actualiza el asistente cuando cambia la sección */
 function _asisSetSeccion(s){
   _asisSeccionActual = s;
-  if(_asisAbierto){
-    if(!userSesion||!baseDatos.jugadores[userSesion]) return;
-    var u = baseDatos.jugadores[userSesion];
-    _asisMsgs = _asisGenerarTodos(u, s);
-    _asisMsgActual = 0;
-    _asisRenderMsgActual();
+  if(userSesion&&baseDatos.jugadores[userSesion]){
+    _asisMsgs = _asisGenerarTodos(baseDatos.jugadores[userSesion], s);
     _asisActualizarBurbuja();
-    _asisReiniciarTimer();
-  } else {
-    if(userSesion&&baseDatos.jugadores[userSesion]){
-      _asisMsgs = _asisGenerarTodos(baseDatos.jugadores[userSesion], s);
-      _asisActualizarBurbuja();
+    if(_asisMsgs.length) _asisNubeShow(_asisMsgs[0].icono+' '+_asisMsgs[0].desc, 200);
+    if(_asisAbierto){
+      _asisMsgActual = 0;
+      _asisRenderMsgActual();
+      _asisReiniciarTimer();
+      var av = '[ '+(_SECCION_NOMBRES[s]||s)+' ]';
+      _asisChatAddMsg('bot', av);
+      _asisChatHistorial.push({role:'assistant', content:av});
     }
   }
   var secEl = document.getElementById('asis-panel-seccion');
   if(secEl) secEl.textContent = _SECCION_NOMBRES[s]||s;
+  var sub = document.getElementById('asis-chat-sub');
+  if(sub) sub.textContent = _SECCION_NOMBRES[s]||s;
 }
 
 /* ═══════════ RULETAS ═══════════ */
@@ -10075,8 +10245,24 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 69;
+const APP_VERSION = 70;
 const VERSIONES = [
+  {
+    version: 70,
+    fecha: '2026-08-24',
+    titulo: 'Mercader: nube siempre visible + chat real con IA',
+    resumen: 'El asistente ahora muestra mensajes en una nube siempre visible sin pulsar nada, y al pulsar se abre un chat donde puedes hablar con el Mercader usando IA con el contexto completo de tu partida.',
+    nuevas: [
+      'Nube de diálogo siempre visible con mensaje del Mercader (rota cada 18s)',
+      'Efecto typing animado antes de cada mensaje',
+      'Chat expandible con IA real (Claude) al pulsar la burbuja',
+      'El Mercader conoce tu dinero, vidas, tracker, mochila, medallas, evento activo y más',
+      'Al cambiar de sección el chat se actualiza con el nuevo contexto',
+    ],
+    mejoras: [],
+    rendimiento: [],
+    fixes: ['Preservadas todas las funciones del asistente existentes (_asisContextoSeccion, _asisGenerarTodos)'],
+  },
   {
     version: 69,
     fecha: '2026-08-24',
@@ -10888,20 +11074,29 @@ document.addEventListener('DOMContentLoaded', function(){
 
   <!-- ══ ASISTENTE FLOTANTE ══ -->
   <div class="asis-float" id="asis-float" style="display:none">
-    <div class="asis-panel" id="asis-panel">
-      <div class="asis-panel-header">
-        <div>
-          <div class="asis-panel-nombre">🤖 Mercader</div>
-          <div class="asis-panel-seccion" id="asis-panel-seccion">— analizando tu partida —</div>
-        </div>
-        <button class="asis-panel-cerrar" onclick="cerrarAsistenteFloat()">✕</button>
-      </div>
-      <div class="asis-panel-body" id="asis-panel-body"></div>
-      <div class="asis-nav-dots" id="asis-nav-dots"></div>
-    </div>
     <div style="position:relative;display:inline-block">
+      <!-- Chat expandible -->
+      <div class="asis-chat" id="asis-chat">
+        <div class="asis-chat-header">
+          <div>
+            <div class="asis-chat-nombre">🤖 El Mercader</div>
+            <div class="asis-chat-sub" id="asis-chat-sub">— analizando partida —</div>
+          </div>
+          <button class="asis-chat-cerrar" onclick="cerrarAsistenteFloat()">✕</button>
+        </div>
+        <div class="asis-chat-mensajes" id="asis-chat-mensajes"></div>
+        <div class="asis-chat-input-row">
+          <input class="asis-chat-input" id="asis-chat-input" type="text" placeholder="Pregúntale al Mercader…" maxlength="300" onkeydown="if(event.key==='Enter'){event.preventDefault();asisEnviarMensaje();}">
+          <button class="asis-chat-send" id="asis-chat-send" onclick="asisEnviarMensaje()">➤</button>
+        </div>
+      </div>
+      <!-- Burbuja -->
       <div class="asis-burbuja" id="asis-burbuja" onclick="toggleAsistenteFloat()">🤖</div>
       <div class="asis-badge-punto" id="asis-badge-punto"></div>
+    </div>
+    <!-- Nube siempre visible (a la izquierda de la burbuja) -->
+    <div class="asis-nube" id="asis-nube" style="display:none" onclick="toggleAsistenteFloat()">
+      <div class="asis-nube-texto" id="asis-nube-texto"></div>
     </div>
   </div>
 
