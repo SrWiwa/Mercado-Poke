@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v72 | Build: 2026-08-24 -->
+<!-- Silph Co v73 | Build: 2026-09-02 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -850,6 +850,9 @@ body,html{overflow-x:hidden;max-width:100vw}
 .mision-progreso-fill.dif-muydificil{background:rgba(168,85,247,.8)}
 .mision-progreso-fill.dif-epica{background:var(--neon-packs)}
 /* ── Misión Especial ── */
+.ruleta-jug-btn{padding:6px 12px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);transition:all .15s}
+.ruleta-jug-btn:hover{background:rgba(245,185,21,.15);border-color:rgba(245,185,21,.4);color:#f5b915}
+.ruleta-jug-btn.activo{background:rgba(245,185,21,.18);border-color:#f5b915;color:#f5b915;box-shadow:0 0 8px rgba(245,185,21,.25)}
 .mision-card.dif-especial{border-color:rgba(236,72,153,.45);background:linear-gradient(135deg,var(--bg-elevated),rgba(236,72,153,.06))}
 .mision-badge-dif.dif-especial{background:rgba(236,72,153,.12);color:#f472b6;border:1px solid rgba(236,72,153,.35)}
 .mision-progreso-fill.dif-especial{background:linear-gradient(90deg,#db2777,#9333ea)}
@@ -2216,7 +2219,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
           <button class="btn-carnet-trigger" onclick="abrirEditorRuleta(null)">➕ Nueva Ruleta</button>
         </div>
       </div>
-      <div id="ruletas-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px"></div>
+      <div id="ruletas-grid" style="position:relative" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px"></div>
       <div id="ruletas-vacio" style="display:none;text-align:center;padding:50px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated)">
         <div style="font-size:38px;margin-bottom:10px">🎡</div>
         <div style="font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:1.5px">Sin ruletas todavía</div>
@@ -2256,24 +2259,28 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
     <!-- OVERLAY: girar ruleta -->
     <div id="ruleta-girar-overlay" class="overlay-modal">
-      <div class="modal-box" style="max-width:420px;text-align:center;position:relative">
-        <button onclick="cerrarGirarRuleta()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--txt-muted);font-size:16px;cursor:pointer">✕</button>
-        <div id="ruleta-girar-nombre" style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--amarillo);margin-bottom:16px">—</div>
-        <div style="position:relative;width:260px;height:260px;margin:0 auto 18px">
-          <div style="position:absolute;top:-6px;left:50%;transform:translateX(-50%);z-index:5;font-size:26px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))">🔻</div>
-          <div id="ruleta-rueda" style="width:260px;height:260px;border-radius:50%;position:relative;border:6px solid #2c2620;box-shadow:0 0 0 3px var(--amarillo),0 10px 30px rgba(0,0,0,.5);overflow:hidden">
+      <div style="background:#1a1a2e;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px 20px 20px;width:100%;max-width:380px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.7);animation:pop-in .25s cubic-bezier(.16,1,.3,1);max-height:90vh;overflow-y:auto;text-align:center">
+        <button onclick="cerrarGirarRuleta()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:14px;cursor:pointer;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
+        <div id="ruleta-girar-nombre" style="font-family:var(--font-display);font-size:15px;font-weight:900;color:#f5b915;margin-bottom:18px;letter-spacing:.3px">—</div>
+        <!-- Ruleta -->
+        <div style="position:relative;width:240px;height:240px;margin:0 auto 20px">
+          <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);z-index:10;font-size:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.8))">▼</div>
+          <div style="position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 0deg,#f5b915,#d4890a,#f5b915);z-index:0;opacity:.7"></div>
+          <div id="ruleta-rueda" style="width:240px;height:240px;border-radius:50%;position:absolute;inset:0;border:5px solid #111;box-shadow:0 0 0 2px #f5b915,inset 0 0 20px rgba(0,0,0,.3),0 8px 30px rgba(0,0,0,.6);overflow:hidden;z-index:1">
             <div id="ruleta-segmentos" style="width:100%;height:100%;position:relative"></div>
           </div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d8293f 55%,#8f0815);border:3px solid #160e02;z-index:4;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0%,#e53935 45%,#7f0000 100%);border:3px solid #111;z-index:5;box-shadow:0 3px 10px rgba(0,0,0,.7),inset 0 1px 3px rgba(255,255,255,.3)"></div>
         </div>
-        <div style="margin-bottom:12px">
-          <label style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:6px">¿Quién tira la ruleta?</label>
-          <select id="ruleta-jugador-selector" class="admin-input" style="margin-bottom:0;font-family:var(--font-body);max-height:160px;overflow-y:auto"></select>
+        <!-- Selector de jugador — botones en grid -->
+        <div style="margin-bottom:16px">
+          <div style="font-size:9px;color:rgba(255,255,255,.45);font-family:var(--font-display);letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px">¿Quién tira la ruleta?</div>
+          <div id="ruleta-jugador-btns" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
         </div>
-        <button class="btn-admin packs" id="ruleta-btn-girar" style="max-width:200px;margin:0 auto" onclick="ejecutarGiroRuleta()">🎡 ¡Girar!</button>
-        <div id="ruleta-resultado" style="display:none;margin-top:16px;background:rgba(245,185,21,.1);border:1px solid rgba(245,185,21,.35);border-radius:var(--r-lg);padding:14px">
-          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Ha salido...</div>
-          <div id="ruleta-resultado-texto" style="font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--amarillo)">—</div>
+        <button class="btn-admin packs" id="ruleta-btn-girar" style="width:100%;max-width:220px;margin:0 auto 0;font-size:13px;padding:11px" onclick="ejecutarGiroRuleta()">🎡 ¡Girar!</button>
+        <div id="ruleta-resultado" style="display:none;margin-top:16px;background:rgba(245,185,21,.08);border:1px solid rgba(245,185,21,.3);border-radius:12px;padding:14px">
+          <div style="font-size:9px;color:rgba(255,255,255,.4);font-family:var(--font-display);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Ha salido...</div>
+          <div id="ruleta-resultado-texto" style="font-family:var(--font-display);font-size:20px;font-weight:900;color:#f5b915;text-shadow:0 0 20px rgba(245,185,21,.4)">—</div>
+          <div id="ruleta-resultado-premio" style="font-size:11px;color:rgba(255,255,255,.55);margin-top:6px;font-family:var(--font-display)"></div>
         </div>
       </div>
     </div>
@@ -8591,31 +8598,28 @@ window.eliminarRuleta = function(id){
 };
 
 window.abrirGirarRuleta = function(id){
+  _ruletaActivaId = id;
+  _ruletaGirando = false;
   var r = baseDatos.ruletas && baseDatos.ruletas[id];
   if(!r) return;
-  if(!r.opciones || !r.opciones.length){ mostrarNotificacion('Esta ruleta todavía no tiene opciones. Edítala para añadir alguna.','error','🎡'); return; }
-  _ruletaActivaId = id;
   document.getElementById('ruleta-girar-nombre').textContent = r.nombre;
   document.getElementById('ruleta-resultado').style.display = 'none';
-  var rueda = document.getElementById('ruleta-rueda');
-  rueda.style.transition = 'none';
-  rueda.style.transform = 'rotate(0deg)';
-  void rueda.offsetWidth;
-  rueda.style.transition = '';
-  _pintarSegmentosRuleta(r.opciones);
-  var sel = document.getElementById('ruleta-jugador-selector');
-  if(sel){
-    sel.innerHTML = '';
-    Object.keys(baseDatos.jugadores||{}).forEach(function(uid){
-      var opt = document.createElement('option');
-      opt.value = uid;
-      opt.textContent = uid.toUpperCase();
-      if(uid === userSesion) opt.selected = true;
-      sel.appendChild(opt);
-    });
+  if(document.getElementById('ruleta-resultado-premio')) document.getElementById('ruleta-resultado-premio').textContent = '';
+  // Poblar selector de jugadores con botones
+  var btnsBox = document.getElementById('ruleta-jugador-btns');
+  if(btnsBox){
+    var jugs = Object.keys(baseDatos.jugadores||{});
+    btnsBox.innerHTML = jugs.map(function(uid){
+      var activo = uid === (userSesion||'');
+      return '<button class="ruleta-jug-btn'+(activo?' activo':'')+'" data-uid="'+uid+'" onclick="ruletaSelJugador(this,&apos;'+uid+'&apos;)">'+uid.toUpperCase()+'</button>';
+    }).join('');
+    // Si no hay ninguno activo, activar el primero
+    if(!jugs.includes(userSesion||'') && jugs.length) ruletaSelJugador(btnsBox.querySelector('.ruleta-jug-btn'), jugs[0]);
   }
-  var btn = document.getElementById('ruleta-btn-girar');
-  btn.disabled = false; btn.style.opacity = '1';
+  _pintarSegmentosRuleta(r.opciones||[]);
+  document.getElementById('ruleta-rueda').style.transform = 'rotate(0deg)';
+  document.getElementById('ruleta-btn-girar').disabled = false;
+  document.getElementById('ruleta-btn-girar').style.opacity = '1';
   document.getElementById('ruleta-girar-overlay').style.display = 'flex';
 };
 window.cerrarGirarRuleta = function(){
@@ -8662,12 +8666,17 @@ function _ruletaAplicarPremio(uid, texto){
   u.inventario.push({uid:'ruleta_'+Date.now(),nombre:texto,icon:'🎡',desc:'Premio de ruleta.',tienda:'ruleta',fecha:new Date().toLocaleDateString()});
   return 'añadido a mochila';
 }
+window.ruletaSelJugador = function(btn, uid){
+  var box = document.getElementById('ruleta-jugador-btns');
+  if(box) box.querySelectorAll('.ruleta-jug-btn').forEach(function(b){ b.classList.remove('activo'); });
+  if(btn) btn.classList.add('activo');
+  window._ruletaJugadorSel = uid;
+};
 window.ejecutarGiroRuleta = function(){
   if(_ruletaGirando) return;
   var r = baseDatos.ruletas && baseDatos.ruletas[_ruletaActivaId];
   if(!r) return;
-  var sel = document.getElementById('ruleta-jugador-selector');
-  var jugadorTiro = (sel && sel.value) ? sel.value : userSesion;
+  var jugadorTiro = window._ruletaJugadorSel || userSesion;
   var n = r.opciones.length;
   var anguloSeg = 360/n;
   var idxGanador = Math.floor(Math.random()*n);
@@ -8722,6 +8731,8 @@ window.ejecutarGiroRuleta = function(){
       document.getElementById('ruleta-resultado-texto').textContent = resultado;
       document.getElementById('ruleta-resultado').style.display = 'block';
       var premioAplicado = _ruletaAplicarPremio(jugadorTiro, resultado);
+      var prEl = document.getElementById('ruleta-resultado-premio');
+      if(prEl) prEl.textContent = premioAplicado ? ('✅ '+jugadorTiro.toUpperCase()+': '+premioAplicado) : '';
       var textoLog = '🎡 Tiró la ruleta "'+r.nombre+'" → '+resultado+(premioAplicado?' ('+premioAplicado+')':'');
       inyectarEntradaDiarioAutomaticaPara(jugadorTiro, textoLog);
       guardarBD();
@@ -10460,8 +10471,24 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 72;
+const APP_VERSION = 73;
 const VERSIONES = [
+  {
+    version: 73,
+    fecha: '2026-09-02',
+    titulo: 'Ruleta: diseño premium, selector de jugador sin desbordamiento',
+    resumen: 'Overlay de ruleta rediseñado con fondo oscuro explícito. Selector de jugador reemplazado por botones pill para evitar que el desplegable nativo salga del modal. Premio aplicado visible en el resultado.',
+    nuevas: [],
+    mejoras: [
+      'Overlay ruleta: fondo oscuro propio (#1a1a2e), independiente del tema de la app',
+      'Rueda con anillo dorado y botón central con gradiente 3D',
+      'Selector de jugador como botones pill dentro del modal — sin desbordamiento',
+      'El jugador seleccionado queda resaltado en dorado',
+      'Resultado muestra el premio aplicado (ej: "SRWIWA: +1 vida extra")',
+    ],
+    rendimiento: [],
+    fixes: ['Select nativo desbordaba el modal en pantallas pequeñas'],
+  },
   {
     version: 72,
     fecha: '2026-08-24',
