@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v74 | Build: 2026-09-02 -->
+<!-- Silph Co v75 | Build: 2026-09-02 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5468,53 +5468,53 @@ function misionMulberry32(seed){
    Cada misión lleva un campo 'excluirRecompensas' con los tipos vetados.
    ────────────────────────────────────────────────────────── */
 const MISION_POOL_FACIL = [
-  {tipo:'capturas',      metaOpts:[1,2,3],      titulo:'Primera Captura',       desc:function(m){return `Consigue ${m} captura${m>1?'s':''} hoy.`;},                                          icon:'🎯'},
-  {tipo:'rutas',         metaOpts:[1],           titulo:'En Marcha',             desc:function(){return 'Completa una ruta.';},                                                                  icon:'🗺️'},
-  {tipo:'comprados',     metaOpts:[1,2],         titulo:'Ir de Compras',         desc:function(m){return `Compra ${m} objeto${m>1?'s':''} en la tienda.`;},                                    icon:'🛍️'},
-  {tipo:'dinero',        metaOpts:[1000,2000,3000], titulo:'Primer Ahorro',      desc:function(m){return `Acumula ${m.toLocaleString()} P₠.`;},                                                icon:'💰'},
+  {tipo:'comprados',     metaOpts:[1,2],         titulo:'Ir de Compras',         desc:function(m){return 'Compra '+m+' objeto'+(m>1?'s':'')+' en la tienda.';},                               icon:'🛍️'},
+  {tipo:'dinero',        metaOpts:[1000,2000,3000], titulo:'Primer Ahorro',      desc:function(m){return 'Acumula '+m.toLocaleString()+' P₠.';},                                              icon:'💰'},
   {tipo:'gachaAbiertas', metaOpts:[1],           titulo:'Prueba tu Suerte',      desc:function(){return 'Abre 1 Gacha.';},                                                                      icon:'🎰'},
   {tipo:'objetosUsados', metaOpts:[1],           titulo:'Usa tu Mochila',        desc:function(){return 'Usa 1 objeto de tu mochila.';},                                                        icon:'🎒'},
   {tipo:'manual',        metaOpts:[1],           titulo:'Recaptura de Guardia',  desc:function(){return 'Usa una recaptura. Márcala tú mismo cuando lo hagas.';},                              icon:'🔁', manual:true},
-  {tipo:'capturas',      metaOpts:[2,3],         titulo:'Cazador Madrugador',    desc:function(m){return `Completa ${m} capturas antes de que acabe la rotación.`;},                           icon:'🌅'},
-  {tipo:'rutas',         metaOpts:[1,2],         titulo:'Explorador Básico',     desc:function(m){return `Completa ${m===1?'una ruta':'dos rutas'} de tu recorrido.`;},                        icon:'🥾'},
-  {tipo:'comprados',     metaOpts:[2,3],         titulo:'De Compras otra vez',   desc:function(m){return `Compra ${m} objetos en cualquier tienda.`;},                                         icon:'🏪'},
+  {tipo:'comprados',     metaOpts:[2,3],         titulo:'De Compras otra vez',   desc:function(m){return 'Compra '+m+' objetos en cualquier tienda.';},                                       icon:'🏪'},
+  {tipo:'dinero',        metaOpts:[500,1500],    titulo:'Acumulando Fondos',     desc:function(m){return 'Ten '+m.toLocaleString()+' P₠ en tu cuenta.';},                                    icon:'💵'},
+  {tipo:'gachaAbiertas', metaOpts:[1],           titulo:'El Destino Llama',      desc:function(){return 'Gira el Gacha diario y acepta lo que venga.';},                                       icon:'🎲'},
+  {tipo:'objetosUsados', metaOpts:[1,2],         titulo:'Mochila en Uso',        desc:function(m){return 'Usa '+m+' objeto'+(m>1?'s':'')+' de tu inventario.';},                             icon:'🎒'},
+  {tipo:'comprados',     metaOpts:[1],           titulo:'Primera Compra del Día',desc:function(){return 'Compra al menos 1 objeto en la tienda hoy.';},                                        icon:'🛒'},
 ];
 const MISION_POOL_NORMAL = [
-  {tipo:'capturas',      metaOpts:[4,5],         titulo:'Cazador Novato',        desc:function(m){return `Completa ${m} capturas.`;},                                                           icon:'🎯'},
-  {tipo:'rutas',         metaOpts:[2,3],         titulo:'De Ruta en Ruta',       desc:function(m){return `Completa ${m} rutas.`;},                                                              icon:'🗺️'},
-  {tipo:'dinero',        metaOpts:[4000,6000],   titulo:'Ahorro Pokéinómano',    desc:function(m){return `Acumula ${m.toLocaleString()} P₠.`;},                                                icon:'💰'},
-  {tipo:'gachaAbiertas', metaOpts:[2,3],         titulo:'Apostador Casual',      desc:function(m){return `Abre ${m} Gachas.`;},                                                                 icon:'🎰'},
-  {tipo:'pfGastado',     metaOpts:[3,5],         titulo:'Invierte tus PF',       desc:function(m){return `Gasta ${m} PF en la tienda PF.`;},                                                   icon:'🔮', excluirRecompensas:['pf']},
-  {tipo:'objetosUsados', metaOpts:[2,3],         titulo:'Inventario Activo',     desc:function(m){return `Usa ${m} objetos de tu mochila.`;},                                                  icon:'🎒'},
-  {tipo:'comprados',     metaOpts:[3,4],         titulo:'Gran Comprador',        desc:function(m){return `Compra ${m} objetos hoy.`;},                                                          icon:'🛒'},
-  {tipo:'capturas',      metaOpts:[3,4],         titulo:'Racha de Capturas',     desc:function(m){return `Registra ${m} capturas en la rotación.`;},                                           icon:'📋'},
+  {tipo:'dinero',        metaOpts:[4000,6000],   titulo:'Ahorro Pokéinómano',    desc:function(m){return 'Acumula '+m.toLocaleString()+' P₠.';},                                              icon:'💰'},
+  {tipo:'gachaAbiertas', metaOpts:[2,3],         titulo:'Apostador Casual',      desc:function(m){return 'Abre '+m+' Gachas.';},                                                               icon:'🎰'},
+  {tipo:'pfGastado',     metaOpts:[3,5],         titulo:'Invierte tus PF',       desc:function(m){return 'Gasta '+m+' PF en la tienda PF.';},                                                 icon:'🔮', excluirRecompensas:['pf']},
+  {tipo:'objetosUsados', metaOpts:[2,3],         titulo:'Inventario Activo',     desc:function(m){return 'Usa '+m+' objetos de tu mochila.';},                                                icon:'🎒'},
+  {tipo:'comprados',     metaOpts:[3,4],         titulo:'Gran Comprador',        desc:function(m){return 'Compra '+m+' objetos hoy.';},                                                       icon:'🛒'},
+  {tipo:'dineroGastado', metaOpts:[1000,2000],   titulo:'El Dinero Fluye',       desc:function(m){return 'Gasta '+m.toLocaleString()+' P₠ en la tienda.';},                                  icon:'💸', excluirRecompensas:['dinero']},
+  {tipo:'manual',        metaOpts:[1],           titulo:'Recaptura Estratégica', desc:function(){return 'Usa una recaptura durante la rotación. Márcala tú mismo.';},                         icon:'🔁', manual:true},
+  {tipo:'comprados',     metaOpts:[2],           titulo:'Doble Inversión',       desc:function(){return 'Compra 2 objetos distintos en la misma rotación.';},                                  icon:'🛍️'},
 ];
 const MISION_POOL_DIFICIL = [
   {tipo:'medallas',      metaOpts:[1],           tituloMedallas:'Reto de Gimnasio', tituloKahunas:'Reto de Kahuna',                                                                            icon:'🏅'},
   {tipo:'torneosJugados',metaOpts:[1],           titulo:'Ponte a Prueba',        desc:function(){return 'Participa en un torneo.';},                                                            icon:'🏟️'},
-  {tipo:'dineroGastado', metaOpts:[5000,8000],   titulo:'Gran Derrochador',      desc:function(m){return `Gasta ${m.toLocaleString()} P₠ comprando.`;},                                       icon:'💸', excluirRecompensas:['dinero']},
-  {tipo:'capturas',      metaOpts:[6,8],         titulo:'Cazador Experto',       desc:function(m){return `Completa ${m} capturas.`;},                                                           icon:'🎯'},
-  {tipo:'sinMuertes',    metaOpts:[1],           titulo:'Mano Firme',            desc:function(){return 'No pierdas ningún Pokémon en esta rotación.';},                                       icon:'🛡️'},
-  {tipo:'pfGastado',     metaOpts:[8,10],        titulo:'Maestro PF',            desc:function(m){return `Gasta ${m} PF en la tienda PF.`;},                                                   icon:'🔮', excluirRecompensas:['pf']},
-  {tipo:'rutas',         metaOpts:[3,4],         titulo:'Explorador Avanzado',   desc:function(m){return `Completa ${m} rutas de tu recorrido.`;},                                             icon:'🗺️'},
-  {tipo:'gachaAbiertas', metaOpts:[4,5],         titulo:'Adicto a la Gacha',     desc:function(m){return `Abre ${m} Gachas.`;},                                                                 icon:'🎰'},
+  {tipo:'dineroGastado', metaOpts:[5000,8000],   titulo:'Gran Derrochador',      desc:function(m){return 'Gasta '+m.toLocaleString()+' P₠ comprando.';},                                    icon:'💸', excluirRecompensas:['dinero']},
+  {tipo:'pfGastado',     metaOpts:[8,10],        titulo:'Maestro PF',            desc:function(m){return 'Gasta '+m+' PF en la tienda PF.';},                                                 icon:'🔮', excluirRecompensas:['pf']},
+  {tipo:'gachaAbiertas', metaOpts:[4,5],         titulo:'Adicto a la Gacha',     desc:function(m){return 'Abre '+m+' Gachas.';},                                                               icon:'🎰'},
+  {tipo:'objetosUsados', metaOpts:[4,5],         titulo:'Mochila Vaciada',       desc:function(m){return 'Usa '+m+' objetos de tu mochila en esta rotación.';},                               icon:'🎒'},
+  {tipo:'dineroGastado', metaOpts:[3000,6000],   titulo:'Inversor Comprometido',  desc:function(m){return 'Invierte '+m.toLocaleString()+' P₠ en productos de la tienda.';},                 icon:'💰', excluirRecompensas:['dinero']},
+  {tipo:'torneosJugados',metaOpts:[1],           titulo:'Arena Obligatoria',     desc:function(){return 'Participa en un torneo antes de que acabe la rotación.';},                           icon:'⚔️'},
 ];
 const MISION_POOL_MUYDIFICIL = [
   {tipo:'medallas',      metaOpts:[1],           tituloMedallas:'Líder al Límite', tituloKahunas:'Kahuna al Límite',                                                                           icon:'🏅'},
-  {tipo:'sinMuertes',    metaOpts:[1],           titulo:'Intocable',             desc:function(){return 'Completa la rotación sin perder ningún Pokémon.';},                                    icon:'🛡️'},
-  {tipo:'capturas',      metaOpts:[10,12],       titulo:'Coleccionista Serio',   desc:function(m){return `Consigue ${m} capturas en esta rotación.`;},                                         icon:'🎯'},
   {tipo:'torneosGanados',metaOpts:[1],           titulo:'No Hay Segunda Lugar',  desc:function(){return 'Gana un torneo.';},                                                                    icon:'🏆'},
-  {tipo:'dineroGastado', metaOpts:[12000,15000], titulo:'Magnate Pokémon',       desc:function(m){return `Gasta ${m.toLocaleString()} P₠ en la tienda.`;},                                    icon:'💸', excluirRecompensas:['dinero']},
-  {tipo:'rutas',         metaOpts:[4,5],         titulo:'Nuzlocker Incansable',  desc:function(m){return `Completa ${m} rutas en esta rotación.`;},                                            icon:'🗺️'},
+  {tipo:'dineroGastado', metaOpts:[12000,15000], titulo:'Magnate Pokémon',       desc:function(m){return 'Gasta '+m.toLocaleString()+' P₠ en la tienda.';},                                  icon:'💸', excluirRecompensas:['dinero']},
   {tipo:'manual',        metaOpts:[1],           titulo:'Último Recurso',        desc:function(){return 'Usa una recaptura en un momento crítico. Márcalo tú mismo.';},                        icon:'🔁', manual:true},
+  {tipo:'pfGastado',     metaOpts:[15,20],       titulo:'Derroche de PF',        desc:function(m){return 'Gasta '+m+' PF en la tienda PF esta rotación.';},                                   icon:'🔮', excluirRecompensas:['pf']},
+  {tipo:'gachaAbiertas', metaOpts:[5,6],         titulo:'Todo al Destino',       desc:function(m){return 'Abre '+m+' Gachas en esta rotación.';},                                              icon:'🎰'},
+  {tipo:'dineroGastado', metaOpts:[8000,10000],  titulo:'Gran Inversión',        desc:function(m){return 'Invierte '+m.toLocaleString()+' P₠ en la tienda durante la rotación.';},          icon:'💰', excluirRecompensas:['dinero']},
 ];
 const MISION_POOL_EPICA = [
   {tipo:'torneosGanados',metaOpts:[1],           titulo:'Campeón del Día',       desc:function(){return 'Gana un torneo.';},                                                                    icon:'🏆'},
-  {tipo:'revividos',     metaOpts:[1],           titulo:'Segunda Oportunidad',   desc:function(){return 'Sacrifica un Pokémon para recuperar vidas (si tu modalidad lo permite).';},          icon:'🔥'},
-  {tipo:'rutas',         metaOpts:[5,6],         titulo:'Explorador Legendario', desc:function(m){return `Completa ${m} rutas.`;},                                                              icon:'🗺️'},
-  {tipo:'sinMuertes',    metaOpts:[1],           titulo:'Racha Perfecta',        desc:function(){return 'Sobrevive toda la rotación sin ninguna baja.';},                                      icon:'✨'},
-  {tipo:'capturas',      metaOpts:[14,16],       titulo:'Dex Completa',          desc:function(m){return `Registra ${m} capturas.`;},                                                           icon:'📖'},
   {tipo:'medallas',      metaOpts:[1],           tituloMedallas:'Desafío Élite', tituloKahunas:'Desafío Gran Kahuna',                                                                          icon:'🏅'},
+  {tipo:'torneosJugados',metaOpts:[1],           titulo:'Presencia en la Arena', desc:function(){return 'Participa en cualquier torneo durante esta rotación de 48h.';},                      icon:'🏟️'},
+  {tipo:'dineroGastado', metaOpts:[20000,25000], titulo:'El Gran Gasto',         desc:function(m){return 'Gasta '+m.toLocaleString()+' P₠ en la tienda durante 48h.';},                     icon:'💸', excluirRecompensas:['dinero']},
+  {tipo:'manual',        metaOpts:[1],           titulo:'La Gran Recaptura',     desc:function(){return 'Usa una recaptura épica esta rotación. Márcala tú mismo cuando lo hagas.';},         icon:'🔁', manual:true},
+  {tipo:'torneosGanados',metaOpts:[1],           titulo:'Solo Existe el Primero',desc:function(){return 'Gana un torneo en las próximas 48 horas. Sin excusas.';},                             icon:'🥇'},
 ];
 
 /* Recompensas por dificultad.
@@ -10501,8 +10501,24 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 74;
+const APP_VERSION = 75;
 const VERSIONES = [
+  {
+    version: 75,
+    fecha: '2026-09-02',
+    titulo: 'Misiones: eliminadas rutas y capturas, nuevas misiones de economía',
+    resumen: 'Eliminadas todas las misiones de tipo capturas, rutas, sinMuertes y revividos (ya no hay tracker). Reemplazadas por misiones variadas de compras, gasto, gacha, torneos y misiones manuales. Las recapturas siguen siendo recompensa posible.',
+    nuevas: [],
+    mejoras: [
+      'Pool Fácil: 10 misiones de compras, dinero, gacha, objetos y manual',
+      'Pool Normal: 8 misiones de ahorro, gacha, PF, objetos y gasto',
+      'Pool Difícil: 8 misiones de medallas, torneos, gasto y gacha intensivo',
+      'Pool Muy Difícil: 7 misiones de torneos, gasto extremo, PF y manual',
+      'Pool Épica: 6 misiones de torneos ganados, gasto épico y manual épico',
+    ],
+    rendimiento: [],
+    fixes: ['Eliminados tipos capturas/rutas/sinMuertes/revividos que nunca podían completarse sin tracker'],
+  },
   {
     version: 74,
     fecha: '2026-09-02',
