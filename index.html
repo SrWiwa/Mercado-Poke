@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v75 | Build: 2026-09-02 -->
+<!-- Silph Co v76 | Build: 2026-09-02 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1019,9 +1019,17 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 /* ═══ ASISTENTE ═══ */
 /* ── Asistente flotante ── */
 .asis-float{position:fixed;bottom:76px;right:14px;z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
-.asis-float *{pointer-events:auto}
+.asis-float *{pointer-events:none}
+.asis-nube,.asis-burbuja,.asis-chat.abierto,.asis-chat.abierto *,.asis-badge-punto{pointer-events:auto}
 .asis-burbuja{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#5b52c7,#8e4fc7);border:2px solid rgba(255,255,255,.15);box-shadow:0 4px 18px rgba(0,0,0,.45);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;transition:transform .18s,box-shadow .18s;flex-shrink:0;user-select:none;position:relative}
 .asis-burbuja:hover{transform:scale(1.08)}
+.asis-burbuja.durmiendo{animation:asisDuerme 3s ease-in-out infinite!important;background:linear-gradient(135deg,#374151,#4b5563)!important}
+.asis-burbuja.feliz{background:linear-gradient(135deg,#065f46,#10b981)!important}
+.asis-burbuja.tenso{background:linear-gradient(135deg,#92400e,#f59e0b)!important}
+.asis-burbuja.triste{background:linear-gradient(135deg,#1e3a5f,#3b82f6)!important}
+.asis-burbuja.critico-anim{background:linear-gradient(135deg,#7f1d1d,#dc2626)!important;animation:asisBurbujaUrgente 1s ease-in-out infinite!important}
+@keyframes asisDuerme{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(0.95) rotate(3deg)}}
+@keyframes asisBlink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(0.1)}}
 .asis-burbuja.nivel-critico{background:linear-gradient(135deg,#b91c1c,#e2646f);animation:asisBurbujaUrgente 1.6s ease-in-out infinite}
 .asis-burbuja.nivel-importante{background:linear-gradient(135deg,#92400e,#c99a2e)}
 .asis-badge-punto{position:absolute;top:-2px;right:-2px;width:10px;height:10px;border-radius:50%;background:#e2646f;border:2px solid var(--bg-base);display:none}
@@ -1707,7 +1715,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
     <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
     <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
-    <div class="more-sheet-item" onclick="navegarA('asistente');cerrarMasSheet()"><span class="ms-icon">🤖</span> Asistente</div>
+
     <div class="more-sheet-item" onclick="navegarA('vidas-sacrificios');cerrarMasSheet()"><span class="ms-icon">❤️</span> Vidas y Sacrificios</div>
     <div class="more-sheet-item" onclick="navegarA('medallas-torneos');cerrarMasSheet()"><span class="ms-icon">🏆</span> Medallas y Torneos</div>
     <div class="more-sheet-item" onclick="cerrarMasSheet();abrirOverlayDiarioNativo()"><span class="ms-icon">📖</span> Bitácora</div>
@@ -1771,7 +1779,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span><span class="nav-label">Eventos</span></div>
       <div class="nav-item" id="nav-duelos" onclick="navegarA('duelos')"><span class="nav-icon">🥊</span><span class="nav-label">Duelos PvP</span></div>
       <div class="nav-item" id="nav-torneos" onclick="navegarA('torneos')"><span class="nav-icon">🏟️</span><span class="nav-label">Torneos</span></div>
-      <div class="nav-item" id="nav-asistente" onclick="navegarA('asistente')"><span class="nav-icon">🤖</span><span class="nav-label">Asistente</span></div>
+
 
       <div class="nav-section-label">Personal</div>
       <div class="nav-item" id="nav-perfil" onclick="navegarA('perfil')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></div>
@@ -8398,6 +8406,7 @@ function _asisResponder(texto){
 }
 
 window.asisEnviarMensaje = function(){
+  _asisDespertarse();
   if(_asisCargando) return;
   var input = document.getElementById('asis-chat-input');
   var send  = document.getElementById('asis-chat-send');
@@ -8423,6 +8432,77 @@ window.asisEnviarMensaje = function(){
   }, 600 + Math.random()*400);
 };
 
+/* ══ ESTADO DE ÁNIMO DEL MERCADER ══ */
+var _asisEstado = 'normal'; // normal | feliz | tenso | triste | critico | durmiendo
+var _asisDormidoTimer = null;
+var _EMOCIONES = {
+  normal:    { emoji:'🤖', clase:'',             nube:'…' },
+  feliz:     { emoji:'😄', clase:'feliz',         nube:'😄' },
+  tenso:     { emoji:'😰', clase:'tenso',         nube:'😰' },
+  triste:    { emoji:'😔', clase:'triste',        nube:'😔' },
+  critico:   { emoji:'😱', clase:'critico-anim',  nube:'😱' },
+  durmiendo: { emoji:'😴', clase:'durmiendo',     nube:'😴 zzz…' },
+};
+
+function _asisCalcularEstado(){
+  if(!userSesion||!baseDatos.jugadores[userSesion]) return 'normal';
+  var u = baseDatos.jugadores[userSesion];
+  var vidasAct  = u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20);
+  var vidasTot  = u.vidasTotales||20;
+  var vidasExtra= u.vidasExtra||0;
+  var racha     = u.rachaActual||0;
+  var dinero    = u.dinero||0;
+  var cementerio= (u.cementerio||[]).length;
+  var numMed    = u.numMedallas||0;
+  var torneos   = u.torneos||0;
+  // CRÍTICO: última vida
+  if(vidasAct<=1 && vidasExtra===0) return 'critico';
+  // TRISTE: pocas vidas o muchas bajas
+  if(vidasAct<=Math.ceil(vidasTot*0.25) || cementerio>=5) return 'triste';
+  // TENSO: dinero bajo o racha negativa
+  if(dinero<500 || racha<=-3) return 'tenso';
+  // FELIZ: racha positiva, muchas medallas o torneos ganados
+  if(racha>=5 || numMed>=6 || torneos>=3 || dinero>=10000) return 'feliz';
+  return 'normal';
+}
+
+function _asisAplicarEstado(estado){
+  _asisEstado = estado;
+  var emo = _EMOCIONES[estado]||_EMOCIONES.normal;
+  var burbuja = document.getElementById('asis-burbuja');
+  if(burbuja){
+    burbuja.textContent = emo.emoji;
+    burbuja.className = 'asis-burbuja' + (emo.clase?' '+emo.clase:'');
+  }
+}
+
+function _asisDespertarse(){
+  if(_asisDormidoTimer){ clearTimeout(_asisDormidoTimer); _asisDormidoTimer=null; }
+  var estado = _asisCalcularEstado();
+  _asisAplicarEstado(estado);
+  // Reiniciar timer de dormirse (60s sin interacción)
+  _asisDormidoTimer = setTimeout(function(){
+    _asisAplicarEstado('durmiendo');
+    _asisNubeShow('😴 zzz…', 0);
+  }, 60000);
+}
+
+/* Mensajes coherentes con el estado de ánimo */
+function _asisNubeConEstado(texto){
+  var estado = _asisEstado;
+  if(estado==='durmiendo') return;
+  var prefijos = {
+    feliz:   ['✨ ','🌟 ','😄 ','🔥 '],
+    tenso:   ['⚠️ ','😰 ','🫤 '],
+    triste:  ['😔 ','💧 ','😞 '],
+    critico: ['🚨 ','😱 ','‼️ '],
+    normal:  ['','',''],
+  };
+  var pool = prefijos[estado]||prefijos.normal;
+  var pre  = pool[Math.floor(Math.random()*pool.length)];
+  _asisNubeShow(pre+texto, 0);
+}
+
 window.renderizarAsistente = function(){
   if(!userSesion||!baseDatos.jugadores[userSesion]) return;
   var u = baseDatos.jugadores[userSesion];
@@ -8436,23 +8516,27 @@ window.renderizarAsistente = function(){
   if(secEl) secEl.textContent = _SECCION_NOMBRES[_asisSeccionActual]||_asisSeccionActual;
   var sub = document.getElementById('asis-chat-sub');
   if(sub) sub.textContent = _SECCION_NOMBRES[_asisSeccionActual]||_asisSeccionActual;
+  // Calcular y aplicar estado de ánimo
+  var estadoActual = _asisCalcularEstado();
+  _asisAplicarEstado(estadoActual);
+  _asisDespertarse();
   if(_asisMsgs.length){
     var m0 = _asisMsgs[0];
-    _asisNubeShow(m0.icono+' '+m0.desc, 1000);
+    _asisNubeConEstado(m0.icono+' '+m0.desc);
     if(_asisNubeTimer) clearInterval(_asisNubeTimer);
     _asisNubeTimer = setInterval(function(){
-      if(!_asisMsgs.length) return;
+      if(!_asisMsgs.length||_asisEstado==='durmiendo') return;
       _asisMsgActual = (_asisMsgActual+1) % _asisMsgs.length;
       var mm = _asisMsgs[_asisMsgActual];
-      _asisNubeShow(mm.icono+' '+mm.desc, 0);
+      _asisNubeConEstado(mm.icono+' '+mm.desc);
     }, 18000);
   }
-};
-
+}
 window.toggleAsistenteFloat = function(){
   _asisAbierto ? cerrarAsistenteFloat() : abrirAsistenteFloat();
 };
 window.abrirAsistenteFloat = function(){
+  _asisDespertarse();
   _asisAbierto = true;
   // Abrir chat nuevo
   var chat = document.getElementById('asis-chat');
@@ -8491,6 +8575,7 @@ window.cerrarAsistenteFloat = function(){
 /* Actualiza el asistente cuando cambia la sección */
 function _asisSetSeccion(s){
   _asisSeccionActual = s;
+  if(userSesion&&baseDatos.jugadores[userSesion]){ var est=_asisCalcularEstado(); _asisAplicarEstado(est); }
   if(userSesion&&baseDatos.jugadores[userSesion]){
     _asisMsgs = _asisGenerarTodos(baseDatos.jugadores[userSesion], s);
     _asisActualizarBurbuja();
@@ -10501,8 +10586,26 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 75;
+const APP_VERSION = 76;
 const VERSIONES = [
+  {
+    version: 76,
+    fecha: '2026-09-02',
+    titulo: 'Mercader: emociones, estado de ánimo y fix de clicks bloqueados',
+    resumen: 'El Mercader tiene estado de ánimo (feliz, tenso, triste, crítico, dormido) según el estado del locke. Se duerme a los 60s sin interacción. Los mensajes llevan prefijo coherente con su humor. Eliminado del nav lateral y menú hamburguesa. Fix de área invisible que bloqueaba clicks.',
+    nuevas: [
+      'Estado de ánimo dinámico: 😄 feliz (racha, medallas, dinero) · 😰 tenso (dinero bajo, racha negativa) · 😔 triste (pocas vidas, muchas bajas) · 😱 crítico (última vida) · 😴 dormido (60s sin tocar)',
+      'La burbuja cambia de color y emoji según el estado',
+      'Mensajes de la nube llevan prefijo emocional coherente con el humor actual',
+      'Se despierta automáticamente al abrir el chat o escribir un mensaje',
+    ],
+    mejoras: [
+      'Eliminado del nav lateral y del menú hamburguesa móvil',
+      'Fix clicks bloqueados: el chat cerrado ya no intercepta eventos del área que ocupa',
+    ],
+    rendimiento: [],
+    fixes: ['pointer-events del chat cerrado bloqueaba clics en toda la zona derecha de la pantalla'],
+  },
   {
     version: 75,
     fecha: '2026-09-02',
