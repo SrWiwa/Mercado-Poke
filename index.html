@@ -7205,7 +7205,7 @@ function redibujarHistorialDiario(){if(!userSesion||!baseDatos.jugadores[userSes
 window.guardarNuevaEntradaDiario=function(){let inp=document.getElementById('diario-input-texto'),c=inp.value.trim();if(!c){mostrarNotificacion("Escribe algo antes de guardar.","error","📖");return;}inyectarEntradaDiarioAutomatica(c);guardarBD();inp.value='';redibujarHistorialDiario();reproducirSonido('exito');mostrarNotificacion("Hito estampado en la bitácora.","exito","📖");};
 function registrarActividadGlobal(jugadorId,txt,ts){
     if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];
-    baseDatos.actividadGlobal.push({jugador:jugadorId,texto:txt,timestamp:ts});
+    baseDatos.actividadGlobal.push({jugador:jugadorId,uid:jugadorId,texto:txt,timestamp:ts,tsNum:Date.now()});
     if(baseDatos.actividadGlobal.length>60)baseDatos.actividadGlobal=baseDatos.actividadGlobal.slice(-60);
 }
 /* ═══ LOG DE ACCIONES DE ADMIN ═══ */
@@ -10796,15 +10796,16 @@ const VERSIONES = [
   {
     version: 80,
     fecha: '2026-09-04',
-    titulo: 'Fix v2: noticiario y select de denunciados',
-    resumen: 'Segundo intento de corrección: el noticiario no mostraba noticias genéricas por el filtro noticias.length < 3, y el select de denunciados no se reconstruía en el orden correcto.',
+    titulo: 'Fix v3: noticiero, doble actividad y formulario de denuncia',
+    resumen: 'Tres causas raíz corregidas: registrarActividadGlobal ahora guarda uid y tsNum numérico; presentarDenuncia eliminaba doble entrada y no limpiaba el select custom; el noticiero ahora detecta eventos judiciales.',
     nuevas: [],
     mejoras: [],
     rendimiento: [],
     fixes: [
-      'Noticiario: eliminado el filtro noticias.length < 3 del fallback genérico — ahora captura cualquier entrada de actividad con uid válido',
-      'Noticiario: guard en locke.juego para evitar "undefined" en el resumen de fallback',
-      'Select de denunciados: la destrucción del wrapper csel ahora ocurre ANTES de poblar las opciones, evitando que mejorarSelect encuentre el select ya dentro del wrapper antiguo',
+      'registrarActividadGlobal: ahora guarda uid (alias de jugador) y tsNum (timestamp numérico) para que el noticiero pueda leerlos y ordenarlos correctamente',
+      'presentarDenuncia: eliminado el push duplicado a actividadGlobal — inyectarEntradaDiarioAutomatica ya lo hace internamente vía registrarActividadGlobal',
+      'presentarDenuncia: ahora llama a _poblarSelectDenunciado() al finalizar para resetear el select custom de denunciado',
+      'Noticiero: añadido patrón para detectar entradas de actividad con "denuncia", "sentencia", "⚖️" o "🚨"',
     ],
   },
   {
@@ -11817,9 +11818,9 @@ function _generarNoticiasDesdeActividadYBD(){
   actReciente.forEach(function(a){
     if(!a||!a.texto) return;
     var txt = a.texto.toLowerCase();
-    var uid = a.uid||'';
+    var uid = a.uid||a.jugador||'';
     var nombre = uid ? uid.charAt(0).toUpperCase()+uid.slice(1).toLowerCase() : 'Un entrenador';
-    var ts = a.timestamp||Date.now();
+    var ts = a.tsNum || (typeof a.timestamp === 'number' ? a.timestamp : Date.now());
 
     // Muerte de Pokémon
     if(txt.includes('rip')||txt.includes('cayó')||txt.includes('caído')||txt.includes('💀')){
@@ -11888,6 +11889,13 @@ function _generarNoticiasDesdeActividadYBD(){
         titular:nombre.toUpperCase()+' CANJEA UN TICKET DEL MERCADER',
         resumen:nombre+' ha canjeado un Ticket del Mercader y obtenido su recompensa.',
         fuente:'Boletín Económico',implicados:[uid]});
+    }
+    // Denuncia / sentencia judicial
+    else if(txt.includes('denuncia')||txt.includes('sentencia')||txt.includes('⚖️')||txt.includes('🚨')){
+      noticias.push({tipo:'judicial',ts:ts,etiqueta:'ultimahora',
+        titular:'MOVIMIENTO JUDICIAL EN EL LOCKE',
+        resumen:a.texto,
+        fuente:'Tribunal del Locke',implicados:[uid]});
     }
     // Cualquier entrada de actividad con uid válido (fallback genérico)
     else if(uid && a.texto && a.texto.length > 10){
@@ -12011,6 +12019,7 @@ window.denunciasTab = function(tab){
     if(panelEl) panelEl.style.display = t===tab?'block':'none';
   });
   if(tab==='casos'||tab==='historial') renderizarDenuncias();
+  if(tab==='nueva') _poblarSelectDenunciado();
 };
 
 function _denunciasEstadoLabel(estado){
@@ -12118,20 +12127,12 @@ window.presentarDenuncia = async function(){
   };
   baseDatos.denuncias[numCaso] = caso;
 
-  // Bitácora del denunciante
+  // Bitácora del denunciante (también registra en actividadGlobal via registrarActividadGlobal)
   inyectarEntradaDiarioAutomatica('⚖️ DENUNCIA PRESENTADA — Has denunciado a '+denunciado.toUpperCase()+'. Caso '+numCaso+'. Estado: Juicio pendiente.');
-  // Bitácora del denunciado
+  // Bitácora del denunciado (también registra en actividadGlobal via registrarActividadGlobal)
   inyectarEntradaDiarioAutomaticaPara(denunciado,'🚨 HAS SIDO DENUNCIADO — '+userSesion.toUpperCase()+' ha presentado una denuncia contra ti. Caso '+numCaso+'. Estado: Investigación pendiente.');
 
-  // Actividad global para todos
-  if(!baseDatos.actividadGlobal) baseDatos.actividadGlobal=[];
-  baseDatos.actividadGlobal.push({
-    uid:userSesion, timestamp:Date.now(),
-    texto:'⚖️ '+userSesion.toUpperCase()+' ha presentado una denuncia contra '+denunciado.toUpperCase()+'. Caso '+numCaso+'.',
-    tipo:'judicial'
-  });
-
-  // Noticia automática
+  // Noticia automática en el noticiero
   registrarNoticia('ultimahora',
     'SE ABRE INVESTIGACIÓN CONTRA '+denunciado.toUpperCase(),
     userSesion.charAt(0).toUpperCase()+userSesion.slice(1)+' ha presentado una denuncia contra '+denunciado+' por '+_denunciaMotivoTexto(motivo)+'. Caso '+numCaso+'.',
@@ -12141,7 +12142,9 @@ window.presentarDenuncia = async function(){
   renderizarActividadGlobalInicio();
   renderizarNoticiario();
   renderizarDenuncias();
+  // Limpiar formulario correctamente (textarea + select custom)
   document.getElementById('denuncia-descripcion').value='';
+  _poblarSelectDenunciado();
   denunciasTab('casos');
   mostrarNotificacion('Denuncia presentada. Caso '+numCaso+' abierto.','exito','⚖️');
 };
