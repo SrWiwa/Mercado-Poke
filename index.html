@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v76 | Build: 2026-09-02 -->
+<!-- Silph Co v77 | Build: 2026-09-03 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -7813,6 +7813,7 @@ function generarConsejosAsistente(u){
   var tipoMed = u.tipoMedallas === 'kahunas' ? 'pruebas' : 'medallas';
   var inventario = (u.inventario||[]).filter(function(i){ return i.uid!=='init'; });
   var ahora = Date.now(), unDia = 24*60*60*1000;
+  var cemNombresCtx = (u.cementerio||[]).slice(-3).map(function(p){return p.nombre||(p.pokemon||'?');});
   var gachaListo = (ahora-(u.ultimoHackeo||0)) >= unDia;
   var gachaPFListo = (ahora-(u.ultimoGachaPF||0)) >= unDia;
   var rachaActual = u.rachaActual || 0;
@@ -8019,23 +8020,22 @@ function _asisContextoSeccion(u, seccion){
 
   switch(seccion){
     case 'inicio':
-      if(gachaListo&&gachaPFListo) add('importante','🎁','Dos regalos te esperan','Tienes el Gacha normal y el PF Gacha disponibles ahora mismo. ¿Qué haces todavía aquí?');
-      else if(gachaListo) add('consejo','⚡','Gacha disponible','Tu Gacha gratuito de hoy espera en la tienda. Entra y gíralo.');
-      else if(gachaPFListo) add('consejo','🔮','PF Gacha disponible','El PF Gacha del día está listo. No lo dejes expirar.');
-      if(dinero>=8000) add('consejo','💰',n+' tiene músculo económico','Con '+dinero.toLocaleString('es-ES')+' P₠ puedes permitirte casi cualquier cosa. No los dejes oxidarse.');
-      else if(dinero<500) add('importante','💸','Fondos bajo mínimos','Solo '+dinero.toLocaleString('es-ES')+' P₠. La tienda va a ser un museo para ti si no lo remedias.');
-      if(pendientes>0) add('consejo','🗺️','Rutas por resolver',pendientes+' ruta'+( pendientes===1?'':'s')+' pendiente'+(pendientes===1?'':'s')+' en el tracker. No se capturan solas.');
+      if(gachaListo&&gachaPFListo) add('importante','🎲','Tienes dos gachas esperando','El Gacha normal y el PF Gacha llevan todo el día esperándote. Entra a la tienda y gíralos.');
+      else if(gachaListo) add('consejo','🎲','Gacha disponible','El Gacha gratuito de hoy está listo. No lo dejes pasar, que mañana llega otro.');
+      else if(gachaPFListo) add('consejo','🎲','PF Gacha disponible','El PF Gacha de hoy está ahí. Vale la pena tirarlo.');
+      if(dinero>=8000) add('consejo','💰','Buena situación económica',n+' lleva '+dinero.toLocaleString('es-ES')+' P₠. Con eso tienes margen real para maniobrar.');
+      else if(dinero<500) add('importante','💰','Los fondos están muy bajos','Solo '+dinero.toLocaleString('es-ES')+' P₠, '+n+'. Hay que remediar esto antes de que el locke lo note.');
+      if(cementerio>0) add('consejo','🪦',cementerio+' caído'+(cementerio===1?'':'s')+' en el cementerio','Cada uno cuenta. No olvides lo que ha costado llegar hasta aquí.');
       break;
 
     case 'tiendas':
-      if(compDisp===0) add('importante','🛍️','Sin compras','Has agotado tus '+MAX_COMPRAS+' compras. Vuelve en 3 horas o espera al mercader.');
-      else add('consejo','🛍️',compDisp+' compra'+(compDisp===1?'':'s')+' disponible'+(compDisp===1?'':'s'),'Tienes '+dinero.toLocaleString('es-ES')+' P₠ y '+pf+' PF para gastar. '+(compDisp===MAX_COMPRAS?'Mochila lista para recargar.':'Aprovecha lo que te queda.'));
-      if(inventario.length>=6) add('consejo','🎒','Mochila cargada','Llevas '+inventario.length+' objetos. Antes de comprar más, mira si algo de lo que tienes ya te sirve.');
       var _ev = baseDatos.eventoSistema;
-      if(_ev==='rebajas') add('importante','📉','¡REBAJAS ACTIVAS!','Descuentos en toda la tienda legal y packs ahora mismo. Mejor momento para gastar.');
-      else if(_ev==='inflacion') add('importante','⚠️','Inflación activa','Los precios han subido. Compra solo lo esencial hasta que pase.');
-      else if(_ev==='bonus_pf') add('importante','🪙','Doble PF activo','Cada compra te da el doble de PF. Momento de invertir en la tienda PF.');
-      if(gachaListo) add('consejo','🎰','Gacha disponible','El Gacha gratuito de hoy está en esta misma sección. Toca el ícono de la ruleta.');
+      if(_ev==='rebajas') add('importante','💸','Rebajas activas ahora mismo','25% de descuento en la tienda legal y packs. Llevo años esperando verte aprovechar una oportunidad así.');
+      else if(_ev==='inflacion') add('importante','💸','Inflación activa — cuidado','Los precios han subido un 50%. Compra solo lo imprescindible mientras dure.');
+      else if(_ev==='bonus_pf') add('importante','🪙','Bonus PF activo','Cada compra te da el doble de PF ahora mismo. Momento de invertir en serio.');
+      if(compDisp===0) add('importante','🛍️','Sin compras disponibles','Has agotado las '+MAX_COMPRAS+' compras de hoy. Se recargan en 3 horas. Vuelve luego.');
+      else add('consejo','🛍️',compDisp+' compra'+(compDisp===1?'':'s')+' disponible'+(compDisp===1?'':'s'),'Llevas '+dinero.toLocaleString('es-ES')+' P₠. '+(compDisp===MAX_COMPRAS?'Todo disponible, '+n+'. Buena oportunidad.':'Aprovecha las que te quedan.'));
+      if(gachaListo) add('consejo','🎲','El Gacha te espera','El Gacha gratuito de hoy todavía no lo has tirado. Está en esta sección.');
       break;
 
     case 'tracker':
@@ -8047,11 +8047,10 @@ function _asisContextoSeccion(u, seccion){
       break;
 
     case 'vidas-sacrificios':
-      if(vidasAct===1&&vidasExtra===0) add('critico','💀','ÚLTIMA VIDA, '+n,'Una sola. La próxima muerte acaba el Locke. Juega como si fuera la última vez. Porque lo es.');
-      else if(vidasAct<=Math.ceil(vidasTot*0.25)) add('importante','❤️‍🩹','Zona de peligro',''+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':'')+' vidas. Empieza a jugar muy conservador.');
-      else add('consejo','❤️','Estado vital',''+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':'')+' vidas. '+(vidasExtra>0?'Las extras son tu colchón.':'Por encima del 25%, bien.'));
-      if(cementerio>0) add('consejo','⚰️','Cementerio: '+cementerio+' caído'+(cementerio===1?'':'s'),cementerio===1?'Una baja en el Locke. Que descanse.':''+cementerio+' Pokémon perdidos en este Locke. Cada uno cuenta.');
-      if(sacrificios>0) add('consejo','🔥',''+sacrificios+' sacrificio'+(sacrificios===1?'':'s')+' realizados','Has sacrificado '+sacrificios+' Pokémon para recuperar vidas. El precio del Locke.');
+      if(vidasAct===1&&vidasExtra===0) add('critico','❤️','Una sola vida — máxima alerta',''+n+', una vida. Cualquier error podría ser el último. Ahora mismo no hay espacio para improvisaciones.');
+      else if(vidasAct<=Math.ceil(vidasTot*0.25)) add('importante','❤️','Pocas vidas, mucho cuidado',''+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':'')+' vidas. Zona de peligro real, '+n+'. Nada de riesgos innecesarios.');
+      else add('consejo','❤️','Estado vital',vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':'')+' vidas. '+(vidasExtra>0?'Las extras son tu red de seguridad. Cuídalas.':'Estás bien por ahora.'));
+      if(cementerio>0) add('consejo','🪦','El cementerio no miente',''+cementerio+' Pokémon que no vuelven. '+cemNombresCtx.join(', ')+'. Que su sacrificio haya valido la pena.');
       break;
 
     case 'medallas-torneos':
@@ -8230,19 +8229,15 @@ function _asisChatRemoveTyping(){
    reales de su partida. Sin llamadas externas, funciona siempre. */
 function _asisResponder(texto){
   if(!userSesion||!baseDatos.jugadores[userSesion])
-    return 'Todavía no veo tu partida. Entra al sistema primero.';
+    return 'Vaya, todavía no te veo en el sistema. Entra primero y luego hablamos.';
   var u   = baseDatos.jugadores[userSesion];
-  var n   = userSesion.toUpperCase();
+  var n   = userSesion.charAt(0).toUpperCase()+userSesion.slice(1).toLowerCase();
   var t   = texto.toLowerCase().trim();
   var dinero      = u.dinero||0;
   var pf          = u.pf||0;
   var vidasAct    = u.vidasActuales!==undefined?u.vidasActuales:(u.vidasTotales||20);
   var vidasTot    = u.vidasTotales||20;
   var vidasExtra  = u.vidasExtra||0;
-  var tracker     = u.tracker||[];
-  var pendientes  = tracker.filter(function(e){return e.estado==='pendiente';});
-  var atrapadas   = tracker.filter(function(e){return e.estado==='atrapado';});
-  var perdidosT   = tracker.filter(function(e){return e.estado==='perdido';});
   var inventario  = (u.inventario||[]).filter(function(i){return i.uid!=='init';});
   var cementerio  = u.cementerio||[];
   var racha       = u.rachaActual||0;
@@ -8255,154 +8250,210 @@ function _asisResponder(texto){
   var gachaDisp   = (ahora-(u.ultimoHackeo||0))>=unDia;
   var gachaPFDisp = (ahora-(u.ultimoGachaPF||0))>=unDia;
   var tipoMed     = u.tipoMedallas==='kahunas'?'pruebas':'medallas';
+  var estado      = _asisEstado;
+  var cemNombres  = cementerio.slice(-3).map(function(p){return p.nombre||(p.pokemon||'desconocido');});
 
-  /* ── Saludos ── */
-  if(t.match(/^(hola|buenas|hey|ey|qu[eé] tal|qu[eé] hay|c[oó]mo est[aá]s|saludos)/)){
-    var saludos = [
-      'Aquí el Mercader, siempre abierto. ¿Qué necesitas, '+n+'?',
-      ''+n+'. Llevas '+dinero.toLocaleString('es-ES')+' P₠ y '+pf+' PF. ¿En qué te ayudo?',
-      'Buenas. '+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra:'')+(vidasAct<=Math.ceil(vidasTot*0.3)?' vidas. Mal asunto.':(vidasAct===vidasTot?' vidas. En forma.':' vidas.'))+' ¿Qué buscas?',
+  /* ── Despertar si dormido ── */
+  if(estado==='dormido'){
+    _asisDespertarse();
+    var frasesDespiertan = [
+      '¡Uh! Ya estoy, '+n+'. Perdona, me había quedado traspuesto. ¿Qué necesitas?',
+      'Aquí estoy. Soñaba con mejores tiempos para tu locke. ¿Qué pasa?',
+      'Me pillas despierto justo a tiempo. Dime.',
     ];
-    return saludos[Math.floor(Math.random()*saludos.length)];
+    return frasesDespiertan[Math.floor(Math.random()*frasesDespiertan.length)];
   }
 
-  /* ── Dinero / economía ── */
-  if(t.match(/dinero|pasta|plata|p[₠e]|fondos|billetes|monedas|rico|pobre|saldo|cuanto tengo|cu[aá]nto tengo/)){
-    var evTxt = ev==='rebajas'?' Y hay rebajas activas ahora mismo.':ev==='inflacion'?' Ojo, hay inflación.':ev==='bonus_pf'?' Y tienes bonus PF.':'';
-    if(dinero===0) return ''+n+', tienes exactamente cero P₠. Ni para una Poké Ball de plástico.'+evTxt;
-    if(dinero<500) return 'Solo '+dinero.toLocaleString('es-ES')+' P₠. Eso no da para mucho, '+n+'. Activa misiones.'+evTxt;
-    if(dinero>=10000) return ''+dinero.toLocaleString('es-ES')+' P₠. Buena posición, '+n+'. La tienda te espera.'+evTxt;
-    return 'Tienes '+dinero.toLocaleString('es-ES')+' P₠ ahora mismo.'+evTxt;
+  /* ── Saludos ── */
+  if(t.match(/^(hola|buenas|hey|ey|qu[eé] tal|qu[eé] hay|c[oó]mo est[aá]s|saludos|good|hi)/)){
+    if(estado==='critico'){
+      return n+', me alegra que vengas a hablar conmigo, en serio. Pero ahora mismo lo que más me preocupa es que te queda una sola vida. ¿Estás bien?';
+    }
+    if(estado==='afectado'){
+      var cem = cementerio.length;
+      return 'Hola, '+n+'. He visto lo que está pasando con el equipo... '+cem+' caído'+(cem===1?'':'s')+'. Eso deja huella. ¿Cómo llevas todo esto?';
+    }
+    if(estado==='animado'){
+      return '¡'+n+'! Llevas una racha que da gusto ver. '+dinero.toLocaleString('es-ES')+' P₠, '+pf+' PF... el locke te está yendo bien. ¿En qué te ayudo?';
+    }
+    if(estado==='preocupado'){
+      var queja = dinero<500?'Anda que con '+dinero.toLocaleString('es-ES')+' P₠ no llegas lejos.':'Esa racha negativa me tiene en vilo, te lo digo.';
+      return 'Hola, '+n+'. '+queja+' Cuéntame qué necesitas.';
+    }
+    return 'Hola, '+n+'. Aquí el Mercader, como siempre. Llevas '+dinero.toLocaleString('es-ES')+' P₠ y '+pf+' PF. ¿Qué te traes entre manos?';
+  }
+
+  /* ── Dinero ── */
+  if(t.match(/dinero|pasta|plata|p[₠e]|fondos|billetes|monedas|saldo|cu[aá]nto tengo|cuanto tengo/)){
+    var evTxt = ev==='rebajas'?' Y precisamente ahora hay rebajas. Buen momento para gastar.':ev==='inflacion'?' Pero ojo, hay inflación activa. Cada P₠ vale menos de lo habitual.':ev==='bonus_pf'?' Y tienes bonus PF activo, así que las compras rinden más.':'';
+    if(dinero===0) return n+', tienes cero P₠. Cero. Me duele decírtelo, pero es así. Completa misiones o gana torneos, lo que sea.'+evTxt;
+    if(dinero<500) return 'Solo '+dinero.toLocaleString('es-ES')+' P₠, '+n+'. Con eso no llegas a mucho. Antes de gastar nada, busca cómo ingresar más.'+evTxt;
+    if(dinero>=15000) return ''+dinero.toLocaleString('es-ES')+' P₠. Francamente me alegra verte así de saneado, '+n+'. Ahora gástalos bien.'+evTxt;
+    if(dinero>=8000) return ''+dinero.toLocaleString('es-ES')+' P₠. Buena posición, '+n+'. La tienda entera está a tu alcance.'+evTxt;
+    return 'Tienes '+dinero.toLocaleString('es-ES')+' P₠. No está mal, aunque siempre se puede tener más.'+evTxt;
   }
 
   /* ── PF ── */
-  if(t.match(/pf|puntos fuerza|puntos de fuerza|cuantos pf|cu[aá]ntos pf/)){
-    if(pf===0) return 'Cero PF, '+n+'. La tienda PF no te va a tratar bien hoy.';
-    if(pf>=20) return ''+pf+' PF acumulados. Eso es un buen arsenal. Gástalos en algo que valga.';
-    return 'Tienes '+pf+' PF. '+( pf>=10?'Suficiente para algo decente.':'Para algo pequeño de la tienda PF.');
+  if(t.match(/pf|puntos fuerza|cu[aá]ntos pf|cuantos pf/)){
+    if(pf===0) return 'Ningún PF, '+n+'. La tienda PF te mirará de reojo hasta que tengas algo. Las misiones te pueden dar.';
+    if(pf>=25) return ''+pf+' PF. Eso es un buen arsenal. Yo que tú los miraría de cerca antes de gastarlos en lo primero que vea.';
+    if(pf>=10) return ''+pf+' PF disponibles. Suficiente para algo que valga la pena en la tienda PF.';
+    return 'Tienes '+pf+' PF. Para algo pequeño alcanza. Sigue completando misiones para acumular más.';
   }
 
   /* ── Vidas ── */
-  if(t.match(/vida|coraz[oó]n|cuantas vidas|cu[aá]ntas vidas|vivo|muerto|muero|sobrevivir|extra/)){
+  if(t.match(/vida|coraz[oó]n|cu[aá]ntas vidas|cuantas vidas|sobrevivir|extra|muero/)){
     var vidasStr = vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':'');
-    if(vidasAct===0&&vidasExtra===0) return ''+n+', estás a cero vidas. El Locke ha terminado para ti.';
-    if(vidasAct===1&&vidasExtra===0) return 'UNA VIDA, '+n+'. Una. Si un Pokémon muere, se acabó. Juega como nunca.';
-    if(vidasAct<=Math.ceil(vidasTot*0.25)) return ''+vidasStr+' vidas. Zona de peligro real. Nada de riesgos.';
-    if(vidasExtra>0) return ''+vidasStr+' vidas. Las '+vidasExtra+' extras son tu colchón. Úsalas bien.';
-    return ''+vidasStr+' vidas. '+(vidasAct===vidasTot?'Al máximo. Bien.':'Por encima del mínimo de momento.');
+    if(vidasAct===0&&vidasExtra===0) return n+'... se acabó. Cero vidas. El Locke ha terminado para ti. Lo siento de verdad, ha sido una carrera.';
+    if(vidasAct===1&&vidasExtra===0) return ''+n+', escúchame bien: una sola vida. Si un Pokémon muere ahora, adiós Locke. Juega como si cada movimiento fuera el último, porque puede serlo.';
+    if(vidasAct<=Math.ceil(vidasTot*0.25)) return vidasStr+' vidas. Estás en zona de peligro real, '+n+'. Nada de arriesgar hasta que mejore esa cifra.';
+    if(vidasExtra>0) return vidasStr+' vidas. Las '+vidasExtra+' extras son tu red de seguridad. No las malgastes.';
+    if(vidasAct===vidasTot) return vidasStr+' vidas. Al máximo, perfecto. Así me gusta ver las cosas.';
+    return vidasStr+' vidas. Por encima del mínimo, que ya es algo.';
   }
 
-  /* ── Tracker / rutas ── */
-  if(t.match(/ruta|tracker|captura|atrapar|zona|pendiente|completar|mapa/)){
-    if(tracker.length===0) return 'El administrador no ha configurado rutas para este Locke todavía.';
-    if(pendientes.length===0) return '¡Tracker completado, '+n+'! '+atrapadas.length+' capturas y '+perdidosT.length+' pérdidas. No está mal.';
-    var sig = pendientes[0];
-    return ''+pendientes.length+' ruta'+(pendientes.length===1?'':'s')+' pendiente'+(pendientes.length===1?'':'s')+'. La siguiente: '+sig.ruta+'. '+atrapadas.length+' capturados y '+perdidosT.length+' perdidos hasta ahora.';
-  }
-
-  /* ── Mochila / inventario ── */
-  if(t.match(/mochila|inventario|objeto|item|tengo algo|qu[eé] tengo|objetos/)){
-    if(inventario.length===0) return 'La mochila vacía, '+n+'. Pasa por la tienda.';
-    if(inventario.length<=3) return 'Tienes '+inventario.length+' objeto'+(inventario.length===1?'':'s')+': '+inventario.map(function(i){return i.nombre;}).join(', ')+'.';
-    return ''+inventario.length+' objetos en la mochila: '+inventario.slice(0,4).map(function(i){return i.nombre;}).join(', ')+(inventario.length>4?' y '+(inventario.length-4)+' más.':'.');
-  }
-
-  /* ── Cementerio / bajas ── */
-  if(t.match(/cementerio|muertos|ca[ií]dos|bajas|perdidos|muerto|falleci/)){
-    if(cementerio.length===0) return 'El cementerio está vacío, '+n+'. Que siga así.';
-    var ult = cementerio.slice(-3).map(function(p){return p.nombre||(p.pokemon||'?');}).join(', ');
-    return ''+cementerio.length+' Pokémon en el cementerio. Los últimos: '+ult+'. Cada uno cuenta.';
+  /* ── Cementerio ── */
+  if(t.match(/cementerio|muertos|ca[ií]dos|bajas|falleci|perdiste|perdidos/)){
+    if(cementerio.length===0) return 'El cementerio está vacío, '+n+'. Que siga así mucho tiempo. Es lo mejor que me puedes dar a ver.';
+    if(cementerio.length===1) return 'Una baja en el cementerio. '+cemNombres[0]+'. No lo olvides: en el Nuzlocke cada Pokémon importa.';
+    if(cementerio.length>=8) return cementerio.length+' Pokémon caídos... '+cemNombres.join(', ')+' entre ellos. Eso es mucho peso para un solo entrenador. Cuídate, '+n+'.';
+    return cementerio.length+' Pokémon en el cementerio. Los últimos: '+cemNombres.join(', ')+'. Cada uno de ellos luchó por ti.';
   }
 
   /* ── Racha ── */
   if(t.match(/racha|seguidas|consecutiv|streak/)){
-    if(racha>=5) return '¡Racha de '+racha+' capturas sin fallo, '+n+'! No la rompas ahora siendo imprudente.';
-    if(racha>0) return 'Llevas '+racha+' captura'+(racha===1?'':'s')+' seguida'+(racha===1?'':'s')+' sin perder. Sigue así.';
-    if(racha<=-3) return ''+Math.abs(racha)+' pérdidas consecutivas, '+n+'. Para. Respira. Cambia de estrategia.';
-    if(racha<0) return 'Llevas '+Math.abs(racha)+' pérdida'+(Math.abs(racha)===1?'':'s')+' seguida'+(Math.abs(racha)===1?'':'s')+'. Cuidado.';
-    return 'Sin racha activa ahora mismo. Tabla rasa.';
+    if(racha>=8) return '¡'+racha+' seguidas sin perder uno, '+n+'! Eso ya no es suerte, es habilidad. O los dos. No lo rompas ahora.';
+    if(racha>=3) return 'Llevas '+racha+' sin fallo. Se empieza a notar que sabes lo que haces.';
+    if(racha===0) return 'Sin racha activa. Tabla rasa. A ver qué pasa en la siguiente.';
+    if(racha<=-5) return ''+Math.abs(racha)+' pérdidas seguidas, '+n+'. Eso ya me preocupa. Para. Piensa. No vayas a la siguiente sin un plan.';
+    if(racha<0) return 'Llevas '+Math.abs(racha)+' pérdida'+(Math.abs(racha)===1?'':'s')+' seguida'+(Math.abs(racha)===1?'':'s')+'. Vigila, que eso se acumula.';
+    return 'Racha de '+racha+'. Vas bien.';
   }
 
   /* ── Medallas / torneos ── */
-  if(t.match(/medalla|insignia|torneo|kahuna|gimnasio|l[ií]der|cu[aá]ntas medallas|champion|campe[oó]n/)){
-    var medTxt = numMed+'/8 '+tipoMed+(numMed>=8?' — ¡Completas! Ya puedes con el Alto Mando.':'. '+(8-numMed)+' para terminar el recorrido.');
-    var torTxt = torneos>0?' Has ganado '+torneos+' torneo'+(torneos===1?'':('s'))+'.':' Sin victorias en torneos todavía.';
-    return medTxt+torTxt;
+  if(t.match(/medalla|insignia|torneo|kahuna|gimnasio|l[ií]der|champion|campe[oó]n/)){
+    var medStr = numMed+'/8 '+tipoMed;
+    if(numMed>=8) return '¡Las 8 '+tipoMed+' completas, '+n+'! Eso es un logro que no todo el mundo alcanza. Los torneos ya son otra liga.';
+    if(numMed===0&&torneos===0) return 'Cero '+tipoMed+' y ningún torneo ganado. Todo está por hacer. La Liga entera te espera.';
+    var torTxt = torneos>0?' Y '+torneos+' torneo'+(torneos===1?'':'s')+' ganado'+(torneos===1?'':'s')+' encima.':' En torneos todavía no has levantado ninguno.';
+    return medStr+'.'+torTxt;
+  }
+
+  /* ── Mochila ── */
+  if(t.match(/mochila|inventario|objeto|item|qu[eé] tengo|tengo algo/)){
+    if(inventario.length===0) return 'La mochila vacía, '+n+'. Pasa por la tienda cuando puedas. Sin objetos estás muy a la intemperie.';
+    var nombres = inventario.slice(0,5).map(function(i){return i.nombre;});
+    if(inventario.length<=3) return 'Tienes '+inventario.length+' objeto'+(inventario.length===1?'':'s')+' en la mochila: '+nombres.join(', ')+'. No es mucho, pero algo es.';
+    return inventario.length+' objetos: '+nombres.join(', ')+(inventario.length>5?' y '+(inventario.length-5)+' más.':'.')+' Úsalos cuando toque, que de nada sirven guardados.';
   }
 
   /* ── Gacha ── */
-  if(t.match(/gacha|ruleta|tirar|girar|gratis|diario/)){
-    var gTxt = gachaDisp?'El Gacha normal de hoy está disponible. ¿Qué esperas?':'El Gacha normal ya lo tiraste hoy.';
-    var gPfTxt = gachaPFDisp?' El PF Gacha también está listo.':' El PF Gacha ya está usado.';
-    return gTxt+gPfTxt;
+  if(t.match(/gacha|girar|tirar|gratis|diario|sorteo/)){
+    var gTxt  = gachaDisp?'El Gacha normal de hoy está listo. Entra y gíralo, que la suerte hay que tensar.':'Ya tiraste el Gacha normal hoy. Hasta mañana.';
+    var gpTxt = gachaPFDisp?' El PF Gacha también está disponible.':' El PF Gacha ya está usado hoy.';
+    return gTxt+gpTxt;
   }
 
   /* ── Compras ── */
-  if(t.match(/compras|tienda|comprar|compra|disponible|recargar|cu[aá]ntas compras/)){
-    var evComp = ev==='rebajas'?' Además, hay rebajas activas.':ev==='inflacion'?' Ojo, hay inflación en los precios.':ev==='bonus_pf'?' Y doble PF por compra ahora.':'';
-    if(compDisp===0) return 'Sin compras disponibles, '+n+'. Se recargan cada 3 horas.'+evComp;
-    return ''+compDisp+' compra'+(compDisp===1?'':'s')+' disponible'+(compDisp===1?'':'s')+' con '+dinero.toLocaleString('es-ES')+' P₠ en el bolsillo.'+evComp;
+  if(t.match(/compras|tienda|comprar|disponible|recargar|cu[aá]ntas compras/)){
+    var evComp = ev==='rebajas'?' Y hay rebajas activas, así que aprovecha.':ev==='inflacion'?' Ojo, inflación activa: los precios están altos.':ev==='bonus_pf'?' Hay bonus PF, las compras rinden doble en PF.':'';
+    if(compDisp===0) return 'Sin compras disponibles, '+n+'. Se recargan cada 3 horas. Mientras tanto, revisa lo que ya tienes.'+evComp;
+    if(compDisp===MAX_COMPRAS) return compDisp+' compras disponibles al completo. '+dinero.toLocaleString('es-ES')+' P₠ en el bolsillo. ¿A qué esperas?'+evComp;
+    return compDisp+' compra'+(compDisp===1?'':'s')+' disponible'+(compDisp===1?'':'s')+'. '+dinero.toLocaleString('es-ES')+' P₠ para gastar.'+evComp;
   }
 
   /* ── Evento ── */
   if(t.match(/evento|oferta|rebaja|inflaci[oó]n|bonus|descuento/)){
-    var evDesc = {
-      'normal':'Sin evento especial ahora mismo. Precios normales.',
-      'rebajas':'Rebajas activas: 25% de descuento en tienda legal y packs. Aprovéchalo antes de que acabe.',
-      'inflacion':'Inflación activa: precios P₠ al 150%. Compra solo lo imprescindible.',
-      'bonus_pf':'Bonus PF: doble PF por cada compra. Buen momento para invertir en la tienda PF.'
+    var evDescMap = {
+      'normal':'Sin ningún evento especial ahora mismo. Los precios son los de siempre.',
+      'rebajas':'Rebajas activas: 25% de descuento en tienda legal y packs. Esto no dura siempre, aprovéchalo.',
+      'inflacion':'Inflación activa. Los precios han subido un 50%. Compra solo lo que de verdad necesites.',
+      'bonus_pf':'Bonus PF activo: cada compra te da el doble de PF. Buen momento para invertir.'
     };
-    return evDesc[ev]||'El evento actual es: '+ev+'.';
+    return evDescMap[ev]||'El evento activo es: '+ev+'.';
   }
 
-  /* ── Estado general / resumen ── */
-  if(t.match(/c[oó]mo voy|estado|resumen|qu[eé] tal voy|situaci[oó]n|an[aá]lisis|dame un resumen/)){
+  /* ── Resumen / cómo voy ── */
+  if(t.match(/c[oó]mo voy|resumen|situaci[oó]n|an[aá]lisis|estado general|dame un resumen/)){
     var partes = [];
-    if(vidasAct<=Math.ceil(vidasTot*0.25)) partes.push('❤️ '+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra:'')+(vidasAct===1?' (CRÍTICO)':' (peligro)'));
-    else partes.push('❤️ '+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra:''));
-    partes.push('💰 '+dinero.toLocaleString('es-ES')+' P₠');
-    partes.push('🔮 '+pf+' PF');
-    if(pendientes.length>0) partes.push('🗺️ '+pendientes.length+' ruta'+(pendientes.length===1?'':'s')+' pendiente'+(pendientes.length===1?'':'s'));
-    else if(tracker.length>0) partes.push('🗺️ Tracker completo');
-    if(racha>=3) partes.push('🔥 Racha '+racha);
-    else if(racha<=-3) partes.push('📉 Racha negativa '+racha);
-    partes.push('🏅 '+numMed+'/8 '+tipoMed);
-    return partes.join(' · ');
+    if(vidasAct<=1&&!vidasExtra) partes.push('Vidas: UNA SOLA (crítico)');
+    else partes.push('Vidas: '+vidasAct+'/'+vidasTot+(vidasExtra>0?' +'+vidasExtra+' extra':''));
+    partes.push(dinero.toLocaleString('es-ES')+' P₠ · '+pf+' PF');
+    partes.push(numMed+'/8 '+tipoMed+(torneos>0?' · '+torneos+' torneo'+(torneos===1?'':'s')+' ganado'+(torneos===1?'':'s'):''));
+    if(cementerio.length>0) partes.push(cementerio.length+' caído'+(cementerio.length===1?'':'s')+' en el cementerio');
+    if(racha>=3) partes.push('Racha de '+racha+' sin fallar');
+    else if(racha<=-3) partes.push('Racha negativa de '+Math.abs(racha));
+    var intro = {
+      animado:    n+', esto pinta bien. ',
+      preocupado: n+', hay cosas que me preocupan. ',
+      afectado:   n+', el locke está siendo duro. ',
+      critico:    n+', la situación es delicada. ',
+      normal:     n+', aquí el resumen: ',
+    };
+    return (intro[_asisEstado]||intro.normal)+partes.join(' — ')+'.'
   }
 
-  /* ── Locke / juego ── */
-  if(t.match(/locke|juego|partida|qu[eé] juego|cu[aá]l es el/)){
-    if(!locke.juego) return 'No tengo datos del Locke activo todavía.';
-    return 'Locke nº'+locke.num+' en '+locke.juego+(locke.tipo?' ('+locke.tipo+')':'')+'. Tu estado: '+(u.lockeStatus||'jugando')+'.';
+  /* ── Locke ── */
+  if(t.match(/locke|juego|partida|qu[eé] juego|cu[aá]l es/)){
+    if(!locke.juego) return 'Todavía no tengo datos del Locke activo. Puede que no se haya iniciado aún.';
+    return 'Locke nº'+locke.num+' en '+locke.juego+(locke.tipo?' — modalidad '+locke.tipo:'')+'. '+n+' está '+((u.lockeStatus==='perdido')?'eliminado. Lo siento de verdad.':'jugando. Que siga así.');
   }
 
-  /* ── Ayuda / qué puedes hacer ── */
-  if(t.match(/ayuda|help|qu[eé] sabes|qu[eé] puedes|para qu[eé] sirves|funciones|comandos/)){
-    return 'Pregúntame por: dinero, PF, vidas, rutas pendientes, mochila, cementerio, racha, medallas, torneos, gacha, compras, evento activo o dame un resumen. Sé directo y yo también lo seré.';
+  /* ── Preguntas personales / sobre el Mercader ── */
+  if(t.match(/qui[eé]n eres|qu[eé] eres|c[oó]mo te llamas|cu[aá]l es tu nombre|eres un bot|eres una ia|eres real|eres humano/)){
+    return 'Soy el Mercader. El que mueve los hilos de esta red comercial, el que sabe más de tu locke que tú mismo a veces. No te preocupes por lo que soy — preocúpate por lo que puedo hacer por ti.';
   }
 
-  /* ── Insultos / bromas ── */
-  if(t.match(/malo|in[uú]til|basura|no sirves|eres un|idiota|tonto|est[uú]pido|mierda|caca/)){
-    var respuestas = [
-      'Me insultas a mí, el que controla todos los precios de tu tienda. Inteligente.',
-      'Tranquilo, '+n+'. Las '+vidasAct+' vidas que te quedan no van a durar más si juegas enfadado.',
-      'Tiene gracia que me insules cuando llevas '+dinero.toLocaleString('es-ES')+' P₠ en el bolsillo gracias a este sistema.',
+  /* ── El Mercader habla de sus sentimientos ── */
+  if(t.match(/qu[eé] sientes|c[oó]mo te sientes|est[aá]s bien|te pasa algo/)){
+    if(estado==='critico') return 'Honestamente, '+n+', estoy nervioso. Una vida es demasiado poco margen. Me cuesta ver esto sin preocuparme.';
+    if(estado==='afectado') return 'Llevo un rato dándole vueltas al cementerio. '+cementerio.length+' Pokémon perdidos. Cada uno tiene nombre y eso pesa.';
+    if(estado==='animado') return 'Bien. Mejor que bien. Ver a un entrenador prosperar es lo que me da energía para seguir aquí.';
+    if(estado==='preocupado') return 'Tengo una sensación de que algo va a torcerse si no tomamos precauciones pronto. No me gusta ese dinero tan bajo.';
+    return 'Bien, dentro de lo que cabe. Atento a lo tuyo, como siempre.';
+  }
+
+  /* ── Animarte / motivación ── */
+  if(t.match(/anímame|anim[aá]me|motivaci[oó]n|motív|motiva|no puedo|me rindo|abandonar|rendirse/)){
+    if(estado==='critico') return n+', sé que es difícil. Una vida, el equipo mermado, la presión. Pero todavía estás aquí, y eso ya dice mucho. Un paso a la vez.';
+    if(cementerio.length>0) return 'Los que cayeron lo hicieron peleando. No los honras rindiéndote — los honras siguiendo adelante más fuerte.';
+    return n+', llevas el tiempo que llevas en este locke y sigues de pie. Eso no es poca cosa. Sigue.';
+  }
+
+  /* ── Insultos / frustración ── */
+  if(t.match(/malo|in[uú]til|basura|no sirves|idiota|tonto|est[uú]pido|mierda|odio|asco|caca/)){
+    var reac = [
+      n+', entiendo que el locke puede desesperar. Pero yo soy de los pocos que está de tu lado aquí. ¿Qué te ha pasado?',
+      'Eso duele un poco, no voy a mentir. Pero entiendo la frustración. ¿Qué ha salido mal?',
+      'Mira, con '+vidasAct+' vidas y la que está cayendo, entiendo que no estés para bromas. ¿Qué necesitas?',
     ];
-    return respuestas[Math.floor(Math.random()*respuestas.length)];
+    return reac[Math.floor(Math.random()*reac.length)];
   }
 
   /* ── Gracias ── */
-  if(t.match(/gracias|thank|genial|perfecto|bien hecho|buen trabajo/)){
-    return 'Para eso estoy. ¿Algo más, '+n+'?';
+  if(t.match(/gracias|thank|genial|perfecto|bien hecho|buen trabajo|eres el mejor|te quiero/)){
+    var res = [
+      'Para eso estoy, '+n+'. Oye, cuídate ahí fuera.',
+      'Me alegra poder ayudar. Ahora a por más '+tipoMed+'.',
+      'De nada. Y ya sabes: cualquier cosa que necesites, aquí estoy.',
+    ];
+    return res[Math.floor(Math.random()*res.length)];
   }
 
-  /* ── Respuesta por defecto inteligente ── */
+  /* ── Ayuda ── */
+  if(t.match(/ayuda|help|qu[eé] puedes|para qu[eé] sirves|qu[eé] sabes|comandos/)){
+    return 'Puedo decirte cómo vas en vidas, dinero, PF, mochila, cementerio, medallas, torneos, gacha y compras. También puedo darte un resumen general o simplemente charlar. No soy solo datos — soy el Mercader.';
+  }
+
+  /* ── Defaults con personalidad ── */
+  var idx = _asisChatHistorial.length;
   var defaults = [
-    'No te entiendo del todo, '+n+'. Prueba a preguntarme por vidas, dinero, rutas, mochila, racha o dame un resumen.',
-    'Sé más concreto. ¿Vidas? ¿Dinero? ¿Tracker? ¿Estado general?',
-    'El Mercader escucha, pero necesito una pregunta más clara. Prueba con "¿cómo voy?" para un resumen completo.',
+    'No acabo de entenderte, '+n+'. Cuéntame de otra forma.',
+    'Puedo ayudarte mejor si me dices qué quieres saber. Vidas, dinero, torneos, mochila... lo que sea.',
+    'Hmm. No sé bien por dónde vas. ¿Me lo explicas de otra manera?',
+    'El Mercader escucha todo, pero esto no lo pillo. Sé más concreto.',
   ];
-  return defaults[_asisChatHistorial.length % defaults.length];
+  return defaults[idx % defaults.length];
 }
 
 window.asisEnviarMensaje = function(){
@@ -8432,17 +8483,12 @@ window.asisEnviarMensaje = function(){
   }, 600 + Math.random()*400);
 };
 
-/* ══ ESTADO DE ÁNIMO DEL MERCADER ══ */
-var _asisEstado = 'normal'; // normal | feliz | tenso | triste | critico | durmiendo
+/* ══ PERSONALIDAD DEL MERCADER ══
+   El Mercader es un tendero carismático y sentimental.
+   No usa emojis de cara — su estado sale por las palabras.
+   Tiene memoria de lo que pasa en el locke y reacciona de verdad. */
+var _asisEstado = 'normal'; // normal | animado | preocupado | afectado | critico | dormido
 var _asisDormidoTimer = null;
-var _EMOCIONES = {
-  normal:    { emoji:'🤖', clase:'',             nube:'…' },
-  feliz:     { emoji:'😄', clase:'feliz',         nube:'😄' },
-  tenso:     { emoji:'😰', clase:'tenso',         nube:'😰' },
-  triste:    { emoji:'😔', clase:'triste',        nube:'😔' },
-  critico:   { emoji:'😱', clase:'critico-anim',  nube:'😱' },
-  durmiendo: { emoji:'😴', clase:'durmiendo',     nube:'😴 zzz…' },
-};
 
 function _asisCalcularEstado(){
   if(!userSesion||!baseDatos.jugadores[userSesion]) return 'normal';
@@ -8455,52 +8501,50 @@ function _asisCalcularEstado(){
   var cementerio= (u.cementerio||[]).length;
   var numMed    = u.numMedallas||0;
   var torneos   = u.torneos||0;
-  // CRÍTICO: última vida
   if(vidasAct<=1 && vidasExtra===0) return 'critico';
-  // TRISTE: pocas vidas o muchas bajas
-  if(vidasAct<=Math.ceil(vidasTot*0.25) || cementerio>=5) return 'triste';
-  // TENSO: dinero bajo o racha negativa
-  if(dinero<500 || racha<=-3) return 'tenso';
-  // FELIZ: racha positiva, muchas medallas o torneos ganados
-  if(racha>=5 || numMed>=6 || torneos>=3 || dinero>=10000) return 'feliz';
+  if(vidasAct<=Math.ceil(vidasTot*0.25) || cementerio>=5) return 'afectado';
+  if(dinero<500 || racha<=-3) return 'preocupado';
+  if(racha>=5 || numMed>=6 || torneos>=3 || dinero>=10000) return 'animado';
   return 'normal';
 }
 
 function _asisAplicarEstado(estado){
   _asisEstado = estado;
-  var emo = _EMOCIONES[estado]||_EMOCIONES.normal;
   var burbuja = document.getElementById('asis-burbuja');
-  if(burbuja){
-    burbuja.textContent = emo.emoji;
-    burbuja.className = 'asis-burbuja' + (emo.clase?' '+emo.clase:'');
-  }
+  if(!burbuja) return;
+  // La burbuja siempre muestra el icono del Mercader — la personalidad sale por las palabras
+  burbuja.textContent = '🤖';
+  var clases = {
+    animado:    'feliz',
+    preocupado: 'tenso',
+    afectado:   'triste',
+    critico:    'critico-anim',
+    dormido:    'durmiendo',
+    normal:     ''
+  };
+  burbuja.className = 'asis-burbuja' + (clases[estado]?' '+clases[estado]:'');
 }
 
 function _asisDespertarse(){
   if(_asisDormidoTimer){ clearTimeout(_asisDormidoTimer); _asisDormidoTimer=null; }
   var estado = _asisCalcularEstado();
   _asisAplicarEstado(estado);
-  // Reiniciar timer de dormirse (60s sin interacción)
   _asisDormidoTimer = setTimeout(function(){
-    _asisAplicarEstado('durmiendo');
-    _asisNubeShow('😴 zzz…', 0);
+    _asisEstado = 'dormido';
+    _asisAplicarEstado('dormido');
+    var frasesDurmiendo = [
+      'Cerrando el puesto un momento... avísame si me necesitas.',
+      'Echando una cabezada entre cliente y cliente. Aquí estoy si me llamas.',
+      'Solo cierro los ojos un momento. El locke puede esperar.',
+    ];
+    _asisNubeShow(frasesDurmiendo[Math.floor(Math.random()*frasesDurmiendo.length)], 0);
   }, 60000);
 }
 
-/* Mensajes coherentes con el estado de ánimo */
+/* La nube muestra mensajes con el tono del estado actual */
 function _asisNubeConEstado(texto){
-  var estado = _asisEstado;
-  if(estado==='durmiendo') return;
-  var prefijos = {
-    feliz:   ['✨ ','🌟 ','😄 ','🔥 '],
-    tenso:   ['⚠️ ','😰 ','🫤 '],
-    triste:  ['😔 ','💧 ','😞 '],
-    critico: ['🚨 ','😱 ','‼️ '],
-    normal:  ['','',''],
-  };
-  var pool = prefijos[estado]||prefijos.normal;
-  var pre  = pool[Math.floor(Math.random()*pool.length)];
-  _asisNubeShow(pre+texto, 0);
+  if(_asisEstado==='dormido') return;
+  _asisNubeShow(texto, 0);
 }
 
 window.renderizarAsistente = function(){
@@ -10586,8 +10630,26 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 76;
+const APP_VERSION = 77;
 const VERSIONES = [
+  {
+    version: 77,
+    fecha: '2026-09-03',
+    titulo: 'El Mercader tiene personalidad real',
+    resumen: 'Reescritura completa de las respuestas del Mercader. Ya no es un bot de datos — es un personaje carismático y sentimental que conoce tu nombre, recuerda a tus caídos, reacciona a tu situación y habla como una persona real.',
+    nuevas: [
+      'El Mercader recuerda el cementerio y menciona a los caídos por nombre',
+      'Reacciona diferente según tu estado: animado si vas bien, preocupado si hay problemas, devastado si es crítico',
+      'Habla de sus propios sentimientos si le preguntas',
+      'Sabe animarte cuando te rindes o frustras',
+      'Responde a insultos con comprensión en vez de sarcasmo frío',
+      'Se presenta con personalidad si le preguntas quién es',
+      'Los mensajes de la nube tienen el tono del estado actual del locke',
+    ],
+    mejoras: ['Mensajes de sección con tono natural y contextual'],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: 76,
     fecha: '2026-09-02',
