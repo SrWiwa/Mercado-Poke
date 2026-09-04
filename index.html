@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v78 | Build: 2026-09-04 -->
+<!-- Silph Co v80 | Build: 2026-09-04 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -10791,8 +10791,36 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 78;
+const APP_VERSION = 80;
 const VERSIONES = [
+  {
+    version: 80,
+    fecha: '2026-09-04',
+    titulo: 'Fix v2: noticiario y select de denunciados',
+    resumen: 'Segundo intento de corrección: el noticiario no mostraba noticias genéricas por el filtro noticias.length < 3, y el select de denunciados no se reconstruía en el orden correcto.',
+    nuevas: [],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [
+      'Noticiario: eliminado el filtro noticias.length < 3 del fallback genérico — ahora captura cualquier entrada de actividad con uid válido',
+      'Noticiario: guard en locke.juego para evitar "undefined" en el resumen de fallback',
+      'Select de denunciados: la destrucción del wrapper csel ahora ocurre ANTES de poblar las opciones, evitando que mejorarSelect encuentre el select ya dentro del wrapper antiguo',
+    ],
+  },
+  {
+    version: 79,
+    fecha: '2026-09-04',
+    titulo: 'Fix: selector de denunciados y noticiario vacío',
+    resumen: 'Corregido el select de denunciados que quedaba vacío por el sistema de selects custom. Corregido el noticiario que no mostraba noticias por patrones de texto demasiado estrictos.',
+    nuevas: [],
+    mejoras: ['Generador de noticias más permisivo: detecta más patrones de actividad y tiene noticia de fallback del estado del locke'],
+    rendimiento: [],
+    fixes: [
+      'Select de denunciados: se reconstruye correctamente tras poblar con jugadores',
+      'Noticiario: patrones de detección ampliados para cubrir más tipos de actividad',
+      'Noticiario: si no hay actividad suficiente muestra noticia del estado actual del locke',
+    ],
+  },
   {
     version: 78,
     fecha: '2026-09-04',
@@ -11785,7 +11813,7 @@ function _generarNoticiasDesdeActividadYBD(){
   });
 
   // 2. Noticias desde actividad global reciente
-  var actReciente = actividad.slice(-30);
+  var actReciente = actividad.slice(-40);
   actReciente.forEach(function(a){
     if(!a||!a.texto) return;
     var txt = a.texto.toLowerCase();
@@ -11794,100 +11822,92 @@ function _generarNoticiasDesdeActividadYBD(){
     var ts = a.timestamp||Date.now();
 
     // Muerte de Pokémon
-    if(txt.includes('rip')||txt.includes('cayó')||txt.includes('caído')){
-      var pokemon = a.texto.match(/'([^']+)'/);
+    if(txt.includes('rip')||txt.includes('cayó')||txt.includes('caído')||txt.includes('💀')){
+      var pokemon = a.texto.match(/['‘’]([^']+)['‘’]/);
       var pNombre = pokemon?pokemon[1]:'un Pokémon';
-      noticias.push({
-        tipo:'urgente', ts:ts,
-        etiqueta:'urgente',
+      noticias.push({tipo:'urgente',ts:ts,etiqueta:'urgente',
         titular:'TRAGEDIA: '+nombre.toUpperCase()+' PIERDE A '+pNombre.toUpperCase(),
-        resumen:nombre+' ha perdido a '+pNombre+' en batalla. El cementerio del Locke crece.',
-        fuente:'Mercado-Poke News',
-        implicados:[uid],
-      });
+        resumen:nombre+' ha perdido a '+pNombre+' en combate. El cementerio del Locke crece.',
+        fuente:'Mercado-Poke News',implicados:[uid]});
     }
     // Misión completada
-    else if(txt.includes('misión completada')||txt.includes('mision completada')){
-      var mision = a.texto.match(/['"]([^'"]+)['"]/);
-      var mNombre = mision?mision[1]:'una misión diaria';
-      noticias.push({
-        tipo:'logro', ts:ts,
-        etiqueta:'exclusiva',
-        titular:nombre.toUpperCase()+' COMPLETA LA MISIÓN',
-        resumen:nombre+' ha completado "'+mNombre+'" y ha recibido su recompensa.',
-        fuente:'Oficina de Misiones',
-        implicados:[uid],
-      });
+    else if(txt.includes('misión completada')||txt.includes('mision completada')||txt.includes('📋')){
+      noticias.push({tipo:'logro',ts:ts,etiqueta:'exclusiva',
+        titular:nombre.toUpperCase()+' COMPLETA UNA MISIÓN DIARIA',
+        resumen:nombre+' ha completado una misión y recibido su recompensa. El esfuerzo tiene premio.',
+        fuente:'Oficina de Misiones',implicados:[uid]});
     }
     // Sacrificio
-    else if(txt.includes('sacrificio')){
-      noticias.push({
-        tipo:'urgente', ts:ts,
-        etiqueta:'urgente',
-        titular:'SACRIFICIO EN EL LOCKE',
+    else if(txt.includes('sacrificio')||txt.includes('🔥 sacrif')){
+      noticias.push({tipo:'urgente',ts:ts,etiqueta:'urgente',
+        titular:'SACRIFICIO EN EL LOCKE DE '+nombre.toUpperCase(),
         resumen:nombre+' ha ofrecido un Pokémon al Mercader a cambio de vidas. El precio del Nuzlocke.',
-        fuente:'Crónicas del Mercader',
-        implicados:[uid],
-      });
+        fuente:'Crónicas del Mercader',implicados:[uid]});
     }
     // Compra ilegal
-    else if(txt.includes('módulo prohibido')||txt.includes('ilegal')){
-      noticias.push({
-        tipo:'economia', ts:ts,
-        etiqueta:'exclusiva',
-        titular:'COMPRA CLANDESTINA DE '+nombre.toUpperCase(),
+    else if(txt.includes('módulo prohibido')||txt.includes('ilegal')||txt.includes('🟣')){
+      noticias.push({tipo:'economia',ts:ts,etiqueta:'exclusiva',
+        titular:'OPERACIÓN CLANDESTINA: '+nombre.toUpperCase(),
         resumen:nombre+' ha accedido al mercado negro. Las autoridades del Locke están al tanto.',
-        fuente:'Investigación Especial',
-        implicados:[uid],
-      });
+        fuente:'Investigación Especial',implicados:[uid]});
     }
-    // Compra normal
-    else if(txt.includes('adquirió')){
-      var objeto = a.texto.match(/'([^']+)'/);
+    // Compra / adquisición
+    else if(txt.includes('adquirió')||txt.includes('compró')||txt.includes('🛍')){
+      var objeto = a.texto.match(/['“”""]([^'""]+)['“”""]/);
       var oNombre = objeto?objeto[1]:'un objeto';
-      noticias.push({
-        tipo:'economia', ts:ts,
-        etiqueta:'economia',
-        titular:nombre.toUpperCase()+' CIERRA UNA TRANSACCIÓN',
-        resumen:nombre+' ha adquirido "'+oNombre+'" en el Mercado Legal.',
-        fuente:'Boletín Económico',
-        implicados:[uid],
-      });
+      noticias.push({tipo:'economia',ts:ts,etiqueta:'economia',
+        titular:nombre.toUpperCase()+' REALIZA UNA TRANSACCIÓN',
+        resumen:nombre+' ha adquirido «'+oNombre+'» en el Mercado Legal.',
+        fuente:'Boletín Económico',implicados:[uid]});
     }
     // Recaptura
-    else if(txt.includes('recaptura')){
-      noticias.push({
-        tipo:'logro', ts:ts,
-        etiqueta:'exclusiva',
-        titular:'RECAPTURA EXITOSA: '+nombre.toUpperCase(),
-        resumen:nombre+' ha conseguido una captura extra gracias a una recaptura. Oportunidad aprovechada.',
-        fuente:'Crónicas del Mercader',
-        implicados:[uid],
-      });
+    else if(txt.includes('recaptura')||txt.includes('🔁')){
+      noticias.push({tipo:'logro',ts:ts,etiqueta:'exclusiva',
+        titular:'RECAPTURA REGISTRADA: '+nombre.toUpperCase(),
+        resumen:nombre+' ha usado una recaptura y conseguido un Pokémon extra. Oportunidad aprovechada.',
+        fuente:'Crónicas del Mercader',implicados:[uid]});
     }
-    // Torneo ganado
-    else if(txt.includes('torneo')&&(txt.includes('ganó')||txt.includes('victoria'))){
-      noticias.push({
-        tipo:'deportes', ts:ts,
-        etiqueta:'deportes',
-        titular:'¡'+nombre.toUpperCase()+' GANA EL TORNEO!',
-        resumen:nombre+' se ha proclamado campeón. El Locke tiene un nuevo referente.',
-        fuente:'Deportes Pokémon',
-        implicados:[uid],
-      });
+    // Torneo
+    else if(txt.includes('torneo')){
+      var esVictoria = txt.includes('ganó')||txt.includes('victoria')||txt.includes('campeón');
+      noticias.push({tipo:'deportes',ts:ts,etiqueta:esVictoria?'deportes':'exclusiva',
+        titular:esVictoria?'¡'+nombre.toUpperCase()+' GANA EL TORNEO!':nombre.toUpperCase()+' PARTICIPA EN UN TORNEO',
+        resumen:esVictoria?nombre+' se proclama campeón. El Locke tiene un nuevo referente.':nombre+' ha participado en la arena del Locke.',
+        fuente:'Deportes Pokémon',implicados:[uid]});
     }
-    // Gacha
-    else if(txt.includes('gacha')||txt.includes('ruleta')){
-      noticias.push({
-        tipo:'economia', ts:ts,
-        etiqueta:'economia',
-        titular:nombre.toUpperCase()+' TIRA LOS DADOS',
-        resumen:nombre+' ha probado suerte en el Gacha. El destino siempre tiene algo preparado.',
-        fuente:'Casino del Mercader',
-        implicados:[uid],
-      });
+    // Gacha / ruleta
+    else if(txt.includes('gacha')||txt.includes('ruleta')||txt.includes('🎰')||txt.includes('🎡')){
+      noticias.push({tipo:'economia',ts:ts,etiqueta:'economia',
+        titular:nombre.toUpperCase()+' PRUEBA SU SUERTE',
+        resumen:nombre+' ha tirado los dados del destino. El Gacha nunca decepciona... o sí.',
+        fuente:'Casino del Mercader',implicados:[uid]});
+    }
+    // Ticket mercader
+    else if(txt.includes('ticket')||txt.includes('🎫')){
+      noticias.push({tipo:'economia',ts:ts,etiqueta:'exclusiva',
+        titular:nombre.toUpperCase()+' CANJEA UN TICKET DEL MERCADER',
+        resumen:nombre+' ha canjeado un Ticket del Mercader y obtenido su recompensa.',
+        fuente:'Boletín Económico',implicados:[uid]});
+    }
+    // Cualquier entrada de actividad con uid válido (fallback genérico)
+    else if(uid && a.texto && a.texto.length > 10){
+      noticias.push({tipo:'exclusiva',ts:ts,etiqueta:'exclusiva',
+        titular:'ACTIVIDAD DE '+nombre.toUpperCase()+' EN EL LOCKE',
+        resumen:a.texto.replace(/[🎯💀🔁🎰🛍🔮💰]/g,'').trim(),
+        fuente:'Mercado-Poke News',implicados:[uid]});
     }
   });
+
+  // Noticia de estado del locke si no hay nada más
+  if(noticias.length===0){
+    var locke = baseDatos.lockeActivo||{};
+    var jugadoresArr = Object.keys(baseDatos.jugadores||{});
+    var juegoNombre = locke.juego||'Pokémon';
+    noticias.push({tipo:'exclusiva',ts:Date.now(),etiqueta:'exclusiva',
+      titular:'LOCKE '+(locke.num?'Nº'+locke.num:'ACTIVO')+' EN MARCHA',
+      resumen:'El Locke de '+juegoNombre+' continúa con '+jugadoresArr.length+' entrenador'+(jugadoresArr.length===1?'':'es')+' en activo. El Mercader vigila cada movimiento.',
+      fuente:'Mercado-Poke News',implicados:jugadoresArr.slice(0,3)});
+  }
 
   // 3. Noticias desde noticias manuales guardadas
   var noticiasGuardadas = baseDatos.noticias||[];
@@ -12222,6 +12242,15 @@ window.mostrarInputModal = function(opts){
 function _poblarSelectDenunciado(){
   var sel = document.getElementById('denuncia-denunciado');
   if(!sel) return;
+  // Si ya está mejorado con custom select, destruir el wrapper primero
+  var wr = sel.closest('.csel');
+  if(wr){
+    delete sel.dataset.cselDone;
+    sel.classList.remove('csel-native-hidden');
+    wr.parentNode.insertBefore(sel, wr);
+    wr.parentNode.removeChild(wr);
+  }
+  // Poblar el select nativo con los jugadores actuales
   sel.innerHTML='<option value="">— Selecciona al denunciado —</option>';
   Object.keys(baseDatos.jugadores||{}).forEach(function(uid){
     if(uid===userSesion) return;
@@ -12229,6 +12258,8 @@ function _poblarSelectDenunciado(){
     opt.value=uid; opt.textContent=uid.toUpperCase();
     sel.appendChild(opt);
   });
+  // Reconstruir el custom select con las opciones ya pobladas
+  if(typeof mejorarSelect === 'function') mejorarSelect(sel);
 }
 
 
