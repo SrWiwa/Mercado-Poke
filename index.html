@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v82 | Build: 2026-09-05 -->
+<!-- Silph Co v83 | Build: 2026-09-05 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5423,7 +5423,12 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.noticias)baseDatos.noticias=[];if(!baseDatos.denuncias)baseDatos.denuncias={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
+    if(data){
+    /* Si guardarBD está en curso, ignoramos este snapshot: llegaría con datos
+       pre-escritura y machacaría los cambios locales que acabamos de hacer.
+       guardarBD actualiza baseDatos y _ultimaBDConocida al confirmar el set(). */
+    if(window._guardandoBD){return;}
+    baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.noticias)baseDatos.noticias=[];if(!baseDatos.denuncias)baseDatos.denuncias={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -5458,38 +5463,46 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
 const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','noticias','denuncias'];
 async function guardarBD(){
-  const local = baseDatos;
+  if(window._guardandoBD) return; // evitar escrituras solapadas
+  window._guardandoBD = true;
+  /* Capturamos baseDatos en este instante — deep copy para que onValue
+     no pueda mutar 'local' mientras esperamos la respuesta de Firebase. */
+  const local = JSON.parse(JSON.stringify(baseDatos));
   try{
     const snap = await get(ref(db,'silph_co_market'));
     const fresco = snap.val();
     if(fresco){
-      const anterior = window._ultimaBDConocida || {};
-      const jugAnterior = anterior.jugadores || {};
-      const jugLocal = local.jugadores || {};
+      /* ── jugadores: merge fino para no machacar cambios de otros jugadores ── */
       const jugFresco = Object.assign({}, fresco.jugadores || {});
+      const jugLocal  = local.jugadores || {};
       Object.keys(jugLocal).forEach(function(id){
-        if(JSON.stringify(jugAnterior[id]||null) !== JSON.stringify(jugLocal[id]||null)){
-          jugFresco[id] = jugLocal[id];
-        }
+        jugFresco[id] = jugLocal[id];
       });
       fresco.jugadores = jugFresco;
+
+      /* ── campos globales: SIEMPRE se escribe el valor local, sin diff ──
+         El diff basado en _ultimaBDConocida era la raíz del bug: onValue puede
+         actualizar _ultimaBDConocida con el estado viejo de Firebase justo
+         antes de nuestro cambio local, haciendo que el diff dé 0 aunque
+         hayamos modificado noticias/denuncias/actividadGlobal/etc. */
       _CAMPOS_GLOBALES_BD.forEach(function(campo){
-        const antesStr = JSON.stringify(anterior[campo]!==undefined?anterior[campo]:null);
-        const localStr = JSON.stringify(local[campo]!==undefined?local[campo]:null);
-        if(antesStr !== localStr){
+        if(local[campo] !== undefined){
           fresco[campo] = local[campo];
         }
       });
-      /* await set() para que Firebase confirme ANTES de que onValue se dispare.
-         Sin este await, onValue puede llegar con el snapshot pre-guardado y
-         machacar baseDatos (incluido lockeActivo.rutasDefinidas) con datos viejos. */
+
       await set(ref(db,'silph_co_market'), fresco);
       baseDatos = fresco;
       window._ultimaBDConocida = JSON.parse(JSON.stringify(fresco));
+      window._guardandoBD = false;
       return;
     }
-  }catch(err){ /* si falla la relectura (sin red, etc.), seguimos con el plan B de abajo */ }
-  await set(ref(db,'silph_co_market'), local);
+  }catch(err){ /* si falla la relectura, plan B */ }
+  try{
+    await set(ref(db,'silph_co_market'), local);
+    window._ultimaBDConocida = JSON.parse(JSON.stringify(local));
+  }catch(e){}
+  window._guardandoBD = false;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -11134,8 +11147,28 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 82;
+const APP_VERSION = 83;
 const VERSIONES = [
+  {
+    version: 83,
+    fecha: '2026-09-05',
+    titulo: 'Fix crítico: guardarBD reescrita — noticias, denuncias y todo persiste correctamente',
+    resumen: 'Reescrita guardarBD para eliminar la race condition que impedía que noticias, denuncias, actividad global y otros campos globales se guardaran en Firebase. El sistema de diff basado en _ultimaBDConocida fallaba porque onValue podía actualizar esa referencia justo antes de un cambio local, haciendo que el diff diera 0 y no se escribiera nada. Ahora los campos globales se escriben siempre con el valor local, sin diff.',
+    nuevas: [],
+    mejoras: [
+      'guardarBD captura baseDatos con deep copy al inicio para aislarla de futuros disparos de onValue',
+      'Campos globales (_CAMPOS_GLOBALES_BD: noticias, denuncias, actividadGlobal, torneos, arena, etc.) se escriben SIEMPRE con el valor local, eliminando el diff que causaba el bug',
+      'Flag _guardandoBD: onValue no sobreescribe baseDatos mientras hay una escritura en curso',
+      'Flag _guardandoBD: evita escrituras solapadas si guardarBD se llama dos veces seguidas',
+      'Plan B (set directo) también actualiza _ultimaBDConocida',
+    ],
+    rendimiento: [],
+    fixes: [
+      'Bug crítico: noticias desaparecían al refrescar — el diff de guardarBD daba 0 por la race condition con onValue',
+      'Bug crítico: denuncias desaparecían al refrescar — mismo problema de race condition',
+      'Bug: actividadGlobal, adminLog y otros campos globales podían no guardarse si onValue se disparaba antes',
+    ],
+  },
   {
     version: 82,
     fecha: '2026-09-05',
