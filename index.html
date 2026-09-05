@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v81 | Build: 2026-09-05 -->
+<!-- Silph Co v82 | Build: 2026-09-05 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -3827,6 +3827,15 @@ window.guardarMejorPokemon = function(){
   var img  = document.getElementById('mipoke-img');
   var sprite = img.src||'';
   baseDatos.jugadores[userSesion].mejorPokemon = {nombre:label, apiName:apiName, mote:mote, sprite:sprite};
+  var _hofNom = userSesion.charAt(0).toUpperCase()+userSesion.slice(1).toLowerCase();
+  var _hofPoke = mote ? label+' «'+mote+'»' : label;
+  registrarNoticia('exclusiva',
+    _hofNom.toUpperCase()+' ENTRA EN EL HALL OF FAME',
+    _hofNom+' ha inmortalizado a '+_hofPoke+' en el Hall of Fame del Locke.',
+    'Galería de la Fama · Mercado-Poke News',
+    [userSesion],
+    {subtitular:_hofPoke+' — el Pokémon favorito de '+_hofNom, cuerpo:_hofNom+' ha inscrito a '+_hofPoke+' en el Hall of Fame. Este Pokémon quedará inmortalizado en la historia del Locke para siempre.', editorial:'Galería de la Fama · Mercado-Poke News'}
+  );
   guardarBD();
   renderizarHofPokemon();
   mostrarNotificacion('⭐ '+label+' en el Hall of Fame.','exito','⭐','Guardado');
@@ -7335,6 +7344,133 @@ function _autoRegistrarNoticiaDeActividad(uid, txt, tsNum){
             cuerpo:nombre+' ha fallado el encuentro de la ruta y lo ha perdido. En el Nuzlocke, cada oportunidad es única e irrepetible.',
             editorial:'Tracker del Locke · Mercado-Poke News',
             fuente:'Tracker del Locke', implicados:[uid]};
+    // ── Torneo: creación
+    } else if(t.includes('🏟️')&&t.includes('torneo')&&(t.includes('creado')||t.includes('se ha creado'))){
+        var tm = txt.match(/"([^"]+)"/)||txt.match(/«([^»]+)»/);
+        var tNom = tm?tm[1]:'un torneo';
+        var partM = txt.match(/(\d+)\s*participantes/i);
+        var partN = partM?partM[1]:'varios';
+        noticia = {etiqueta:'torneos',
+            titular:'NUEVO TORNEO EN EL LOCKE',
+            subtitular:'El Admin lanza «'+tNom+'» con '+partN+' participantes',
+            cuerpo:'Se abre la inscripción en el torneo «'+tNom+'». '+partN+' entrenadores entrarán a la arena. ¿Quién alzará el trofeo?',
+            editorial:'Deportes Pokémon · Mercado-Poke News',
+            fuente:'Deportes Pokémon', implicados:[uid]};
+    // ── Torneo: campeón
+    } else if(t.includes('🏆')&&t.includes('campeón del torneo')){
+        var tm2 = txt.match(/"([^"]+)"/);
+        var tNom2 = tm2?tm2[1]:'el torneo';
+        noticia = {etiqueta:'torneos',
+            titular:'¡'+nombre.toUpperCase()+' ES CAMPEÓN!',
+            subtitular:'Victoria definitiva en «'+tNom2+'»',
+            cuerpo:nombre+' se alza con el trofeo del torneo «'+tNom2+'». Una actuación impecable que quedará en los anales del Locke.',
+            editorial:'Deportes Pokémon · Mercado-Poke News',
+            fuente:'Deportes Pokémon', implicados:[uid]};
+    // ── Ruleta: tirada
+    } else if(t.includes('ruleta')||t.includes('🎡')||t.includes('giró la ruleta')||t.includes('girada')){
+        var rm2 = txt.match(/ruleta\s*[""«]?([^""»\n,]+)/i);
+        var rNom = rm2?rm2[1].trim():'una ruleta';
+        noticia = {etiqueta:'ruletas',
+            titular:'¡'+nombre.toUpperCase()+' GIRA LA RULETA!',
+            subtitular:'El azar toma el control en el Locke',
+            cuerpo:nombre+' ha realizado una tirada en «'+rNom+'». La fortuna del Mercader ha hablado. El Nuzlocke no perdona ni premia sin razón.',
+            editorial:'Casino del Mercader · Mercado-Poke News',
+            fuente:'Casino del Mercader', implicados:[uid]};
+    // ── Vidas: pérdida manual / ajuste
+    } else if((t.includes('vidas')&&(t.includes('ajuste')||t.includes('reducida')||t.includes('modificada')))||(t.includes('❤️')&&t.includes('vida')&&(t.includes('-')||t.includes('perdió')))){
+        noticia = {etiqueta:'urgente',
+            titular:'CAMBIO DE VIDAS PARA '+nombre.toUpperCase(),
+            subtitular:'El contador de vidas del Locke se actualiza',
+            cuerpo:'Las vidas de '+nombre+' han sido modificadas. En el Nuzlocke, cada vida perdida es un paso más cerca del final.',
+            editorial:'Crónicas del Mercader · Mercado-Poke News',
+            fuente:'Crónicas del Mercader', implicados:[uid]};
+    // ── Tienda: publicación/apertura
+    } else if(t.includes('red de ilegalidades')&&(t.includes('desbloqueada')||t.includes('abierta'))){
+        noticia = {etiqueta:'exclusiva',
+            titular:'LA RED DE ILEGALIDADES ABRE SUS PUERTAS',
+            subtitular:'El Mercader ha activado el mercado negro',
+            cuerpo:'La Red de Ilegalidades ha sido desbloqueada. Los objetos prohibidos vuelven a estar disponibles por tiempo limitado. Actúa con discreción.',
+            editorial:'Investigación Especial · Mercado-Poke News',
+            fuente:'Investigación Especial', implicados:['sistema']};
+    } else if(t.includes('tienda')&&(t.includes('abierta')||t.includes('abre')||t.includes('disponible')||t.includes('publicada'))){
+        noticia = {etiqueta:'economia',
+            titular:'NUEVA OFERTA EN EL MERCADO',
+            subtitular:'El Mercader actualiza su inventario',
+            cuerpo:'El Mercado del Locke ha renovado su stock. Revisa las tiendas antes de que los mejores artículos desaparezcan.',
+            editorial:'Boletín Económico · Mercado-Poke News',
+            fuente:'Boletín Económico', implicados:['sistema']};
+    // ── Intercambio / Cámara de comercio (fallback más amplio)
+    } else if(t.includes('intercambio')||(t.includes('trueque'))){
+        var im = txt.match(/['']([^'']+)['']/);
+        var iObj = im?im[1]:'un objeto';
+        noticia = {etiqueta:'economia',
+            titular:'INTERCAMBIO REGISTRADO EN EL LOCKE',
+            subtitular:nombre+' participa en un trueque oficial',
+            cuerpo:nombre+' ha participado en un intercambio. La Cámara de Comercio supervisa cada transacción del Mercado del Locke.',
+            editorial:'Cámara de Comercio · Boletín Económico',
+            fuente:'Cámara de Comercio', implicados:[uid]};
+    // ── Arena: duelo PvP creado
+    } else if(t.includes('⚔️')&&t.includes('duelo')&&(t.includes('creado')||t.includes('nuevo')||t.includes('abierto'))){
+        noticia = {etiqueta:'deportes',
+            titular:'DUELO PvP CONVOCADO',
+            subtitular:'La arena del Locke aguarda a sus combatientes',
+            cuerpo:'Se ha convocado un nuevo duelo PvP en la arena. Los combatientes tienen la oportunidad de subir en el ranking ELO. ¡Que empiece el espectáculo!',
+            editorial:'Arena PvP · Mercado-Poke News',
+            fuente:'Arena PvP', implicados:[uid]};
+    // ── Arena: apuesta/encuesta
+    } else if(t.includes('🎰')&&t.includes('apuesta')||(t.includes('🗳️')&&(t.includes('apuesta')||t.includes('encuesta')))){
+        var aN = txt.match(/\[([^\]]+)\]/);
+        var aDesc = aN?aN[1]:'un evento';
+        noticia = {etiqueta:'economia',
+            titular:nombre.toUpperCase()+' APUESTA EN LA ARENA',
+            subtitular:'Los PF se juegan en «'+aDesc+'»',
+            cuerpo:nombre+' ha apostado sus PF en el evento «'+aDesc+'». El Mercader anota cada movimiento. Los PF en juego, la reputación en riesgo.',
+            editorial:'Casino del Mercader · Mercado-Poke News',
+            fuente:'Casino del Mercader', implicados:[uid]};
+    // ── Hall of Fame
+    } else if(t.includes('hall of fame')||t.includes('⭐')&&t.includes('hall')){
+        noticia = {etiqueta:'exclusiva',
+            titular:nombre.toUpperCase()+' ENTRA EN EL HALL OF FAME',
+            subtitular:'Un Pokémon inmortalizado en la historia del Locke',
+            cuerpo:nombre+' ha inscrito a su Pokémon favorito en el Hall of Fame. Una decisión que refleja los vínculos forjados en el Nuzlocke.',
+            editorial:'Galería de la Fama · Mercado-Poke News',
+            fuente:'Galería de la Fama', implicados:[uid]};
+    // ── Medallas obtenidas
+    } else if(t.includes('medalla')||(t.includes('🏅')||t.includes('🥇'))){
+        var mm2 = txt.match(/(\d+)\s*medalla/i);
+        var mNum = mm2?mm2[1]:'una';
+        noticia = {etiqueta:'exclusiva',
+            titular:nombre.toUpperCase()+' SUMA MEDALLA',
+            subtitular:'El progreso de '+nombre+' queda registrado',
+            cuerpo:nombre+' ha actualizado su contador de medallas. El camino hacia la Sala de los Campeones sigue adelante.',
+            editorial:'Crónicas del Mercader · Mercado-Poke News',
+            fuente:'Crónicas del Mercader', implicados:[uid]};
+    // ── Bitácora: entrada manual destacada
+    } else if(t.includes('bitácora')||t.includes('bitacora')||(uid!=='sistema'&&t.length>60&&!t.includes('[recompensa')&&!t.includes('misión'))){
+        // Solo entradas largas de bitácora que parezcan relevantes
+        if(t.length<80) return; // Muy corto para ser noticia
+        noticia = {etiqueta:'exclusiva',
+            titular:'CRÓNICA DEL LOCKE: '+nombre.toUpperCase(),
+            subtitular:'Nueva entrada en la bitácora del entrenador',
+            cuerpo:txt.length>120?txt.substring(0,117)+'...':txt,
+            editorial:'Bitácora Personal · Mercado-Poke News',
+            fuente:'Bitácora Personal', implicados:[uid]};
+    // ── Reinicio de misiones
+    } else if(t.includes('reinicio')&&t.includes('misión')||(t.includes('misiones')&&(t.includes('reset')||t.includes('nuevas')))){
+        noticia = {etiqueta:'exclusiva',
+            titular:'MISIONES RENOVADAS EN EL LOCKE',
+            subtitular:'Nueva tanda de objetivos disponibles',
+            cuerpo:'Las misiones del Locke han sido reiniciadas. Nuevos objetivos esperan a los entrenadores. Completa tus misiones antes del próximo ciclo.',
+            editorial:'Oficina de Misiones · Mercado-Poke News',
+            fuente:'Oficina de Misiones', implicados:['sistema']};
+    // ── Estado del mercado (evento del sistema)
+    } else if(uid==='sistema'&&(t.includes('mercado')||t.includes('stock')||t.includes('inventario'))){
+        noticia = {etiqueta:'economia',
+            titular:'ACTUALIZACIÓN DEL MERCADO',
+            subtitular:'El Mercader mueve sus fichas',
+            cuerpo:'El estado del mercado ha cambiado. Los precios y el stock del Locke han sido actualizados. Revisa las tiendas.',
+            editorial:'Boletín Económico · Mercado-Poke News',
+            fuente:'Boletín Económico', implicados:['sistema']};
     } else {
         return; // Sin noticia para entradas de diario personal sin relevancia pública
     }
@@ -7369,6 +7505,7 @@ function _autoRegistrarNoticiaDeActividad(uid, txt, tsNum){
         });
         if(baseDatos.noticias.length>50) baseDatos.noticias.length=50;
     }
+    guardarBD();
 }
 function logAdmin(accion,detalle){
     if(!baseDatos.adminLog)baseDatos.adminLog=[];
@@ -7835,6 +7972,18 @@ function torneoIntentarAvanzar(t){
       baseDatos.jugadores[t.campeon].torneos = (baseDatos.jugadores[t.campeon].torneos||0) + 1;
     }
     inyectarEntradaDiarioAutomaticaPara(t.campeon, `🏆 ¡Campeón del torneo "${t.nombre}"!`);
+    // Noticia de campeón del torneo — con resumen de rondas
+    var numRondas = t.rondas ? t.rondas.length : 1;
+    var partList = (t.participantes||[]).map(function(p){return p.charAt(0).toUpperCase()+p.slice(1).toLowerCase();}).join(', ');
+    var campNom = t.campeon.charAt(0).toUpperCase()+t.campeon.slice(1).toLowerCase();
+    var subcampNom = t.subcampeon ? (t.subcampeon.charAt(0).toUpperCase()+t.subcampeon.slice(1).toLowerCase()) : '';
+    registrarNoticia('torneos',
+      '🏆 '+campNom.toUpperCase()+' CAMPEÓN DE «'+t.nombre.toUpperCase()+'»',
+      campNom+' se corona campeón del torneo «'+t.nombre+'» tras '+numRondas+' ronda'+(numRondas===1?'':'s')+'. '+(subcampNom?'Subcampeón: '+subcampNom+'. ':'')+'Participantes: '+partList+'. Una actuación impecable para la historia del Locke.',
+      'Deportes Pokémon · Mercado-Poke News',
+      [t.campeon],
+      {subtitular:'Campeón: '+campNom+(subcampNom?' · Subcampeón: '+subcampNom:''), cuerpo:campNom+' se corona campeón del torneo «'+t.nombre+'» tras '+numRondas+' ronda'+(numRondas===1?'':'s')+'. '+(subcampNom?'Subcampeón: '+subcampNom+'. ':'')+'El Locke tiene un nuevo referente. Participantes: '+partList+'.', editorial:'Deportes Pokémon · Mercado-Poke News'}
+    );
     return;
   }
   var siguiente = torneoGenerarRondaDesdeLista(ganadores);
@@ -9216,6 +9365,11 @@ window.ejecutarGiroRuleta = function(){
       if(prEl) prEl.textContent = premioAplicado ? ('✅ '+jugadorTiro.toUpperCase()+': '+premioAplicado) : '';
       var textoLog = '🎡 Tiró la ruleta "'+r.nombre+'" → '+resultado+(premioAplicado?' ('+premioAplicado+')':'');
       inyectarEntradaDiarioAutomaticaPara(jugadorTiro, textoLog);
+      var _rulNom = jugadorTiro.charAt(0).toUpperCase()+jugadorTiro.slice(1).toLowerCase();
+      registrarNoticia('ruletas','🎡 '+_rulNom.toUpperCase()+' GIRA «'+r.nombre.toUpperCase()+'»',
+        _rulNom+' ha tirado la ruleta «'+r.nombre+'» y ha obtenido: '+resultado+(premioAplicado?' ('+premioAplicado+')':'')+'.',
+        'Casino del Mercader · Mercado-Poke News',[jugadorTiro],
+        {subtitular:'Resultado: '+resultado+(premioAplicado?' → '+premioAplicado:''), cuerpo:_rulNom+' ha girado la ruleta «'+r.nombre+'». El azar ha hablado: '+resultado+'. '+(premioAplicado?premioAplicado+'.':' El Mercader toma nota.'), editorial:'Casino del Mercader · Mercado-Poke News'});
       guardarBD();
       renderizarActividadGlobalInicio();
       if(jugadorTiro===userSesion){refrescarPantallaGamer();actualizarBarraVidasDesdeDB();}
@@ -10178,7 +10332,7 @@ function _checkCompraTemaTienda(nombreProducto){
 }
 
 function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';/* Usar el previo guardado en memoria, no el conteo del DOM (que al cargar siempre es 0) */var prevN=typeof window._insigPrevN==='number'?window._insigPrevN:-1;var esNuevaMedalla=n>prevN&&prevN>=0;window._insigPrevN=n;let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}"${i===n&&esNuevaMedalla?' data-nueva="1"':''}>${icon}</div>`;}box.innerHTML=html;let nueva=box.querySelector('[data-nueva="1"]');if(nueva){nueva.classList.add('recien-desbloqueado');/* Solo confeti si la sección de perfil/medallas está activa */var secMedallas=document.getElementById('section-medallas-torneos');var secPerfil=document.getElementById('section-perfil');var secActiva=(secMedallas&&secMedallas.classList.contains('active'))||(secPerfil&&secPerfil.classList.contains('active'));if(secActiva){dispararConfetti(nueva);}reproducirSonido('exito');}}
-window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
+window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];let _viejasM=u.numMedallas||0;u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;if(u.numMedallas>_viejasM){var _mNom=userSesion.charAt(0).toUpperCase()+userSesion.slice(1).toLowerCase();var _mTipo=u.tipoMedallas==='kahunas'?'Kahunas':'medallas de Gimnasio';registrarNoticia('exclusiva','🏅 '+_mNom.toUpperCase()+' SUMA '+u.numMedallas+' '+_mTipo.toUpperCase(),_mNom+' ha avanzado hasta '+u.numMedallas+' '+_mTipo+'. El camino a la Sala de los Campeones continúa.','Crónicas del Mercader · Mercado-Poke News',[userSesion],{subtitular:u.numMedallas+'/8 '+_mTipo+' — '+_mNom+' no para', cuerpo:_mNom+' avanza y suma '+u.numMedallas+' '+_mTipo+'. Cada victoria le acerca más a la Sala de los Campeones. El Locke observa con atención.', editorial:'Crónicas del Mercader · Mercado-Poke News'});}guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
 window.alterarTorneosPerfil=function(v){let u=baseDatos.jugadores[userSesion];u.torneos=Math.max(0,(u.torneos||0)+v);animarValorNumerico(document.getElementById('perf-txt-torneos'),u.torneos);if(v>0){/* dispararConfetti ya tiene guard de visibilidad */dispararConfetti(document.getElementById('perf-txt-torneos'));}guardarBD();};
 function renderizarCementerioDOM(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],box=document.getElementById('cementerio-lista-local');if(!box)return;box.innerHTML='';if(!u.cementerio||!u.cementerio.length){box.innerHTML='<div style="color:var(--txt-muted);text-align:center;font-size:11px;padding:16px;font-family:var(--font-display);letter-spacing:.5px">Sin bajas registradas en este Locke... Aún.</div>';return;}u.cementerio.forEach(b=>{box.innerHTML+=`<div class="graveyard-item"><div class="graveyard-name">💀 ${escaparHTML(b.nombre)}</div><div class="graveyard-meta">${escaparHTML(b.ruta)} · ${escaparHTML(b.fecha)}</div><div class="graveyard-epitafio">"${escaparHTML(b.epitafio)}"</div></div>`;});}
@@ -10247,17 +10401,17 @@ function limpiarNombreURL(l){return l.split('@')[0].trim().replace(/\(.*?\)/g,''
 
 
 /* ═══ ARENA ═══ */
-window.crearCombateArena=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let jA=document.getElementById('adm-arena-jugador-a').value,jB=document.getElementById('adm-arena-jugador-b').value,desc=document.getElementById('adm-arena-descripcion').value.trim(),lim=parseInt(document.getElementById('adm-arena-limite').value)||5;if(!jA||!jB){mostrarNotificacion("Selecciona los dos jugadores.","error","⚔️");return;}if(jA===jB){mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","⚔️");return;}if(!desc){mostrarNotificacion("Añade una descripción.","error","⚔️");return;}let id="arena_"+Date.now();if(!baseDatos.arena)baseDatos.arena={};baseDatos.arena[id]={id,jugadorA:jA,jugadorB:jB,descripcion:desc,limitePf:lim,estado:"abierto",ganador:null,apuestas:{},boteA:0,boteB:0,fechaCreacion:new Date().toLocaleDateString()};logAdmin('Crear combate Arena',`${jA.toUpperCase()} vs ${jB.toUpperCase()}: "${desc}"`);reproducirSonido('exito');mostrarNotificacion(`Combate "${desc}" abierto en la Arena.`,'exito','🎰');};
+window.crearCombateArena=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let jA=document.getElementById('adm-arena-jugador-a').value,jB=document.getElementById('adm-arena-jugador-b').value,desc=document.getElementById('adm-arena-descripcion').value.trim(),lim=parseInt(document.getElementById('adm-arena-limite').value)||5;if(!jA||!jB){mostrarNotificacion("Selecciona los dos jugadores.","error","⚔️");return;}if(jA===jB){mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","⚔️");return;}if(!desc){mostrarNotificacion("Añade una descripción.","error","⚔️");return;}let id="arena_"+Date.now();if(!baseDatos.arena)baseDatos.arena={};baseDatos.arena[id]={id,jugadorA:jA,jugadorB:jB,descripcion:desc,limitePf:lim,estado:"abierto",ganador:null,apuestas:{},boteA:0,boteB:0,fechaCreacion:new Date().toLocaleDateString()};logAdmin('Crear combate Arena',`${jA.toUpperCase()} vs ${jB.toUpperCase()}: "${desc}"`);var _jAn=jA.charAt(0).toUpperCase()+jA.slice(1).toLowerCase(),_jBn=jB.charAt(0).toUpperCase()+jB.slice(1).toLowerCase();registrarNoticia('deportes','⚔️ DUELO EN LA ARENA: '+_jAn.toUpperCase()+' VS '+_jBn.toUpperCase(),'El Mercader abre las apuestas para '+_jAn+' vs '+_jBn+'. En juego: «'+desc+'».','Arena PvP · Mercado-Poke News',[jA,jB],{subtitular:_jAn+' vs '+_jBn+' — Apuestas abiertas (max '+lim+' PF)',cuerpo:'El Mercader convoca combate! '+_jAn+' contra '+_jBn+' en la arena. Tema: «'+desc+'». Apuesta antes de que cierren inscripciones.',editorial:'Arena PvP · Mercado-Poke News'});guardarBD();reproducirSonido('exito');mostrarNotificacion(`Combate "${desc}" abierto en la Arena.`,'exito','🎰');};
 window.cerrarApuestasCombate=function(cid){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;if(baseDatos.arena[cid]){baseDatos.arena[cid].estado="cerrado";guardarBD();reproducirSonido('cerrar');}};
-window.resolverCombateArena=function(cid,gl){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let c=baseDatos.arena[cid];if(!c)return;c.ganador=gl;c.estado="resuelto";if(!c.apuestas)c.apuestas={};let bG=gl==='A'?(c.boteA||0):(c.boteB||0),bP=gl==='A'?(c.boteB||0):(c.boteA||0);let gan=[],per=[];Object.keys(c.apuestas).forEach(uid=>{let ap=c.apuestas[uid];if(ap.lado===gl)gan.push({uid,cantidad:ap.cantidad});else per.push({uid,cantidad:ap.cantidad});});if(gan.length>0&&bG>0){gan.forEach(g=>{let prop=g.cantidad/bG,ganancia=Math.floor(bP*prop),tot=g.cantidad+ganancia;if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+tot;inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: ¡Acertaste en [${c.descripcion}]! +${tot} PF.`);}});per.forEach(g=>{if(baseDatos.jugadores[g.uid])inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: Apuesta perdida en [${c.descripcion}]. −${g.cantidad} PF.`);});}else if(gan.length===0&&per.length>0){per.forEach(g=>{if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+g.cantidad;inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: Nadie apostó al ganador. Tus ${g.cantidad} PF devueltos.`);}});}let nG=gl==='A'?c.jugadorA:c.jugadorB;logAdmin('⚔️','Resolver combate Arena',`${c.descripcion} → 🏆 ${nG.toUpperCase()}`);guardarBD();reproducirSonido('exito');mostrarNotificacion(`Combate resuelto. Ganador: ${nG.toUpperCase()}`,'exito','🏆');};
+window.resolverCombateArena=function(cid,gl){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let c=baseDatos.arena[cid];if(!c)return;c.ganador=gl;c.estado="resuelto";if(!c.apuestas)c.apuestas={};let bG=gl==='A'?(c.boteA||0):(c.boteB||0),bP=gl==='A'?(c.boteB||0):(c.boteA||0);let gan=[],per=[];Object.keys(c.apuestas).forEach(uid=>{let ap=c.apuestas[uid];if(ap.lado===gl)gan.push({uid,cantidad:ap.cantidad});else per.push({uid,cantidad:ap.cantidad});});if(gan.length>0&&bG>0){gan.forEach(g=>{let prop=g.cantidad/bG,ganancia=Math.floor(bP*prop),tot=g.cantidad+ganancia;if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+tot;inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: ¡Acertaste en [${c.descripcion}]! +${tot} PF.`);}});per.forEach(g=>{if(baseDatos.jugadores[g.uid])inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: Apuesta perdida en [${c.descripcion}]. −${g.cantidad} PF.`);});}else if(gan.length===0&&per.length>0){per.forEach(g=>{if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+g.cantidad;inyectarEntradaDiarioAutomaticaPara(g.uid,`🎰 ARENA: Nadie apostó al ganador. Tus ${g.cantidad} PF devueltos.`);}});}let nG=gl==='A'?c.jugadorA:c.jugadorB;let nL=gl==='A'?c.jugadorB:c.jugadorA;logAdmin('⚔️','Resolver combate Arena',`${c.descripcion} → 🏆 ${nG.toUpperCase()}`);var _gnNom=nG.charAt(0).toUpperCase()+nG.slice(1).toLowerCase(),_lNom=nL.charAt(0).toUpperCase()+nL.slice(1).toLowerCase();registrarNoticia('deportes','🏆 '+_gnNom.toUpperCase()+' GANA LA APUESTA','El Mercader resuelve el combate «'+c.descripcion+'». Ganador: '+_gnNom+'. '+_lNom+' no tuvo el día.','Arena · Mercado-Poke News',[nG,nL],{subtitular:'Combate resuelto — Ganador: '+_gnNom, cuerpo:'El Mercader ha dictado sentencia en «'+c.descripcion+'». '+_gnNom+' sale victorioso. Las apuestas han sido repartidas.', editorial:'Arena PvP · Mercado-Poke News'});guardarBD();reproducirSonido('exito');mostrarNotificacion(`Combate resuelto. Ganador: ${nG.toUpperCase()}`,'exito','🏆');};
 window.apostarEnCombate=async function(cid,lado){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado de Eventos. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let c=baseDatos.arena[cid];if(!c||c.estado!=="abierto"){mostrarNotificacion("Las apuestas están cerradas.","error","🔒");return;}if(c.jugadorA===userSesion||c.jugadorB===userSesion){mostrarNotificacion("No puedes apostar en tu propio combate.","error","⚔️");return;}if(c.apuestas&&c.apuestas[userSesion]){mostrarNotificacion("Ya has apostado en este combate.","error","🎰");return;}let ie=document.getElementById(`arena-input-${cid}`),cantidad=parseInt(ie?ie.value:0)||0;if(cantidad<=0){mostrarNotificacion("Introduce una cantidad válida.","error","🎰");return;}if(cantidad>c.limitePf){mostrarNotificacion(`El máximo permitido es ${c.limitePf} PF.`,"error","🎰");return;}let u=baseDatos.jugadores[userSesion];if((u.pf||0)<cantidad){mostrarNotificacion(`PF insuficientes. Tienes ${u.pf||0} PF.`,"error","🔮");return;}let nJ=lado==='A'?c.jugadorA:c.jugadorB;let cf=await mostrarConfirmacion({icono:'🎰',titulo:'Confirmar apuesta',descripcion:`Apostar ${cantidad} PF a que ${nJ.toUpperCase()} gana\n"${c.descripcion}"`,textoConfirmar:'Apostar',sonidoConfirmar:'apuesta'});if(!cf)return;u.pf=(u.pf||0)-cantidad;if(!c.apuestas)c.apuestas={};c.apuestas[userSesion]={lado,cantidad};if(lado==='A')c.boteA=(c.boteA||0)+cantidad;else c.boteB=(c.boteB||0)+cantidad;inyectarEntradaDiarioAutomatica(`🎰 APUESTA: Aposté ${cantidad} PF a ${nJ.toUpperCase()} en [${c.descripcion}].`);guardarBD();mostrarNotificacion(`${cantidad} PF a ${nJ.toUpperCase()}.`,'exito','🎰','Apuesta registrada',true);};
 window.cambiarArenaSubtab=function(tipo){reproducirSonido('tab');document.querySelectorAll('.arena-subtab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.arena-subview').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`asub-${tipo}`),ve=document.getElementById(`arena-form-${tipo}`);if(te)te.classList.add('active');if(ve)ve.classList.add('active');};
 function crearFilaOpcionEncuesta(valor){let row=document.createElement('div');row.className='encuesta-opcion-row';row.innerHTML=`<input type="text" class="admin-input encuesta-opcion-input" placeholder="Opción" value="${valor?escaparHTML(valor):''}"><button type="button" class="btn-del-opcion" onclick="this.parentElement.remove()">✕</button>`;return row;}
 function resetearOpcionesEncuesta(){let box=document.getElementById('adm-encuesta-opciones-list');if(!box)return;box.innerHTML='';box.appendChild(crearFilaOpcionEncuesta('Sí'));box.appendChild(crearFilaOpcionEncuesta('No'));}
 window.anadirOpcionEncuesta=function(){let box=document.getElementById('adm-encuesta-opciones-list');if(!box)return;if(box.children.length>=8){mostrarNotificacion("Máximo 8 opciones por encuesta.","error","🗳️");return;}box.appendChild(crearFilaOpcionEncuesta(''));};
-window.crearEncuestaArena=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let pregunta=document.getElementById('adm-encuesta-pregunta').value.trim(),lim=parseInt(document.getElementById('adm-encuesta-limite').value)||5;if(!pregunta){mostrarNotificacion("Escribe la pregunta de la encuesta.","error","🗳️");return;}let opciones=[];document.querySelectorAll('#adm-encuesta-opciones-list .encuesta-opcion-input').forEach(i=>{let v=i.value.trim();if(v)opciones.push(v);});if(opciones.length<2){mostrarNotificacion("Añade al menos 2 opciones.","error","🗳️");return;}let id="arena_"+Date.now();if(!baseDatos.arena)baseDatos.arena={};baseDatos.arena[id]={id,tipo:'encuesta',descripcion:pregunta,opciones,limitePf:lim,estado:"abierto",ganador:null,apuestas:{},botes:{},fechaCreacion:new Date().toLocaleDateString()};logAdmin('Crear encuesta Arena',`"${pregunta}" (${opciones.length} opciones)`);document.getElementById('adm-encuesta-pregunta').value='';resetearOpcionesEncuesta();reproducirSonido('exito');mostrarNotificacion(`Encuesta "${pregunta}" publicada en la Arena.`,'exito','🗳️');};
+window.crearEncuestaArena=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let pregunta=document.getElementById('adm-encuesta-pregunta').value.trim(),lim=parseInt(document.getElementById('adm-encuesta-limite').value)||5;if(!pregunta){mostrarNotificacion("Escribe la pregunta de la encuesta.","error","🗳️");return;}let opciones=[];document.querySelectorAll('#adm-encuesta-opciones-list .encuesta-opcion-input').forEach(i=>{let v=i.value.trim();if(v)opciones.push(v);});if(opciones.length<2){mostrarNotificacion("Añade al menos 2 opciones.","error","🗳️");return;}let id="arena_"+Date.now();if(!baseDatos.arena)baseDatos.arena={};baseDatos.arena[id]={id,tipo:'encuesta',descripcion:pregunta,opciones,limitePf:lim,estado:"abierto",ganador:null,apuestas:{},botes:{},fechaCreacion:new Date().toLocaleDateString()};logAdmin('Crear encuesta Arena',`"${pregunta}" (${opciones.length} opciones)`);registrarNoticia('economia','🗳️ NUEVA ENCUESTA EN LA ARENA','El Mercader lanza una encuesta: «'+pregunta+'». '+opciones.length+' opciones disponibles. Apuesta tus PF.','Arena · Mercado-Poke News',['sistema'],{subtitular:'«'+pregunta+'» — Apuestas hasta '+lim+' PF', cuerpo:'Nueva encuesta del Mercader: «'+pregunta+'». Opciones: '+opciones.join(', ')+'. Participa antes de que cierren las apuestas.', editorial:'Casino del Mercader · Mercado-Poke News'});document.getElementById('adm-encuesta-pregunta').value='';resetearOpcionesEncuesta();guardarBD();reproducirSonido('exito');mostrarNotificacion(`Encuesta "${pregunta}" publicada en la Arena.`,'exito','🗳️');};
 window.apostarEnEncuesta=async function(cid,opIdx){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado de Eventos. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let c=baseDatos.arena[cid];if(!c||c.estado!=="abierto"){mostrarNotificacion("Las votaciones están cerradas.","error","🔒");return;}if(c.apuestas&&c.apuestas[userSesion]){mostrarNotificacion("Ya has apostado en esta encuesta.","error","🗳️");return;}opIdx=Number(opIdx);let ie=document.getElementById(`encuesta-input-${cid}`),cantidad=parseInt(ie?ie.value:0)||0;if(cantidad<=0){mostrarNotificacion("Introduce una cantidad válida.","error","🗳️");return;}if(cantidad>c.limitePf){mostrarNotificacion(`El máximo permitido es ${c.limitePf} PF.`,"error","🗳️");return;}let u=baseDatos.jugadores[userSesion];if((u.pf||0)<cantidad){mostrarNotificacion(`PF insuficientes. Tienes ${u.pf||0} PF.`,"error","🔮");return;}let opcionTxt=c.opciones[opIdx];let cf=await mostrarConfirmacion({icono:'🗳️',titulo:'Confirmar apuesta',descripcion:`Apostar ${cantidad} PF a "${opcionTxt}"\n"${c.descripcion}"`,textoConfirmar:'Apostar',sonidoConfirmar:'apuesta'});if(!cf)return;u.pf=(u.pf||0)-cantidad;if(!c.apuestas)c.apuestas={};c.apuestas[userSesion]={opcion:opIdx,cantidad};if(!c.botes)c.botes={};c.botes[opIdx]=(c.botes[opIdx]||0)+cantidad;inyectarEntradaDiarioAutomatica(`🗳️ ENCUESTA: Aposté ${cantidad} PF a "${opcionTxt}" en [${c.descripcion}].`);guardarBD();mostrarNotificacion(`${cantidad} PF a "${opcionTxt}".`,'exito','🗳️','Apuesta registrada',true);};
-window.resolverEncuestaArena=function(cid,opIdx){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let c=baseDatos.arena[cid];if(!c||c.tipo!=='encuesta')return;opIdx=Number(opIdx);c.ganador=opIdx;c.estado="resuelto";if(!c.apuestas)c.apuestas={};if(!c.botes)c.botes={};let total=0;c.opciones.forEach((_,i)=>{total+=(c.botes[i]||0);});let bG=c.botes[opIdx]||0,bP=total-bG,gan=[],per=[];Object.keys(c.apuestas).forEach(uid=>{let ap=c.apuestas[uid];if(Number(ap.opcion)===opIdx)gan.push({uid,cantidad:ap.cantidad});else per.push({uid,cantidad:ap.cantidad});});if(gan.length>0&&bG>0){gan.forEach(g=>{let prop=g.cantidad/bG,ganancia=Math.floor(bP*prop),tot=g.cantidad+ganancia;if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+tot;inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: ¡Acertaste en [${c.descripcion}]! +${ganancia} PF.`);}});per.forEach(g=>{if(baseDatos.jugadores[g.uid])inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: Apuesta perdida en [${c.descripcion}]. −${g.cantidad} PF.`);});}else if(gan.length===0&&per.length>0){per.forEach(g=>{if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+g.cantidad;inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: Nadie acertó la opción ganadora. Tus ${g.cantidad} PF devueltos.`);}});}guardarBD();reproducirSonido('exito');mostrarNotificacion(`Encuesta resuelta. Opción ganadora: ${c.opciones[opIdx].toUpperCase()}`,'exito','🏆');};
+window.resolverEncuestaArena=function(cid,opIdx){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let c=baseDatos.arena[cid];if(!c||c.tipo!=='encuesta')return;opIdx=Number(opIdx);c.ganador=opIdx;c.estado="resuelto";if(!c.apuestas)c.apuestas={};if(!c.botes)c.botes={};let total=0;c.opciones.forEach((_,i)=>{total+=(c.botes[i]||0);});let bG=c.botes[opIdx]||0,bP=total-bG,gan=[],per=[];Object.keys(c.apuestas).forEach(uid=>{let ap=c.apuestas[uid];if(Number(ap.opcion)===opIdx)gan.push({uid,cantidad:ap.cantidad});else per.push({uid,cantidad:ap.cantidad});});if(gan.length>0&&bG>0){gan.forEach(g=>{let prop=g.cantidad/bG,ganancia=Math.floor(bP*prop),tot=g.cantidad+ganancia;if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+tot;inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: ¡Acertaste en [${c.descripcion}]! +${ganancia} PF.`);}});per.forEach(g=>{if(baseDatos.jugadores[g.uid])inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: Apuesta perdida en [${c.descripcion}]. −${g.cantidad} PF.`);});}else if(gan.length===0&&per.length>0){per.forEach(g=>{if(baseDatos.jugadores[g.uid]){baseDatos.jugadores[g.uid].pf=(baseDatos.jugadores[g.uid].pf||0)+g.cantidad;inyectarEntradaDiarioAutomaticaPara(g.uid,`🗳️ ENCUESTA: Nadie acertó la opción ganadora. Tus ${g.cantidad} PF devueltos.`);}});}var _opGanNom=c.opciones[opIdx];registrarNoticia('economia','🗳️ ENCUESTA RESUELTA: «'+c.descripcion.toUpperCase()+'»','El Mercader cierra la encuesta. Opción ganadora: «'+_opGanNom+'». Las apuestas han sido repartidas.','Casino del Mercader · Mercado-Poke News',['sistema'],{subtitular:'Ganadora: «'+_opGanNom+'»', cuerpo:'La encuesta «'+c.descripcion+'» ha sido resuelta. La opción ganadora es «'+_opGanNom+'». El Mercader ha distribuido las ganancias entre los acertantes.', editorial:'Casino del Mercader · Mercado-Poke News'});guardarBD();reproducirSonido('exito');mostrarNotificacion(`Encuesta resuelta. Opción ganadora: ${c.opciones[opIdx].toUpperCase()}`,'exito','🏆');};
 function renderTarjetaEncuestaPublica(c){let total=0;c.opciones.forEach((_,i)=>{total+=(c.botes&&c.botes[i])||0;});let ma=c.apuestas&&c.apuestas[userSesion]?c.apuestas[userSesion]:null;let bH=c.estado==='abierto'?'<span class="arena-badge badge-abierto">🟢 ABIERTA</span>':c.estado==='cerrado'?'<span class="arena-badge badge-cerrado">🔒 CERRADA</span>':'<span class="arena-badge badge-resuelto">✅ RESUELTA</span>';let inputRow=(c.estado==='abierto'&&!ma)?`<div class="arena-apostar-row" style="margin-top:0;padding-top:0;border-top:none"><span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">APUESTA OPCIONAL (máx. ${c.limitePf} PF):</span><input type="number" id="encuesta-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1"></div>`:'';let opcionesHtml=c.opciones.map((op,i)=>{let boteI=(c.botes&&c.botes[i])||0,pct=total>0?Math.round((boteI/total)*100):0,cardClass='encuesta-opcion-card';if(c.estado==='resuelto'){cardClass+=(Number(c.ganador)===i?' ganadora':' perdedora');}let votarBtn=(c.estado==='abierto'&&!ma)?`<button class="btn-votar-opcion" onclick="apostarEnEncuesta('${c.id}','${i}')">Votar "${escaparHTML(op)}"</button>`:'';let miVotoTag=(ma&&Number(ma.opcion)===i)?`<div style="font-size:9px;color:var(--neon-arena);font-family:var(--font-display);margin-top:4px">✅ Tu apuesta: ${ma.cantidad} PF</div>`:'';return `<div class="${cardClass}"><div class="encuesta-opcion-top"><div class="encuesta-opcion-nombre">${escaparHTML(op)}${c.estado==='resuelto'&&Number(c.ganador)===i?' 🏆':''}</div><div class="encuesta-opcion-datos">${boteI} PF · ${pct}%</div></div><div class="encuesta-opcion-barra"><div class="encuesta-opcion-barra-fill" style="width:${pct}%"></div></div>${votarBtn}${miVotoTag}</div>`;}).join('');let rH='';if(c.estado==='resuelto'&&ma){if(Number(ma.opcion)===Number(c.ganador)){let bG=(c.botes&&c.botes[c.ganador])||0,bP2=total-bG,prop=bG>0?ma.cantidad/bG:0,gan=Math.floor(bP2*prop),tot=ma.cantidad+gan;rH=`<div class="arena-resultado resultado-gane">🏆 ¡ACERTASTE! +${gan} ganancia = <strong>${tot} PF</strong></div>`;}else rH=`<div class="arena-resultado resultado-perdi">💸 Fallaste. Perdiste ${ma.cantidad} PF.</div>`;}else if(c.estado==='resuelto'&&!ma){rH=`<div class="arena-resultado resultado-no-parti">— No participaste en esta encuesta.</div>`;}return `<div class="arena-combate-card ${c.estado==='resuelto'?'resuelto':''}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px"><div style="font-family:var(--font-display);font-size:12px;color:var(--txt-primary);font-weight:700">🗳️ ${escaparHTML(c.descripcion)} ${bH}</div><div style="font-size:10px;color:var(--txt-muted)">Bote total: <span style="color:var(--neon-arena);font-weight:700;font-family:var(--font-display)">${total} PF</span></div></div>${inputRow}<div class="encuesta-opciones-render">${opcionesHtml}</div>${rH}</div>`;}
 function renderizarArenaPublica(){let box=document.getElementById('arena-lista-combates'),sb=document.getElementById('arena-stats-personales');if(!box)return;box.innerHTML='';if(!baseDatos.arena||!Object.keys(baseDatos.arena).length){box.innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated)"><div style="font-size:36px;margin-bottom:12px">🎰</div><div style="font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:2px">Arena Vacía</div><div style="font-size:11px;margin-top:6px">El Mercader aún no ha abierto ningún combate.</div></div>`;return;}if(sb&&userSesion){let g=0,p=0;Object.values(baseDatos.arena).forEach(c=>{if(c.estado==='resuelto'&&c.apuestas&&c.apuestas[userSesion]){let ma=c.apuestas[userSesion];if((c.tipo||'duelo')==='encuesta'){if(Number(ma.opcion)===Number(c.ganador))g++;else p++;}else{if(ma.lado===c.ganador)g++;else p++;}}});sb.innerHTML=`<div class="arena-stat-chip">Ganadas: <span>${g}</span></div><div class="arena-stat-chip">Perdidas: <span>${p}</span></div>`;}let combates=Object.values(baseDatos.arena).sort((a,b)=>({abierto:0,cerrado:1,resuelto:2}[a.estado]||0)-({abierto:0,cerrado:1,resuelto:2}[b.estado]||0));combates.forEach(c=>{if((c.tipo||'duelo')==='encuesta'){box.innerHTML+=renderTarjetaEncuestaPublica(c);return;}let bt=(c.boteA||0)+(c.boteB||0),pA=bt>0?Math.round(((c.boteA||0)/bt)*100):50,pB=100-pA;let ma=c.apuestas&&c.apuestas[userSesion]?c.apuestas[userSesion]:null,sp=c.jugadorA===userSesion||c.jugadorB===userSesion;let bH=c.estado==='abierto'?'<span class="arena-badge badge-abierto">🟢 ABIERTAS</span>':c.estado==='cerrado'?'<span class="arena-badge badge-cerrado">🔒 CERRADAS</span>':'<span class="arena-badge badge-resuelto">✅ RESUELTO</span>';let lA='lado-a',lB='lado-b';if(c.estado==='resuelto'){lA+=(c.ganador==='A'?' ganador':' perdedor');lB+=(c.ganador==='B'?' ganador':' perdedor');}let aH='';if(c.estado==='abierto'&&!sp){if(ma)aH=`<div class="arena-mi-apuesta">✅ Apostaste ${ma.cantidad} PF a ${escaparHTML((ma.lado==='A'?c.jugadorA:c.jugadorB).toUpperCase())}</div>`;else aH=`<div class="arena-apostar-row"><span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">APUESTA (máx. ${c.limitePf} PF):</span><input type="number" id="arena-input-${c.id}" class="arena-input-apuesta" min="1" max="${c.limitePf}" value="1"><button class="btn-aposta-a" onclick="apostarEnCombate('${c.id}','A')">A ${escaparHTML(c.jugadorA.toUpperCase())}</button><button class="btn-aposta-b" onclick="apostarEnCombate('${c.id}','B')">B ${escaparHTML(c.jugadorB.toUpperCase())}</button></div>`;}else if(sp&&c.estado==='abierto'){aH=`<div class="arena-mi-apuesta" style="color:var(--txt-muted)">⚔️ Eres participante de este combate</div>`;}let rH='';if(c.estado==='resuelto'&&ma){if(ma.lado===c.ganador){let bG=c.ganador==='A'?(c.boteA||0):(c.boteB||0),bP2=c.ganador==='A'?(c.boteB||0):(c.boteA||0),prop=bG>0?ma.cantidad/bG:0,gan=Math.floor(bP2*prop),tot=ma.cantidad+gan;rH=`<div class="arena-resultado resultado-gane">🏆 ¡ACERTASTE! +${gan} ganancia = <strong>${tot} PF</strong></div>`;}else rH=`<div class="arena-resultado resultado-perdi">💸 Fallaste. Perdiste ${ma.cantidad} PF.</div>`;}else if(c.estado==='resuelto'&&!ma&&!sp){rH=`<div class="arena-resultado resultado-no-parti">— No participaste en este combate.</div>`;}box.innerHTML+=`<div class="arena-combate-card ${c.estado==='resuelto'?'resuelto':''}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px"><div style="font-family:var(--font-display);font-size:12px;color:var(--txt-primary);font-weight:700">${escaparHTML(c.descripcion)} ${bH}</div><div style="font-size:10px;color:var(--txt-muted)">Bote: <span style="color:var(--neon-arena);font-weight:700;font-family:var(--font-display)">${bt} PF</span></div></div><div class="arena-vs-row"><div class="arena-lado ${lA}"><div class="arena-jugador azul">${escaparHTML(c.jugadorA.toUpperCase())}</div><div class="arena-bote-num">${c.boteA||0} PF</div><div class="arena-bote-pct">${pA}% del bote</div>${c.estado==='resuelto'&&c.ganador==='A'?'<div style="font-size:18px;margin-top:5px">🏆</div>':''}</div><div class="arena-vs-badge">VS</div><div class="arena-lado ${lB}"><div class="arena-jugador rojo">${escaparHTML(c.jugadorB.toUpperCase())}</div><div class="arena-bote-num">${c.boteB||0} PF</div><div class="arena-bote-pct">${pB}% del bote</div>${c.estado==='resuelto'&&c.ganador==='B'?'<div style="font-size:18px;margin-top:5px">🏆</div>':''}</div></div><div class="arena-barra"><div class="arena-barra-a" style="width:${pA}%"></div><div class="arena-barra-b" style="width:${pB}%"></div></div>${aH}${rH}</div>`;});}
 
@@ -10369,7 +10523,25 @@ window.ajustarVidasEntrenador=function(){if(!userSesion||userSesion.toLowerCase(
 window.cargarVidasEnAdmin=function(){let uid=document.getElementById('adm-vidas-usuario').value;if(!uid||!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid];document.getElementById('adm-vidas-iniciales').value=u.vidasTotales||20;document.getElementById('adm-vidas-actuales').value=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);let eEl=document.getElementById('adm-vidas-extra');if(eEl)eEl.value=u.vidasExtra||0;};
 window.modificarFondosEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-banco-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","💰");return;}baseDatos.jugadores[uid].dinero+=(op==='SUMAR'?cant:-cant);logAdmin('Modificar dinero',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} P₠`);document.getElementById('adm-banco-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} P₠ para ${uid.toUpperCase()}.`,"exito","💰");};
 window.modificarPFEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-pf-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","🔮");return;}baseDatos.jugadores[uid].pf=(baseDatos.jugadores[uid].pf||0)+(op==='SUMAR'?cant:-cant);logAdmin('Modificar PF',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} PF`);document.getElementById('adm-pf-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} PF para ${uid.toUpperCase()}.`,"exito","🔮");};
-window.conmutarEstadoTienda=function(prop,estado){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;baseDatos[prop]=estado;guardarBD();reproducirSonido(estado?'exito':'cerrar');if(prop==='illegalOpen'&&estado){registrarActividadGlobal('Sistema','☢️ La Red de Ilegalidades ha sido desbloqueada por el Mercader.',(()=>{let d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;})());}};
+window.conmutarEstadoTienda=function(prop,estado){
+  if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;
+  baseDatos[prop]=estado;
+  var _tNombres={'legalOpen':'Tienda Legal','packOpen':'PF Packs','illegalOpen':'Red de Ilegalidades'};
+  var _tNom=_tNombres[prop]||'Tienda';
+  var _tsT=(function(){var d=new Date();return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');})();
+  if(estado){
+    registrarActividadGlobal('Sistema','🏪 '+_tNom+' ha sido publicada por el Mercader.',_tsT);
+    registrarNoticia('economia','🏪 '+_tNom.toUpperCase()+' ABRE SUS PUERTAS',
+      'El Mercader ha activado la '+_tNom+'. Todos los entrenadores pueden acceder ahora.',
+      'Boletín Económico · Mercado-Poke News',['sistema'],
+      {subtitular:'La '+_tNom+' está disponible', cuerpo:'El Mercader ha abierto la '+_tNom+'. Stock listo. No dejes pasar la oportunidad.', editorial:'Boletín Económico · Mercado-Poke News'});
+    if(prop==='illegalOpen'){registrarActividadGlobal('Sistema','☢️ La Red de Ilegalidades ha sido desbloqueada por el Mercader.',_tsT);}
+  } else {
+    registrarActividadGlobal('Sistema','🔒 '+_tNom+' ha sido cerrada por el Mercader.',_tsT);
+  }
+  guardarBD();
+  reproducirSonido(estado?'exito':'cerrar');
+};
 window.ajustarCamposFormularioMercader=function(){let t=document.getElementById('ins-tienda').value;document.getElementById('form-bloque-legal-cat').style.display=t==='legal'?'block':'none';document.getElementById('form-bloque-pack-detalles').style.display=t==='pack'?'block':'none';document.getElementById('form-bloque-illegal-detalles').style.display=t==='illegal'?'block':'none';document.getElementById('bloque-ins-pf').style.display=t!=='illegal'?'block':'none';document.getElementById('lbl-ins-precio').textContent=t==='illegal'?'Coste (PF):':'Coste (P₠):';};
 window.inyectarObjetoNuevoMaster=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=document.getElementById('ins-tienda').value,n=document.getElementById('ins-nombre').value.trim(),p=parseInt(document.getElementById('ins-precio').value)||0,s=parseInt(document.getElementById('ins-stock').value)||0;if(!n){mostrarNotificacion("Falta el nombre del producto.","error","📦");return;}let nuevo={id:Date.now(),tienda:t,stock:s,icon:document.getElementById('ins-icono').value.trim()||'📦',nombre:n};if(t==='legal'){nuevo.cat=document.getElementById('ins-cat-legal').value;nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;}else if(t==='pack'){nuevo.cat='Pack Especial';nuevo.precio=p;nuevo.pf=parseInt(document.getElementById('ins-pf').value)||0;nuevo.desc=document.getElementById('ins-pack-desc').value.trim();nuevo.estrategia=document.getElementById('ins-pack-estrategia').value.trim();}else if(t==='illegal'){nuevo.cat='Hack de Sistema';nuevo.precioPf=p;nuevo.desc=document.getElementById('ins-illegal-desc').value.trim();nuevo.beneficio=document.getElementById('ins-illegal-beneficio').value.trim();nuevo.castigo=document.getElementById('ins-illegal-castigo').value.trim();}if(!baseDatos.productos)baseDatos.productos=[];baseDatos.productos.push(nuevo);logAdmin('Publicar producto',`${nuevo.icon} ${n} (${t})`);document.getElementById('ins-nombre').value='';document.getElementById('ins-precio').value='';document.getElementById('ins-illegal-beneficio').value='';document.getElementById('ins-illegal-castigo').value='';document.getElementById('ins-illegal-desc').value='';reproducirSonido('exito');mostrarNotificacion(`${nuevo.icon} ${n} publicado.`,"exito","📦");};
 window.actualizarPropertyProducto=function(id,prop,val){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;let i=baseDatos.productos.findIndex(p=>p.id===id);if(i!==-1){baseDatos.productos[i][prop]=parseInt(val)||0;guardarBD();}};
@@ -10621,6 +10793,16 @@ window.pvpResolverDuelo = function(quien){
   eloP.racha      = (eloP.racha < 0 ? eloP.racha : 0) - 1;
     reproducirSonido('exito');
   logAdmin('🥊','Resolver duelo PvP',ganadorId.toUpperCase()+' GANA a '+perdedorId.toUpperCase()+' | ELO: +'+PVP_ELO_GANADOR+' / -'+PVP_ELO_PERDEDOR);inyectarEntradaDiarioAutomatica('🏆 Duelo resuelto: '+ganadorId.toUpperCase()+' GANA a '+perdedorId.toUpperCase()+'. ELO: +'+PVP_ELO_GANADOR+' / -'+PVP_ELO_PERDEDOR);
+  var _ganNom = ganadorId.charAt(0).toUpperCase()+ganadorId.slice(1).toLowerCase();
+  var _perNom = perdedorId.charAt(0).toUpperCase()+perdedorId.slice(1).toLowerCase();
+  registrarNoticia('deportes',
+    _ganNom.toUpperCase()+' VENCE EN DUELO PvP',
+    _ganNom+' derrota a '+_perNom+' en la arena del Locke. ELO: +'+PVP_ELO_GANADOR+' para el ganador.',
+    'Arena PvP · Mercado-Poke News',
+    [ganadorId, perdedorId],
+    {subtitular:_ganNom+' derrota a '+_perNom+' · ELO +'+PVP_ELO_GANADOR, cuerpo:_ganNom+' ha salido victorioso del duelo PvP contra '+_perNom+'. ELO: +'+PVP_ELO_GANADOR+' / -'+PVP_ELO_PERDEDOR+'. El ranking del Locke se actualiza.', editorial:'Arena PvP · Mercado-Poke News'}
+  );
+  guardarBD();
   mostrarNotificacion('🏆 '+ganadorId.toUpperCase()+' gana el duelo! +'+PVP_ELO_GANADOR+' ELO','exito','🏆');
   pvpActualizarAdminPanel();
   renderizarDuelosPvP();
@@ -10952,8 +11134,38 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 81;
+const APP_VERSION = 82;
 const VERSIONES = [
+  {
+    version: 82,
+    fecha: '2026-09-05',
+    titulo: 'Fix crítico: noticias persisten tras refresco + cobertura total de eventos',
+    resumen: 'Las noticias ya no desaparecen al recargar la web: registrarNoticia y _autoRegistrarNoticiaDeActividad ahora llaman a guardarBD() internamente. Ampliada la cobertura del noticiero a todos los eventos del Locke: torneos (creación, rondas y campeón), ruletas, tiendas, Arena, duelos PvP, Hall of Fame, medallas, encuestas y apuestas.',
+    nuevas: [
+      'Torneos: noticia automática al finalizar con resumen de rondas, campeón y subcampeón',
+      'Ruletas: noticia al girar con resultado y premio aplicado',
+      'Tiendas: noticia al publicar Tienda Legal, PF Packs o Red de Ilegalidades',
+      'Arena: noticia al crear combate, resolver combate y resolver encuesta',
+      'Arena: noticia al crear encuesta con opciones disponibles',
+      'Duelos PvP: noticia detallada al resolver con ELO ganado/perdido',
+      'Hall of Fame: noticia al inscribir Pokémon favorito',
+      'Medallas: noticia automática cuando sube el contador de medallas/kahunas',
+      'Encuestas y apuestas: patrón de detección en _autoRegistrarNoticiaDeActividad',
+      'Intercambios y trueques: patrón de detección ampliado',
+    ],
+    mejoras: [
+      'registrarNoticia llama a guardarBD() — las noticias ya persisten en Firebase siempre',
+      '_autoRegistrarNoticiaDeActividad llama a guardarBD() — noticias generadas por actividad también persisten',
+      'pvpResolverDuelo: añadido guardarBD() que faltaba',
+      'conmutarEstadoTienda: registra actividad global tanto al abrir como al cerrar',
+    ],
+    rendimiento: [],
+    fixes: [
+      'Bug: noticias desaparecían al recargar — registrarNoticia no guardaba en Firebase',
+      'Bug: noticias solo aparecían con denuncias porque esa era la única ruta que llamaba guardarBD() después',
+      'Bug: duelo PvP resuelto no se guardaba en Firebase (faltaba guardarBD())',
+    ],
+  },
   {
     version: 81,
     fecha: '2026-09-05',
@@ -12098,6 +12310,7 @@ window.registrarNoticia = function(etiqueta, titular, resumen, fuente, implicado
         n.subtitular = noms.slice(0,-1).join(', ')+' y '+noms[noms.length-1]+' están implicados';
       }
       n.ts = ahora;
+      guardarBD();
       return;
     }
   }
@@ -12113,6 +12326,7 @@ window.registrarNoticia = function(etiqueta, titular, resumen, fuente, implicado
     declaraciones: [],
   });
   if(baseDatos.noticias.length>50) baseDatos.noticias.length=50;
+  guardarBD();
 };
 
 /* Sistema de declaraciones — jugadores comentan sobre noticias */
