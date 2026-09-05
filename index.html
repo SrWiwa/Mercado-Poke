@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v80 | Build: 2026-09-04 -->
+<!-- Silph Co v81 | Build: 2026-09-05 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -549,7 +549,7 @@ button,input,select,textarea{transition:transform .15s cubic-bezier(.4,0,.2,1),b
 .more-sheet{background:var(--bg-surface)}
 .stock-badge-v2,.item-descripcion{filter:none}
 .item-descripcion{background:rgba(32,28,24,.05)}
-.sidebar{transform:translateX(-260px);width:260px;box-shadow:none}.sidebar.open{transform:translateX(0);box-shadow:0 8px 40px rgba(16,24,40,.18)}.sidebar-close-btn{display:flex}.topbar{padding-left:16px;padding-right:16px}.btn-hamburguesa{display:none}.main-content{margin-left:0;padding:16px;padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}.dios-grid-2{grid-template-columns:1fr}.red-visor-grid{grid-template-columns:1fr}.inicio-stats-row{grid-template-columns:1fr 1fr}.tiendas-acceso-grid{grid-template-columns:1fr 1fr}.medallas-grid-outer{grid-template-columns:1fr}#section-admin{max-width:100%}.bottom-nav{display:flex}
+.sidebar{transform:translateX(-260px);width:260px;box-shadow:none;z-index:950}.sidebar.open{transform:translateX(0);box-shadow:0 8px 40px rgba(16,24,40,.18)}.drawer-backdrop{z-index:940}.sidebar-close-btn{display:flex}.topbar{padding-left:16px;padding-right:16px}.btn-hamburguesa{display:none}.main-content{margin-left:0;padding:16px;padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}.dios-grid-2{grid-template-columns:1fr}.red-visor-grid{grid-template-columns:1fr}.inicio-stats-row{grid-template-columns:1fr 1fr}.tiendas-acceso-grid{grid-template-columns:1fr 1fr}.medallas-grid-outer{grid-template-columns:1fr}#section-admin{max-width:100%}.bottom-nav{display:flex}
 /* — TIENDA en móvil: de rejilla de tarjetas a lista tipo "recibo" (compacta) — */
 .items-grid{display:flex;flex-direction:column;gap:8px}
 .item-card{flex-direction:row;align-items:stretch;text-align:left;padding:10px;gap:8px;border-radius:var(--r-md)}
@@ -1697,25 +1697,32 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 /* ═══════════════════════════════════════════
    NOTICIARIO DE MERCADO-POKE
 ═══════════════════════════════════════════ */
-.noticiario-wrap{position:relative;overflow:hidden;border-radius:14px;background:#0a0a14;border:1px solid rgba(255,255,255,.08);margin-bottom:14px;min-height:200px}
+.noticiario-wrap{position:relative;overflow:hidden;border-radius:14px;background:#0a0a14;border:1px solid rgba(255,255,255,.08);margin-bottom:14px;min-height:280px}
 .noticiario-header{display:flex;align-items:center;gap:8px;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(0,0,0,.3)}
 .noticiario-logo{font-family:var(--font-display);font-size:11px;font-weight:900;color:#fff;letter-spacing:1.5px;text-transform:uppercase}
 .noticiario-vivo{display:flex;align-items:center;gap:5px;font-size:9px;font-family:var(--font-display);color:#e2646f;text-transform:uppercase;letter-spacing:.8px;font-weight:700}
 .noticiario-vivo-dot{width:6px;height:6px;border-radius:50%;background:#e2646f;animation:pulsoVivo 1.2s ease-in-out infinite}
-.noticiario-slides{position:relative;height:168px;overflow:hidden}
-.noticiario-slide{position:absolute;inset:0;padding:14px 16px;opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between}
+.noticiario-slides{position:relative;height:252px;overflow:hidden}
+.noticiario-slide{position:absolute;inset:0;padding:12px 16px 10px;opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;gap:0}
 .noticiario-slide.activo{opacity:1;transform:translateY(0);pointer-events:auto}
 .noticiario-slide.saliendo{opacity:0;transform:translateY(-12px)}
-.noticiario-etiqueta{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-display);font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:3px;margin-bottom:6px;width:fit-content}
+.noticiario-etiqueta{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-display);font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:3px;margin-bottom:5px;width:fit-content}
 .noticiario-etiqueta.urgente{background:#dc2626;color:#fff}
 .noticiario-etiqueta.exclusiva{background:#7c3aed;color:#fff}
 .noticiario-etiqueta.ultimahora{background:#d97706;color:#fff}
 .noticiario-etiqueta.judicial{background:#1e40af;color:#fff}
 .noticiario-etiqueta.economia{background:#065f46;color:#fff}
 .noticiario-etiqueta.deportes{background:#9d174d;color:#fff}
-.noticiario-titular{font-family:var(--font-display);font-size:15px;font-weight:900;color:#fff;line-height:1.25;margin-bottom:5px;text-transform:uppercase;letter-spacing:.2px}
-.noticiario-resumen{font-size:11px;color:rgba(255,255,255,.65);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.noticiario-pie{display:flex;align-items:center;gap:10px;font-size:9px;color:rgba(255,255,255,.35);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px}
+.noticiario-titular{font-family:var(--font-display);font-size:14px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:2px;text-transform:uppercase;letter-spacing:.2px}
+.noticiario-subtitular{font-size:10.5px;color:rgba(255,255,255,.55);line-height:1.4;margin-bottom:5px;font-style:italic}
+.noticiario-cuerpo{font-size:10px;color:rgba(255,255,255,.7);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
+.noticiario-declaracion{background:rgba(255,255,255,.05);border-left:2px solid rgba(255,255,255,.2);border-radius:0 4px 4px 0;padding:4px 8px;margin-bottom:5px;cursor:pointer;transition:background .2s}
+.noticiario-declaracion:hover{background:rgba(255,255,255,.09)}
+.noticiario-declaracion-texto{font-size:9.5px;color:rgba(255,255,255,.6);line-height:1.4;font-style:italic}
+.noticiario-declaracion-texto em{color:rgba(255,255,255,.85);font-style:normal;font-family:var(--font-display);font-size:9px;font-weight:700}
+.noticiario-declaracion-add{font-size:9px;color:rgba(255,255,255,.3);font-family:var(--font-display);letter-spacing:.4px;text-transform:uppercase}
+.noticiario-pie{display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(255,255,255,.3);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.4px;border-top:1px solid rgba(255,255,255,.05);padding-top:5px;flex-wrap:wrap}
+.noticiario-pie-editorial{flex:1;font-style:italic;color:rgba(255,255,255,.2);font-size:8.5px;text-align:right;text-transform:none;letter-spacing:0}
 .noticiario-dots{display:flex;justify-content:center;gap:6px;padding:8px 0 10px;background:rgba(0,0,0,.2)}
 .noticiario-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .25s;cursor:pointer}
 .noticiario-dot.activo{background:#fff;transform:scale(1.3)}
@@ -7205,10 +7212,164 @@ function redibujarHistorialDiario(){if(!userSesion||!baseDatos.jugadores[userSes
 window.guardarNuevaEntradaDiario=function(){let inp=document.getElementById('diario-input-texto'),c=inp.value.trim();if(!c){mostrarNotificacion("Escribe algo antes de guardar.","error","📖");return;}inyectarEntradaDiarioAutomatica(c);guardarBD();inp.value='';redibujarHistorialDiario();reproducirSonido('exito');mostrarNotificacion("Hito estampado en la bitácora.","exito","📖");};
 function registrarActividadGlobal(jugadorId,txt,ts){
     if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];
-    baseDatos.actividadGlobal.push({jugador:jugadorId,uid:jugadorId,texto:txt,timestamp:ts,tsNum:Date.now()});
+    var tsNum = Date.now();
+    baseDatos.actividadGlobal.push({jugador:jugadorId,uid:jugadorId,texto:txt,timestamp:ts,tsNum:tsNum});
     if(baseDatos.actividadGlobal.length>60)baseDatos.actividadGlobal=baseDatos.actividadGlobal.slice(-60);
+    // Generar noticia automática según el contenido del texto
+    _autoRegistrarNoticiaDeActividad(jugadorId, txt, tsNum);
 }
-/* ═══ LOG DE ACCIONES DE ADMIN ═══ */
+
+function _autoRegistrarNoticiaDeActividad(uid, txt, tsNum){
+    if(!txt||!uid) return;
+    if(uid==='sistema'&&!txt.includes('⚖️')&&!txt.includes('SENTENCIA')&&!txt.includes('CASO')) return;
+    var t = txt.toLowerCase();
+    var nombre = uid&&uid!=='sistema' ? uid.charAt(0).toUpperCase()+uid.slice(1).toLowerCase() : 'El sistema';
+    var noticia = null;
+
+    if(t.includes('💀')||t.includes('rip:')||t.includes("cayó ante")){
+        var pm = txt.match(/['']([^'']+)['']/);
+        var pNom = pm?pm[1]:'un Pokémon';
+        noticia = {etiqueta:'urgente',
+            titular:nombre.toUpperCase()+' PIERDE A '+pNom.toUpperCase(),
+            subtitular:'Una baja sacude el equipo de '+nombre,
+            cuerpo:pNom+' ha caído en combate. El cementerio del Locke crece una lápida más. El equipo de '+nombre+' deberá reagruparse y seguir adelante.',
+            editorial:'Cobertura especial · Crónicas del Mercader',
+            fuente:'Crónicas del Mercader', implicados:[uid]};
+    } else if(t.includes('sacrificio')||t.includes('🔥 sacrif')){
+        var pm2 = txt.match(/['']([^'']+)['']/);
+        var pNom2 = pm2?pm2[1]:'un Pokémon';
+        noticia = {etiqueta:'urgente',
+            titular:nombre.toUpperCase()+' REALIZA UN SACRIFICIO',
+            subtitular:'El precio del Nuzlocke cobra una nueva víctima',
+            cuerpo:pNom2+' ha sido ofrecido al Mercader a cambio de vidas adicionales. Un acto desesperado o calculado — el Locke no perdona los errores.',
+            editorial:'Crónicas del Mercader · Cobertura especial',
+            fuente:'Crónicas del Mercader', implicados:[uid]};
+    } else if(t.includes('módulo prohibido')||t.includes('activó módulo prohibido')){
+        var om = txt.match(/['']([^'']+)['']/);
+        var oNom = om?om[1]:'objeto prohibido';
+        noticia = {etiqueta:'exclusiva',
+            titular:'OPERACIÓN CLANDESTINA EN EL LOCKE',
+            subtitular:nombre+' accede al mercado negro',
+            cuerpo:nombre+' ha activado el módulo prohibido «'+oNom+'». Las autoridades del Locke están al tanto. ¿Conseguirá ocultarlo?',
+            editorial:'Investigación Especial · Mercado-Poke News',
+            fuente:'Investigación Especial', implicados:[uid]};
+    } else if(t.includes('adquirió')||t.includes('compró')){
+        var om2 = txt.match(/['']([^'']+)['']/);
+        var oNom2 = om2?om2[1]:'un objeto';
+        noticia = {etiqueta:'economia',
+            titular:nombre.toUpperCase()+' MUEVE EL MERCADO',
+            subtitular:'Nueva transacción registrada en la Tienda del Locke',
+            cuerpo:nombre+' ha adquirido «'+oNom2+'». El comercio no se detiene en el Locke. Cada objeto puede marcar la diferencia.',
+            editorial:'Boletín Económico · Mercado-Poke News',
+            fuente:'Boletín Económico', implicados:[uid]};
+    } else if(t.includes('misión completada')||t.includes('misión completada')){
+        var mm = txt.match(/"([^"]+)"/)||txt.match(/:'([^']+)'/);
+        var mNom = mm?mm[1]:'una misión diaria';
+        noticia = {etiqueta:'exclusiva',
+            titular:nombre.toUpperCase()+' COMPLETA SU MISIÓN',
+            subtitular:'La constancia tiene recompensa en el Locke',
+            cuerpo:nombre+' ha completado «'+mNom+'» y recibido su recompensa. El esfuerzo diario marca la diferencia.',
+            editorial:'Oficina de Misiones · Mercado-Poke News',
+            fuente:'Oficina de Misiones', implicados:[uid]};
+    } else if(t.includes('🔁 recaptura')||t.includes('recaptura:')){
+        var rm = txt.match(/:\s*([^\s]+)\s+capturado/i);
+        var rPoke = rm?rm[1]:'un Pokémon';
+        noticia = {etiqueta:'exclusiva',
+            titular:nombre.toUpperCase()+' AMPLÍA SU EQUIPO',
+            subtitular:'Recaptura registrada en el Tracker del Locke',
+            cuerpo:nombre+' ha usado una recaptura y conseguido a '+rPoke+'. Las oportunidades hay que aprovecharlas — el Locke lo sabe.',
+            editorial:'Crónicas del Mercader',
+            fuente:'Crónicas del Mercader', implicados:[uid]};
+    } else if(t.includes('torneo')){
+        var esV = t.includes('campeón')||t.includes('victoria')||t.includes('ganó');
+        noticia = {etiqueta:esV?'deportes':'exclusiva',
+            titular:esV?'¡'+nombre.toUpperCase()+' CAMPEÓN!':nombre.toUpperCase()+' EN LA ARENA',
+            subtitular:esV?'Victoria histórica en el Locke':'El torneo del Locke tiene un nuevo participante',
+            cuerpo:esV?nombre+' se proclama vencedor del torneo. El Locke tiene un nuevo referente que ha demostrado su valía en la arena.':nombre+' ha participado en el torneo del Locke. El camino hacia la gloria empieza con el primer paso.',
+            editorial:'Deportes Pokémon · Mercado-Poke News',
+            fuente:'Deportes Pokémon', implicados:[uid]};
+    } else if(t.includes('recompensa diaria')||t.includes('hackeo exitoso')||t.includes('acceso concedido')||t.includes('robo de suministros')){
+        noticia = {etiqueta:'economia',
+            titular:nombre.toUpperCase()+' ACTIVA EL GACHA DIARIO',
+            subtitular:'El sistema de recompensas del Mercader arroja su veredicto',
+            cuerpo:nombre+' ha accedido al Gacha Diario. El azar nunca decepciona... aunque a veces sorprende.',
+            editorial:'Casino del Mercader · Mercado-Poke News',
+            fuente:'Casino del Mercader', implicados:[uid]};
+    } else if(t.includes('duelo resuelto')||(t.includes('⚔️')&&t.includes('gana'))){
+        var dm = txt.match(/([A-Za-z]+)\s+GANA\s+a\s+([A-Za-z]+)/i);
+        var ganN = dm?dm[1].charAt(0).toUpperCase()+dm[1].slice(1).toLowerCase():nombre;
+        var perN = dm?dm[2].charAt(0).toUpperCase()+dm[2].slice(1).toLowerCase():'su rival';
+        noticia = {etiqueta:'deportes',
+            titular:ganN.toUpperCase()+' VENCE EN DUELO PvP',
+            subtitular:ganN+' derrota a '+perN+' en la arena del Locke',
+            cuerpo:ganN+' ha salido victorioso de un duelo PvP contra '+perN+'. El ELO sube para el ganador. El Locke recuerda a los valientes.',
+            editorial:'Arena PvP · Mercado-Poke News',
+            fuente:'Arena PvP', implicados:[uid]};
+    } else if(t.includes('🏛️ cámara')){
+        noticia = {etiqueta:'economia',
+            titular:'MOVIMIENTO EN LA CÁMARA DE COMERCIO',
+            subtitular:nombre+' participa en un trueque oficial del Locke',
+            cuerpo:'La Cámara de Comercio del Locke registra un nuevo trueque con '+nombre+' como parte implicada. El Mercader supervisa cada intercambio.',
+            editorial:'Cámara de Comercio · Boletín Económico',
+            fuente:'Cámara de Comercio', implicados:[uid]};
+    } else if(t.includes('denuncia')||t.includes('sentencia')||t.includes('⚖️')||(t.includes('caso')&&t.includes('avanzado'))){
+        var esSent = t.includes('sentencia');
+        var esCierre = t.includes('cerrado');
+        noticia = {etiqueta:esSent?'exclusiva':esCierre?'judicial':'ultimahora',
+            titular:esSent?'SENTENCIA DICTADA EN EL LOCKE':esCierre?'CASO CERRADO':'NUEVO EXPEDIENTE JUDICIAL',
+            subtitular:esSent?'El Tribunal del Locke ha emitido su veredicto':esCierre?'El Mercader cierra el expediente':'Una denuncia sacude al Locke',
+            cuerpo:esSent?'El Tribunal ha deliberado y emitido su fallo. La justicia del Locke sigue su curso implacable. Las consecuencias son efectivas de inmediato.':esCierre?'El Mercader ha cerrado el expediente. El asunto queda archivado sin más consecuencias formales.':'Un nuevo caso se abre en el Tribunal del Locke. Los hechos están siendo investigados. Nadie está por encima de las normas.',
+            editorial:'Tribunal del Locke · Cobertura especial',
+            fuente:'Tribunal del Locke', implicados:[uid]};
+    } else if(t.includes('🟢')&&(t.includes('capturado')||t.includes('atrapado'))){
+        noticia = {etiqueta:'exclusiva',
+            titular:nombre.toUpperCase()+' SUMA UN NUEVO COMPAÑERO',
+            subtitular:'El Tracker del Locke registra una nueva captura',
+            cuerpo:nombre+' ha ampliado su equipo con una nueva captura en la ruta. Cada Pokémon cuenta — el Nuzlocke no da segundas oportunidades.',
+            editorial:'Tracker del Locke · Mercado-Poke News',
+            fuente:'Tracker del Locke', implicados:[uid]};
+    } else if(t.includes('🔴')&&(t.includes('perdido')||t.includes('perdido (f)'))){
+        noticia = {etiqueta:'urgente',
+            titular:'¡ENCUENTRO PERDIDO PARA '+nombre.toUpperCase()+'!',
+            subtitular:'Un fallo en la ruta le cuesta caro',
+            cuerpo:nombre+' ha fallado el encuentro de la ruta y lo ha perdido. En el Nuzlocke, cada oportunidad es única e irrepetible.',
+            editorial:'Tracker del Locke · Mercado-Poke News',
+            fuente:'Tracker del Locke', implicados:[uid]};
+    } else {
+        return; // Sin noticia para entradas de diario personal sin relevancia pública
+    }
+
+    if(!baseDatos.noticias) baseDatos.noticias=[];
+    var ahora = tsNum||Date.now();
+    // Deduplicar: si hay noticia con mismo titular en los últimos 90 segundos, agrupar implicados
+    var dup = null;
+    for(var i=0;i<baseDatos.noticias.length;i++){
+        var n = baseDatos.noticias[i];
+        if(n.titular===noticia.titular && Math.abs((n.ts||0)-ahora)<90000){ dup=n; break; }
+    }
+    if(dup){
+        dup.implicados = dup.implicados||[];
+        (noticia.implicados||[]).forEach(function(u){ if(dup.implicados.indexOf(u)<0) dup.implicados.push(u); });
+        if(dup.implicados.length>1){
+            var nomLista = dup.implicados.map(function(u){ return u.charAt(0).toUpperCase()+u.slice(1).toLowerCase(); });
+            dup.subtitular = nomLista.slice(0,-1).join(', ')+' y '+nomLista[nomLista.length-1]+' están implicados';
+        }
+        dup.ts = ahora;
+    } else {
+        baseDatos.noticias.unshift({
+            ts: ahora,
+            etiqueta: noticia.etiqueta,
+            titular: noticia.titular,
+            subtitular: noticia.subtitular||'',
+            cuerpo: noticia.cuerpo||'',
+            editorial: noticia.editorial||'',
+            fuente: noticia.fuente||'Mercado-Poke News',
+            implicados: noticia.implicados||[],
+            declaraciones: [],
+        });
+        if(baseDatos.noticias.length>50) baseDatos.noticias.length=50;
+    }
+}
 function logAdmin(accion,detalle){
     if(!baseDatos.adminLog)baseDatos.adminLog=[];
     let d=new Date();
@@ -10791,21 +10952,45 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 80;
+const APP_VERSION = 81;
 const VERSIONES = [
+  {
+    version: 81,
+    fecha: '2026-09-05',
+    titulo: 'Fix: login, bot sobre menú y noticiero sin duplicados',
+    resumen: 'Corregido error de sintaxis que impedía el login. Bot ya no se superpone al menú hamburguesa en móvil. Noticiero sin duplicados: registrarActividadGlobal genera noticias automáticamente con deduplicación por titular. Sistema de declaraciones con event delegation.',
+    nuevas: [
+      'Sistema de declaraciones en noticias: cualquier jugador puede declarar sobre una noticia (máx 140 caracteres)',
+      'registrarActividadGlobal genera automáticamente noticias periodísticas para 14 tipos de eventos sin necesidad de llamadas manuales',
+    ],
+    mejoras: [
+      'Noticiero: deduplicación por titular en ventana de 90s — denunciante y denunciado generan una sola noticia conjunta',
+      'Noticiero: formato completo con titular, subtítulo, cuerpo, declaraciones y pie editorial',
+      'Móvil: sidebar z-index 950, por encima del bot flotante (900) y del backdrop (940)',
+    ],
+    rendimiento: [],
+    fixes: [
+      'Login: onclick inline en declaraciones usaba comillas anidadas que rompían el HTML — reemplazado por data-notidx + event delegation',
+      'Bot (asis-float z-index 900) ya no tapa el menú hamburguesa en móvil — sidebar sube a z-index 950',
+      'Menú hamburguesa: more-sheet y sidebar cierran correctamente al navegar a cualquier sección incluyendo Tribunal',
+    ],
+  },
   {
     version: 80,
     fecha: '2026-09-04',
-    titulo: 'Fix v3: noticiero, doble actividad y formulario de denuncia',
-    resumen: 'Tres causas raíz corregidas: registrarActividadGlobal ahora guarda uid y tsNum numérico; presentarDenuncia eliminaba doble entrada y no limpiaba el select custom; el noticiero ahora detecta eventos judiciales.',
+    titulo: 'Noticiero completo: noticias automáticas, formato periodístico y tribunal integrado',
+    resumen: 'avanzarCaso y cerrarCaso registran bitácoras y feed. Noticiero con subtítulo, cuerpo, declaraciones y pie editorial. _noticiaAvanzar re-renderiza si hay noticias nuevas.',
     nuevas: [],
-    mejoras: [],
+    mejoras: [
+      'Noticiero: _noticiaAvanzar detecta si el número de noticias cambió y re-renderiza completo automáticamente',
+      'Noticiero: patrones para captura, gimnasio/medalla, PF/recompensas y judicial',
+      'Noticiero: prosa periodística; nunca texto crudo del feed',
+    ],
     rendimiento: [],
     fixes: [
-      'registrarActividadGlobal: ahora guarda uid (alias de jugador) y tsNum (timestamp numérico) para que el noticiero pueda leerlos y ordenarlos correctamente',
-      'presentarDenuncia: eliminado el push duplicado a actividadGlobal — inyectarEntradaDiarioAutomatica ya lo hace internamente vía registrarActividadGlobal',
-      'presentarDenuncia: ahora llama a _poblarSelectDenunciado() al finalizar para resetear el select custom de denunciado',
-      'Noticiero: añadido patrón para detectar entradas de actividad con "denuncia", "sentencia", "⚖️" o "🚨"',
+      'avanzarCaso: registra bitácora en denunciante y denunciado',
+      'cerrarCaso: registra bitácora, noticia y re-renderiza feed y noticiero',
+      'Sentencia: reemplazado push directo a actividadGlobal por registrarActividadGlobal',
     ],
   },
   {
@@ -11777,151 +11962,22 @@ var _NOTICIA_ETIQUETAS = {
   deportes:  {clase:'deportes',  texto:'🏆 TORNEOS'},
 };
 
-/* Generar noticias automáticamente desde los datos existentes */
+/* Devuelve las noticias más recientes para el noticiero */
 function _generarNoticiasDesdeActividadYBD(){
-  var noticias = [];
-  var jugadores = baseDatos.jugadores||{};
-  var actividad = baseDatos.actividadGlobal||[];
-  var denuncias = baseDatos.denuncias||{};
-
-  // 1. Noticias de denuncias y juicios activos
-  Object.keys(denuncias).forEach(function(id){
-    var d = denuncias[id];
-    if(!d) return;
-    var ts = d.timestamp||Date.now();
-    if(d.estado==='pendiente'||d.estado==='investigacion'||d.estado==='juicio'){
-      noticias.push({
-        tipo:'judicial', ts:ts,
-        etiqueta: d.estado==='juicio'?'urgente':'judicial',
-        titular: d.estado==='juicio'
-          ? 'JUICIO CONTRA '+d.denunciado.toUpperCase()
-          : 'INVESTIGACIÓN ABIERTA: '+d.denunciado.toUpperCase(),
-        resumen: d.denunciante.toUpperCase()+' ha denunciado a '+d.denunciado.toUpperCase()+' por '+d.motivo+'. Caso '+id+'.',
-        fuente:'Tribunal del Locke',
-        implicados:[d.denunciante, d.denunciado],
-      });
-    }
-    if(d.sentencia){
-      noticias.push({
-        tipo:'judicial', ts:d.sentencia.timestamp||ts,
-        etiqueta:'exclusiva',
-        titular:'SENTENCIA DEL CASO '+id,
-        resumen:d.denunciado.toUpperCase()+' declarado '+d.sentencia.veredicto+'. '+d.sentencia.sancion,
-        fuente:'Tribunal del Locke',
-        implicados:[d.denunciante, d.denunciado],
-      });
-    }
-  });
-
-  // 2. Noticias desde actividad global reciente
-  var actReciente = actividad.slice(-40);
-  actReciente.forEach(function(a){
-    if(!a||!a.texto) return;
-    var txt = a.texto.toLowerCase();
-    var uid = a.uid||a.jugador||'';
-    var nombre = uid ? uid.charAt(0).toUpperCase()+uid.slice(1).toLowerCase() : 'Un entrenador';
-    var ts = a.tsNum || (typeof a.timestamp === 'number' ? a.timestamp : Date.now());
-
-    // Muerte de Pokémon
-    if(txt.includes('rip')||txt.includes('cayó')||txt.includes('caído')||txt.includes('💀')){
-      var pokemon = a.texto.match(/['‘’]([^']+)['‘’]/);
-      var pNombre = pokemon?pokemon[1]:'un Pokémon';
-      noticias.push({tipo:'urgente',ts:ts,etiqueta:'urgente',
-        titular:'TRAGEDIA: '+nombre.toUpperCase()+' PIERDE A '+pNombre.toUpperCase(),
-        resumen:nombre+' ha perdido a '+pNombre+' en combate. El cementerio del Locke crece.',
-        fuente:'Mercado-Poke News',implicados:[uid]});
-    }
-    // Misión completada
-    else if(txt.includes('misión completada')||txt.includes('mision completada')||txt.includes('📋')){
-      noticias.push({tipo:'logro',ts:ts,etiqueta:'exclusiva',
-        titular:nombre.toUpperCase()+' COMPLETA UNA MISIÓN DIARIA',
-        resumen:nombre+' ha completado una misión y recibido su recompensa. El esfuerzo tiene premio.',
-        fuente:'Oficina de Misiones',implicados:[uid]});
-    }
-    // Sacrificio
-    else if(txt.includes('sacrificio')||txt.includes('🔥 sacrif')){
-      noticias.push({tipo:'urgente',ts:ts,etiqueta:'urgente',
-        titular:'SACRIFICIO EN EL LOCKE DE '+nombre.toUpperCase(),
-        resumen:nombre+' ha ofrecido un Pokémon al Mercader a cambio de vidas. El precio del Nuzlocke.',
-        fuente:'Crónicas del Mercader',implicados:[uid]});
-    }
-    // Compra ilegal
-    else if(txt.includes('módulo prohibido')||txt.includes('ilegal')||txt.includes('🟣')){
-      noticias.push({tipo:'economia',ts:ts,etiqueta:'exclusiva',
-        titular:'OPERACIÓN CLANDESTINA: '+nombre.toUpperCase(),
-        resumen:nombre+' ha accedido al mercado negro. Las autoridades del Locke están al tanto.',
-        fuente:'Investigación Especial',implicados:[uid]});
-    }
-    // Compra / adquisición
-    else if(txt.includes('adquirió')||txt.includes('compró')||txt.includes('🛍')){
-      var objeto = a.texto.match(/['“”""]([^'""]+)['“”""]/);
-      var oNombre = objeto?objeto[1]:'un objeto';
-      noticias.push({tipo:'economia',ts:ts,etiqueta:'economia',
-        titular:nombre.toUpperCase()+' REALIZA UNA TRANSACCIÓN',
-        resumen:nombre+' ha adquirido «'+oNombre+'» en el Mercado Legal.',
-        fuente:'Boletín Económico',implicados:[uid]});
-    }
-    // Recaptura
-    else if(txt.includes('recaptura')||txt.includes('🔁')){
-      noticias.push({tipo:'logro',ts:ts,etiqueta:'exclusiva',
-        titular:'RECAPTURA REGISTRADA: '+nombre.toUpperCase(),
-        resumen:nombre+' ha usado una recaptura y conseguido un Pokémon extra. Oportunidad aprovechada.',
-        fuente:'Crónicas del Mercader',implicados:[uid]});
-    }
-    // Torneo
-    else if(txt.includes('torneo')){
-      var esVictoria = txt.includes('ganó')||txt.includes('victoria')||txt.includes('campeón');
-      noticias.push({tipo:'deportes',ts:ts,etiqueta:esVictoria?'deportes':'exclusiva',
-        titular:esVictoria?'¡'+nombre.toUpperCase()+' GANA EL TORNEO!':nombre.toUpperCase()+' PARTICIPA EN UN TORNEO',
-        resumen:esVictoria?nombre+' se proclama campeón. El Locke tiene un nuevo referente.':nombre+' ha participado en la arena del Locke.',
-        fuente:'Deportes Pokémon',implicados:[uid]});
-    }
-    // Gacha / ruleta
-    else if(txt.includes('gacha')||txt.includes('ruleta')||txt.includes('🎰')||txt.includes('🎡')){
-      noticias.push({tipo:'economia',ts:ts,etiqueta:'economia',
-        titular:nombre.toUpperCase()+' PRUEBA SU SUERTE',
-        resumen:nombre+' ha tirado los dados del destino. El Gacha nunca decepciona... o sí.',
-        fuente:'Casino del Mercader',implicados:[uid]});
-    }
-    // Ticket mercader
-    else if(txt.includes('ticket')||txt.includes('🎫')){
-      noticias.push({tipo:'economia',ts:ts,etiqueta:'exclusiva',
-        titular:nombre.toUpperCase()+' CANJEA UN TICKET DEL MERCADER',
-        resumen:nombre+' ha canjeado un Ticket del Mercader y obtenido su recompensa.',
-        fuente:'Boletín Económico',implicados:[uid]});
-    }
-    // Denuncia / sentencia judicial
-    else if(txt.includes('denuncia')||txt.includes('sentencia')||txt.includes('⚖️')||txt.includes('🚨')){
-      noticias.push({tipo:'judicial',ts:ts,etiqueta:'ultimahora',
-        titular:'MOVIMIENTO JUDICIAL EN EL LOCKE',
-        resumen:a.texto,
-        fuente:'Tribunal del Locke',implicados:[uid]});
-    }
-    // Cualquier entrada de actividad con uid válido (fallback genérico)
-    else if(uid && a.texto && a.texto.length > 10){
-      noticias.push({tipo:'exclusiva',ts:ts,etiqueta:'exclusiva',
-        titular:'ACTIVIDAD DE '+nombre.toUpperCase()+' EN EL LOCKE',
-        resumen:a.texto.replace(/[🎯💀🔁🎰🛍🔮💰]/g,'').trim(),
-        fuente:'Mercado-Poke News',implicados:[uid]});
-    }
-  });
-
-  // Noticia de estado del locke si no hay nada más
+  var noticias = (baseDatos.noticias||[]).slice();
   if(noticias.length===0){
     var locke = baseDatos.lockeActivo||{};
     var jugadoresArr = Object.keys(baseDatos.jugadores||{});
     var juegoNombre = locke.juego||'Pokémon';
-    noticias.push({tipo:'exclusiva',ts:Date.now(),etiqueta:'exclusiva',
+    noticias.push({
+      ts:Date.now(), etiqueta:'exclusiva',
       titular:'LOCKE '+(locke.num?'Nº'+locke.num:'ACTIVO')+' EN MARCHA',
-      resumen:'El Locke de '+juegoNombre+' continúa con '+jugadoresArr.length+' entrenador'+(jugadoresArr.length===1?'':'es')+' en activo. El Mercader vigila cada movimiento.',
-      fuente:'Mercado-Poke News',implicados:jugadoresArr.slice(0,3)});
+      subtitular:'El Mercader mantiene la vigilancia sobre el Locke',
+      cuerpo:'El Locke de '+juegoNombre+' continúa activo con '+jugadoresArr.length+' entrenador'+(jugadoresArr.length===1?'':'es')+'. Cada decisión puede ser la última. El Mercader lo registra todo.',
+      editorial:'Mercado-Poke News · Informe de situación',
+      fuente:'Mercado-Poke News', implicados:jugadoresArr.slice(0,3), declaraciones:[]
+    });
   }
-
-  // 3. Noticias desde noticias manuales guardadas
-  var noticiasGuardadas = baseDatos.noticias||[];
-  noticiasGuardadas.forEach(function(n){ noticias.push(n); });
-
-  // Ordenar por timestamp descendente y devolver las 5 más recientes
   noticias.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
   return noticias.slice(0,5);
 }
@@ -11946,18 +12002,36 @@ function renderizarNoticiario(){
   }
   slides.innerHTML = noticias.map(function(n,i){
     var et = _NOTICIA_ETIQUETAS[n.etiqueta]||_NOTICIA_ETIQUETAS.exclusiva;
-    var implicados = (n.implicados||[]).map(function(u){ return u.charAt(0).toUpperCase()+u.slice(1).toLowerCase(); }).join(', ');
+    var implicados = (n.implicados||[])
+      .filter(function(u){ return u&&u!=='sistema'; })
+      .map(function(u){ return u.charAt(0).toUpperCase()+u.slice(1).toLowerCase(); }).join(', ');
+    var decls = n.declaraciones||[];
+    var declHtml = '';
+    var safeIdx = i;
+    if(decls.length>0){
+      var d = decls[decls.length-1];
+      declHtml = '<div class="noticiario-declaracion" data-notidx="'+safeIdx+'">'
+        +'<div class="noticiario-declaracion-texto"><em>'+escaparHTML((d.uid||'?').toUpperCase())+':</em> &ldquo;'+escaparHTML(d.texto)+'&rdquo;'+(decls.length>1?' <span style="color:rgba(255,255,255,.3);font-size:8.5px">(+'+(decls.length-1)+' más)</span>':'')+'</div>'
+        +'</div>';
+    } else if(userSesion){
+      declHtml = '<div class="noticiario-declaracion" data-notidx="'+safeIdx+'">'
+        +'<div class="noticiario-declaracion-add">💬 Declara sobre esta noticia…</div>'
+        +'</div>';
+    }
     return '<div class="noticiario-slide'+(i===0?' activo':'')+'">'
       +'<div>'
       +'<div class="noticiario-etiqueta '+et.clase+'">'+et.texto+'</div>'
-      +'<div class="noticiario-titular">'+escaparHTML(n.titular)+'</div>'
-      +'<div class="noticiario-resumen">'+escaparHTML(n.resumen)+'</div>'
+      +'<div class="noticiario-titular">'+escaparHTML(n.titular||'')+'</div>'
+      +(n.subtitular?'<div class="noticiario-subtitular">'+escaparHTML(n.subtitular)+'</div>':'')
+      +(n.cuerpo?'<div class="noticiario-cuerpo">'+escaparHTML(n.cuerpo)+'</div>':'')
+      +declHtml
       +'</div>'
       +'<div class="noticiario-pie">'
       +(implicados?'<span>'+escaparHTML(implicados)+'</span><span>·</span>':'')
       +'<span>'+_tiempoRelativo(n.ts)+'</span>'
       +'<span>·</span>'
       +'<span>'+escaparHTML(n.fuente||'Mercado-Poke News')+'</span>'
+      +(n.editorial?'<span class="noticiario-pie-editorial">'+escaparHTML(n.editorial)+'</span>':'')
       +'</div>'
       +'</div>';
   }).join('');
@@ -11966,12 +12040,29 @@ function renderizarNoticiario(){
   }).join('');
   _noticiaSlideActual = 0;
   if(_noticiaTimer) clearInterval(_noticiaTimer);
-  _noticiaTimer = setInterval(_noticiaAvanzar, 6000);
+  _noticiaTimer = setInterval(_noticiaAvanzar, 7000);
+  // Event listener delegado para declaraciones (evita onclick inline con comillas)
+  slides.removeEventListener('click', _noticioClickDelegado);
+  slides.addEventListener('click', _noticioClickDelegado);
+}
+
+function _noticioClickDelegado(e){
+  var el = e.target.closest('[data-notidx]');
+  if(!el) return;
+  var idx = parseInt(el.dataset.notidx);
+  var noticias = _generarNoticiasDesdeActividadYBD();
+  if(noticias[idx]) _noticioAbrirDeclaracion(noticias[idx].titular, idx);
 }
 
 function _noticiaAvanzar(){
   var noticias = _generarNoticiasDesdeActividadYBD();
   if(!noticias.length) return;
+  var slides = document.querySelectorAll('.noticiario-slide');
+  // Si el número de noticias cambió respecto a los slides actuales, re-renderizar completo
+  if(slides.length !== noticias.length){
+    renderizarNoticiario();
+    return;
+  }
   _noticiarioIrA((_noticiaSlideActual+1)%noticias.length);
 }
 
@@ -11991,17 +12082,80 @@ window._noticiarioIrA = function(idx){
 };
 
 /* Registrar noticia manual (usada por eventos importantes) */
-window.registrarNoticia = function(etiqueta, titular, resumen, fuente, implicados){
+window.registrarNoticia = function(etiqueta, titular, resumen, fuente, implicados, extra){
   if(!baseDatos.noticias) baseDatos.noticias=[];
+  extra = extra||{};
+  // Deduplicar: mismo titular en los últimos 90s → agrupar implicados
+  var ahora = Date.now();
+  for(var i=0;i<baseDatos.noticias.length;i++){
+    var n = baseDatos.noticias[i];
+    if(n.titular===titular && Math.abs((n.ts||0)-ahora)<90000){
+      n.implicados = n.implicados||[];
+      (implicados||[]).forEach(function(u){ if(n.implicados.indexOf(u)<0) n.implicados.push(u); });
+      if(n.implicados.length>1){
+        var noms = n.implicados.filter(function(u){return u&&u!=='sistema';})
+          .map(function(u){ return u.charAt(0).toUpperCase()+u.slice(1).toLowerCase(); });
+        n.subtitular = noms.slice(0,-1).join(', ')+' y '+noms[noms.length-1]+' están implicados';
+      }
+      n.ts = ahora;
+      return;
+    }
+  }
   baseDatos.noticias.unshift({
-    ts: Date.now(),
+    ts: ahora,
     etiqueta: etiqueta||'exclusiva',
     titular: titular,
-    resumen: resumen,
+    subtitular: extra.subtitular||resumen||'',
+    cuerpo: extra.cuerpo||resumen||'',
+    editorial: extra.editorial||fuente||'',
     fuente: fuente||'Mercado-Poke News',
     implicados: implicados||[],
+    declaraciones: [],
   });
   if(baseDatos.noticias.length>50) baseDatos.noticias.length=50;
+};
+
+/* Sistema de declaraciones — jugadores comentan sobre noticias */
+window._noticioAbrirDeclaracion = function(titular, idxSlide){
+  if(!userSesion) return;
+  var noticias = _generarNoticiasDesdeActividadYBD();
+  // Buscar la noticia en baseDatos.noticias por titular
+  var noticia = (baseDatos.noticias||[]).find(function(n){ return n.titular===titular; });
+  if(!noticia) return;
+  var decls = noticia.declaraciones||[];
+  var yaHabló = decls.some(function(d){ return d.uid===userSesion; });
+  var overlay = document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:16px';
+  var declsHtml = decls.length ? decls.map(function(d){
+    return '<div style="border-left:2px solid rgba(255,255,255,.15);padding:6px 10px;margin-bottom:6px">'
+      +'<div style="font-family:var(--font-display);font-size:9px;font-weight:700;color:var(--neon-legal);margin-bottom:2px">'+escaparHTML(d.uid||'').toUpperCase()+'</div>'
+      +'<div style="font-size:10px;color:rgba(255,255,255,.7);font-style:italic">&ldquo;'+escaparHTML(d.texto)+'&rdquo;</div>'
+      +'</div>';
+  }).join('') : '<div style="font-size:10px;color:rgba(255,255,255,.3);font-style:italic;margin-bottom:8px">Nadie ha declarado aún.</div>';
+  overlay.innerHTML='<div style="background:#0a0a14;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px;max-width:360px;width:100%">'
+    +'<div style="font-family:var(--font-display);font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Declaraciones</div>'
+    +'<div style="font-family:var(--font-display);font-size:13px;font-weight:900;color:#fff;margin-bottom:12px;text-transform:uppercase;line-height:1.2">'+escaparHTML(titular)+'</div>'
+    +'<div style="max-height:140px;overflow-y:auto;margin-bottom:10px">'+declsHtml+'</div>'
+    +(yaHabló ? '<div style="font-size:10px;color:rgba(255,255,255,.3);font-style:italic;text-align:center;margin-bottom:10px">Ya has declarado sobre esta noticia.</div>'
+      : '<textarea id="decl-input" placeholder="Escribe tu declaración…" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;color:#fff;font-size:11px;padding:8px;resize:none;height:60px;font-family:inherit;box-sizing:border-box;margin-bottom:8px"></textarea>')
+    +'<div style="display:flex;gap:8px">'
+    +(yaHabló ? '' : '<button id="decl-enviar" class="btn-admin legal" style="flex:1;margin:0">Declarar</button>')
+    +'<button id="decl-cerrar" class="btn-admin" style="flex:1;margin:0">Cerrar</button>'
+    +'</div></div>';
+  document.body.appendChild(overlay);
+  overlay.querySelector('#decl-cerrar').onclick = function(){ document.body.removeChild(overlay); };
+  var btnEnv = overlay.querySelector('#decl-enviar');
+  if(btnEnv) btnEnv.onclick = function(){
+    var txt = (overlay.querySelector('#decl-input')||{}).value||'';
+    txt = txt.trim().slice(0,140);
+    if(!txt){ mostrarNotificacion('Escribe algo antes de declarar.','error','💬'); return; }
+    if(!noticia.declaraciones) noticia.declaraciones=[];
+    noticia.declaraciones.push({uid:userSesion, texto:txt, ts:Date.now()});
+    guardarBD();
+    renderizarNoticiario();
+    document.body.removeChild(overlay);
+    mostrarNotificacion('Declaración registrada.','exito','💬');
+  };
 };
 
 /* ══════════════════════════════════════════════════════════
@@ -12154,12 +12308,24 @@ window.avanzarCaso = function(id, nuevoEstado){
   baseDatos.denuncias[id].estado = nuevoEstado;
   var d = baseDatos.denuncias[id];
   var textos = {investigacion:'está siendo investigado',juicio:'se enfrenta a juicio',sentencia:'tiene sentencia pendiente'};
-  registrarNoticia('judicial',
-    nuevoEstado.toUpperCase().replace('INVESTIGACION','INVESTIGACIÓN')+': CASO '+id,
+  var etiquetas = {investigacion:'judicial',juicio:'urgente',sentencia:'ultimahora'};
+  var titulares = {
+    investigacion:'INVESTIGACIÓN ABIERTA — CASO '+id,
+    juicio:'JUICIO EN CURSO — CASO '+id,
+    sentencia:'SENTENCIA PENDIENTE — CASO '+id,
+  };
+  // Bitácora de ambas partes
+  var msgComun = '⚖️ Caso '+id+' avanzado a estado: '+nuevoEstado.toUpperCase()+'. '+d.denunciado.toUpperCase()+' '+( textos[nuevoEstado]||nuevoEstado)+'.';
+  inyectarEntradaDiarioAutomaticaPara(d.denunciante, msgComun);
+  inyectarEntradaDiarioAutomaticaPara(d.denunciado,  msgComun);
+  // Noticia en el noticiero
+  registrarNoticia(etiquetas[nuevoEstado]||'judicial',
+    titulares[nuevoEstado]||nuevoEstado.toUpperCase()+': CASO '+id,
     d.denunciado.toUpperCase()+' '+( textos[nuevoEstado]||nuevoEstado)+'. Caso iniciado por '+d.denunciante.toUpperCase()+'.',
     'Tribunal del Locke',[d.denunciante,d.denunciado]);
   guardarBD();
   renderizarDenuncias();
+  renderizarActividadGlobalInicio();
   renderizarNoticiario();
   mostrarNotificacion('Caso '+id+' avanzado a "'+nuevoEstado+'".','exito','⚖️');
 };
@@ -12182,12 +12348,22 @@ window.abrirSentenciaModal = function(id){
         timestamp: Date.now(),
       };
       baseDatos.denuncias[id].estado='cerrado';
-      inyectarEntradaDiarioAutomaticaPara(d.denunciante,'🧑‍⚖️ SENTENCIA Caso '+id+' — '+d.denunciado.toUpperCase()+': '+vals['sent-veredicto'].toUpperCase()+'.'+(vals['sent-sancion']?' Sanción: '+vals['sent-sancion']:''));
-      inyectarEntradaDiarioAutomaticaPara(d.denunciado,'🧑‍⚖️ SENTENCIA Caso '+id+' — Has sido declarado '+vals['sent-veredicto'].toUpperCase()+'.'+(vals['sent-sancion']?' Sanción: '+vals['sent-sancion']:''));
-      if(!baseDatos.actividadGlobal) baseDatos.actividadGlobal=[];
-      baseDatos.actividadGlobal.push({uid:'sistema',timestamp:Date.now(),texto:'⚖️ SENTENCIA Caso '+id+': '+d.denunciado.toUpperCase()+' — '+vals['sent-veredicto'].toUpperCase()+'.',tipo:'judicial'});
+      var veredicto = vals['sent-veredicto'];
+      var sancion   = vals['sent-sancion']||'';
+      var sufijo    = sancion ? ' Sanción: '+sancion : '';
+      // Bitácora del denunciante
+      inyectarEntradaDiarioAutomaticaPara(d.denunciante,
+        '🧑‍⚖️ SENTENCIA Caso '+id+' — '+d.denunciado.toUpperCase()+' declarado '+veredicto.toUpperCase()+'.'+sufijo);
+      // Bitácora del denunciado
+      inyectarEntradaDiarioAutomaticaPara(d.denunciado,
+        '🧑‍⚖️ SENTENCIA Caso '+id+' — Has sido declarado '+veredicto.toUpperCase()+'.'+sufijo);
+      // Actividad global vía registrarActividadGlobal (guarda jugador+uid+tsNum correctamente)
+      registrarActividadGlobal('sistema',
+        '⚖️ SENTENCIA Caso '+id+': '+d.denunciado.toUpperCase()+' — '+veredicto.toUpperCase()+(sancion?' · Sanción: '+sancion:'')+'.',
+        (function(){var dd=new Date();return String(dd.getDate()).padStart(2,'0')+'/'+String(dd.getMonth()+1).padStart(2,'0')+'/'+dd.getFullYear()+' '+String(dd.getHours()).padStart(2,'0')+':'+String(dd.getMinutes()).padStart(2,'0')+':'+String(dd.getSeconds()).padStart(2,'0');})());
+      // Noticia en el noticiero
       registrarNoticia('exclusiva','SENTENCIA DEL CASO '+id,
-        d.denunciado.charAt(0).toUpperCase()+d.denunciado.slice(1)+' ha sido declarado '+vals['sent-veredicto']+(vals['sent-sancion']?'. Sanción: '+vals['sent-sancion']:'.')+' Caso impulsado por '+d.denunciante+'.',
+        d.denunciado.charAt(0).toUpperCase()+d.denunciado.slice(1)+' declarado '+veredicto+(sancion?'. Sanción: '+sancion:'.')+' Caso impulsado por '+d.denunciante+'.',
         'Tribunal del Locke',[d.denunciante,d.denunciado]);
       guardarBD();
       renderizarDenuncias();
@@ -12200,9 +12376,18 @@ window.abrirSentenciaModal = function(id){
 
 window.cerrarCaso = function(id){
   if(!baseDatos.denuncias||!baseDatos.denuncias[id]) return;
+  var d = baseDatos.denuncias[id];
   baseDatos.denuncias[id].estado='cerrado';
+  var msg = '⚖️ Caso '+id+' cerrado por el Mercader sin sentencia formal.';
+  inyectarEntradaDiarioAutomaticaPara(d.denunciante, msg);
+  inyectarEntradaDiarioAutomaticaPara(d.denunciado,  msg);
+  registrarNoticia('judicial','CASO '+id+' CERRADO',
+    'El Mercader ha cerrado el caso entre '+d.denunciante.toUpperCase()+' y '+d.denunciado.toUpperCase()+' sin sentencia formal.',
+    'Tribunal del Locke',[d.denunciante,d.denunciado]);
   guardarBD();
   renderizarDenuncias();
+  renderizarActividadGlobalInicio();
+  renderizarNoticiario();
   mostrarNotificacion('Caso '+id+' cerrado.','exito','⚖️');
 };
 
