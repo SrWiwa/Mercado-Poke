@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v85 | Build: 2026-09-05 -->
+<!-- Silph Co v86 | Build: 2026-09-05 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5432,7 +5432,12 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
        guardamos, probablemente es el eco del estado viejo — ignorarlo. */
     if(window._guardandoBD) return;
     if(window._ultimaEscrituraBD && Date.now() - window._ultimaEscrituraBD < 3000) return;
-    baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.noticias)baseDatos.noticias=[];if(!baseDatos.denuncias)baseDatos.denuncias={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
+    baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.noticias)baseDatos.noticias=[];if(!baseDatos.denuncias)baseDatos.denuncias={};
+    /* Firebase puede convertir arrays en objetos con claves numéricas — normalizar */
+    if(baseDatos.noticias && !Array.isArray(baseDatos.noticias)) baseDatos.noticias=Object.values(baseDatos.noticias).filter(function(n){return n&&n.titular;});
+    if(baseDatos.actividadGlobal && !Array.isArray(baseDatos.actividadGlobal)) baseDatos.actividadGlobal=Object.values(baseDatos.actividadGlobal).filter(Boolean);
+    if(baseDatos.adminLog && !Array.isArray(baseDatos.adminLog)) baseDatos.adminLog=Object.values(baseDatos.adminLog).filter(Boolean);
+    window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -5494,9 +5499,11 @@ async function guardarBD(){
   try{
     window._ultimaEscrituraBD = Date.now(); // marcar ANTES de set() para bloquear snapshots del eco
     await set(ref(db,'silph_co_market'), local);
-    /* Actualizar baseDatos y _ultimaBDConocida con lo que realmente se guardó */
+    /* Actualizar baseDatos con lo que se guardó, normalizando arrays */
     baseDatos = local;
-    window._ultimaBDConocida = JSON.parse(JSON.stringify(local));
+    if(baseDatos.noticias && !Array.isArray(baseDatos.noticias)) baseDatos.noticias=Object.values(baseDatos.noticias).filter(function(n){return n&&n.titular;});
+    if(baseDatos.actividadGlobal && !Array.isArray(baseDatos.actividadGlobal)) baseDatos.actividadGlobal=Object.values(baseDatos.actividadGlobal).filter(Boolean);
+    window._ultimaBDConocida = JSON.parse(JSON.stringify(baseDatos));
   }catch(err){
     console.error('[guardarBD] Error al escribir en Firebase:', err);
   }
@@ -11153,8 +11160,30 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 85;
+const APP_VERSION = 86;
 const VERSIONES = [
+  {
+    version: 86,
+    fecha: '2026-09-05',
+    titulo: 'Fix noticias + denuncias: normalización de arrays de Firebase y await en tribunal',
+    resumen: 'Dos bugs encontrados y corregidos. Las noticias existían en Firebase pero no se mostraban porque Firebase convierte arrays en objetos con claves numéricas al guardar, y el código esperaba un array. Las denuncias no se guardaban porque guardarBD() se llamaba sin await, permitiendo que onValue sobreescribiera baseDatos antes de que el set() confirmara. Todos los handlers del tribunal usan ahora async/await.',
+    nuevas: [],
+    mejoras: [
+      '_generarNoticiasDesdeActividadYBD normaliza baseDatos.noticias tanto si es array como si es objeto (Firebase convierte arrays a objetos)',
+      'onValue normaliza noticias, actividadGlobal y adminLog al cargar desde Firebase',
+      'guardarBD normaliza noticias tras el set() para mantener consistencia en memoria',
+      'Límite de noticias mostradas subido de 5 a 8',
+      'presentarDenuncia usa await guardarBD() — garantiza que Firebase confirma antes de renderizar',
+      'avanzarCaso usa async/await guardarBD()',
+      'abrirSentenciaModal callback usa async/await guardarBD()',
+      'cerrarCaso usa async/await guardarBD()',
+    ],
+    rendimiento: [],
+    fixes: [
+      'Bug: noticias en Firebase no se mostraban — Firebase serializa arrays como objetos {0:{...},1:{...}} y Object.values() no era aplicado al leer',
+      'Bug: denuncias no persistían — guardarBD() sin await permitía que onValue sobreescribiera baseDatos con datos pre-guardado antes de que el set() de Firebase confirmara',
+    ],
+  },
   {
     version: 85,
     fecha: '2026-09-05',
@@ -12252,7 +12281,19 @@ var _NOTICIA_ETIQUETAS = {
 
 /* Devuelve las noticias más recientes para el noticiero */
 function _generarNoticiasDesdeActividadYBD(){
-  var noticias = (baseDatos.noticias||[]).slice();
+  /* Firebase puede convertir arrays en objetos si tienen huecos o si se guardaron
+     como objeto. Normalizamos a array siempre. */
+  var raw = baseDatos.noticias;
+  var noticias;
+  if(Array.isArray(raw)){
+    noticias = raw.slice();
+  } else if(raw && typeof raw === 'object'){
+    // Firebase convirtió el array en objeto con claves numéricas
+    noticias = Object.values(raw).filter(function(n){ return n && n.titular; });
+  } else {
+    noticias = [];
+  }
+
   if(noticias.length===0){
     var locke = baseDatos.lockeActivo||{};
     var jugadoresArr = Object.keys(baseDatos.jugadores||{});
@@ -12267,7 +12308,7 @@ function _generarNoticiasDesdeActividadYBD(){
     });
   }
   noticias.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
-  return noticias.slice(0,5);
+  return noticias.slice(0,8);
 }
 
 function _tiempoRelativo(ts){
@@ -12572,29 +12613,24 @@ window.presentarDenuncia = async function(){
   };
   baseDatos.denuncias[numCaso] = caso;
 
-  // Bitácora del denunciante (también registra en actividadGlobal via registrarActividadGlobal)
   inyectarEntradaDiarioAutomatica('⚖️ DENUNCIA PRESENTADA — Has denunciado a '+denunciado.toUpperCase()+'. Caso '+numCaso+'. Estado: Juicio pendiente.');
-  // Bitácora del denunciado (también registra en actividadGlobal via registrarActividadGlobal)
   inyectarEntradaDiarioAutomaticaPara(denunciado,'🚨 HAS SIDO DENUNCIADO — '+userSesion.toUpperCase()+' ha presentado una denuncia contra ti. Caso '+numCaso+'. Estado: Investigación pendiente.');
-
-  // Noticia automática en el noticiero
   registrarNoticia('ultimahora',
     'SE ABRE INVESTIGACIÓN CONTRA '+denunciado.toUpperCase(),
     userSesion.charAt(0).toUpperCase()+userSesion.slice(1)+' ha presentado una denuncia contra '+denunciado+' por '+_denunciaMotivoTexto(motivo)+'. Caso '+numCaso+'.',
     'Tribunal del Locke', [userSesion, denunciado]);
 
-  guardarBD();
+  await guardarBD();
   renderizarActividadGlobalInicio();
   renderizarNoticiario();
   renderizarDenuncias();
-  // Limpiar formulario correctamente (textarea + select custom)
   document.getElementById('denuncia-descripcion').value='';
   _poblarSelectDenunciado();
   denunciasTab('casos');
   mostrarNotificacion('Denuncia presentada. Caso '+numCaso+' abierto.','exito','⚖️');
 };
 
-window.avanzarCaso = function(id, nuevoEstado){
+window.avanzarCaso = async function(id, nuevoEstado){
   if(!baseDatos.denuncias||!baseDatos.denuncias[id]) return;
   baseDatos.denuncias[id].estado = nuevoEstado;
   var d = baseDatos.denuncias[id];
@@ -12605,16 +12641,14 @@ window.avanzarCaso = function(id, nuevoEstado){
     juicio:'JUICIO EN CURSO — CASO '+id,
     sentencia:'SENTENCIA PENDIENTE — CASO '+id,
   };
-  // Bitácora de ambas partes
   var msgComun = '⚖️ Caso '+id+' avanzado a estado: '+nuevoEstado.toUpperCase()+'. '+d.denunciado.toUpperCase()+' '+( textos[nuevoEstado]||nuevoEstado)+'.';
   inyectarEntradaDiarioAutomaticaPara(d.denunciante, msgComun);
   inyectarEntradaDiarioAutomaticaPara(d.denunciado,  msgComun);
-  // Noticia en el noticiero
   registrarNoticia(etiquetas[nuevoEstado]||'judicial',
     titulares[nuevoEstado]||nuevoEstado.toUpperCase()+': CASO '+id,
     d.denunciado.toUpperCase()+' '+( textos[nuevoEstado]||nuevoEstado)+'. Caso iniciado por '+d.denunciante.toUpperCase()+'.',
     'Tribunal del Locke',[d.denunciante,d.denunciado]);
-  guardarBD();
+  await guardarBD();
   renderizarDenuncias();
   renderizarActividadGlobalInicio();
   renderizarNoticiario();
@@ -12631,7 +12665,7 @@ window.abrirSentenciaModal = function(id){
       {id:'sent-sancion',label:'Sanción (opcional)',tipo:'text',placeholder:'Ej: -3.000 P₠, exclusión temporal...'},
     ],
     confirmar:'Dictar Sentencia',
-    callback:function(vals){
+    callback:async function(vals){
       if(!vals['sent-veredicto']) return;
       baseDatos.denuncias[id].sentencia={
         veredicto: vals['sent-veredicto'],
@@ -12642,21 +12676,17 @@ window.abrirSentenciaModal = function(id){
       var veredicto = vals['sent-veredicto'];
       var sancion   = vals['sent-sancion']||'';
       var sufijo    = sancion ? ' Sanción: '+sancion : '';
-      // Bitácora del denunciante
       inyectarEntradaDiarioAutomaticaPara(d.denunciante,
         '🧑‍⚖️ SENTENCIA Caso '+id+' — '+d.denunciado.toUpperCase()+' declarado '+veredicto.toUpperCase()+'.'+sufijo);
-      // Bitácora del denunciado
       inyectarEntradaDiarioAutomaticaPara(d.denunciado,
         '🧑‍⚖️ SENTENCIA Caso '+id+' — Has sido declarado '+veredicto.toUpperCase()+'.'+sufijo);
-      // Actividad global vía registrarActividadGlobal (guarda jugador+uid+tsNum correctamente)
       registrarActividadGlobal('sistema',
         '⚖️ SENTENCIA Caso '+id+': '+d.denunciado.toUpperCase()+' — '+veredicto.toUpperCase()+(sancion?' · Sanción: '+sancion:'')+'.',
         (function(){var dd=new Date();return String(dd.getDate()).padStart(2,'0')+'/'+String(dd.getMonth()+1).padStart(2,'0')+'/'+dd.getFullYear()+' '+String(dd.getHours()).padStart(2,'0')+':'+String(dd.getMinutes()).padStart(2,'0')+':'+String(dd.getSeconds()).padStart(2,'0');})());
-      // Noticia en el noticiero
       registrarNoticia('exclusiva','SENTENCIA DEL CASO '+id,
         d.denunciado.charAt(0).toUpperCase()+d.denunciado.slice(1)+' declarado '+veredicto+(sancion?'. Sanción: '+sancion:'.')+' Caso impulsado por '+d.denunciante+'.',
         'Tribunal del Locke',[d.denunciante,d.denunciado]);
-      guardarBD();
+      await guardarBD();
       renderizarDenuncias();
       renderizarActividadGlobalInicio();
       renderizarNoticiario();
@@ -12665,7 +12695,7 @@ window.abrirSentenciaModal = function(id){
   });
 };
 
-window.cerrarCaso = function(id){
+window.cerrarCaso = async function(id){
   if(!baseDatos.denuncias||!baseDatos.denuncias[id]) return;
   var d = baseDatos.denuncias[id];
   baseDatos.denuncias[id].estado='cerrado';
@@ -12675,7 +12705,7 @@ window.cerrarCaso = function(id){
   registrarNoticia('judicial','CASO '+id+' CERRADO',
     'El Mercader ha cerrado el caso entre '+d.denunciante.toUpperCase()+' y '+d.denunciado.toUpperCase()+' sin sentencia formal.',
     'Tribunal del Locke',[d.denunciante,d.denunciado]);
-  guardarBD();
+  await guardarBD();
   renderizarDenuncias();
   renderizarActividadGlobalInicio();
   renderizarNoticiario();
