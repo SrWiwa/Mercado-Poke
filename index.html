@@ -3069,7 +3069,7 @@ const baseDatosInicial=[
     {id:310,tienda:'illegal',cat:'Hack de Sistema',nombre:'Resurrección Robada',precioPf:8,stock:1,icon:'🔮',desc:'Robas un Poke muerto de otro.'}
 ];
 let baseDatos={productos:[],jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[]};
-let userSesion=sessionStorage.getItem('silph_user_sesion')||null;
+let userSesion=localStorage.getItem('silph_user_sesion')||null;
 let filtroCategoriaGlobal="";
 const MAX_COMPRAS=3,MS_EN_6_HORAS=3*60*60*1000; // 3h (antes 6h)
 const SACRIFICIO_VALORES={basura:{vidas:1,etiqueta:'Basura / Muy común'},normal:{vidas:2,etiqueta:'Normal / Utilidad media'},fuerte:{vidas:3,etiqueta:'Fuerte / Evolución final'},pseudo:{vidas:5,etiqueta:'Pseudo-legendario'},ultra:{vidas:6,etiqueta:'Ultraente'},legendario:{vidas:7,etiqueta:'Legendario / Singular'}};
@@ -4500,35 +4500,170 @@ var GYM_LABELS = [
   '🌟 Gimnasio 5','💎 Gimnasio 6','🔥 Gimnasio 7','⚡ Gimnasio 8','👑 Liga Pokémon'
 ];
 
+/* ─── TRADUCCIÓN AL ESPAÑOL (España) ─── */
+var NOMBRES_ES = {
+  // Poké Balls
+  'Poké Ball':'Poké Ball','Great Ball':'Super Ball','Ultra Ball':'Ultra Ball',
+  'Net Ball':'Red Ball','Dive Ball':'Buceo Ball','Nest Ball':'Nido Ball',
+  'Repeat Ball':'Repetir Ball','Timer Ball':'Turno Ball','Luxury Ball':'Lujo Ball',
+  'Premier Ball':'Premier Ball','Dusk Ball':'Ocaso Ball','Heal Ball':'Cura Ball',
+  'Quick Ball':'Veloz Ball','Friend Ball':'Amigo Ball','Heavy Ball':'Pesada Ball',
+  'Dream Ball':'Ensueño Ball','Beast Ball':'Ultra-Ente Ball','Master Ball':'Master Ball',
+  // Medicine
+  'Potion':'Poción','Super Potion':'Superpoción','Hyper Potion':'Hiperpoción',
+  'Max Potion':'Máxima Poción','Full Restore':'Restauratodo','Full Heal':'Cura Total',
+  'Fresh Water':'Agua Fresca','Soda Pop':'Refresco','Lemonade':'Limonada',
+  'Moomoo Milk':'Leche Moovache','Ether':'Éter','Max Ether':'Máx. Éter',
+  'Elixir':'Elixir','Max Elixir':'Máx. Elixir','Antidote':'Antídoto',
+  'Burn Heal':'Cura Quemad.','Ice Heal':'Cura Hielo','Awakening':'Despertar',
+  'Parlyz Heal':'Cura Parálisis','Revival Herb':'Hierba Revivir',
+  'Energy Root':'Raíz Energía','Heal Powder':'Polvo Cura',
+  // Vitamins
+  'HP Up':'PS. Máx.','Protein':'Proteína','Iron':'Hierro','Carbos':'Carburante',
+  'Calcium':'Calcio','Zinc':'Zinc','PP Up':'PS+ Arriba','PP Max':'PS+ Máximo',
+  'Rare Candy':'Caramelo Raro',
+  // Battle Items
+  'X Attack':'At. Extra','X Defense':'Def. Extra','X Speed':'Vel. Extra',
+  'X Sp. Atk':'Atk. Esp. Extra','X Sp. Def':'Def. Esp. Extra',
+  'X Accuracy':'Prec. Extra','Guard Spec.':'Guard. Especial','Dire Hit':'Golpe Crítico',
+  // Repels
+  'Repel':'Repeler','Super Repel':'Superrepeler','Max Repel':'Max. Repeler',
+  // Field Items
+  'Escape Rope':'Cuerda Escape','Poke Doll':'Muñeco Pokémon','Honey':'Miel',
+  'Amulet Coin':'Moneda Amuleto',
+  // Berries
+  'Oran Berry':'Baya Aranja','Pecha Berry':'Baya Pecha','Chesto Berry':'Baya Castamarr.',
+  'Cheri Berry':'Baya Zreza','Rawst Berry':'Baya Malimar','Aspear Berry':'Baya Perasec',
+  'Leppa Berry':'Baya Leppa','Lum Berry':'Baya Aranja Lum','Sitrus Berry':'Baya Sitrus',
+  'Salac Berry':'Baya Salac','Petaya Berry':'Baya Petaya','Liechi Berry':'Baya Liechi',
+  'Apicot Berry':'Baya Apicot','Ganlon Berry':'Baya Ganlón','Enigma Berry':'Baya Enigma',
+  'Starf Berry':'Baya Estrell.','Lansat Berry':'Baya Lansat','Colbur Berry':'Baya Colbur',
+  'Babiri Berry':'Baya Babiri','Passho Berry':'Baya Passho','Wacan Berry':'Baya Wacan',
+  'Rindo Berry':'Baya Rindo','Yache Berry':'Baya Yache','Chople Berry':'Baya Chople',
+  'Haban Berry':'Baya Haban','Shuca Berry':'Baya Shuca','Coba Berry':'Baya Coba',
+  'Tanga Berry':'Baya Tanga','Kasib Berry':'Baya Kasib','Charti Berry':'Baya Charti',
+  'Occa Berry':'Baya Occa','Payapa Berry':'Baya Payapa','Roseli Berry':'Baya Roseli',
+  'Rowap Berry':'Baya Rowap','Custap Berry':'Baya Custap',
+  // Held Items - Type Boosters
+  'Magnet':'Imán','Charcoal':'Carbón','Poison Barb':'Espina Venenosa',
+  'Soft Sand':'Arena Fina','Sharp Beak':'Pico Afilado','Hard Stone':'Piedra Dura',
+  'Spell Tag':'Brujería','Silk Scarf':'Pañuelo Seda','Black Belt':'Cinturón Negro',
+  'Mystic Water':'Agua Mística','Miracle Seed':'Semilla Milagro',
+  'Never-Melt Ice':'Hielo Eterno','Twisted Spoon':'Cuchara Torcida',
+  'Dragon Fang':'Colmillo Dragón','Black Glasses':'Gafas Oscuras',
+  'Silver Powder':'Polvo Plata','Metal Coat':'Revestimiento',
+  // Competitive Held Items
+  'Leftovers':'Restos','Choice Band':'Banda Elegida','Choice Specs':'Gafas Elegidas',
+  'Choice Scarf':'Pañuelo Elegido','Assault Vest':'Chaleco Asalto',
+  'Life Orb':'Vidaesfera','Focus Sash':'Faja Focus','Rocky Helmet':'Casco Rocky',
+  'Eviolite':'Eviolita','Air Balloon':'Globo Helio','Scope Lens':'Lupa',
+  'Wise Glasses':'Gafas Sabias','Muscle Band':'Brazalete Músculo',
+  'Quick Claw':'Garra Rápida',"King's Rock":'Roca Rey','Shell Bell':'Campana Concha',
+  'Toxic Orb':'Orbe Tóxico','Flame Orb':'Orbe Llameante','White Herb':'Hierba Blanca',
+  'Mental Herb':'Hierba Mental','Bright Powder':'Polvo Brillo',
+  'Covert Cloak':'Capa Sigilo','Loaded Dice':'Dados Cargados',
+  'Punching Glove':'Guante Boxeo','Clear Amulet':'Amuleto Claro',
+  'Weakness Policy':'Póliza Debilidad','Black Sludge':'Lodo Negro',
+  'Power Herb':'Hierba Poder','Smooth Rock':'Roca Lisa','Heat Rock':'Roca Calor',
+  'Icy Rock':'Roca Helada','Damp Rock':'Roca Húmeda','Shell Bell':'Campana Concha',
+  'Bottle Cap':'Chapa','Gold Bottle Cap':'Chapa de Oro',
+  // Ability Items
+  'Ability Capsule':'Cápsula Habilidad','Ability Patch':'Parche Habilidad',
+  // Evolution Items
+  'Fire Stone':'Piedra Fuego','Water Stone':'Piedra Agua','Thunder Stone':'Piedra Trueno',
+  'Leaf Stone':'Piedra Hoja','Moon Stone':'Piedra Lunar','Sun Stone':'Piedra Solar',
+  'Shiny Stone':'Piedra Brillante','Dusk Stone':'Piedra Oscura','Dawn Stone':'Piedra Alba',
+  'Oval Stone':'Piedra Oval','Dragon Scale':'Escama Dragón','Up-Grade':'Actualización',
+  'Protector':'Protector','Electirizer':'Electrizador','Magmarizer':'Magmarizador',
+  'Dubious Disc':'Disco Dudoso','Razor Claw':'Garra Afilada','Razor Fang':'Colmillo Filo',
+  'Prism Scale':'Escama Prisma','Reaper Cloth':'Tela Nigromante',
+  // Mints
+  'Adamant Mint':'Menta Audaz','Modest Mint':'Menta Modesta','Timid Mint':'Menta Tímida',
+  'Jolly Mint':'Menta Alegre','Bold Mint':'Menta Osada','Careful Mint':'Menta Cuidadosa',
+  'Calm Mint':'Menta Serena','Impish Mint':'Menta Pícara','Hasty Mint':'Menta Activa',
+  'Naive Mint':'Menta Ingenua','Lonely Mint':'Menta Huraña','Naughty Mint':'Menta Pillo',
+  'Rash Mint':'Menta Alocada','Mild Mint':'Menta Afable','Quiet Mint':'Menta Plácida',
+  'Sassy Mint':'Menta Grosera','Relaxed Mint':'Menta Flemática','Brave Mint':'Menta Firme',
+  'Lax Mint':'Menta Floja',
+  // TMs (Máquinas Técnicas)
+  'TM Earthquake':'MT Terremoto','TM Thunderbolt':'MT Voltio Cruel',
+  'TM Ice Beam':'MT Rayo Hielo','TM Flamethrower':'MT Lanzallamas',
+  'TM Surf':'MT Surf','TM Protect':'MT Protección','TM Substitute':'MT Sustituto',
+  'TM Toxic':'MT Tóxico','TM Stealth Rock':'MT Roca Afilada',
+  'TM Swords Dance':'MT Danza Espada','TM Dragon Claw':'MT Garra Dragón',
+  'TM Calm Mind':'MT Mente Zen','TM Brick Break':'MT Romperrocas',
+  'TM Shadow Ball':'MT Bola Sombra','TM Will-O-Wisp':'MT Fuego Fatuo',
+  'TM Roost':'MT Recuperación','TM Recover':'MT Recuperación',
+  'TM Hidden Power':'MT Poder Oculto','TM Aerial Ace':'MT Acrobacia',
+  'TM Rock Slide':'MT Avalancha','TM Iron Tail':'MT Cola Férrea',
+  'TM Energy Ball':'MT Bola Energía','TM Focus Blast':'MT Cabezazo',
+  'TM Bulk Up':'MT Corpulencia','TM Dragon Pulse':'MT Pulso Dragón',
+  'TM Sludge Bomb':'MT Bomba Lodo','TM U-turn':'MT Ida y Vuelta',
+  'TM Knock Off':'MT Derribo','TM Taunt':'MT Mofa','TM Stone Edge':'MT Roca Afilada 2',
+  'TM Scald':'MT Escaldar','TM Flare Blitz':'MT Llamarada',
+  'TM Close Combat':'MT Combate Íntimo','TM Giga Drain':'MT Gigadrenado',
+  'TM Dark Pulse':'MT Pulso Umbrío','TM Flash Cannon':'MT Cañón Destello',
+  'TM Thunder Wave':'MT Onda Trueno','TM Psychic':'MT Psíquico',
+  'TM Power-Up Punch':'MT Puño Aumentado','TM Dazzling Gleam':'MT Luz Lunar',
+  'TM Moonblast':'MT Fuerza Lunar','TM Outrage':'MT Enfado',
+  'TM Waterfall':'MT Cascada','TM Ice Punch':'MT Puño Hielo',
+  'TM Fire Punch':'MT Puño Fuego','TM Thunder Punch':'MT Puño Trueno',
+  'TM Facade':'MT Fachada','TM Hyper Voice':'MT Vozarrón',
+  'TM Poison Jab':'MT Pico Venenoso','TM Work Up':'MT Entusiasmo',
+  'TM Nasty Plot':'MT Maquinación','TM Quiver Dance':'MT Danza Aleteo',
+  'TM Shell Smash':'MT Rompecorazas','TM Volt Switch':'MT Voltiocambio',
+  'TM Play Rough':'MT Juego Brusco','TM Leech Life':'MT Vampipolvo',
+  'TM Phantom Force':'MT Fuerza Fantasma',
+  // Misc
+  'Dowsing Machine':'Detector','Poke Radar':'Pokéradar',
+  'Super Rod':'Supercaña','Old Rod':'Caña Vieja','Good Rod':'Buena Caña',
+  'Silph Scope':'Silph Scope','PP Max':'PS Máx.','PP Up':'PS Arriba',
+};
+function traducirNombre(nombre){
+  return NOMBRES_ES[nombre] || nombre;
+}
+
 /* ─── MOTOR DE GENERACIÓN ─── */
 function shuffle(arr){ for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}return arr; }
 
 function generarProductosParaTier(db, tier, maxGen, cantidad){
-  // 1. Filtrar por generación
-  var pool = db.filter(function(o){ return o.gen <= maxGen; });
-  // 2. Filtrar por tier (solo items cuyo tier <= tier actual)
-  pool = pool.filter(function(o){ return o.tier <= tier; });
+  // 1. Filtrar por generación y tier
+  var pool = db.filter(function(o){ return o.gen <= maxGen && o.tier <= tier; });
   if(!pool.length) return [];
-  // 3. Ponderar por rareza (items más raros tienen menos probabilidad en tiers bajos)
-  var pesados = [];
+
+  // 2. Agrupar por categoría para garantizar diversidad
+  var porCategoria = {};
   pool.forEach(function(o){
-    var maxRarezaPermitida = Math.min(5, tier + 2);
-    if(o.rareza > maxRarezaPermitida + 1) return;
-    var peso = Math.max(1, (6 - o.rareza) * 2);
-    if(tier >= 5 && o.rareza >= 4) peso = o.rareza * 3;
-    for(var w=0;w<peso;w++) pesados.push(o);
+    if(!porCategoria[o.cat]) porCategoria[o.cat] = [];
+    porCategoria[o.cat].push(o);
   });
-  // Si el pool ponderado quedó vacío (tier muy bajo, pocos items), usar todos sin filtro de rareza
-  if(!pesados.length){
-    pool.forEach(function(o){ pesados.push(o); });
+  var categorias = Object.keys(porCategoria);
+  shuffle(categorias);
+
+  // 3. Selección con diversidad: rotar categorías, dentro de cada categoría elegir al azar
+  var resultado = [], vistos = {};
+  var intentoMax = cantidad * 4, intento = 0;
+  var catIdx = 0;
+  while(resultado.length < cantidad && intento < intentoMax){
+    intento++;
+    var cat = categorias[catIdx % categorias.length];
+    catIdx++;
+    var candidatos = porCategoria[cat].filter(function(o){ return !vistos[o.n]; });
+    if(!candidatos.length) continue;
+    // Dentro de la categoría, elegir con un poco de azar (sin ponderar tanto por rareza)
+    var elegido = candidatos[Math.floor(Math.random()*candidatos.length)];
+    vistos[elegido.n] = true;
+    resultado.push(elegido);
   }
-  // 4. Shuffle y tomar únicos
-  shuffle(pesados);
-  var vistos = {}, resultado = [];
-  for(var i=0;i<pesados.length && resultado.length<cantidad;i++){
-    if(!vistos[pesados[i].n]){ vistos[pesados[i].n]=true; resultado.push(pesados[i]); }
+  // Si aún faltan por la rotación de categorías, rellenar con cualquier restante
+  if(resultado.length < cantidad){
+    pool.forEach(function(o){
+      if(!vistos[o.n] && resultado.length < cantidad){
+        vistos[o.n] = true;
+        resultado.push(o);
+      }
+    });
   }
-  // Si aún faltan items (pool total < cantidad pedida), devolver lo que hay
   return resultado;
 }
 
@@ -4580,7 +4715,7 @@ window.generarTiendasAutomaticas = function(cual){
         id:     now + idx,
         tienda: 'legal',
         icon:   o.i,
-        nombre: o.n,
+        nombre: traducirNombre(o.n),
         qty:    qty,
         cat:    o.cat,
         precio: precio * qty,
@@ -4604,7 +4739,7 @@ window.generarTiendasAutomaticas = function(cual){
         id:     now + 1000 + idx,
         tienda: 'pack',
         icon:   o.i,
-        nombre: o.n,
+        nombre: traducirNombre(o.n),
         cat:    'Pack Especial',
         precio: packPrecio,
         pf:     o.pf + Math.floor(tier/2),
@@ -5550,19 +5685,22 @@ const MISION_RECOMPENSA_POOLS = {
     {tipo:'pf',       min:6,    max:10},
     {tipo:'gacha',    min:1,    max:1},
     {tipo:'gachaPf',  min:1,    max:1},
-    {tipo:'vida',     min:1,    max:1},
     {tipo:'recaptura',min:1,    max:1},
     {tipo:'dinero',   min:1500, max:2500},
+    {tipo:'pf',       min:8,    max:12},
+    {tipo:'dinero',   min:1200, max:2200},
   ],
   muydificil: [
     {tipo:'dinero',   min:2000, max:4000},
     {tipo:'pf',       min:10,   max:15},
     {tipo:'gacha',    min:1,    max:1},
     {tipo:'gachaPf',  min:1,    max:1},
-    {tipo:'vida',     min:1,    max:2},
+    {tipo:'vida',     min:1,    max:1},
     {tipo:'recaptura',min:1,    max:1},
     {tipo:'dinero',   min:3000, max:5000},
     {tipo:'pf',       min:12,   max:18},
+    {tipo:'dinero',   min:2500, max:4500},
+    {tipo:'gachaPf',  min:1,    max:1},
   ],
   epica:      [{tipo:'ticket',min:1,max:1}]
 };
@@ -5705,27 +5843,42 @@ window.resolverMisionEspecial = function(resultado){
 };
 
 function obtenerRotacionMisiones(){
-  var rotationId     = Math.floor(Date.now()/MISION_MS_ROTACION);
+  var rotationId = Math.floor(Date.now()/MISION_MS_ROTACION);
   var rnd = misionMulberry32(rotationId*7919+13);
-  var usadosFacil = [], usadosNormal = [], usadosDificil = [], usadosMuydificil = [], usadosEpica = [];
-  var misiones = [
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_DIFICIL,    usadosDificil,    rnd), 'dificil',    rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_MUYDIFICIL, usadosMuydificil, rnd), 'muydificil', rnd),
+
+  // ── 4 misiones normales: dificultad elegida al azar entre los 5 pools ──
+  var POOLS_NORMALES = [
+    {pool: MISION_POOL_FACIL,      dif: 'facil',      usados: []},
+    {pool: MISION_POOL_FACIL,      dif: 'facil',      usados: []},
+    {pool: MISION_POOL_NORMAL,     dif: 'normal',     usados: []},
+    {pool: MISION_POOL_NORMAL,     dif: 'normal',     usados: []},
+    {pool: MISION_POOL_DIFICIL,    dif: 'dificil',    usados: []},
+    {pool: MISION_POOL_MUYDIFICIL, dif: 'muydificil', usados: []},
   ];
-  // Épica: rota cada 48h independientemente
+  // Barajar los pools para que las 4 dificultades sean aleatorias cada rotación
+  var poolsBarajados = POOLS_NORMALES.slice();
+  for(var pi = poolsBarajados.length-1; pi > 0; pi--){
+    var pj = Math.floor(rnd()*(pi+1));
+    var pt = poolsBarajados[pi]; poolsBarajados[pi]=poolsBarajados[pj]; poolsBarajados[pj]=pt;
+  }
+  var elegidos = poolsBarajados.slice(0,4);
+  var misiones = elegidos.map(function(p){
+    return misionConstruir(misionElegirDePool(p.pool, p.usados, rnd), p.dif, rnd);
+  });
+
+  // ── 1 misión épica (rota cada 48h) ──
   var rotIdEpica = Math.floor(Date.now()/MISION_MS_ROTACION_LARGA);
   var rndE = misionMulberry32(rotIdEpica*6271+7);
-  var usadosE2 = [];
-  var misionEpica = misionConstruir(misionElegirDePool(MISION_POOL_EPICA, usadosE2, rndE), 'epica', rndE);
+  var usadosE = [];
+  var misionEpica = misionConstruir(misionElegirDePool(MISION_POOL_EPICA, usadosE, rndE), 'epica', rndE);
   misionEpica._rotationEnd = (rotIdEpica+1)*MISION_MS_ROTACION_LARGA;
   misiones.push(misionEpica);
+
+  // ── 1 misión especial (duelo, también 48h) — se incluye en el array ──
+  // La especial se renderiza aparte en renderizarMisiones, pero la contamos aquí para que
+  // obtenerMisionesJugador la vea y se marque la rotación correctamente.
+  // (No la incluimos en misiones[] porque tiene su propia lógica de renderizado)
+
   return {rotationId:rotationId, rotationStart:rotationId*MISION_MS_ROTACION, rotationEnd:(rotationId+1)*MISION_MS_ROTACION, misiones:misiones};
 }
 function misionTituloRender(m,u){
@@ -6603,7 +6756,7 @@ window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySele
 window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='ficha')renderizarTitulosYTemas();if(tab==='carnet')renderizarPanelCarnet();};
 
 /* ═══ LOGIN ═══ */
-window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;sessionStorage.setItem('silph_user_sesion',id);var _rutasLocke=(baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[];if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas(_rutasLocke),misionesContadores:{}};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.misionesContadores)u.misionesContadores={};
+window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;localStorage.setItem('silph_user_sesion',id);var _rutasLocke=(baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[];if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas(_rutasLocke),misionesContadores:{}};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.misionesContadores)u.misionesContadores={};
 /* Sincronizar tracker con rutasDefinidas del locke:
    — Si no tiene tracker, crearlo desde cero.
    — Si tiene tracker pero el locke ahora tiene rutas que no están en el tracker
@@ -6611,7 +6764,7 @@ window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre
      añadir las rutas nuevas como 'pendiente' conservando los estados existentes.
    — No duplicar rutas que ya existen en el tracker.                              */
 if(!u.tracker){u.tracker=crearTrackerDesdeRutas(_rutasLocke);}else if(_rutasLocke.length>0){var _nombresEnTracker=u.tracker.map(function(e){return e.ruta;});var _rutagFaltantes=_rutasLocke.filter(function(r){return _nombresEnTracker.indexOf(r)<0;});if(_rutagFaltantes.length>0){_rutasLocke.forEach(function(nombre,i){var yaExiste=u.tracker.find(function(t){return t.ruta===nombre;});if(!yaExiste){u.tracker.push({orden:i,ruta:nombre,estado:'pendiente',pokemon:'',mote:'',recaptura:'no_hecha'});}else{yaExiste.orden=i;}});}}}guardarBD();reproducirSonido('puerta_abrir');document.getElementById('login-screen').classList.add('fade-out');setTimeout(()=>{document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';document.getElementById('app-shell').classList.add('fade-in');},180);const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(id==="srwiwa")?"flex":"none";actualizarComprasPorTiempo();cargarDatosPerfilEnDOM();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();actualizarHeroStrip();aplicarTemaLocke();obtenerMisionesJugador(id);actualizarWidgetMisionesInicio();actualizarCountdownMisiones();_actualizarSidebarFooter();_aplicarTemaSidebarNav('inicio');setTimeout(function(){renderizarAsistente();_asisSetSeccion('inicio');},600);};
-window.cerrarSesionOperador=function(){reproducirSonido('puerta_cerrar');userSesion=null;sessionStorage.removeItem('silph_user_sesion');document.getElementById('app-shell').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('login-screen').classList.remove('fade-out');document.getElementById('login-nombre').value='';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";cerrarDrawer();};
+window.cerrarSesionOperador=function(){reproducirSonido('puerta_cerrar');userSesion=null;localStorage.removeItem('silph_user_sesion');document.getElementById('app-shell').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('login-screen').classList.remove('fade-out');document.getElementById('login-nombre').value='';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";cerrarDrawer();};
 function actualizarComprasPorTiempo(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],ahora=Date.now(),tr=ahora-u.ultimaRecarga,hoy=new Date().toDateString();if(!u.comprasHoy||u.comprasHoy._fecha!==hoy){u.comprasHoy={_fecha:hoy};}if(tr>=MS_EN_6_HORAS){let cg=Math.floor(tr/MS_EN_6_HORAS);u.comprasDisponibles=Math.min(MAX_COMPRAS,(u.comprasDisponibles||0)+cg);u.ultimaRecarga=u.ultimaRecarga+(cg*MS_EN_6_HORAS);u.comprasHoy._global=Math.max(0,(u.comprasHoy._global||0)-cg);guardarBD();return true;}return false;}
 /* Comprobar la recarga de compras cada 6h de forma periódica, sin necesidad de recargar la página */
 setInterval(function(){
@@ -9865,7 +10018,7 @@ function renderizarCementerioDOM(){if(!userSesion||!baseDatos.jugadores[userSesi
 function actualizarBannerAlertasVisuales(){let b=document.getElementById('alertas-sistema-marquee');if(!b)return;let ev=baseDatos.eventoSistema||"normal";if(ev==="normal"){b.classList.remove('active');b.innerHTML='';return;}b.classList.add('active');if(ev==="rebajas"){b.style.borderColor='rgba(30,158,115,.3)';b.style.color='var(--neon-legal)';b.innerHTML='📉 RED ESTABLE: −25% de descuento en Tienda Legal y Packs.';}if(ev==="inflacion"){b.style.borderColor='rgba(216,41,63,.3)';b.style.color='#e2646f';b.innerHTML='⚠️ RED INESTABLE: +50% de recargo en costes P₠.';}if(ev==="bonus_pf"){b.style.borderColor='rgba(201,154,46,.3)';b.style.color='var(--neon-packs)';b.innerHTML='🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!';}}
 
 /* ═══ GACHA ═══ */
-window.reclamarHackeoDiario=function(){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado del Gacha. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);regContadorMision(u,'gachaAbiertas',1);guardarBD();mostrarRevelacionGacha(reveal);actualizarAvisoGachaDisponible();};
+window.reclamarHackeoDiario=function(){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado del Gacha. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);regContadorMision(u,'gachaAbiertas',1);guardarBD();mostrarRevelacionGacha(reveal);actualizarAvisoGachaDisponible();refrescarPantallaGamer();setTimeout(function(){verificarMisionesCompletadasMision();actualizarWidgetMisionesInicio();},300);};
 
 /* ═══ PF GACHA (solo entrega de 1 a 20 PF, cooldown propio de 24h) ═══ */
 window.reclamarGachaPF=function(){
@@ -10045,7 +10198,7 @@ window.asignarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=
 window.quitarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value;if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}let u=baseDatos.jugadores[uid];if(!u.tituloManual){mostrarNotificacion("Este entrenador no tiene título manual.","error","🏷️");return;}delete u.tituloManual;if(u.tituloActivo==='manual')u.tituloActivo=null;logAdmin('Quitar título',`${uid.toUpperCase()}`);document.getElementById('adm-titulo-texto').value='';reproducirSonido('click');mostrarNotificacion(`Título manual eliminado de ${uid.toUpperCase()}.`,"info","🗑️");if(userSesion===uid)renderizarTitulosYTemas();};
 window.ajustarVidasEntrenador=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-vidas-usuario').value,ini=parseInt(document.getElementById('adm-vidas-iniciales').value)||20,act=parseInt(document.getElementById('adm-vidas-actuales').value),eEl=document.getElementById('adm-vidas-extra'),extra=eEl?Math.max(0,parseInt(eEl.value)||0):0;if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","❤️");return;}if(isNaN(act)){mostrarNotificacion("Introduce las vidas actuales.","error","❤️");return;}act=Math.max(0,Math.min(act,ini));baseDatos.jugadores[uid].vidasTotales=ini;baseDatos.jugadores[uid].vidasActuales=act;baseDatos.jugadores[uid].vidasExtra=extra;if(act<=0&&extra<=0)baseDatos.jugadores[uid].lockeStatus='perdido';else if(baseDatos.jugadores[uid].lockeStatus==='perdido'&&(act>0||extra>0))baseDatos.jugadores[uid].lockeStatus='jugando';let extraStr=extra>0?`+${extra} extra`:'sin extras';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader ajustó tus vidas → ❤️ ${act}/${ini} ${extraStr}`);logAdmin('Ajustar vidas',`${uid.toUpperCase()} → ${act}/${ini} (extra: ${extra})`);guardarBD();reproducirSonido('exito');mostrarNotificacion(`${uid.toUpperCase()}: vidas ${act}/${ini}${extra>0?' +'+extra+' extra':''}`, 'exito','❤️');};
 window.cargarVidasEnAdmin=function(){let uid=document.getElementById('adm-vidas-usuario').value;if(!uid||!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid];document.getElementById('adm-vidas-iniciales').value=u.vidasTotales||20;document.getElementById('adm-vidas-actuales').value=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);let eEl=document.getElementById('adm-vidas-extra');if(eEl)eEl.value=u.vidasExtra||0;};
-window.modificarFondosEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-banco-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","💰");return;}baseDatos.jugadores[uid].dinero+=(op==='SUMAR'?cant:-cant);logAdmin('Modificar dinero',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} P₠`);document.getElementById('adm-banco-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} P₠ para ${uid.toUpperCase()}.`,"exito","💰");};
+window.modificarFondosEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-banco-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","💰");return;}baseDatos.jugadores[uid].dinero+=(op==='SUMAR'?cant:-cant);logAdmin('Modificar dinero',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} P20a0`);guardarBD();document.getElementById('adm-banco-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} P20a0 para ${uid.toUpperCase()}.`,"exito","💰");if(op==='SUMAR'){setTimeout(function(){if(userSesion===uid)refrescarPantallaGamer();verificarMisionesCompletadasMision();actualizarWidgetMisionesInicio();},300);}};
 window.modificarPFEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-pf-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","🔮");return;}baseDatos.jugadores[uid].pf=(baseDatos.jugadores[uid].pf||0)+(op==='SUMAR'?cant:-cant);logAdmin('Modificar PF',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} PF`);document.getElementById('adm-pf-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} PF para ${uid.toUpperCase()}.`,"exito","🔮");};
 window.conmutarEstadoTienda=function(prop,estado){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;baseDatos[prop]=estado;guardarBD();reproducirSonido(estado?'exito':'cerrar');if(prop==='illegalOpen'&&estado){registrarActividadGlobal('Sistema','☢️ La Red de Ilegalidades ha sido desbloqueada por el Mercader.',(()=>{let d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;})());}};
 window.ajustarCamposFormularioMercader=function(){let t=document.getElementById('ins-tienda').value;document.getElementById('form-bloque-legal-cat').style.display=t==='legal'?'block':'none';document.getElementById('form-bloque-pack-detalles').style.display=t==='pack'?'block':'none';document.getElementById('form-bloque-illegal-detalles').style.display=t==='illegal'?'block':'none';document.getElementById('bloque-ins-pf').style.display=t!=='illegal'?'block':'none';document.getElementById('lbl-ins-precio').textContent=t==='illegal'?'Coste (PF):':'Coste (P₠):';};
