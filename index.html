@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v83 | Build: 2026-09-05 -->
+<!-- Silph Co v84 | Build: 2026-09-05 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5424,10 +5424,14 @@ let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
     if(data){
-    /* Si guardarBD está en curso, ignoramos este snapshot: llegaría con datos
-       pre-escritura y machacaría los cambios locales que acabamos de hacer.
-       guardarBD actualiza baseDatos y _ultimaBDConocida al confirmar el set(). */
-    if(window._guardandoBD){return;}
+    /* Ignorar snapshots que lleguen mientras guardarBD está en curso O justo después
+       de que terminó. El snapshot de onValue puede ser el estado PRE-escritura que
+       Firebase emite antes de confirmar nuestro set(). Lo detectamos comparando
+       la versión del snapshot contra la marca de tiempo de nuestra última escritura.
+       Margen de 3 segundos: si el snapshot llegó menos de 3s después de que
+       guardamos, probablemente es el eco del estado viejo — ignorarlo. */
+    if(window._guardandoBD) return;
+    if(window._ultimaEscrituraBD && Date.now() - window._ultimaEscrituraBD < 3000) return;
     baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.noticias)baseDatos.noticias=[];if(!baseDatos.denuncias)baseDatos.denuncias={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
@@ -5463,46 +5467,59 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
 const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','noticias','denuncias'];
 async function guardarBD(){
-  if(window._guardandoBD) return; // evitar escrituras solapadas
+  /* Cola de escritura: si ya hay una en curso, marcamos que hay cambios pendientes
+     y salimos. Cuando la escritura en curso termine, detecta el pending y relanza. */
+  if(window._guardandoBD){
+    window._guardandoBDPendiente = true;
+    return;
+  }
   window._guardandoBD = true;
-  /* Capturamos baseDatos en este instante — deep copy para que onValue
-     no pueda mutar 'local' mientras esperamos la respuesta de Firebase. */
+  window._guardandoBDPendiente = false;
+
+  /* Deep copy en este instante — aísla 'local' de futuros disparos de onValue */
   const local = JSON.parse(JSON.stringify(baseDatos));
   try{
     const snap = await get(ref(db,'silph_co_market'));
     const fresco = snap.val();
     if(fresco){
-      /* ── jugadores: merge fino para no machacar cambios de otros jugadores ── */
+      /* jugadores: merge fino — no machacar cambios simultáneos de otros jugadores */
       const jugFresco = Object.assign({}, fresco.jugadores || {});
-      const jugLocal  = local.jugadores || {};
-      Object.keys(jugLocal).forEach(function(id){
-        jugFresco[id] = jugLocal[id];
+      Object.keys(local.jugadores || {}).forEach(function(id){
+        jugFresco[id] = local.jugadores[id];
       });
       fresco.jugadores = jugFresco;
 
-      /* ── campos globales: SIEMPRE se escribe el valor local, sin diff ──
-         El diff basado en _ultimaBDConocida era la raíz del bug: onValue puede
-         actualizar _ultimaBDConocida con el estado viejo de Firebase justo
-         antes de nuestro cambio local, haciendo que el diff dé 0 aunque
-         hayamos modificado noticias/denuncias/actividadGlobal/etc. */
+      /* campos globales: SIEMPRE el valor local — sin diff.
+         El diff era la raíz del bug: onValue actualizaba _ultimaBDConocida con datos
+         viejos de Firebase justo antes del cambio local, el diff daba 0, nada se guardaba. */
       _CAMPOS_GLOBALES_BD.forEach(function(campo){
-        if(local[campo] !== undefined){
-          fresco[campo] = local[campo];
-        }
+        if(local[campo] !== undefined) fresco[campo] = local[campo];
       });
 
       await set(ref(db,'silph_co_market'), fresco);
+      window._ultimaEscrituraBD = Date.now();
       baseDatos = fresco;
       window._ultimaBDConocida = JSON.parse(JSON.stringify(fresco));
-      window._guardandoBD = false;
-      return;
+    } else {
+      await set(ref(db,'silph_co_market'), local);
+      window._ultimaBDConocida = JSON.parse(JSON.stringify(local));
     }
-  }catch(err){ /* si falla la relectura, plan B */ }
-  try{
-    await set(ref(db,'silph_co_market'), local);
-    window._ultimaBDConocida = JSON.parse(JSON.stringify(local));
-  }catch(e){}
+  }catch(err){
+    try{
+      await set(ref(db,'silph_co_market'), local);
+      window._ultimaEscrituraBD = Date.now();
+      window._ultimaBDConocida = JSON.parse(JSON.stringify(local));
+    }catch(e){}
+  }
+
   window._guardandoBD = false;
+
+  /* Si alguien llamó guardarBD() mientras estábamos guardando, relanzar ahora
+     con el estado más reciente de baseDatos (puede incluir más cambios). */
+  if(window._guardandoBDPendiente){
+    window._guardandoBDPendiente = false;
+    guardarBD();
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -11147,8 +11164,25 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 83;
+const APP_VERSION = 84;
 const VERSIONES = [
+  {
+    version: 84,
+    fecha: '2026-09-05',
+    titulo: 'Fix crítico: cola de escritura + protección contra snapshots antiguos de Firebase',
+    resumen: 'guardarBD reescrita con cola de escritura: las llamadas solapadas ya no se descartan sino que se fusionan y relanzan. onValue ya no sobreescribe baseDatos con el snapshot pre-escritura que Firebase emite como eco del estado anterior al set().',
+    nuevas: [],
+    mejoras: [
+      'Cola de escritura (_guardandoBDPendiente): si guardarBD se llama mientras otra está en curso, la nueva se fusiona y se relanza automáticamente al terminar la anterior con el estado más reciente',
+      'onValue ignora snapshots durante los 3 segundos posteriores a una escritura (_ultimaEscrituraBD): evita que el eco de Firebase sobreescriba baseDatos con datos pre-guardado',
+      'guardarBD marca _ultimaEscrituraBD antes de cada set() para activar la protección',
+    ],
+    rendimiento: [],
+    fixes: [
+      'Bug crítico (v83): _guardandoBD descartaba la segunda llamada a guardarBD — en avanzarCaso, registrarNoticia disparaba guardarBD y bloqueaba el guardarBD final, que era el que tenía el estado completo de la denuncia',
+      'Bug: onValue podía llegar con el snapshot viejo de Firebase (eco pre-set) y sobreescribir baseDatos justo después de guardar, borrando noticias y denuncias recién guardadas',
+    ],
+  },
   {
     version: 83,
     fecha: '2026-09-05',
