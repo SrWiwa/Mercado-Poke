@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v87 | Build: 2026-09-05 -->
+<!-- Silph Co v86 | Build: 2026-09-05 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5421,162 +5421,101 @@ function reanimarElemento(el){transicionarVista(el);}
 
 /* ═══ FIREBASE ═══ */
 let _bdCargadaAlgunaVez=false;
-/* ═══════════════════════════════════════════════════════════════════════
-   SISTEMA DE PERSISTENCIA v87
-   ─────────────────────────────────────────────────────────────────────
-   guardarBD() → set() directo a Firebase con cola de escritura.
-   onValue → nunca bloqueado, es la fuente de tiempo real.
-   Renderizado inmediato con estado local sin esperar a Firebase.
-   ═══════════════════════════════════════════════════════════════════════ */
-
-function _normalizarBD(data) {
-  if (!data) return data;
-  if (!data.productos) data.productos = [];
-  if (!data.jugadores) data.jugadores = {};
-  if (!data.intercambios) data.intercambios = {};
-  if (!data.arena) data.arena = {};
-  if (!data.camara) data.camara = {};
-  if (!data.eventoSistema) data.eventoSistema = 'normal';
-  if (!data.radio) data.radio = {canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};
-  if (!data.radio.canciones) data.radio.canciones = {};
-  if (data.radio.activada === undefined) data.radio.activada = false;
-  if (!data.ruletas) data.ruletas = {};
-  if (!data.torneos) data.torneos = {};
-  if (!data.denuncias) data.denuncias = {};
-  /* Firebase serializa arrays como objetos {0:{},1:{}} — normalizar siempre */
-  if (!Array.isArray(data.actividadGlobal))
-    data.actividadGlobal = data.actividadGlobal ? Object.values(data.actividadGlobal).filter(Boolean) : [];
-  if (!Array.isArray(data.adminLog))
-    data.adminLog = data.adminLog ? Object.values(data.adminLog).filter(Boolean) : [];
-  if (!Array.isArray(data.noticias))
-    data.noticias = data.noticias ? Object.values(data.noticias).filter(function(n){return n&&n.titular;}) : [];
-  return data;
-}
-
-/* onValue: nunca bloqueado. Fuente de tiempo real para todos los jugadores.
-   Cuando guardamos, Firebase devuelve el eco con los datos correctos. */
-onValue(ref(db,'silph_co_market'), snapshot => {
-  const data = snapshot.val();
-  if (data) {
-    _bdCargadaAlgunaVez = true;
-    _normalizarBD(data);
-    /* Fusión durante escritura: preservar cambios locales aún no confirmados */
-    if (window._guardandoBD && window._bdLocalPendiente) {
-      const p = window._bdLocalPendiente;
-      if (p.jugadores && userSesion) data.jugadores[userSesion] = p.jugadores[userSesion];
-      ['noticias','denuncias','actividadGlobal','adminLog','torneos','arena','pvp','campeones'].forEach(function(c){
-        if (p[c] !== undefined) data[c] = p[c];
-      });
+onValue(ref(db,'silph_co_market'),snapshot=>{
+    const data=snapshot.val();
+    if(data){
+    /* Ignorar snapshots que lleguen mientras guardarBD está en curso O justo después
+       de que terminó. El snapshot de onValue puede ser el estado PRE-escritura que
+       Firebase emite antes de confirmar nuestro set(). Lo detectamos comparando
+       la versión del snapshot contra la marca de tiempo de nuestra última escritura.
+       Margen de 3 segundos: si el snapshot llegó menos de 3s después de que
+       guardamos, probablemente es el eco del estado viejo — ignorarlo. */
+    if(window._guardandoBD) return;
+    if(window._ultimaEscrituraBD && Date.now() - window._ultimaEscrituraBD < 3000) return;
+    baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.noticias)baseDatos.noticias=[];if(!baseDatos.denuncias)baseDatos.denuncias={};
+    /* Firebase puede convertir arrays en objetos con claves numéricas — normalizar */
+    if(baseDatos.noticias && !Array.isArray(baseDatos.noticias)) baseDatos.noticias=Object.values(baseDatos.noticias).filter(function(n){return n&&n.titular;});
+    if(baseDatos.actividadGlobal && !Array.isArray(baseDatos.actividadGlobal)) baseDatos.actividadGlobal=Object.values(baseDatos.actividadGlobal).filter(Boolean);
+    if(baseDatos.adminLog && !Array.isArray(baseDatos.adminLog)) baseDatos.adminLog=Object.values(baseDatos.adminLog).filter(Boolean);
+    window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
+    else if(_bdCargadaAlgunaVez){
+        /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
+        return;
     }
-    baseDatos = data;
-    window._ultimaBDConocida = JSON.parse(JSON.stringify(data));
-    setTimeout(_aplicarEventoAutomatico, 0);
-  } else if (_bdCargadaAlgunaVez) {
-    return;
-  } else {
-    if (!window._bdVerificandoVacio) {
-      window._bdVerificandoVacio = true;
-      setTimeout(() => {
-        get(ref(db,'silph_co_market')).then(snap2 => {
-          window._bdVerificandoVacio = false;
-          if (!snap2.val()) {
-            baseDatos = {productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:'normal',radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[],torneos:{},noticias:[],denuncias:{}};
-            window._ultimaBDConocida = JSON.parse(JSON.stringify(baseDatos));
-            set(ref(db,'silph_co_market'), baseDatos);
-          }
-        }).catch(() => { window._bdVerificandoVacio = false; });
-      }, 2500);
+    else{
+        /* Primera vez que no vemos datos: podría ser una base de datos nueva de verdad, o un simple parpadeo de red en la primerísima carga. En vez de asumir y sobrescribir al momento, esperamos y volvemos a comprobar una sola vez antes de decidir. */
+        if(!window._bdVerificandoVacio){
+            window._bdVerificandoVacio=true;
+            setTimeout(()=>{
+                get(ref(db,'silph_co_market')).then(snap2=>{
+                    window._bdVerificandoVacio=false;
+                    if(!snap2.val()){
+                        /* Confirmado dos veces por separado: ahora sí, base de datos nueva de verdad. */
+                        baseDatos={productos:baseDatosInicial,jugadores:{},intercambios:{},arena:{},camara:{},legalOpen:true,packOpen:true,illegalOpen:true,eventoSistema:"normal",radio:{canciones:{},semillaOrden:0,inicioEpoch:0,activada:false},actividadGlobal:[],adminLog:[],torneos:{}};
+                        window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));
+                        set(ref(db,'silph_co_market'),baseDatos);
+                    }
+                    /* Si en la relectura sí hay datos, era un parpadeo: no hacemos nada, el propio listener ya recibirá los datos reales. */
+                }).catch(()=>{window._bdVerificandoVacio=false;});
+            },2500);
+        }
+        return;
     }
-    return;
-  }
-  sincronizarRadio();
-  if (userSesion) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app-shell').style.display = 'block';
-    actualizarComprasPorTiempo();
-    refrescarPantallaGamer();
-    actualizarBannerAlertasVisuales();
-    renderizarArenaPublica();
-    renderizarCamaraPublica();
-    actualizarBarraVidasDesdeDB();
-    renderizarCementerioDOM();
-    actualizarEstadisticasSacrificioPanel();
-    renderizarActividadGlobalInicio();
-    renderizarNoticiario();
-    renderizarDuelosPvP();
-    pvpActualizarAdminPanel();
-    if (document.getElementById('section-denuncias') && document.getElementById('section-denuncias').classList.contains('active')) renderizarDenuncias();
-    if (document.getElementById('section-torneos') && document.getElementById('section-torneos').classList.contains('active')) renderizarTorneos();
-    if (document.getElementById('section-tracker') && document.getElementById('section-tracker').classList.contains('active')) renderizarTracker();
-    if (document.getElementById('section-misiones') && document.getElementById('section-misiones').classList.contains('active')) { renderizarMisiones(); actualizarWidgetMisionesInicio(); verificarMisionesCompletadasMision(); }
-    if (document.getElementById('section-asistente') && document.getElementById('section-asistente').classList.contains('active')) renderizarAsistente();
-    if (document.getElementById('section-admin') && document.getElementById('section-admin').classList.contains('active')) redibujarConsolaAdminMaster();
-    renderizarMapaInicio();
-    const bA = document.getElementById('nav-admin');
-    if (bA) bA.style.display = (userSesion.toLowerCase() === 'srwiwa') ? 'flex' : 'none';
-    mejorarTodosLosSelects(document);
-    refrescarSelectsPersonalizados();
-    if (window.refrescarCarnetEntrenador) refrescarCarnetEntrenador();
-    var _secActiva = 'inicio';
-    document.querySelectorAll('.page-section.active').forEach(function(el) {
-      var id = el.id; if (id && id.startsWith('section-')) _secActiva = id.replace('section-','');
-    });
-    if (window._aplicarTemaSidebarNav) _aplicarTemaSidebarNav(_secActiva);
-    if (window._actualizarSidebarFooter) _actualizarSidebarFooter();
-    setTimeout(function(){ renderizarAsistente(); _asisSetSeccion(_secActiva); }, 400);
-  } else {
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('app-shell').style.display = 'none';
-    const bA = document.getElementById('nav-admin'); if (bA) bA.style.display = 'none';
-  }
+    sincronizarRadio();
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();renderizarNoticiario();if(document.getElementById('section-denuncias')&&document.getElementById('section-denuncias').classList.contains('active'))renderizarDenuncias();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
+    else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
-
+/* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
+   vuelve a leer lo último del servidor justo antes de guardar, y solo aplica encima los trozos
+   (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
+   sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
+   accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
 const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','noticias','denuncias'];
 
-/* ── guardarBD ──────────────────────────────────────────────────────────────
-   Cola de escritura + renderizado inmediato.
-   El usuario ve el cambio al instante; Firebase se actualiza en segundo plano.
-   ─────────────────────────────────────────────────────────────────────────── */
-async function guardarBD() {
-  if (window._guardandoBD) {
+/* ── guardarBD ─────────────────────────────────────────────────────────────
+   Escribe baseDatos en Firebase de forma directa y sin race conditions.
+
+   Diseño anterior (v81-v84): hacía get() → merge → set(). El get() tardaba
+   200-800ms. Durante ese tiempo onValue podía dispararse y sobrescribir
+   baseDatos con el snapshot previo al guardado, borrando denuncias/noticias.
+   Además, el sistema de diff basado en _ultimaBDConocida descartaba cambios
+   si onValue había actualizado esa referencia antes del cambio local.
+
+   Diseño nuevo: set() directo de baseDatos capturado en el instante de la
+   llamada. Cola de escritura para fusionar llamadas solapadas.
+   ─────────────────────────────────────────────────────────────────────── */
+async function guardarBD(){
+  if(window._guardandoBD){
     window._guardandoBDPendiente = true;
     return;
   }
   window._guardandoBD = true;
   window._guardandoBDPendiente = false;
 
+  /* Snapshot de baseDatos en este instante exacto.
+     Deep copy para que onValue no pueda mutar 'local' mientras guardamos. */
   const local = JSON.parse(JSON.stringify(baseDatos));
-  window._bdLocalPendiente = local;
 
-  /* Renderizar UI de inmediato — respuesta instantánea sin esperar Firebase */
-  _renderizarTrasGuardar();
-
-  try {
-    await set(ref(db, 'silph_co_market'), local);
-  } catch(err) {
-    console.error('[guardarBD] Error Firebase:', err);
+  try{
+    window._ultimaEscrituraBD = Date.now(); // marcar ANTES de set() para bloquear snapshots del eco
+    await set(ref(db,'silph_co_market'), local);
+    /* Actualizar baseDatos con lo que se guardó, normalizando arrays */
+    baseDatos = local;
+    if(baseDatos.noticias && !Array.isArray(baseDatos.noticias)) baseDatos.noticias=Object.values(baseDatos.noticias).filter(function(n){return n&&n.titular;});
+    if(baseDatos.actividadGlobal && !Array.isArray(baseDatos.actividadGlobal)) baseDatos.actividadGlobal=Object.values(baseDatos.actividadGlobal).filter(Boolean);
+    window._ultimaBDConocida = JSON.parse(JSON.stringify(baseDatos));
+  }catch(err){
+    console.error('[guardarBD] Error al escribir en Firebase:', err);
   }
 
-  window._bdLocalPendiente = null;
   window._guardandoBD = false;
 
-  if (window._guardandoBDPendiente) {
+  /* Si alguien llamó guardarBD() mientras estábamos guardando, relanzar
+     ahora con el estado más reciente (puede incluir más cambios). */
+  if(window._guardandoBDPendiente){
     window._guardandoBDPendiente = false;
     guardarBD();
   }
-}
-
-/* Renderiza las secciones que pueden haber cambiado tras un guardarBD */
-function _renderizarTrasGuardar() {
-  if (!userSesion) return;
-  renderizarActividadGlobalInicio();
-  renderizarNoticiario();
-  refrescarPantallaGamer();
-  actualizarBarraVidasDesdeDB();
-  if (document.getElementById('section-denuncias') && document.getElementById('section-denuncias').classList.contains('active')) renderizarDenuncias();
-  if (document.getElementById('section-torneos') && document.getElementById('section-torneos').classList.contains('active')) renderizarTorneos();
-  if (document.getElementById('section-misiones') && document.getElementById('section-misiones').classList.contains('active')) { renderizarMisiones(); actualizarWidgetMisionesInicio(); }
-  if (document.getElementById('section-admin') && document.getElementById('section-admin').classList.contains('active')) redibujarConsolaAdminMaster();
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -10891,6 +10830,8 @@ window.pvpResolverDuelo = function(quien){
   );
   guardarBD();
   mostrarNotificacion('🏆 '+ganadorId.toUpperCase()+' gana el duelo! +'+PVP_ELO_GANADOR+' ELO','exito','🏆');
+  pvpActualizarAdminPanel();
+  renderizarDuelosPvP();
 };
 
 /* ── Cancelar duelo ── */
@@ -11219,33 +11160,8 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 87;
+const APP_VERSION = 86;
 const VERSIONES = [
-  {
-    version: 87,
-    fecha: '2026-09-05',
-    titulo: 'Reescritura completa del sistema de persistencia — tiempo real funciona',
-    resumen: 'Sistema de persistencia reescrito desde cero. onValue nunca se bloquea (fuente de tiempo real). guardarBD renderiza la UI de inmediato sin esperar a Firebase. Fusión inteligente durante escritura para no perder cambios de otros jugadores. _normalizarBD centraliza la normalización de arrays (Firebase serializa arrays como objetos).',
-    nuevas: [
-      '_normalizarBD(): función centralizada que normaliza todos los arrays que Firebase puede serializar como objetos',
-      '_renderizarTrasGuardar(): renderiza inmediatamente todas las secciones afectadas sin esperar a Firebase',
-      'Fusión inteligente en onValue: si llega un snapshot mientras guardamos, preserva los cambios locales pendientes',
-    ],
-    mejoras: [
-      'onValue nunca bloqueado — sincronización en tiempo real siempre activa para todos los jugadores',
-      'guardarBD renderiza la UI al instante (no hay que refrescar para ver los cambios)',
-      'Cola de escritura fusiona llamadas solapadas correctamente',
-      'onValue re-renderiza todas las secciones activas al recibir datos — tiempo real completo',
-      'noticias, denuncias, actividadGlobal se normalizan en _normalizarBD, en guardarBD y en _generarNoticiasDesdeActividadYBD',
-      'Handlers de tribunal, PvP y Arena ya no tienen renders redundantes (guardarBD los hace)',
-    ],
-    rendimiento: ['Eliminados todos los await guardarBD() innecesarios — la UI no espera a Firebase para actualizarse'],
-    fixes: [
-      'Bug: onValue bloqueado 3s tras cada escritura impedía ver cambios de otros jugadores en tiempo real',
-      'Bug: renders duplicados tras guardarBD causaban parpadeos y estado inconsistente',
-      'Bug: async functions sin await en handlers del tribunal no garantizaban el orden de operaciones',
-    ],
-  },
   {
     version: 86,
     fecha: '2026-09-05',
@@ -12704,7 +12620,10 @@ window.presentarDenuncia = async function(){
     userSesion.charAt(0).toUpperCase()+userSesion.slice(1)+' ha presentado una denuncia contra '+denunciado+' por '+_denunciaMotivoTexto(motivo)+'. Caso '+numCaso+'.',
     'Tribunal del Locke', [userSesion, denunciado]);
 
-  guardarBD();
+  await guardarBD();
+  renderizarActividadGlobalInicio();
+  renderizarNoticiario();
+  renderizarDenuncias();
   document.getElementById('denuncia-descripcion').value='';
   _poblarSelectDenunciado();
   denunciasTab('casos');
@@ -12729,7 +12648,10 @@ window.avanzarCaso = async function(id, nuevoEstado){
     titulares[nuevoEstado]||nuevoEstado.toUpperCase()+': CASO '+id,
     d.denunciado.toUpperCase()+' '+( textos[nuevoEstado]||nuevoEstado)+'. Caso iniciado por '+d.denunciante.toUpperCase()+'.',
     'Tribunal del Locke',[d.denunciante,d.denunciado]);
-  guardarBD();
+  await guardarBD();
+  renderizarDenuncias();
+  renderizarActividadGlobalInicio();
+  renderizarNoticiario();
   mostrarNotificacion('Caso '+id+' avanzado a "'+nuevoEstado+'".','exito','⚖️');
 };
 
@@ -12764,7 +12686,10 @@ window.abrirSentenciaModal = function(id){
       registrarNoticia('exclusiva','SENTENCIA DEL CASO '+id,
         d.denunciado.charAt(0).toUpperCase()+d.denunciado.slice(1)+' declarado '+veredicto+(sancion?'. Sanción: '+sancion:'.')+' Caso impulsado por '+d.denunciante+'.',
         'Tribunal del Locke',[d.denunciante,d.denunciado]);
-      guardarBD();
+      await guardarBD();
+      renderizarDenuncias();
+      renderizarActividadGlobalInicio();
+      renderizarNoticiario();
       mostrarNotificacion('Sentencia dictada. Caso '+id+' cerrado.','exito','⚖️');
     }
   });
@@ -12780,7 +12705,10 @@ window.cerrarCaso = async function(id){
   registrarNoticia('judicial','CASO '+id+' CERRADO',
     'El Mercader ha cerrado el caso entre '+d.denunciante.toUpperCase()+' y '+d.denunciado.toUpperCase()+' sin sentencia formal.',
     'Tribunal del Locke',[d.denunciante,d.denunciado]);
-  guardarBD();
+  await guardarBD();
+  renderizarDenuncias();
+  renderizarActividadGlobalInicio();
+  renderizarNoticiario();
   mostrarNotificacion('Caso '+id+' cerrado.','exito','⚖️');
 };
 
