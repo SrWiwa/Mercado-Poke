@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v77 | Build: 2026-09-03 -->
+<!-- Silph Co v78 | Build: 2026-09-06 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -10783,8 +10783,30 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 77;
+const APP_VERSION = 78;
 const VERSIONES = [
+  {
+    version: 78,
+    fecha: '2026-09-06',
+    titulo: 'Perfil persistente, misiones mejoradas y tiendas en español',
+    resumen: 'El perfil ya sobrevive al F5. Las misiones de dinero detectan el gacha y el admin al instante. Se reducen a 6 misiones por rotación con dificultad aleatoria. Menos vidas extra de misiones. Tiendas más variadas con nombres en español de España.',
+    nuevas: [
+      'Tiendas Legal y Pack con nombres en español de España (+180 traducciones)',
+      'Motor de generación de tiendas renovado: rota por categorías para garantizar variedad real en cada generación',
+    ],
+    mejoras: [
+      'Perfil persistente: sessionStorage → localStorage (ya no se pierde con F5 o recargar)',
+      'Misiones de dinero: el gacha y el admin de fondos disparan la verificación de misiones al instante',
+      'Admin de fondos: ahora llama a guardarBD() correctamente al modificar dinero',
+      'Misiones reducidas de 10 a 6: 4 de dificultad aleatoria barajada (facil/normal/dificil/muydificil) + 1 épica + 1 especial (duelo)',
+      'Probabilidad de vida extra reducida: eliminada del pool Difícil, reducida al ~10% en Muy Difícil',
+    ],
+    rendimiento: [],
+    fixes: [
+      'Perfil "entrenador" inventado al recargar: corregido (sessionStorage no persiste entre recargas)',
+      'Misiones de acumular/ganar dinero no se completaban con recompensas de gacha ni con dinero añadido por admin',
+    ],
+  },
   {
     version: 77,
     fecha: '2026-09-03',
