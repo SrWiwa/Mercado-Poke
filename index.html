@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v79 | Build: 2026-09-06 -->
+<!-- Silph Co v80 | Build: 2026-09-06 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -488,7 +488,7 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .diario-header{background:var(--bg-overlay);padding:14px 18px;border-bottom:1px solid var(--borde);display:flex;justify-content:space-between;align-items:center}.diario-logs{flex:1;padding:20px 18px 20px 26px;overflow-y:auto;background:var(--bg-base);position:relative}.diario-logs::before{content:'';position:absolute;left:34px;top:20px;bottom:20px;width:2px;background:linear-gradient(180deg,rgba(179,135,10,.25),rgba(179,135,10,.04))}.diario-entry{position:relative;background:var(--bg-surface);border:1px solid var(--borde);padding:10px 14px 10px 16px;border-radius:var(--r-md);margin-left:18px;margin-bottom:10px;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;animation:misionCardEntrada .3s ease backwards}.diario-entry:hover{border-color:rgba(180,83,9,.3);transform:translateX(1px);box-shadow:var(--shadow-sm)}.diario-entry::before{content:'';position:absolute;left:-24px;top:14px;width:8px;height:8px;border-radius:50%;background:var(--amarillo-dim);box-shadow:0 0 0 3px var(--bg-base),0 0 6px rgba(179,135,10,.3)}.diario-entry-ts{font-family:var(--font-display);font-size:9px;color:var(--txt-muted);margin-bottom:3px;letter-spacing:.3px}.diario-entry-txt{font-size:13px;color:var(--txt-primary);white-space:pre-wrap;line-height:1.45}.diario-footer{padding:12px 16px;background:var(--bg-elevated);border-top:1px solid var(--borde)}.diario-textarea{width:100%;background:var(--bg-base);color:var(--txt-primary);border:1px solid var(--borde);border-radius:var(--r-md);padding:9px 12px;font-size:13px;font-family:var(--font-body);resize:vertical}.diario-textarea:focus{outline:none;border-color:var(--amarillo-dim);box-shadow:0 0 0 3px rgba(180,83,9,.08)}.btn-guardar-diario{margin-top:8px;background:rgba(180,83,9,.08);color:#92400e;border:1px solid rgba(180,83,9,.22);padding:9px 18px;border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s}.btn-guardar-diario:hover{background:rgba(180,83,9,.15);transform:translateY(-1px)}.btn-guardar-diario:active{transform:scale(.96)}
 .overlay-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(16,24,40,.7);backdrop-filter:blur(10px);z-index:3000;justify-content:center;align-items:center;padding:20px}.modal-box{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-2xl);padding:24px;width:100%;max-width:460px;box-shadow:var(--shadow-xl);animation:pop-in .25s cubic-bezier(.16,1,.3,1)}.modal-title{font-family:var(--font-display);font-size:14px;font-weight:800;margin-bottom:4px;color:var(--txt-primary)}.modal-subtitle{font-size:11px;color:var(--txt-secondary);font-family:var(--font-display);margin-bottom:18px}.modal-field{margin-bottom:11px}.modal-field label{font-size:10px;color:var(--txt-secondary);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:5px}.modal-input{width:100%;background:var(--bg-card);color:var(--txt-primary);border:1px solid var(--borde);padding:9px 12px;border-radius:var(--r-md);font-size:13px;font-family:var(--font-body);transition:border-color .18s}.modal-input:focus{outline:none;border-color:var(--rojo);box-shadow:0 0 0 3px rgba(216,41,63,.08)}.modal-select{width:100%;background:var(--bg-card);color:var(--txt-primary);border:1px solid var(--borde);padding:9px 12px;border-radius:var(--r-md);font-size:13px;font-family:var(--font-display);-webkit-appearance:none;appearance:none;cursor:pointer;transition:border-color .18s}.modal-select:focus{outline:none;border-color:var(--rojo)}.modal-btns{display:flex;gap:10px;margin-top:18px}.btn-modal-prim{flex:1;padding:12px;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s}.btn-modal-prim.danger{background:#b91c1c;color:#fff;border:1px solid #b91c1c}.btn-modal-prim.danger:hover{background:#991b1b;box-shadow:0 4px 14px -2px rgba(185,28,28,.4);transform:translateY(-1px)}.btn-modal-prim.danger:active{transform:scale(.96)}.btn-modal-cancel:active{transform:scale(.96)}.btn-modal-cancel{padding:11px 16px;background:var(--bg-overlay);color:var(--txt-secondary);border:1px solid var(--borde);cursor:pointer;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:700;text-transform:uppercase;transition:all .18s}.btn-modal-cancel:hover{border-color:var(--borde-hover);color:var(--txt-primary)}
 .sacrificio-modal-box{background:var(--bg-elevated);border:1px solid rgba(124,54,16,.2);border-radius:var(--r-2xl);width:100%;max-width:580px;max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl);animation:pop-in .3s cubic-bezier(.16,1,.3,1);overflow:hidden}.sac-header{background:linear-gradient(135deg,rgba(124,54,16,.06),rgba(244,246,248,.8));border-bottom:1px solid rgba(124,54,16,.12);padding:16px 20px 12px;position:relative;overflow:hidden;flex-shrink:0}.sac-header::before{content:'🔥';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.06;pointer-events:none}.sac-header::after{display:none}.sac-title{font-family:var(--font-display);font-size:13px;font-weight:800;color:#7c3610;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px}.sac-subtitulo{font-size:11px;color:var(--txt-secondary);font-family:var(--font-display)}.sac-tabla{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:5px;padding:10px 20px;background:rgba(124,54,16,.03);border-bottom:1px solid rgba(124,54,16,.1);flex-shrink:0}.sac-tabla-chip{display:flex;align-items:center;gap:6px;background:rgba(124,54,16,.04);border:1px solid rgba(124,54,16,.1);border-radius:var(--r-sm);padding:4px 8px;font-size:10px;color:var(--txt-secondary);font-family:var(--font-display)}.sac-vida-badge{background:#7c3610;color:#fff;border-radius:99px;padding:1px 6px;font-size:9px;font-weight:800;flex-shrink:0}.sac-body{flex:1;overflow-y:auto;padding:16px 20px}.sac-form{background:var(--bg-overlay);border:1px solid rgba(124,54,16,.1);border-radius:var(--r-lg);padding:14px;margin-bottom:12px}.sac-label{font-size:10px;font-family:var(--font-display);font-weight:700;color:var(--txt-secondary);letter-spacing:.8px;text-transform:uppercase;display:block;margin-bottom:5px}.sac-input{background:var(--bg-card);color:var(--txt-primary);border:1px solid rgba(124,54,16,.15);padding:9px 12px;width:100%;border-radius:var(--r-md);font-size:13px;font-family:var(--font-body);transition:border-color .18s;margin-bottom:9px}.sac-input:focus{outline:none;border-color:rgba(124,54,16,.4);box-shadow:0 0 0 3px rgba(124,54,16,.06)}.sac-select{background:var(--bg-card);color:#7c3610;border:1px solid rgba(124,54,16,.15);padding:9px 12px;width:100%;border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:700;-webkit-appearance:none;appearance:none;cursor:pointer;margin-bottom:9px}.sac-select:focus{outline:none;border-color:rgba(124,54,16,.4)}.sac-preview{display:flex;align-items:center;gap:10px;background:rgba(124,54,16,.04);border:1px solid rgba(124,54,16,.15);border-radius:var(--r-md);padding:11px 13px;margin-top:8px;transition:all .3s ease}.sac-preview.hidden{opacity:0;pointer-events:none}.sac-preview-txt{font-family:var(--font-display);font-size:11px;color:var(--txt-secondary);flex:1}.sac-preview-num{font-family:var(--font-display);font-size:22px;font-weight:800;color:#7c3610;flex-shrink:0}.sac-aviso-max{display:none;background:rgba(185,28,28,.06);border:1px solid rgba(185,28,28,.2);border-radius:var(--r-md);padding:9px 12px;margin-top:8px;font-size:11px;color:#b91c1c;font-family:var(--font-display)}.sac-historial-titulo{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--txt-secondary);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}.sac-entry{background:rgba(124,54,16,.02);border:1px solid rgba(124,54,16,.08);border-left:3px solid rgba(124,54,16,.3);padding:8px 11px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:5px;font-size:11px;color:var(--txt-secondary);transition:border-left-color .15s}.sac-entry:hover{border-left-color:rgba(124,54,16,.55)}.sac-entry-ts{font-family:var(--font-display);font-size:9px;color:var(--txt-muted);margin-bottom:3px}.sac-footer{padding:12px 20px;background:var(--bg-overlay);border-top:1px solid var(--borde);display:flex;gap:10px;flex-shrink:0}.btn-sacrificar{flex:1;padding:11px;background:rgba(124,54,16,.08);color:#7c3610;border:1px solid rgba(124,54,16,.28);cursor:pointer;border-radius:var(--r-md);font-weight:800;font-size:11px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.8px;transition:all .2s}.btn-sacrificar:hover:not(:disabled){background:rgba(124,54,16,.16)}.btn-sacrificar:disabled{background:var(--bg-surface)!important;color:var(--txt-muted)!important;border-color:var(--borde)!important;cursor:not-allowed}.btn-sac-cancel{padding:11px 16px;background:var(--bg-overlay);color:var(--txt-secondary);border:1px solid var(--borde);cursor:pointer;border-radius:var(--r-md);font-weight:700;font-size:11px;font-family:var(--font-display);text-transform:uppercase;transition:all .18s}.btn-sac-cancel:hover{border-color:var(--borde-hover);color:var(--txt-primary)}
-.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background-color:var(--bg-base);transition:opacity .3s ease}.login-screen.fade-out{opacity:0}.app-shell.fade-in{animation:vistaEntrada .4s cubic-bezier(.16,1,.3,1)}.login-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-2xl);padding:38px 34px;width:100%;max-width:360px;box-shadow:var(--shadow-xl);animation:pop-in .4s cubic-bezier(.16,1,.3,1);text-align:center}.login-pokeball{width:52px;height:52px;border-radius:50%;background:var(--rojo);position:relative;margin:0 auto 20px;box-shadow:0 0 30px rgba(216,41,63,.25)}.login-pokeball::before{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:rgba(0,0,0,.35);border-radius:26px 26px 0 0}.login-pokeball::after{content:'';position:absolute;top:calc(50% - 7px);left:calc(50% - 7px);width:14px;height:14px;background:#fff;border:3px solid #000;border-radius:50%;box-shadow:0 0 8px rgba(255,255,255,.3)}.login-title{font-family:var(--font-display);font-size:17px;font-weight:900;color:#92400e;letter-spacing:.5px;margin-bottom:4px}.login-sub{font-size:11px;color:var(--txt-secondary);margin-bottom:26px;font-family:var(--font-display);letter-spacing:.5px}.login-input{background:var(--bg-card);color:var(--txt-primary);border:1px solid var(--borde);padding:12px 16px;width:100%;margin-bottom:12px;text-align:center;border-radius:var(--r-md);font-size:14px;font-family:var(--font-display);letter-spacing:1px;transition:border-color .18s}.login-input:focus{outline:none;border-color:var(--rojo);box-shadow:0 0 0 3px rgba(216,41,63,.08)}.login-input::placeholder{color:var(--txt-muted);font-size:11px}.btn-login{width:100%;padding:13px;background:var(--rojo);color:#fff;border:1px solid var(--rojo);border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:all .2s}.btn-login:hover{background:var(--rojo-dim);box-shadow:0 4px 18px -2px rgba(185,28,28,.4);transform:translateY(-1px)}.btn-login:active{transform:scale(.97)}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background-color:var(--bg-base);transition:opacity .3s ease}.login-screen.fade-out{opacity:0}.app-shell.fade-in{animation:vistaEntrada .4s cubic-bezier(.16,1,.3,1)}.login-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-2xl);padding:38px 34px;width:100%;max-width:360px;box-shadow:var(--shadow-xl);animation:pop-in .4s cubic-bezier(.16,1,.3,1);text-align:center}.login-pokeball{width:52px;height:52px;border-radius:50%;background:var(--rojo);position:relative;margin:0 auto 20px;box-shadow:0 0 30px rgba(216,41,63,.25)}.login-pokeball::before{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:rgba(0,0,0,.35);border-radius:26px 26px 0 0}.login-pokeball::after{content:'';position:absolute;top:calc(50% - 7px);left:calc(50% - 7px);width:14px;height:14px;background:#fff;border:3px solid #000;border-radius:50%;box-shadow:0 0 8px rgba(255,255,255,.3)}.login-title{font-family:var(--font-display);font-size:17px;font-weight:900;color:#92400e;letter-spacing:.5px;margin-bottom:4px}.login-sub{font-size:11px;color:var(--txt-secondary);margin-bottom:26px;font-family:var(--font-display);letter-spacing:.5px}.login-input{background:var(--bg-card);color:var(--txt-primary);border:1px solid var(--borde);padding:12px 16px;width:100%;margin-bottom:12px;text-align:center;border-radius:var(--r-md);font-size:14px;font-family:var(--font-display);letter-spacing:1px;transition:border-color .18s}.login-input:focus{outline:none;border-color:var(--rojo);box-shadow:0 0 0 3px rgba(216,41,63,.08)}.login-input::placeholder{color:var(--txt-muted);font-size:11px}.btn-login{width:100%;padding:13px;background:var(--rojo);color:#fff;border:1px solid var(--rojo);border-radius:var(--r-md);font-family:var(--font-display);font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:all .2s}.btn-login:hover{background:var(--rojo-dim);box-shadow:0 4px 18px -2px rgba(185,28,28,.4);transform:translateY(-1px)}.btn-login:active{transform:scale(.97)}.login-input[type=select],.login-input select,.login-screen select.login-input{appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}.login-input option{background:var(--bg-elevated,#1a1a2e);color:var(--txt-primary,#f1f5f9)}
 .dios-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;padding-bottom:2px}.dios-tab{padding:9px 15px;border-radius:var(--r-md);font-family:var(--font-display);font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-secondary);transition:all .18s ease;white-space:nowrap}.dios-tab:hover{color:var(--txt-primary);background:var(--bg-overlay);transform:translateY(-1px)}.dios-tab.active{background:rgba(161,98,7,.1);color:#92400e;border-color:rgba(161,98,7,.3);transform:translateY(-1px)}.dios-view{display:none;width:100%;box-sizing:border-box}.dios-view.active{display:block}.dios-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .admin-panel{background:var(--bg-elevated);border:1px solid var(--borde);padding:16px;border-radius:var(--r-lg);height:fit-content;box-sizing:border-box;min-width:0;box-shadow:var(--shadow-md);transition:border-color .2s ease,box-shadow .2s ease;animation:misionCardEntrada .32s ease backwards}.admin-panel:hover{border-color:var(--borde-hover);box-shadow:var(--shadow-lg)}.admin-section-title{color:#92400e;font-size:11px;font-family:var(--font-display);font-weight:700;letter-spacing:.5px;margin:0 0 10px 0;display:flex;align-items:center;gap:8px}.admin-section-title::before{content:'';width:5px;height:14px;border-radius:2px;background:currentColor;flex-shrink:0}.adm-label{font-size:9px;color:var(--txt-secondary);font-family:var(--font-display);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;display:block}.museo-btn-jugador{transition:all .15s;cursor:pointer}.museo-btn-jugador:hover{opacity:.85}.admin-input{background:var(--bg-card);color:var(--txt-primary);border:1px solid var(--borde);padding:7px 10px;width:100%;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;transition:border-color .18s;margin-bottom:8px}.admin-input:focus{outline:none;border-color:var(--borde-hover)}.admin-select{background:var(--bg-card);color:var(--txt-primary);border:1px solid var(--borde);padding:7px 10px;width:100%;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;-webkit-appearance:none;appearance:none;cursor:pointer;margin-bottom:8px}.admin-hr{border:none;border-top:1px solid var(--borde);margin:14px 0}
 /* btn-admin → redefinido en bloque btn-carnet-trigger (Fase 5) */
@@ -1755,6 +1755,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
     <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
     <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
+    <div class="more-sheet-item" onclick="navegarA('tribunal');cerrarMasSheet()"><span class="ms-icon">⚖️</span> Tribunal</div>
 
     <div class="more-sheet-item" onclick="navegarA('vidas-sacrificios');cerrarMasSheet()"><span class="ms-icon">❤️</span> Vidas y Sacrificios</div>
     <div class="more-sheet-item" onclick="navegarA('medallas-torneos');cerrarMasSheet()"><span class="ms-icon">🏆</span> Medallas y Torneos</div>
@@ -1792,8 +1793,26 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <div class="login-pokeball"></div>
     <div class="login-title">ACCESO DE ENTRENADOR</div>
     <div class="login-sub">Red de Intercambio Comercial · Silph Co.</div>
-    <input type="text" id="login-nombre" class="login-input" placeholder="INTRODUCE TU OPERADOR ID" onkeydown="if(event.key==='Enter')ingresarAlSistema()">
-    <button class="btn-login" onclick="ingresarAlSistema()">CONECTAR A LA RED</button>
+
+    <!-- Vista principal: seleccionar jugador existente -->
+    <div id="login-vista-select">
+      <select id="login-select-user" class="login-input" style="cursor:pointer;text-align-last:center">
+        <option value="">— Selecciona tu operador —</option>
+      </select>
+      <button class="btn-login" onclick="ingresarAlSistema()" style="margin-bottom:10px">CONECTAR A LA RED</button>
+      <button class="btn-login" onclick="loginMostrarRegistro()" style="background:transparent;border-color:var(--borde);color:var(--txt-muted);font-size:10px;padding:9px">¿Nuevo entrenador? Solicitar acceso</button>
+    </div>
+
+    <!-- Vista secundaria: código de acceso dado por el admin -->
+    <div id="login-vista-registro" style="display:none">
+      <div style="font-family:var(--font-display);font-size:10px;color:var(--txt-muted);margin-bottom:14px;line-height:1.6">
+        El admin te asigna un código de acceso.<br>Introdúcelo aquí para activar tu cuenta.
+      </div>
+      <input type="text" id="login-codigo-nuevo" class="login-input" placeholder="CÓDIGO DE ACCESO" style="letter-spacing:3px;text-transform:uppercase" onkeydown="if(event.key==='Enter')loginActivarCuenta()">
+      <button class="btn-login" onclick="loginActivarCuenta()" style="margin-bottom:10px">ACTIVAR CUENTA</button>
+      <button class="btn-login" onclick="loginMostrarSelect()" style="background:transparent;border-color:var(--borde);color:var(--txt-muted);font-size:10px;padding:9px">← Volver</button>
+    </div>
+
   </div>
 </div>
 <div id="app-shell" class="app-shell">
@@ -2536,6 +2555,20 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
       <!-- DINERO Y VIDAS -->
       <div id="dv-dinero" class="dios-view">
+        <!-- ── Crear jugador nuevo ── -->
+        <div class="admin-panel" style="margin-bottom:16px">
+          <div class="admin-section-title" style="color:var(--neon-arena)">👤 Crear Nuevo Entrenador</div>
+          <div style="font-size:11px;color:var(--txt-muted);margin-bottom:10px">Introduce el ID que usará para acceder. El jugador recibirá un código de activación igual al ID. Solo podrá entrar si el admin lo ha creado aquí.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+            <div style="flex:1;min-width:140px">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">ID / Código de Acceso</div>
+              <input type="text" id="adm-nuevo-jugador-id" class="admin-input" placeholder="nombre_jugador" style="text-transform:lowercase">
+            </div>
+            <button class="btn-admin comprar" onclick="adminCrearJugador()" style="margin-bottom:0">➕ Crear Entrenador</button>
+          </div>
+          <div id="adm-nuevo-jugador-resultado" style="margin-top:8px;font-size:11px;color:var(--txt-muted);font-family:var(--font-display)"></div>
+        </div>
+
         <div class="dios-grid-2">
           <div class="admin-panel" style="grid-column:1/-1">
             <div class="admin-section-title" style="color:var(--neon-legal)">💰 Recursos del Jugador</div>
@@ -5531,7 +5564,7 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.tribunal)baseDatos.tribunal={casos:{}};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.tribunal)baseDatos.tribunal={casos:{}};loginPoblarSelect();window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -7183,7 +7216,73 @@ window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySele
 window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='ficha')renderizarTitulosYTemas();if(tab==='carnet')renderizarPanelCarnet();};
 
 /* ═══ LOGIN ═══ */
-window.ingresarAlSistema=function(){let id=document.getElementById('login-nombre').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,"");if(!id){mostrarNotificacion("Introduce un Operador ID.","error","🆔");return;}userSesion=id;localStorage.setItem('silph_user_sesion',id);var _rutasLocke=(baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[];if(!baseDatos.jugadores[id]){baseDatos.jugadores[id]={dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),inventario:[{uid:"init",nombre:"Mochila Inicial"}],lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,diarioLogs:[{timestamp:"Inicio",texto:"Sistema iniciado."}],vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],ultimoHackeo:0,tracker:crearTrackerDesdeRutas(_rutasLocke),misionesContadores:{}};}else{let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.misionesContadores)u.misionesContadores={};
+/* ── helpers del login ── */
+window.loginMostrarRegistro = function(){
+  document.getElementById('login-vista-select').style.display='none';
+  document.getElementById('login-vista-registro').style.display='';
+  var inp=document.getElementById('login-codigo-nuevo');if(inp)inp.value='';
+};
+window.loginMostrarSelect = function(){
+  document.getElementById('login-vista-select').style.display='';
+  document.getElementById('login-vista-registro').style.display='none';
+};
+
+/* Rellena el select del login con los jugadores registrados en la BD */
+function loginPoblarSelect(){
+  var sel=document.getElementById('login-select-user');
+  if(!sel) return;
+  var val=sel.value; // conservar selección si ya había una
+  sel.innerHTML='<option value="">— Selecciona tu operador —</option>';
+  if(baseDatos&&baseDatos.jugadores){
+    Object.keys(baseDatos.jugadores).sort().forEach(function(id){
+      var opt=document.createElement('option');
+      opt.value=id;
+      opt.textContent=id.charAt(0).toUpperCase()+id.slice(1);
+      sel.appendChild(opt);
+    });
+  }
+  if(val) sel.value=val;
+}
+
+/* Activar cuenta nueva con código de acceso */
+window.loginActivarCuenta = function(){
+  var raw=document.getElementById('login-codigo-nuevo').value.trim();
+  var codigo=raw.toLowerCase().replace(/[.#$\[\]\s]/g,'');
+  if(!codigo){mostrarNotificacion('Introduce el código de acceso.','error','🆔');return;}
+  /* El código de acceso es un ID pre-creado por el admin en baseDatos.jugadores
+     con el flag pendienteActivacion:true. Solo puede activarse una vez. */
+  if(!baseDatos.jugadores||!baseDatos.jugadores[codigo]){
+    mostrarNotificacion('Código no válido. Pídele al admin que cree tu cuenta.','error','🔒');return;
+  }
+  var u=baseDatos.jugadores[codigo];
+  if(u.pendienteActivacion===false){
+    mostrarNotificacion('Esta cuenta ya está activa. Selecciónala en la lista.','info','✅');
+    loginMostrarSelect(); loginPoblarSelect(); return;
+  }
+  /* Activar */
+  u.pendienteActivacion=false;
+  guardarBD();
+  mostrarNotificacion('¡Cuenta activada! Ya puedes acceder.','exito','🎉');
+  loginMostrarSelect();
+  loginPoblarSelect();
+  /* Auto-seleccionar el nuevo usuario */
+  setTimeout(function(){
+    var sel=document.getElementById('login-select-user');
+    if(sel) sel.value=codigo;
+  },200);
+};
+
+window.ingresarAlSistema=function(){
+  /* Leer del select, no de un input libre */
+  var sel=document.getElementById('login-select-user');
+  var id=sel?sel.value.trim().toLowerCase():'';
+  if(!id){mostrarNotificacion('Selecciona tu operador de la lista.','error','🆔');return;}
+  if(!baseDatos.jugadores||!baseDatos.jugadores[id]){mostrarNotificacion('Jugador no encontrado. Pide al admin que cree tu cuenta.','error','🔒');return;}
+  /* Bloquear cuentas pendientes de activación */
+  if(baseDatos.jugadores[id].pendienteActivacion===true){mostrarNotificacion('Esta cuenta aún no ha sido activada. Usa el código que te dio el admin.','error','🔒');loginMostrarRegistro();return;}
+  userSesion=id;localStorage.setItem('silph_user_sesion',id);
+  var _rutasLocke=(baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[];
+  {let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.misionesContadores)u.misionesContadores={};
 /* Sincronizar tracker con rutasDefinidas del locke:
    — Si no tiene tracker, crearlo desde cero.
    — Si tiene tracker pero el locke ahora tiene rutas que no están en el tracker
@@ -10625,6 +10724,34 @@ window.asignarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=
 window.quitarTituloManual=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-titulo-usuario').value;if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","🏷️");return;}let u=baseDatos.jugadores[uid];if(!u.tituloManual){mostrarNotificacion("Este entrenador no tiene título manual.","error","🏷️");return;}delete u.tituloManual;if(u.tituloActivo==='manual')u.tituloActivo=null;logAdmin('Quitar título',`${uid.toUpperCase()}`);document.getElementById('adm-titulo-texto').value='';reproducirSonido('click');mostrarNotificacion(`Título manual eliminado de ${uid.toUpperCase()}.`,"info","🗑️");if(userSesion===uid)renderizarTitulosYTemas();};
 window.ajustarVidasEntrenador=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-vidas-usuario').value,ini=parseInt(document.getElementById('adm-vidas-iniciales').value)||20,act=parseInt(document.getElementById('adm-vidas-actuales').value),eEl=document.getElementById('adm-vidas-extra'),extra=eEl?Math.max(0,parseInt(eEl.value)||0):0;if(!uid){mostrarNotificacion("Selecciona un entrenador.","error","❤️");return;}if(isNaN(act)){mostrarNotificacion("Introduce las vidas actuales.","error","❤️");return;}act=Math.max(0,Math.min(act,ini));baseDatos.jugadores[uid].vidasTotales=ini;baseDatos.jugadores[uid].vidasActuales=act;baseDatos.jugadores[uid].vidasExtra=extra;if(act<=0&&extra<=0)baseDatos.jugadores[uid].lockeStatus='perdido';else if(baseDatos.jugadores[uid].lockeStatus==='perdido'&&(act>0||extra>0))baseDatos.jugadores[uid].lockeStatus='jugando';let extraStr=extra>0?`+${extra} extra`:'sin extras';inyectarEntradaDiarioAutomaticaPara(uid,`[ADMIN] El Mercader ajustó tus vidas → ❤️ ${act}/${ini} ${extraStr}`);logAdmin('Ajustar vidas',`${uid.toUpperCase()} → ${act}/${ini} (extra: ${extra})`);guardarBD();reproducirSonido('exito');mostrarNotificacion(`${uid.toUpperCase()}: vidas ${act}/${ini}${extra>0?' +'+extra+' extra':''}`, 'exito','❤️');};
 window.cargarVidasEnAdmin=function(){let uid=document.getElementById('adm-vidas-usuario').value;if(!uid||!baseDatos.jugadores[uid])return;let u=baseDatos.jugadores[uid];document.getElementById('adm-vidas-iniciales').value=u.vidasTotales||20;document.getElementById('adm-vidas-actuales').value=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);let eEl=document.getElementById('adm-vidas-extra');if(eEl)eEl.value=u.vidasExtra||0;};
+window.adminCrearJugador=function(){
+  if(!userSesion||userSesion.toLowerCase()!=='srwiwa'){mostrarNotificacion('Acceso denegado.','error','🔒');return;}
+  var raw=document.getElementById('adm-nuevo-jugador-id').value.trim().toLowerCase().replace(/[.#$\[\]\s]/g,'');
+  var res=document.getElementById('adm-nuevo-jugador-resultado');
+  if(!raw){if(res)res.textContent='⚠️ Introduce un ID válido.';return;}
+  if(baseDatos.jugadores&&baseDatos.jugadores[raw]){if(res)res.textContent='⚠️ El jugador "'+raw.toUpperCase()+'" ya existe.';return;}
+  /* Crear el jugador con pendienteActivacion:true — hasta que use su código no puede entrar */
+  var _rutasLocke=(baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[];
+  if(!baseDatos.jugadores)baseDatos.jugadores={};
+  baseDatos.jugadores[raw]={
+    dinero:4000,pf:10,comprasDisponibles:MAX_COMPRAS,ultimaRecarga:Date.now(),
+    inventario:[{uid:'init',nombre:'Mochila Inicial'}],
+    lockeStatus:'jugando',tipoMedallas:'medallas',numMedallas:0,torneos:0,
+    diarioLogs:[{timestamp:'Inicio',texto:'Cuenta creada por el admin.'}],
+    vidasTotales:20,vidasActuales:20,cementerio:[],sacrificios:[],
+    ultimoHackeo:0,tracker:crearTrackerDesdeRutas(_rutasLocke),
+    misionesContadores:{},pendienteActivacion:true,
+  };
+  logAdmin('Crear jugador','ID: '+raw.toUpperCase()+' — pendiente de activación');
+  guardarBD();
+  reproducirSonido('exito');
+  mostrarNotificacion('Entrenador "'+raw.toUpperCase()+'" creado. Código de acceso: '+raw.toUpperCase(),'exito','👤');
+  if(res)res.innerHTML='✅ Cuenta creada. <strong>Código de acceso: '+raw.toUpperCase()+'</strong> — dáselo al jugador.';
+  document.getElementById('adm-nuevo-jugador-id').value='';
+  actualizarSelectorUsuariosBanco();
+  loginPoblarSelect();
+};
+
 window.modificarFondosEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-banco-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","💰");return;}baseDatos.jugadores[uid].dinero+=(op==='SUMAR'?cant:-cant);logAdmin('Modificar dinero',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} P20a0`);guardarBD();document.getElementById('adm-banco-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} P20a0 para ${uid.toUpperCase()}.`,"exito","💰");if(op==='SUMAR'){setTimeout(function(){if(userSesion===uid)refrescarPantallaGamer();verificarMisionesCompletadasMision();actualizarWidgetMisionesInicio();},300);}};
 window.modificarPFEntrenador=function(op){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let uid=document.getElementById('adm-banco-usuario').value,cant=parseInt(document.getElementById('adm-pf-cantidad').value)||0;if(!uid||cant<=0){mostrarNotificacion("Revisa los campos.","error","🔮");return;}baseDatos.jugadores[uid].pf=(baseDatos.jugadores[uid].pf||0)+(op==='SUMAR'?cant:-cant);logAdmin('Modificar PF',`${uid.toUpperCase()}: ${op==='SUMAR'?'+':'-'}${cant} PF`);document.getElementById('adm-pf-cantidad').value='';reproducirSonido('exito');mostrarNotificacion(`${op==='SUMAR'?'+':'-'}${cant} PF para ${uid.toUpperCase()}.`,"exito","🔮");};
 window.conmutarEstadoTienda=function(prop,estado){if(!userSesion||userSesion.toLowerCase()!=="srwiwa")return;baseDatos[prop]=estado;guardarBD();reproducirSonido(estado?'exito':'cerrar');if(prop==='illegalOpen'&&estado){registrarActividadGlobal('Sistema','☢️ La Red de Ilegalidades ha sido desbloqueada por el Mercader.',(()=>{let d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;})());}};
@@ -11210,8 +11337,28 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 79;
+const APP_VERSION = 80;
 const VERSIONES = [
+  {
+    version: 80,
+    fecha: '2026-09-06',
+    titulo: 'Login controlado por admin + Tribunal en móvil',
+    resumen: 'El login ya no permite entrar escribiendo un nombre libre. Solo los jugadores creados previamente por el admin pueden acceder. El admin crea cuentas desde Modo Dios con un código de activación. Los nuevos también se registran con ese código. Además, Tribunal ya aparece en el menú móvil.',
+    nuevas: [
+      'Login: selector de jugadores registrados en lugar de campo de texto libre — solo puedes entrar si el admin te ha creado la cuenta',
+      'Flujo "Solicitar acceso": el nuevo jugador introduce el código que le da el admin para activar su cuenta por primera vez',
+      'Panel admin "Crear Nuevo Entrenador" en Modo Dios: el admin escribe el ID, se crea la cuenta con pendienteActivacion:true y se muestra el código a comunicar al jugador',
+      'Cuentas pendientes de activación no pueden acceder aunque aparezcan en el select — deben usar el código primero',
+    ],
+    mejoras: [
+      'Tribunal añadido al menú "Más" del bottom nav móvil (faltaba en v79)',
+      'El select del login se repopula automáticamente cada vez que Firebase actualiza la BD',
+    ],
+    rendimiento: [],
+    fixes: [
+      'Acceso sin usuario en PC: el login ya no permite entrar con el campo vacío ni crear jugadores nuevos de forma libre',
+    ],
+  },
   {
     version: 79,
     fecha: '2026-09-06',
