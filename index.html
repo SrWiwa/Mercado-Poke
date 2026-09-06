@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v78.1 | Build: 2026-09-06 -->
+<!-- Silph Co v79 | Build: 2026-09-06 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -960,6 +960,46 @@ body.tema-monotype{--neon-packs:#fb923c;--neon-legal:#fdba74;--neon-ilegal:#c241
 #section-perfil::after{content:'👤';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
 #section-duelos{position:relative}
 #section-duelos::after{content:'🥊';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
+#section-tribunal{position:relative}
+#section-tribunal::after{content:'⚖️';position:fixed;bottom:30px;right:30px;font-size:110px;opacity:.025;pointer-events:none;z-index:0}
+.tribunal-tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.tribunal-tab{padding:7px 16px;border-radius:8px;border:1.5px solid var(--borde);background:var(--card-bg);color:var(--txt-muted);font-family:var(--font-display);font-size:11px;letter-spacing:.5px;cursor:pointer;transition:all .18s}
+.tribunal-tab.active{background:var(--acento);color:#fff;border-color:var(--acento)}
+.caso-card{background:var(--card-bg);border:1.5px solid var(--borde);border-radius:14px;padding:16px;margin-bottom:12px;transition:box-shadow .18s}
+.caso-card:hover{box-shadow:0 4px 18px rgba(var(--acento-rgb),.13)}
+.caso-card.cerrado{opacity:.65}
+.caso-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.caso-id{font-family:var(--font-display);font-size:10px;color:var(--txt-muted);letter-spacing:.5px}
+.caso-titulo{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt);flex:1}
+.caso-badge{padding:3px 10px;border-radius:99px;font-size:10px;font-family:var(--font-display);font-weight:700;letter-spacing:.4px;white-space:nowrap}
+.badge-fase1{background:#1e3a5f;color:#60a5fa}
+.badge-fase2{background:#1e3a2f;color:#4ade80}
+.badge-fase3{background:#3b1f5e;color:#c084fc}
+.badge-fase4{background:#3b2e00;color:#fbbf24}
+.badge-fase5-inocente{background:#14532d;color:#86efac}
+.badge-fase5-culpable{background:#450a0a;color:#fca5a5}
+.caso-partes{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.caso-parte{font-size:12px;color:var(--txt-muted)}
+.caso-parte strong{color:var(--txt)}
+.caso-motivo{font-size:12px;color:var(--txt-secondary);margin-bottom:8px;font-style:italic}
+.caso-timeline{margin-top:10px;border-top:1px solid var(--borde);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.caso-fase-item{display:flex;gap:8px;align-items:flex-start}
+.caso-fase-dot{width:8px;height:8px;border-radius:50%;background:var(--acento);flex-shrink:0;margin-top:4px}
+.caso-fase-dot.inactivo{background:var(--borde)}
+.caso-fase-txt{font-size:11px;color:var(--txt-muted)}
+.caso-fase-txt.activo{color:var(--txt);font-weight:600}
+.caso-veredicto{background:rgba(var(--acento-rgb),.08);border-left:3px solid var(--acento);padding:8px 12px;border-radius:0 8px 8px 0;margin-top:8px;font-size:12px;color:var(--txt)}
+.form-denuncia{background:var(--card-bg);border:1.5px solid var(--borde);border-radius:14px;padding:20px;margin-bottom:18px}
+.form-denuncia .campo{margin-bottom:14px}
+.form-denuncia label{display:block;font-family:var(--font-display);font-size:10px;color:var(--txt-muted);letter-spacing:.5px;margin-bottom:5px}
+.form-denuncia select,.form-denuncia textarea,.form-denuncia input{width:100%;background:var(--input-bg,var(--fondo));border:1.5px solid var(--borde);border-radius:8px;padding:9px 12px;color:var(--txt);font-size:13px;font-family:var(--font-body);box-sizing:border-box;transition:border-color .18s}
+.form-denuncia select:focus,.form-denuncia textarea:focus,.form-denuncia input:focus{border-color:var(--acento);outline:none}
+.form-denuncia textarea{min-height:80px;resize:vertical}
+.adm-tribunal-caso{background:var(--card-bg);border:1.5px solid var(--borde);border-radius:12px;padding:14px;margin-bottom:10px}
+.adm-tribunal-caso-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.adm-tribunal-selector{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.adm-tribunal-selector select{flex:1;min-width:0}
+.tribunal-empty{text-align:center;padding:40px 20px;color:var(--txt-muted);font-family:var(--font-display);font-size:13px}
 .pvp-duelo-activo-card{background:linear-gradient(135deg,rgba(91,82,199,.08),rgba(62,111,166,.05));border:1px solid rgba(91,82,199,.3);border-radius:var(--r-xl);padding:20px 22px;position:relative;overflow:hidden}
 .pvp-duelo-activo-card::after{content:'⚔️';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:56px;opacity:.06;pointer-events:none}
 .pvp-vs-row{display:flex;align-items:center;justify-content:center;gap:16px;margin:14px 0}
@@ -1779,6 +1819,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span><span class="nav-label">Eventos</span></div>
       <div class="nav-item" id="nav-duelos" onclick="navegarA('duelos')"><span class="nav-icon">🥊</span><span class="nav-label">Duelos PvP</span></div>
       <div class="nav-item" id="nav-torneos" onclick="navegarA('torneos')"><span class="nav-icon">🏟️</span><span class="nav-label">Torneos</span></div>
+      <div class="nav-item" id="nav-tribunal" onclick="navegarA('tribunal')"><span class="nav-icon">⚖️</span><span class="nav-label">Tribunal</span></div>
 
 
       <div class="nav-section-label">Personal</div>
@@ -2205,6 +2246,59 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     </section>
 
     <!-- ASISTENTE -->
+    <section id="section-tribunal" class="page-section">
+      <div class="hero-strip">
+        <div class="section-title">⚖️ Tribunal</div>
+        <div class="section-subtitle">Sistema de denuncias y juicios de la liga Nuzlocke</div>
+      </div>
+
+      <!-- Pestañas -->
+      <div class="tribunal-tabs">
+        <div class="tribunal-tab active" id="ttab-activos" onclick="tribunalVerTab('activos')">📂 Casos Activos</div>
+        <div class="tribunal-tab" id="ttab-historial" onclick="tribunalVerTab('historial')">📜 Historial</div>
+        <div class="tribunal-tab" id="ttab-nueva" onclick="tribunalVerTab('nueva')">🚨 Nueva Denuncia</div>
+      </div>
+
+      <!-- Vista: casos activos -->
+      <div id="tribunal-vista-activos">
+        <div id="tribunal-lista-activos"></div>
+      </div>
+
+      <!-- Vista: historial -->
+      <div id="tribunal-vista-historial" style="display:none">
+        <div id="tribunal-lista-historial"></div>
+      </div>
+
+      <!-- Vista: nueva denuncia -->
+      <div id="tribunal-vista-nueva" style="display:none">
+        <div class="form-denuncia">
+          <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt);margin-bottom:16px">🚨 Presentar Denuncia</div>
+          <div class="campo">
+            <label>ENTRENADOR DENUNCIADO</label>
+            <select id="trb-denunciado"></select>
+          </div>
+          <div class="campo">
+            <label>CATEGORÍA DE INFRACCIÓN</label>
+            <select id="trb-categoria">
+              <option value="trampa">🎲 Trampa en combate</option>
+              <option value="vacio">📜 Vacío legal</option>
+              <option value="normas">⚠️ Incumplimiento de normas</option>
+              <option value="comportamiento">😤 Comportamiento antideportivo</option>
+              <option value="otra">❓ Otra infracción</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label>DESCRIPCIÓN DE LOS HECHOS</label>
+            <textarea id="trb-descripcion" placeholder="Describe lo ocurrido con el máximo detalle posible..."></textarea>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn-admin" onclick="tribunalVerTab('activos')">Cancelar</button>
+            <button class="btn-admin comprar" onclick="tribunalPresentarDenuncia()">🚨 Presentar Denuncia</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="section-asistente" class="page-section">
       <div class="hero-strip">
         <div class="section-title">🤖 Mercader</div>
@@ -2400,6 +2494,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-apuestas" onclick="cambiarAdminTab('apuestas')">🎰 Apuestas</button>
         <button class="dios-tab" id="dtab-camara" onclick="cambiarAdminTab('camara')">🏛️ Cámara</button>
         <button class="dios-tab" id="dtab-pvp" onclick="cambiarAdminTab('pvp')">🥊 Duelos PvP</button>
+        <button class="dios-tab" id="dtab-tribunal" onclick="cambiarAdminTab('tribunal')">⚖️ Tribunal</button>
         <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
         <button class="dios-tab" id="dtab-museo" onclick="cambiarAdminTab('museo')" style="color:#818cf8;border-color:rgba(129,140,248,.3)">📜 Museo</button>
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#e2646f;border-color:rgba(216,41,63,.3)">🔄 Nuevo Locke</button>
@@ -2657,6 +2752,11 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
       <!-- RADIO ADMIN -->
       <!-- PvP ADMIN -->
+      <div id="dv-tribunal" class="dios-view">
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--txt);margin-bottom:16px">⚖️ Gestión del Tribunal</div>
+        <div id="adm-tribunal-lista"></div>
+      </div>
+
       <div id="dv-pvp" class="dios-view">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
 
@@ -5431,7 +5531,7 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.tribunal)baseDatos.tribunal={casos:{}};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -5483,7 +5583,313 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
    sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
-const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado'];
+
+/* ══════════════════════════════════════════════════════════════════════
+   ⚖️  SISTEMA DE TRIBUNAL — Denuncias y Juicios
+   ══════════════════════════════════════════════════════════════════════ */
+
+var TRIBUNAL_FASES = [
+  {id:1, label:'Denuncia Presentada',  icono:'📋', badge:'badge-fase1', feedEmoji:'📋'},
+  {id:2, label:'En Investigación',     icono:'🔍', badge:'badge-fase2', feedEmoji:'🔍'},
+  {id:3, label:'Juicio en Curso',      icono:'⚖️', badge:'badge-fase3', feedEmoji:'⚖️'},
+  {id:4, label:'Veredicto Emitido',    icono:'📜', badge:'badge-fase4', feedEmoji:'📜'},
+  {id:5, label:'Sentencia Dictada',    icono:'🔨', badge:'',           feedEmoji:'🔨'},
+];
+
+var TRIBUNAL_CATEGORIAS = {
+  trampa:          '🎲 Trampa en combate',
+  vacio:           '📜 Vacío legal',
+  normas:          '⚠️ Incumplimiento de normas',
+  comportamiento:  '😤 Comportamiento antideportivo',
+  otra:            '❓ Otra infracción',
+};
+
+function tribunalTs(){
+  var d=new Date();
+  return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+
+function tribunalId(){
+  return 'caso_'+Date.now()+'_'+Math.floor(Math.random()*9000+1000);
+}
+
+/* ── Notifica en bitácora de un jugador ── */
+function tribunalNotificarBitacora(uid, texto){
+  if(!baseDatos.jugadores||!baseDatos.jugadores[uid]) return;
+  var u = baseDatos.jugadores[uid];
+  if(!u.diarioLogs) u.diarioLogs = [];
+  var ts = tribunalTs();
+  u.diarioLogs.push({timestamp:ts, texto:texto, text:texto});
+}
+
+/* ── Notifica en feed global ── */
+function tribunalFeed(texto){
+  registrarActividadGlobal('tribunal', texto, tribunalTs());
+}
+
+/* ── Presentar denuncia (jugador) ── */
+window.tribunalPresentarDenuncia = function(){
+  if(!userSesion||!baseDatos.jugadores||!baseDatos.jugadores[userSesion]){
+    mostrarNotificacion('Inicia sesión primero.','error','⚖️'); return;
+  }
+  var denunciado = document.getElementById('trb-denunciado').value;
+  var categoria  = document.getElementById('trb-categoria').value;
+  var descripcion= document.getElementById('trb-descripcion').value.trim();
+  if(!denunciado){mostrarNotificacion('Selecciona al entrenador denunciado.','error','⚖️');return;}
+  if(denunciado===userSesion){mostrarNotificacion('No puedes denunciarte a ti mismo.','error','⚖️');return;}
+  if(!descripcion){mostrarNotificacion('Describe los hechos.','error','⚖️');return;}
+  if(descripcion.length<20){mostrarNotificacion('La descripción es demasiado corta.','error','⚖️');return;}
+
+  if(!baseDatos.tribunal) baseDatos.tribunal={casos:{}};
+  if(!baseDatos.tribunal.casos) baseDatos.tribunal.casos={};
+
+  var id  = tribunalId();
+  var ts  = tribunalTs();
+  var cat = TRIBUNAL_CATEGORIAS[categoria]||categoria;
+
+  var caso = {
+    id:id, fase:1, ts:ts,
+    denunciante:userSesion, denunciado:denunciado,
+    categoria:categoria, descripcion:descripcion,
+    historial:[{fase:1, ts:ts, nota:'Denuncia presentada por '+userSesion.toUpperCase()+'.'}],
+    veredicto:'', sentencia:'', cerrado:false,
+  };
+  baseDatos.tribunal.casos[id] = caso;
+
+  /* Bitácoras */
+  var msgD = '⚖️ [TRIBUNAL] Has presentado una denuncia contra '+denunciado.toUpperCase()+'. Categoría: '+cat+'. Caso Nº '+id.slice(-8).toUpperCase()+'. El admin revisará la denuncia en breve.';
+  var msgR = '⚖️ [TRIBUNAL] '+userSesion.toUpperCase()+' ha presentado una denuncia contra ti. Categoría: '+cat+'. Caso Nº '+id.slice(-8).toUpperCase()+'. Mantente atento al Tribunal.';
+  tribunalNotificarBitacora(userSesion, msgD);
+  tribunalNotificarBitacora(denunciado,  msgR);
+
+  /* Feed */
+  tribunalFeed('⚖️ Nueva denuncia: '+userSesion.toUpperCase()+' denuncia a '+denunciado.toUpperCase()+' por «'+cat+'». Caso '+id.slice(-8).toUpperCase()+'.');
+
+  guardarBD();
+  reproducirSonido('exito');
+  mostrarNotificacion('Denuncia presentada. El caso ya está abierto en el Tribunal.','exito','⚖️');
+  document.getElementById('trb-descripcion').value='';
+  tribunalVerTab('activos');
+  renderizarTribunal();
+  renderizarActividadGlobalInicio();
+};
+
+/* ── Avanzar fase (admin) ── */
+window.tribunalAvanzarFase = function(casoId){
+  if(!userSesion||userSesion.toLowerCase()!=='srwiwa'){mostrarNotificacion('Acceso denegado.','error','🔒');return;}
+  var casos = baseDatos.tribunal&&baseDatos.tribunal.casos;
+  if(!casos||!casos[casoId]){mostrarNotificacion('Caso no encontrado.','error','⚖️');return;}
+  var caso = casos[casoId];
+  if(caso.cerrado){mostrarNotificacion('El caso ya está cerrado.','error','⚖️');return;}
+  if(caso.fase>=4){mostrarNotificacion('Usa "Dictar Sentencia" para cerrar el caso.','info','⚖️');return;}
+
+  caso.fase++;
+  var faseInfo = TRIBUNAL_FASES[caso.fase-1];
+  var ts = tribunalTs();
+  var notaEl = document.getElementById('adm-trb-nota-'+casoId);
+  var nota   = notaEl?notaEl.value.trim():'';
+  caso.historial.push({fase:caso.fase, ts:ts, nota:nota||(faseInfo.label+' — Admin.')});
+
+  var msgBase = '⚖️ [TRIBUNAL] Caso '+casoId.slice(-8).toUpperCase()+' avanza a '+faseInfo.icono+' «'+faseInfo.label+'».';
+  var msgExtra = nota?' Nota del juez: "'+nota+'"':'';
+  tribunalNotificarBitacora(caso.denunciante, msgBase+msgExtra);
+  tribunalNotificarBitacora(caso.denunciado,  msgBase+msgExtra);
+  tribunalFeed(faseInfo.feedEmoji+' Tribunal — Caso '+casoId.slice(-8).toUpperCase()+': '+faseInfo.label+'. ('+caso.denunciante.toUpperCase()+' vs '+caso.denunciado.toUpperCase()+')');
+
+  logAdmin('Tribunal avanzar fase', 'Caso '+casoId.slice(-8)+' → Fase '+caso.fase);
+  guardarBD();
+  reproducirSonido('exito');
+  mostrarNotificacion('Caso avanzado a Fase '+caso.fase+': '+faseInfo.label,'exito','⚖️');
+  renderizarAdminTribunal();
+  renderizarActividadGlobalInicio();
+};
+
+/* ── Dictar veredicto + sentencia (admin, fase 4→5) ── */
+window.tribunalDictarSentencia = function(casoId){
+  if(!userSesion||userSesion.toLowerCase()!=='srwiwa'){mostrarNotificacion('Acceso denegado.','error','🔒');return;}
+  var casos = baseDatos.tribunal&&baseDatos.tribunal.casos;
+  if(!casos||!casos[casoId]){mostrarNotificacion('Caso no encontrado.','error','⚖️');return;}
+  var caso = casos[casoId];
+  if(caso.cerrado){mostrarNotificacion('El caso ya está cerrado.','error','⚖️');return;}
+
+  var veredEl  = document.getElementById('adm-trb-veredicto-'+casoId);
+  var sentEl   = document.getElementById('adm-trb-sentencia-'+casoId);
+  var inocEl   = document.getElementById('adm-trb-inocente-'+casoId);
+  if(!veredEl||!sentEl||!inocEl){mostrarNotificacion('Rellena el veredicto y la sentencia.','error','⚖️');return;}
+
+  var veredicto  = veredEl.value.trim();
+  var sentencia  = sentEl.value.trim();
+  var inocente   = inocEl.checked;
+
+  if(!veredicto){mostrarNotificacion('Escribe el veredicto.','error','⚖️');return;}
+  if(!sentencia){mostrarNotificacion('Escribe la sentencia.','error','⚖️');return;}
+
+  var ts = tribunalTs();
+  caso.fase      = 5;
+  caso.veredicto = veredicto;
+  caso.sentencia = sentencia;
+  caso.inocente  = inocente;
+  caso.cerrado   = true;
+  caso.tsCierre  = ts;
+  caso.historial.push({fase:5, ts:ts, nota:'🔨 SENTENCIA: '+sentencia+(inocente?' [INOCENTE]':' [CULPABLE]')});
+
+  var resultado = inocente ? '✅ INOCENTE' : '❌ CULPABLE';
+  var msgBase = '⚖️ [TRIBUNAL] Caso '+casoId.slice(-8).toUpperCase()+' CERRADO. Veredicto: '+veredicto+'. Sentencia: '+sentencia+'. Resultado: '+resultado+'.';
+  tribunalNotificarBitacora(caso.denunciante, msgBase);
+  tribunalNotificarBitacora(caso.denunciado,  msgBase);
+  tribunalFeed('🔨 SENTENCIA DICTADA — Caso '+casoId.slice(-8).toUpperCase()+': '+caso.denunciante.toUpperCase()+' vs '+caso.denunciado.toUpperCase()+' → '+resultado+'. '+sentencia);
+
+  logAdmin('Tribunal sentencia', 'Caso '+casoId.slice(-8)+' → '+resultado);
+  guardarBD();
+  reproducirSonido('exito');
+  mostrarNotificacion('Sentencia dictada. Caso cerrado.','exito','⚖️');
+  renderizarAdminTribunal();
+  renderizarTribunal();
+  renderizarActividadGlobalInicio();
+};
+
+/* ── Helpers de render ── */
+function tribunalBadge(caso){
+  if(caso.fase===5){
+    return caso.inocente
+      ? '<span class="caso-badge badge-fase5-inocente">✅ INOCENTE</span>'
+      : '<span class="caso-badge badge-fase5-culpable">❌ CULPABLE</span>';
+  }
+  var f = TRIBUNAL_FASES[caso.fase-1]||TRIBUNAL_FASES[0];
+  return '<span class="caso-badge '+f.badge+'">'+f.icono+' '+f.label+'</span>';
+}
+
+function tribunalTimelineHTML(caso){
+  var html='<div class="caso-timeline">';
+  TRIBUNAL_FASES.forEach(function(f){
+    var entrada = caso.historial.filter(function(h){return h.fase===f.id;}).slice(-1)[0];
+    var activo  = caso.fase>=f.id;
+    html+='<div class="caso-fase-item">'
+      +'<div class="caso-fase-dot'+(activo?'':' inactivo')+'"></div>'
+      +'<div class="caso-fase-txt'+(caso.fase===f.id?' activo':'')+(activo?'':' ')+'">'+f.icono+' '+f.label
+      +(entrada?' <span style="color:var(--txt-muted);font-size:10px">('+entrada.ts+')</span>':'')
+      +(entrada&&entrada.nota?'<br><span style="font-size:10px;color:var(--txt-muted)">'+escaparHTML(entrada.nota)+'</span>':'')
+      +'</div></div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+/* ── Renderizar vista pública del Tribunal ── */
+window.renderizarTribunal = function(){
+  var listA = document.getElementById('tribunal-lista-activos');
+  var listH = document.getElementById('tribunal-lista-historial');
+  if(!listA||!listH) return;
+
+  /* Poblar select de denunciados */
+  var sel = document.getElementById('trb-denunciado');
+  if(sel&&baseDatos.jugadores){
+    sel.innerHTML='<option value="">— Selecciona entrenador —</option>';
+    Object.keys(baseDatos.jugadores).forEach(function(id){
+      if(id!==userSesion) sel.innerHTML+='<option value="'+id+'">'+id.charAt(0).toUpperCase()+id.slice(1)+'</option>';
+    });
+  }
+
+  var casos = (baseDatos.tribunal&&baseDatos.tribunal.casos)||{};
+  var activos   = Object.values(casos).filter(function(c){return !c.cerrado;}).sort(function(a,b){return b.ts.localeCompare(a.ts);});
+  var historial = Object.values(casos).filter(function(c){return c.cerrado;}).sort(function(a,b){return (b.tsCierre||b.ts).localeCompare(a.tsCierre||a.ts);});
+
+  function renderCaso(c){
+    var cat = TRIBUNAL_CATEGORIAS[c.categoria]||c.categoria;
+    return '<div class="caso-card'+(c.cerrado?' cerrado':'')+'">'
+      +'<div class="caso-header">'
+      +'<span class="caso-id">Caso #'+c.id.slice(-8).toUpperCase()+'</span>'
+      +'<span class="caso-titulo">'+escaparHTML(cat)+'</span>'
+      +tribunalBadge(c)
+      +'</div>'
+      +'<div class="caso-partes">'
+      +'<span class="caso-parte">🚨 <strong>Denunciante:</strong> '+c.denunciante.toUpperCase()+'</span>'
+      +'<span class="caso-parte">⚠️ <strong>Denunciado:</strong> '+c.denunciado.toUpperCase()+'</span>'
+      +'<span class="caso-parte">📅 '+escaparHTML(c.ts)+'</span>'
+      +'</div>'
+      +'<div class="caso-motivo">"'+escaparHTML(c.descripcion)+'"</div>'
+      +(c.veredicto?'<div class="caso-veredicto">📜 <strong>Veredicto:</strong> '+escaparHTML(c.veredicto)+'</div>':'')
+      +(c.sentencia?'<div class="caso-veredicto" style="margin-top:6px">🔨 <strong>Sentencia:</strong> '+escaparHTML(c.sentencia)+'</div>':'')
+      +tribunalTimelineHTML(c)
+      +'</div>';
+  }
+
+  listA.innerHTML = activos.length
+    ? activos.map(renderCaso).join('')
+    : '<div class="tribunal-empty">📂 No hay casos activos en este momento.</div>';
+
+  listH.innerHTML = historial.length
+    ? historial.map(renderCaso).join('')
+    : '<div class="tribunal-empty">📜 El historial está vacío.</div>';
+};
+
+/* ── Tabs del tribunal ── */
+window.tribunalVerTab = function(tab){
+  ['activos','historial','nueva'].forEach(function(t){
+    var el = document.getElementById('tribunal-vista-'+t);
+    var tb = document.getElementById('ttab-'+t);
+    if(el) el.style.display = t===tab?'':'none';
+    if(tb) tb.classList.toggle('active', t===tab);
+  });
+  if(tab==='activos'||tab==='historial') renderizarTribunal();
+};
+
+/* ── Renderizar panel admin del Tribunal ── */
+window.renderizarAdminTribunal = function(){
+  var box = document.getElementById('adm-tribunal-lista');
+  if(!box) return;
+
+  var casos = (baseDatos.tribunal&&baseDatos.tribunal.casos)||{};
+  var activos = Object.values(casos).filter(function(c){return !c.cerrado;}).sort(function(a,b){return b.ts.localeCompare(a.ts);});
+
+  if(!activos.length){
+    box.innerHTML='<div class="tribunal-empty">✅ No hay casos activos.</div>';
+    return;
+  }
+
+  box.innerHTML = activos.map(function(c){
+    var cat = TRIBUNAL_CATEGORIAS[c.categoria]||c.categoria;
+    var faseInfo = TRIBUNAL_FASES[c.fase-1]||TRIBUNAL_FASES[0];
+    var puedeAvanzar = c.fase<4;
+    var puedeSentencia = c.fase>=3;
+
+    return '<div class="adm-tribunal-caso">'
+      +'<div class="adm-tribunal-caso-header">'
+      +'<strong style="font-family:var(--font-display);font-size:12px">Caso #'+c.id.slice(-8).toUpperCase()+'</strong>'
+      +'<span class="caso-badge '+faseInfo.badge+'">'+faseInfo.icono+' '+faseInfo.label+'</span>'
+      +'</div>'
+      +'<div style="font-size:12px;color:var(--txt-muted);margin-bottom:8px">'
+      +'🚨 '+c.denunciante.toUpperCase()+' vs ⚠️ '+c.denunciado.toUpperCase()+' — '+escaparHTML(cat)
+      +'</div>'
+      +'<div style="font-size:11px;color:var(--txt-muted);margin-bottom:10px;font-style:italic">"'+escaparHTML(c.descripcion)+'"</div>'
+
+      /* Nota para avanzar fase */
+      +(puedeAvanzar
+        ? '<div style="margin-bottom:8px"><label style="font-family:var(--font-display);font-size:10px;color:var(--txt-muted);display:block;margin-bottom:4px">NOTA DE FASE (opcional)</label>'
+          +'<input type="text" id="adm-trb-nota-'+c.id+'" placeholder="Escribe una nota visible en la bitácora..." style="width:100%;background:var(--fondo);border:1.5px solid var(--borde);border-radius:8px;padding:7px 10px;color:var(--txt);font-size:12px;box-sizing:border-box"></div>'
+          +'<button class="btn-admin comprar" style="margin-bottom:10px" onclick="tribunalAvanzarFase(\''+c.id+'\')">▶ Avanzar a Fase '+(c.fase+1)+': '+TRIBUNAL_FASES[c.fase].label+'</button>'
+        : '')
+
+      /* Sentencia (disponible desde fase 3) */
+      +(puedeSentencia&&!c.cerrado
+        ? '<div style="border-top:1px solid var(--borde);padding-top:10px;margin-top:4px">'
+          +'<label style="font-family:var(--font-display);font-size:10px;color:var(--txt-muted);display:block;margin-bottom:4px">VEREDICTO (razonamiento)</label>'
+          +'<textarea id="adm-trb-veredicto-'+c.id+'" placeholder="Expón el razonamiento del juicio..." style="width:100%;min-height:60px;background:var(--fondo);border:1.5px solid var(--borde);border-radius:8px;padding:7px 10px;color:var(--txt);font-size:12px;box-sizing:border-box;resize:vertical;margin-bottom:8px">'+escaparHTML(c.veredicto||'')+'</textarea>'
+          +'<label style="font-family:var(--font-display);font-size:10px;color:var(--txt-muted);display:block;margin-bottom:4px">SENTENCIA (castigo o resolución)</label>'
+          +'<textarea id="adm-trb-sentencia-'+c.id+'" placeholder="Describe el castigo o la resolución del caso..." style="width:100%;min-height:60px;background:var(--fondo);border:1.5px solid var(--borde);border-radius:8px;padding:7px 10px;color:var(--txt);font-size:12px;box-sizing:border-box;resize:vertical;margin-bottom:8px">'+escaparHTML(c.sentencia||'')+'</textarea>'
+          +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">'
+          +'<input type="checkbox" id="adm-trb-inocente-'+c.id+'"> '
+          +'<label for="adm-trb-inocente-'+c.id+'" style="font-size:12px;color:var(--txt);cursor:pointer">✅ Marcar como INOCENTE</label>'
+          +'</div>'
+          +'<button class="btn-admin danger" onclick="tribunalDictarSentencia(\''+c.id+'\')">🔨 Dictar Sentencia y Cerrar Caso</button>'
+          +'</div>'
+        : '')
+
+      +'</div>';
+  }).join('');
+};
+
+const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','tribunal'];
 async function guardarBD(){
   const local = baseDatos;
   try{
@@ -6261,6 +6667,7 @@ function _aplicarTemaSidebarNav(s){
        ruletas           #EA580C  Naranja
        asistente         #0D9488  Teal
        admin             #A16207  Oro
+       tribunal          #7F1D1D  Granate
   ─────────────────────────────────────────────────────────────────────── */
   /* ── PALETA DE SECCIONES — v48 (colores revisados para identidad fuerte) ──
      Cada sección tiene color principal + variante oscura para texto legible.
@@ -6283,6 +6690,7 @@ function _aplicarTemaSidebarNav(s){
     'ruletas':          {color:'#EA580C', dark:'#c2410c', rgb:'234,88,12'},
     'asistente':        {color:'#0D9488', dark:'#0f766e', rgb:'13,148,136'},
     'bitacora':         {color:'#0369A1', dark:'#075985', rgb:'3,105,161'},
+    'tribunal':         {color:'#7F1D1D', dark:'#6b1111', rgb:'127,29,29'},
     'admin':            {color:'#A16207', dark:'#854d0e', rgb:'161,98,7'},
   };
   var t=TEMAS[s]||TEMAS['inicio'];
@@ -6425,8 +6833,8 @@ window.navegarA=function(s){
   /* IMPORTANTE: _aplicarTemaSidebarNav DEBE llamarse DESPUÉS de añadir
      .active al nav-item, porque lee classList.contains('active') para saber
      qué item pintar. Si se llama antes, pinta el item anterior. */
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();_asisSetSeccion(s);if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();_asisSetSeccion(s);if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='tribunal'){renderizarTribunal();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='tribunal')renderizarAdminTribunal();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
 
 
 /* ═══ MUSEO ADMIN — estado local ═══ */
@@ -10802,8 +11210,27 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = '78.1';
+const APP_VERSION = 79;
 const VERSIONES = [
+  {
+    version: 79,
+    fecha: '2026-09-06',
+    titulo: 'Sistema de Tribunal — Denuncias y Juicios',
+    resumen: 'Nueva sección Tribunal donde cualquier entrenador puede presentar una denuncia contra otro. El admin gestiona el juicio a través de 5 fases desde el Modo Dios. Cada avance de fase notifica a ambas partes en su bitácora y aparece en el feed global.',
+    nuevas: [
+      'Sección Tribunal: vista pública con casos activos e historial con timeline de fases',
+      'Formulario de denuncia: elige al denunciado, categoría de infracción y descripción de los hechos',
+      'Sistema de 5 fases: Denuncia Presentada → En Investigación → Juicio en Curso → Veredicto Emitido → Sentencia Dictada',
+      'Cada cambio de fase genera notificación en la bitácora de denunciante y denunciado',
+      'Cada cambio de fase aparece en el feed global de actividad',
+      'Panel de gestión en Modo Dios: el admin avanza fases con nota opcional, redacta veredicto y dicta sentencia marcando inocente o culpable',
+      'Los casos cerrados pasan al historial y permanecen visibles',
+      'Color granate (#7F1D1D) exclusivo para la sección Tribunal en el sidebar',
+    ],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: '78.1',
     fecha: '2026-09-06',
