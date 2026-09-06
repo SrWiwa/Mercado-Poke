@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v78 | Build: 2026-09-06 -->
+<!-- Silph Co v78.1 | Build: 2026-09-06 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5456,8 +5456,27 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
         return;
     }
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
-    else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
+    /* ── Restauración de sesión tras F5 / reconexión ──────────────────────
+       Intentamos recuperar el ID guardado en localStorage (puede que userSesion
+       ya lo tenga si esta no es la primera ejecución del listener).
+       Solo mostramos la app si el jugador realmente existe en la BD ahora misma.
+       Si la BD aún no lo tiene (carga parcial), esperamos al siguiente onValue.
+       Si definitivamente no existe, limpiamos y mostramos el login.               */
+    var _savedId = localStorage.getItem('silph_user_sesion');
+    if(_savedId && !userSesion){
+      /* Tenemos un ID guardado pero la sesión en memoria está vacía (p.ej. tras F5) */
+      if(baseDatos.jugadores && baseDatos.jugadores[_savedId]){
+        /* El jugador ya existe en la BD → restaurar sesión sin pasar por el login */
+        userSesion = _savedId;
+      }
+      /* Si aún no existe en la BD, no hacemos nada; el siguiente onValue lo reintentará */
+    } else if(userSesion && baseDatos.jugadores && !baseDatos.jugadores[userSesion]){
+      /* La sesión estaba en memoria pero el jugador desapareció de la BD (borrado por admin, etc.) */
+      userSesion = null;
+      localStorage.removeItem('silph_user_sesion');
+    }
+    if(userSesion && baseDatos.jugadores && baseDatos.jugadores[userSesion]){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
+    else if(!localStorage.getItem('silph_user_sesion')){document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
    vuelve a leer lo último del servidor justo antes de guardar, y solo aplica encima los trozos
@@ -10783,8 +10802,22 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 78;
+const APP_VERSION = '78.1';
 const VERSIONES = [
+  {
+    version: '78.1',
+    fecha: '2026-09-06',
+    titulo: 'Hotfix: restauración de sesión tras F5',
+    resumen: 'Arreglo del bug por el que recargar la página mostraba la app en un estado roto: la web se veía desde dentro pero sin perfil real cargado. El problema era una race condition entre localStorage y la carga de Firebase.',
+    nuevas: [],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [
+      'Race condition en el listener de Firebase (onValue): al hacer F5, Firebase podía disparar el evento antes de que los datos del jugador estuviesen disponibles. Ahora el listener comprueba explícitamente si el jugador existe en la BD en ese momento; si aún no ha llegado, espera al siguiente disparo en vez de mostrar la app en estado fantasma.',
+      'El else que mostraba el login ya no se activa si hay un ID guardado en localStorage pendiente de resolver, evitando que una carga lenta mande al login por error.',
+      'Si el jugador guardado en localStorage desaparece de la BD (borrado por admin), la sesión se invalida limpiamente y se muestra el login.',
+    ],
+  },
   {
     version: 78,
     fecha: '2026-09-06',
