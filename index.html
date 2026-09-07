@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v81 | Build: 2026-09-06 -->
+<!-- Silph Co v80.2 | Build: 2026-09-06 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1733,45 +1733,6 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
 /* ── Consistencia móvil sidebar←→more-sheet: gestionado por --sec-* vars ── */
 
-
-/* ══ NOTICIERO ══════════════════════════════════════════════════════════════ */
-.noticiero-wrap{margin:0 0 24px 0;border-radius:16px;overflow:hidden;border:1.5px solid var(--borde);background:var(--card-bg);}
-.noticiero-header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:linear-gradient(90deg,#1a0a0a,#2d0808);border-bottom:2px solid #c0392b;}
-.noticiero-logo{font-family:var(--font-display);font-size:11px;font-weight:900;color:#fff;letter-spacing:1px;background:#c0392b;padding:3px 8px;border-radius:4px;white-space:nowrap;}
-.noticiero-ticker-wrap{flex:1;overflow:hidden;position:relative;}
-.noticiero-ticker{display:flex;gap:32px;white-space:nowrap;animation:ticker-scroll 40s linear infinite;font-size:11px;color:#ffd700;font-family:var(--font-display);letter-spacing:.3px;}
-.noticiero-ticker:hover{animation-play-state:paused;}
-@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.noticiero-live{background:#c0392b;color:#fff;font-family:var(--font-display);font-size:9px;font-weight:900;padding:3px 7px;border-radius:4px;letter-spacing:1px;animation:blink-live 1.4s ease-in-out infinite;}
-@keyframes blink-live{0%,100%{opacity:1}50%{opacity:.4}}
-.noticiero-body{padding:0;}
-.noticia-card{border-bottom:1px solid var(--borde);padding:14px 16px;cursor:pointer;transition:background .15s;}
-.noticia-card:last-child{border-bottom:none;}
-.noticia-card:hover{background:rgba(var(--acento-rgb),.06);}
-.noticia-card.destacada{border-left:3px solid #c0392b;}
-.noticia-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
-.noticia-medio{font-family:var(--font-display);font-size:9px;font-weight:700;color:#c0392b;letter-spacing:.5px;text-transform:uppercase;}
-.noticia-ts{font-size:9px;color:var(--txt-muted);}
-.noticia-categoria{font-size:9px;padding:1px 6px;border-radius:99px;background:rgba(var(--acento-rgb),.12);color:var(--acento);font-family:var(--font-display);}
-.noticia-titulo{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px;line-height:1.35;}
-.noticia-subtitulo{font-size:11px;color:var(--acento);font-weight:600;margin-bottom:5px;}
-.noticia-cuerpo{font-size:12px;color:var(--txt-secondary);line-height:1.5;}
-.noticia-footer{display:flex;align-items:center;gap:10px;margin-top:8px;}
-.noticia-comentar-btn{font-size:10px;color:var(--txt-muted);border:1px solid var(--borde);background:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-family:var(--font-display);transition:all .15s;}
-.noticia-comentar-btn:hover{border-color:var(--acento);color:var(--acento);}
-.noticia-coms-count{font-size:10px;color:var(--txt-muted);}
-.noticia-comentarios{background:rgba(0,0,0,.15);border-top:1px solid var(--borde);padding:10px 16px;display:none;}
-.noticia-comentarios.abierto{display:block;}
-.noticia-com-item{margin-bottom:8px;font-size:11px;color:var(--txt-secondary);}
-.noticia-com-autor{font-family:var(--font-display);font-size:10px;font-weight:700;color:var(--acento);}
-.noticia-com-ts{font-size:9px;color:var(--txt-muted);margin-left:4px;}
-.noticia-com-texto{color:var(--txt);margin-top:2px;}
-.noticia-com-input-wrap{display:flex;gap:8px;margin-top:8px;}
-.noticia-com-input{flex:1;background:var(--fondo);border:1.5px solid var(--borde);border-radius:8px;padding:6px 10px;color:var(--txt);font-size:12px;font-family:var(--font-body);}
-.noticia-com-input:focus{border-color:var(--acento);outline:none;}
-.noticia-com-send{background:var(--acento);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:var(--font-display);font-size:10px;}
-.noticiero-vacío{padding:24px;text-align:center;color:var(--txt-muted);font-size:12px;}
-.noticia-nuevo-badge{background:#c0392b;color:#fff;font-size:8px;font-family:var(--font-display);padding:1px 5px;border-radius:99px;vertical-align:middle;margin-left:5px;font-weight:700;}
 </style>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxkZWZzPgogIDxyYWRpYWxHcmFkaWVudCBpZD0iYSIgY3g9IjQyJSIgY3k9IjM1JSIgcj0iNjIlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmMDU1NTUiLz4KICAgIDxzdG9wIG9mZnNldD0iNTUlIiBzdG9wLWNvbG9yPSIjY2MyMjIyIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4YTBhMGEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyYWRpYWxHcmFkaWVudCBpZD0iYiIgY3g9IjQyJSIgY3k9IjMwJSIgcj0iNjUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmMGYwZjAiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjYzhjOGM4Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4ODgiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyYWRpYWxHcmFkaWVudCBpZD0iYyIgY3g9IjM1JSIgY3k9IjI4JSIgcj0iNDAlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9InJnYmEoMjU1LDI1NSwyNTUsLjUyKSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDApIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8cmFkaWFsR3JhZGllbnQgaWQ9ImQiIGN4PSI0MCUiIGN5PSIzMiUiIHI9IjU4JSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZlOTdhIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ1JSIgc3RvcC1jb2xvcj0iI2Q0YTAxNyIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjOGE2MDAwIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8cmFkaWFsR3JhZGllbnQgaWQ9ImUiIGN4PSIzOCUiIGN5PSIzNSUiIHI9IjU1JSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmOWUwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2YwYzg0MiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjYTA3ODAwIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8Y2xpcFBhdGggaWQ9InRjIj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNjQiIGhlaWdodD0iMzIiLz48L2NsaXBQYXRoPgogIDxjbGlwUGF0aCBpZD0iYmMiPjxyZWN0IHg9IjAiIHk9IjMyIiB3aWR0aD0iNjQiIGhlaWdodD0iMzIiLz48L2NsaXBQYXRoPgo8L2RlZnM+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJ1cmwoI2EpIiBjbGlwLXBhdGg9InVybCgjdGMpIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJ1cmwoI2IpIiBjbGlwLXBhdGg9InVybCgjYmMpIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJub25lIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMi4yIi8+CjxyZWN0IHg9IjIiIHk9IjI5LjUiIHdpZHRoPSI2MCIgaGVpZ2h0PSI1IiBmaWxsPSIjMTExIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJ1cmwoI2MpIiBjbGlwLXBhdGg9InVybCgjdGMpIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjguNSIgZmlsbD0iIzFjMWMxYyIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSI2LjgiIGZpbGw9InVybCgjZCkiIHN0cm9rZT0iIzhhNjAwMCIgc3Ryb2tlLXdpZHRoPSIuNiIvPgo8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSI0LjgiIGZpbGw9InVybCgjZSkiLz4KPHRleHQgeD0iMzIiIHk9IjM0LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjUuMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZiM2QwMCI+JDwvdGV4dD4KPGVsbGlwc2UgY3g9IjIyIiBjeT0iMTkiIHJ4PSI3IiByeT0iMy4yIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LC4xMykiIHRyYW5zZm9ybT0icm90YXRlKC0yNSwyMiwxOSkiLz4KPC9zdmc+Cg=="><link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxkZWZzPgogIDxyYWRpYWxHcmFkaWVudCBpZD0iYSIgY3g9IjQyJSIgY3k9IjM1JSIgcj0iNjIlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmMDU1NTUiLz4KICAgIDxzdG9wIG9mZnNldD0iNTUlIiBzdG9wLWNvbG9yPSIjY2MyMjIyIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4YTBhMGEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyYWRpYWxHcmFkaWVudCBpZD0iYiIgY3g9IjQyJSIgY3k9IjMwJSIgcj0iNjUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmMGYwZjAiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjYzhjOGM4Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4ODgiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyYWRpYWxHcmFkaWVudCBpZD0iYyIgY3g9IjM1JSIgY3k9IjI4JSIgcj0iNDAlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9InJnYmEoMjU1LDI1NSwyNTUsLjUyKSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDApIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8cmFkaWFsR3JhZGllbnQgaWQ9ImQiIGN4PSI0MCUiIGN5PSIzMiUiIHI9IjU4JSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZlOTdhIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ1JSIgc3RvcC1jb2xvcj0iI2Q0YTAxNyIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjOGE2MDAwIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8cmFkaWFsR3JhZGllbnQgaWQ9ImUiIGN4PSIzOCUiIGN5PSIzNSUiIHI9IjU1JSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmOWUwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2YwYzg0MiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjYTA3ODAwIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8Y2xpcFBhdGggaWQ9InRjIj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNjQiIGhlaWdodD0iMzIiLz48L2NsaXBQYXRoPgogIDxjbGlwUGF0aCBpZD0iYmMiPjxyZWN0IHg9IjAiIHk9IjMyIiB3aWR0aD0iNjQiIGhlaWdodD0iMzIiLz48L2NsaXBQYXRoPgo8L2RlZnM+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJ1cmwoI2EpIiBjbGlwLXBhdGg9InVybCgjdGMpIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJ1cmwoI2IpIiBjbGlwLXBhdGg9InVybCgjYmMpIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJub25lIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMi4yIi8+CjxyZWN0IHg9IjIiIHk9IjI5LjUiIHdpZHRoPSI2MCIgaGVpZ2h0PSI1IiBmaWxsPSIjMTExIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMwIiBmaWxsPSJ1cmwoI2MpIiBjbGlwLXBhdGg9InVybCgjdGMpIi8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjguNSIgZmlsbD0iIzFjMWMxYyIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSI2LjgiIGZpbGw9InVybCgjZCkiIHN0cm9rZT0iIzhhNjAwMCIgc3Ryb2tlLXdpZHRoPSIuNiIvPgo8Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSI0LjgiIGZpbGw9InVybCgjZSkiLz4KPHRleHQgeD0iMzIiIHk9IjM0LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjUuMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZiM2QwMCI+JDwvdGV4dD4KPGVsbGlwc2UgY3g9IjIyIiBjeT0iMTkiIHJ4PSI3IiByeT0iMy4yIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LC4xMykiIHRyYW5zZm9ybT0icm90YXRlKC0yNSwyMiwxOSkiLz4KPC9zdmc+Cg==">
 </head>
@@ -1940,20 +1901,6 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <!-- INICIO -->
     <section id="section-inicio" class="page-section active">
       <div class="section-header"><div class="section-title">Inicio</div><div class="section-subtitle">Bienvenido a la Red de Intercambio Comercial</div></div>
-      <!-- ══ NOTICIERO ══ -->
-      <div class="noticiero-wrap" id="noticiero-wrap">
-        <div class="noticiero-header">
-          <div class="noticiero-logo" id="noticiero-logo-txt">📺 SILPH TV3</div>
-          <div class="noticiero-ticker-wrap">
-            <div class="noticiero-ticker" id="noticiero-ticker">⬛ Cargando últimas noticias…</div>
-          </div>
-          <div class="noticiero-live">EN VIVO</div>
-        </div>
-        <div class="noticiero-body" id="noticiero-body">
-          <div class="noticiero-vacío">📡 Conectando con la redacción…</div>
-        </div>
-      </div>
-
       <div class="version-badge-wrap" id="version-badge-btn">
         <span class="version-badge-icon">🔴</span>
         <div class="version-badge-texto">
@@ -5368,7 +5315,7 @@ window.generarTiendasAutomaticas = function(cual){
     estado.textContent = '✅ '+generados+' productos generados para '+GYM_LABELS[tier]+' (Gen '+maxGen+')';
     setTimeout(function(){ estado.textContent=''; }, 3000);
   }
-  noticiaPublicar('tienda_apertura',{jugador:'El Mercader',item:GYM_LABELS[tier]});mostrarNotificacion('Tiendas generadas: '+GYM_LABELS[tier],'exito','⚙️');
+  mostrarNotificacion('Tiendas generadas: '+GYM_LABELS[tier],'exito','⚙️');
 };
 
 function actualizarBadgeGimnasio(){
@@ -6038,7 +5985,7 @@ var _guardandoBD = false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
   if(_guardandoBD) return; /* guardarBD en curso — ignorar este snapshot para evitar race condition */
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.tribunal)baseDatos.tribunal={casos:{}};if(!baseDatos.noticias)baseDatos.noticias={items:{},pendientes:{}};loginPoblarSelect();renderizarNoticiero();window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.tribunal)baseDatos.tribunal={casos:{}};loginPoblarSelect();window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -6090,452 +6037,6 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
    sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
-
-/* ══════════════════════════════════════════════════════════════════════
-   📺  SISTEMA DE NOTICIERO — Silph Co News Network
-   ══════════════════════════════════════════════════════════════════════ */
-
-var MEDIOS = [
-  {n:'Pokéinomano Silph', i:'📰'},
-  {n:'PokeTV',           i:'📺'},
-  {n:'El Wipeado',       i:'💀'},
-  {n:'Llorones Por el Mundo', i:'😭'},
-  {n:'Silph TV3',        i:'📡'},
-  {n:'Wiwaneros',        i:'🎙️'},
-];
-
-var NOTICIA_CATEGORIAS = {
-  gacha:       {label:'GACHA',       color:'#f59e0b'},
-  compra:      {label:'MERCADO',     color:'#10b981'},
-  muerte:      {label:'NECROLÓGICA', color:'#ef4444'},
-  sacrificio:  {label:'RITUAL',      color:'#f97316'},
-  mision:      {label:'MISIONES',    color:'#8b5cf6'},
-  torneo:      {label:'ARENA',       color:'#3b82f6'},
-  pvp:         {label:'PVP',         color:'#ec4899'},
-  intercambio: {label:'TRUEQUE',     color:'#14b8a6'},
-  tribunal:    {label:'TRIBUNAL',    color:'#c0392b'},
-  tienda:      {label:'TIENDAS',     color:'#6366f1'},
-  declaracion: {label:'DECLARACIÓN', color:'#a78bfa'},
-  bitacora:    {label:'BITÁCORA',    color:'#64748b'},
-  medalla:     {label:'LOGROS',      color:'#fbbf24'},
-  sistema:     {label:'SISTEMA',     color:'#94a3b8'},
-};
-
-/* ── Utilidades ── */
-function noticiaNow(){
-  var d=new Date();
-  return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
-}
-function noticiaId(){return 'n_'+Date.now()+'_'+Math.floor(Math.random()*9000+1000);}
-function noticiaElegirMedio(seed){
-  var idx = seed ? Math.abs(seed.split('').reduce(function(a,c){return a+c.charCodeAt(0);},0)) % MEDIOS.length : Math.floor(Math.random()*MEDIOS.length);
-  return MEDIOS[idx];
-}
-function noticiaCapitalize(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
-function nombreBonito(uid){return uid?noticiaCapitalize(uid):uid;}
-
-/* ── Motor de redacción periodística ── */
-function noticiaRedactar(tipo, datos){
-  var u = datos.jugador ? nombreBonito(datos.jugador) : '???';
-  var u2 = datos.jugador2 ? nombreBonito(datos.jugador2) : '';
-  var item = datos.item || '';
-  var cantidad = datos.cantidad || '';
-  var extra = datos.extra || '';
-
-  var plantillas = {
-    gacha_dinero: {
-      titulos: [
-        '¡'+u+' hackea los sistemas de Silph Co y se embolsa '+cantidad+' P₠!',
-        'El entrenador '+u+' revienta la caja fuerte digital: '+cantidad+' P₠ en su bolsillo',
-        'Golpe maestro de '+u+': '+cantidad+' créditos directos al monedero',
-      ],
-      subs: [
-        'La sala de servidores de Silph todavía humea',
-        'El Mercader prefiere no hacer preguntas',
-        'Fuentes cercanas confirman el acceso no autorizado',
-      ],
-      cuerpos: [
-        'El entrenador '+u+' ha vuelto a demostrar que los cortafuegos de Silph Co son papel mojado. Esta madrugada, con una precisión quirúrgica digna de los mejores hackers de Johto, ha extraído '+cantidad+' P₠ de las arcas digitales de la corporación. El Departamento de Seguridad ha declinado hacer declaraciones.',
-        'Lo que algunos llaman "hackeo diario", en el mundillo se conoce simplemente como "el desayuno de '+u+'". Hoy toca '+cantidad+' P₠. El Mercader, como siempre, mira hacia otro lado.',
-      ],
-    },
-    gacha_item: {
-      titulos: [
-        ''+u+' intercepta un cargamento de '+item+' en las redes de Silph',
-        'El gacha del día premia a '+u+' con '+item,
-        'Atraco en los almacenes digitales: '+u+' se hace con '+item,
-      ],
-      subs: [
-        'El objeto ha sido añadido a la mochila del sospechoso',
-        'Silph Co contabiliza otra "pérdida de inventario"',
-        'La corporación estudia reforzar sus sistemas de seguridad',
-      ],
-      cuerpos: [
-        'Los sistemas de seguridad de Silph Co han vuelto a sufrir una brecha esta jornada. '+u+' ha conseguido sustraer del almacén digital un '+item+'. Desde la corporación señalan que "estos incidentes forman parte del protocolo habitual", aunque nadie sabe muy bien de qué protocolo hablan.',
-        'Otra jornada, otro golpe. '+u+' ya acumula un historial de extracciones que haría palidecer al mismísimo Giovanni. Hoy: '+item+'. Mañana: quién sabe.',
-      ],
-    },
-    gacha_pf: {
-      titulos: [
-        ''+u+' se apunta '+cantidad+' Puntos de Favor en el sistema de Silph',
-        'El favor del Mercader recae hoy sobre '+u+': +'+cantidad+' PF',
-        'Transferencia misteriosa: '+cantidad+' PF aterrizan en la cuenta de '+u,
-      ],
-      subs: ['Los PF no se preguntan, se disfrutan','El Mercader sonríe desde las sombras','Puntos de Favor: la moneda que no caduca'],
-      cuerpos: [
-        'En una transacción que los auditores de Silph Co siguen sin poder explicar, '+u+' ha recibido esta jornada '+cantidad+' Puntos de Favor. Los PF son la divisa del favor del Mercader, y quien los acumula, acumula poder. Atención al tablero.',
-      ],
-    },
-    muerte: {
-      titulos: [
-        'NECROLÓGICA: '+item+' cae en combate bajo las órdenes de '+u,
-        'El equipo de '+u+' llora la pérdida de '+item,
-        'Se confirma la caída de '+item+': otro nombre en la lápida de '+u,
-      ],
-      subs: [
-        extra ? 'Víctima de '+extra : 'El rival no mostró piedad',
-        'Las vidas del entrenador siguen contando',
-        'La región guarda un minuto de silencio',
-      ],
-      cuerpos: [
-        'Es un día de luto en el equipo de '+u+'. '+item+(extra?' ha caído ante '+extra:'  no ha sobrevivido a la última batalla')+'. Este Pokémon, que tantas victorias dio a su entrenador, descansa ahora en el cementerio digital de Silph Co. Nuestras condolencias al afectado, aunque en el Nuzlocke las lágrimas son el pan de cada día.',
-        'El Nuzlocke se cobra otra víctima. '+item+' ha dejado de existir en el plano mortal'+(extra?' a manos de '+extra:'')+'. '+u+' deberá continuar sin él. Aquí, en la redacción de El Wipeado, esto es lo que llamamos "contenido".',
-      ],
-    },
-    sacrificio: {
-      titulos: [
-        ''+u+' ofrece a '+item+' en sacrificio al Mercader a cambio de '+cantidad+' vidas',
-        'Ritual en el altar de Silph: '+u+' sacrifica a '+item,
-        'El precio de la supervivencia: '+u+' entrega a '+item+' por '+cantidad+' ❤️',
-      ],
-      subs: [
-        'El Mercader acepta la ofrenda sin decir una palabra',
-        'La transacción más oscura del día',
-        'Algunos lo llaman necesario. Otros, traición.',
-      ],
-      cuerpos: [
-        'Las noticias que llegan del altar de Silph no son agradables. '+u+' ha decidido que '+item+' vale exactamente '+cantidad+' vidas. El ritual ha concluido. El Mercader ha recibido la ofrenda. El entrenador puede seguir en pie. Lo que cada uno lleve en la conciencia, que lo gestione como pueda.',
-        'Hay decisiones difíciles en el Nuzlocke. Y luego está lo que ha hecho '+u+' hoy: sacrificar a '+item+' para obtener '+cantidad+' vidas. Nuestro cronista ha preferido no presenciar la ceremonia. El equipo del entrenador, tampoco.',
-      ],
-    },
-    mision: {
-      titulos: [
-        '¡'+u+' completa la misión y se lleva '+item+'!',
-        'Logro desbloqueado: '+u+' cierra otra misión con éxito',
-        'El esfuerzo tiene recompensa: '+u+' recibe '+item+' por su misión',
-      ],
-      subs: ['La Factoría de Misiones de Silph certifica el logro','El entrenador no para','Un objetivo más en el marcador'],
-      cuerpos: [
-        'Otro objetivo tachado en la lista de '+u+'. El entrenador ha completado una misión de la rotación actual y se ha hecho con '+item+' como recompensa. Desde Silph Co aplaudimos la constancia, aunque sospechamos que el entrenador tiene el panel de misiones como pantalla de inicio.',
-        'La Factoría de Misiones de Silph Co registra una nueva victoria. '+u+' ha cumplido con los objetivos marcados y cobra su recompensa: '+item+'. Sin drama, sin excusas. Solo resultados.',
-      ],
-    },
-    compra: {
-      titulos: [
-        ''+u+' desembolsa '+cantidad+' P₠ en la tienda legal por '+item,
-        'Transacción registrada: '+u+' adquiere '+item+' en el mercado',
-        'El mercado legal se activa: '+u+' compra '+item,
-      ],
-      subs: ['La Silph Corp agradece su confianza','Otra compra, otro objeto en la mochila','El comercio fluye en la red'],
-      cuerpos: [
-        'La tienda legal de Silph Co ha registrado otra transacción. '+u+' ha adquirido '+item+' por la módica suma de '+cantidad+' P₠. Si el mercado sigue así de activo, el Mercader tendrá que ampliar el almacén. Por ahora, el objeto ya reposa en la mochila del comprador.',
-        'Ni rebajas, ni cupones, ni ofertas de último minuto. '+u+' ha pagado '+cantidad+' P₠ por '+item+' y punto. En estos tiempos de incertidumbre económica, hay quienes apuestan por el mercado legal. '+u+' es uno de ellos.',
-      ],
-    },
-    torneo: {
-      titulos: [
-        '¡Se abre el telón! Nuevo torneo en la Arena de Silph: '+item,
-        'El Mercader convoca el torneo "'+item+'" — que comience el espectáculo',
-        'TORNEO ANUNCIADO: '+item+' ya tiene fecha y participantes',
-      ],
-      subs: ['Los entrenadores afinan sus estrategias','La Arena de Silph huele a gloria y derrota','Que el más preparado gane'],
-      cuerpos: [
-        'El Mercader ha levantado el telón. El torneo "'+item+'" acaba de ser anunciado en la Arena de Silph Co y los participantes ya se frotan las manos. Los analistas de PokeTV están preparando sus cábalas, los favoritos no quieren hablar y los que nadie espera esperan en silencio. Que empiece el show.',
-        'Confirmado desde la sede de Silph Co: el torneo "'+item+'" es una realidad. Se esperan combates intensos, decisiones polémicas y al menos una queja al Tribunal. Lo habitual, vamos.',
-      ],
-    },
-    pvp: {
-      titulos: [
-        ''+u+' derrota a '+u2+' en un duelo PvP que quedará en los anales',
-        'El duelo entre '+u+' y '+u2+' ya tiene vencedor: '+u,
-        'PVP RESULT: '+u+' 1 — 0 '+u2,
-      ],
-      subs: ['El perdedor ya está pensando en la revancha','Los testigos prefieren no hablar','La arena no olvida'],
-      cuerpos: [
-        'El duelo estaba cantado para muchos, pero la realidad tiene sus propias reglas. '+u+' y '+u2+' se han enfrentado en la arena y solo uno sale con la cabeza alta. El ganador: '+u+'. El análisis post-partido de nuestro equipo de expertos coincide en algo: fue un combate de verdad.',
-        'Enfrentamiento épico el de hoy entre '+u+' y '+u2+'. Cuando el polvo se asentó, '+u+' se alzaba victorioso. '+u2+' ya estudia el replay. Nuestros comentaristas llevan veinte minutos discutiendo sobre si fue un "clásico instant" o simplemente suerte. El debate sigue abierto.',
-      ],
-    },
-    intercambio: {
-      titulos: [
-        'TRUEQUE COMPLETADO: '+u+' y '+u2+' sellan un intercambio',
-        'El mercado de Silph registra un nuevo trueque entre entrenadores',
-        'Acuerdo comercial: '+u+' e '+u2+' hacen negocios',
-      ],
-      subs: ['Ambas partes dicen estar satisfechas','El Mercader da fe del acuerdo','El trueque: tan viejo como Pokémon'],
-      cuerpos: [
-        'Silph Co ha sido testigo hoy de otro intercambio entre entrenadores. '+u+' y '+u2+' han llegado a un acuerdo y han completado el trueque. Los detalles exactos permanecen en secreto, como siempre en estos asuntos. Lo que sabemos es que las dos partes han apretado el botón de confirmar. Desde aquí, enhorabuena.',
-      ],
-    },
-    tribunal_fase: {
-      titulos: [
-        'TRIBUNAL: El caso '+item+' avanza a la fase "'+extra+'"',
-        'El juicio entre '+u+' y '+u2+' da un paso más: '+extra,
-        'BREAKING: Novedades en el Tribunal — caso '+item,
-      ],
-      subs: ['La justicia de Silph nunca duerme','El Mercader observa desde su despacho','Los implicados, sin comentarios'],
-      cuerpos: [
-        'El Tribunal de Silph Co ha dado otro paso en el caso que enfrenta a '+u+' con '+u2+'. El proceso entra ahora en la fase de "'+extra+'". Los observadores del proceso esperan novedades pronto. Nuestro corresponsal en el juzgado enviará crónicas en cuanto haya movimiento.',
-        'Fuentes del Tribunal confirman que el caso '+item+' sigue su curso. La fase actual: "'+extra+'". Si el Mercader tiene algo que decir, lo dirá cuando le parezca. Mientras tanto, los implicados guardan silencio. O eso dicen.',
-      ],
-    },
-    tribunal_sentencia: {
-      titulos: [
-        'SENTENCIA DICTADA: '+u2+(extra==='INOCENTE'?' queda absuelto':' declarado culpable')+'en el caso contra '+u,
-        'El Mercader cierra el caso: '+extra+' para '+u2,
-        'FALLO DEL TRIBUNAL: '+extra+' — caso '+item,
-      ],
-      subs: [
-        extra==='INOCENTE' ? 'El acusado puede respirar tranquilo' : 'El castigo está en camino',
-        'La justicia de Silph habla',
-        'Nadie apeló. Nadie pudo.',
-      ],
-      cuerpos: [
-        'El Tribunal de Silph Co ha emitido su veredicto final en el caso que enfrentaba a '+u+' contra '+u2+'. El fallo: '+extra+'. '+(extra==='INOCENTE'?'El acusado queda libre de toda culpa. La denuncia queda archivada.':'El implicado deberá afrontar las consecuencias dictadas por el Mercader. El expediente queda cerrado.')+' Esta redacción no entra a valorar la decisión. Eso lo dejamos para los comentarios.',
-      ],
-    },
-    tienda_apertura: {
-      titulos: [
-        'EL MERCADER ABRE TIENDA: '+item+' disponible ahora en el mercado',
-        'Nuevos productos en la tienda '+item+' — corre antes de que se agote',
-        'STOCK RENOVADO: la tienda '+item+' abre sus puertas con nueva selección',
-      ],
-      subs: ['Los productos han sido inspeccionados por el Mercader','Primero en llegar, primero en comprar','La oferta es limitada, como siempre'],
-      cuerpos: [
-        'El Mercader ha dado la orden. La tienda '+item+' acaba de renovar su stock con una nueva selección de productos. Los entrenadores que lleven tiempo esperando una oportunidad tienen ahora su ventana. Recordamos que el stock es limitado y que el Mercader no hace excepciones ni descuentos.',
-        'La campana ha sonado en los mercados de Silph Co. La tienda '+item+' abre con una nueva remesa de objetos disponibles para los entrenadores registrados. Nuestro equipo de analistas ha revisado el catálogo y lo califica como "interesante". Más no podemos decir.',
-      ],
-    },
-    medalla: {
-      titulos: [
-        '¡'+u+' consigue su medalla número '+cantidad+'!',
-        'Nuevo logro de '+u+': '+cantidad+' medallas en el marcador',
-        'EL CAMINO A LA LIGA: '+u+' suma otra medalla',
-      ],
-      subs: ['El rival del gimnasio lo dio todo. No fue suficiente','La insignia ya brilla en la vitrina','Cada medalla, un paso más hacia la cima'],
-      cuerpos: [
-        'El historial de '+u+' suma una nueva entrada. El entrenador ha conseguido su '+cantidad+'ª medalla y sigue avanzando hacia los cuartos de final de la Liga. Los líderes de gimnasio que quedan en pie tienen un nombre en mente esta noche: '+u+'.',
-        'Otro gymleader mordiendo el polvo. '+u+' añade la medalla número '+cantidad+' a su colección. Si sigue a este ritmo, el Campeón va a tener que empezar a preocuparse.',
-      ],
-    },
-    declaracion: {
-      titulos: [
-        'DECLARACIONES EXCLUSIVAS: '+u+' rompe el silencio',
-        '"'+item+'" — Las palabras de '+u+' que nadie esperaba',
-        'EL ENTRENADOR HABLA: '+u+' comenta en el noticiero',
-      ],
-      subs: ['La redacción recibió el mensaje y no podía callarlo','Silph Co News da voz a los entrenadores','Sin filtros, sin censura'],
-      cuerpos: [
-        'El entrenador '+u+' ha querido dejar constancia de algo importante. En sus propias palabras: "'+item+'". Esta redacción reproduce la declaración tal y como fue recibida, sin editar ni añadir contexto. El público es libre de interpretar.',
-        'Pocas veces un entrenador de la liga habla tan claro. '+u+' ha tomado el micrófono y ha dicho lo que tenía que decir: "'+item+'". La redacción de Llorones Por el Mundo agradece la sinceridad y recuerda que la sección de comentarios está abierta.',
-      ],
-    },
-    bitacora: {
-      titulos: [
-        'EXCLUSIVA: '+u+' escribe en su bitácora y esto es lo que dice',
-        'La bitácora de '+u+' revela: "'+item+'"',
-        'FUENTE INTERNA: anotación de '+u+' filtrada al noticiero',
-      ],
-      subs: ['El texto llegó a nuestra redacción por canales discretos','La bitácora no miente','Cada palabra, un dato'],
-      cuerpos: [
-        'Esta redacción ha tenido acceso a la última anotación en la bitácora personal de '+u+'. El texto, reproducido con permiso implícito del sistema, reza así: "'+item+'". Los analistas del noticiero llevan horas intentando descifrar el significado. De momento, sin conclusiones.',
-        'Los diarios de los entrenadores suelen estar llenos de estrategias, lamentos y listas de la compra pokémon. La última entrada de '+u+' rompe el molde: "'+item+'". El Mercader, al ser preguntado, ha preferido guardar silencio.',
-      ],
-    },
-    gacha_agrupado: {
-      titulos: [
-        'TARDE DE HACKEOS: '+item+' entrenadores asaltan los servidores de Silph',
-        'El gacha diario revienta: '+item+' extracciones en pocas horas',
-        'Oleada de hackeos en Silph Co — los entrenadores no dan respiro',
-      ],
-      subs: ['El departamento de seguridad ha pedido la baja','Silph Co estudia cambiar todas las contraseñas','El servidor principal lleva tres horas temblando'],
-      cuerpos: [
-        'No es un hackeo. Es una invasión. En las últimas horas, '+item+' entrenadores han accedido simultáneamente a los sistemas de Silph Co para reclamar sus recompensas diarias. El equipo de seguridad de la corporación ha catalogado el evento como "situación de alta demanda". Nosotros lo llamamos lo que es: caos organizado.',
-      ],
-    },
-    sistema: {
-      titulos: [
-        'COMUNICADO OFICIAL DE SILPH CO: '+item,
-        'El sistema emite un aviso: '+item,
-        'ALERTA DE RED: '+item,
-      ],
-      subs: ['El Mercader firma el comunicado','Silph Co hace historia (o intenta evitarla)','Atención, entrenadores'],
-      cuerpos: [
-        'La dirección de Silph Co ha emitido un comunicado oficial. El mensaje, firmado por el propio Mercader, dice lo siguiente: '+item+'. Esta redacción reproduce el aviso sin modificaciones. Los entrenadores están avisados.',
-      ],
-    },
-  };
-
-  var p = plantillas[tipo];
-  if(!p) p = plantillas['sistema'];
-  var medio = noticiaElegirMedio(tipo+(datos.jugador||''));
-  var ts = noticiaNow();
-  var tArr = p.titulos, sArr = p.subs, cArr = p.cuerpos;
-  var ri = Math.floor(Math.random()*tArr.length);
-  var si = Math.floor(Math.random()*sArr.length);
-  var ci = Math.floor(Math.random()*cArr.length);
-  return {
-    id: noticiaId(), ts: ts, medio: medio.n, medioIcon: medio.i,
-    categoria: tipo.split('_')[0],
-    titulo: tArr[ri], subtitulo: sArr[si], cuerpo: cArr[ci],
-    comentarios: {}, visto: false,
-  };
-}
-
-/* ── Publicar una noticia en Firebase ── */
-function noticiaPublicar(tipo, datos){
-  if(!baseDatos.noticias) baseDatos.noticias={items:{},pendientes:{}};
-  if(!baseDatos.noticias.items) baseDatos.noticias.items={};
-  if(!baseDatos.noticias.pendientes) baseDatos.noticias.pendientes={};
-
-  // Agrupación: mismos tipos dentro de 30min se agrupan
-  var ahora = Date.now();
-  var claveGrupo = tipo+'_grupo';
-  var pendiente = baseDatos.noticias.pendientes[claveGrupo];
-  if(pendiente && ahora - pendiente.tsMs < 30*60*1000){
-    // Acumular en el grupo
-    pendiente.count = (pendiente.count||1)+1;
-    pendiente.jugadores = pendiente.jugadores||[];
-    if(datos.jugador && pendiente.jugadores.indexOf(datos.jugador)<0)
-      pendiente.jugadores.push(datos.jugador);
-    baseDatos.noticias.pendientes[claveGrupo] = pendiente;
-    // Si llegan a 3+, generar noticia agrupada
-    if(pendiente.count>=3 && (tipo==='gacha_dinero'||tipo==='gacha_item'||tipo==='gacha_pf')){
-      var jugStr = pendiente.jugadores.slice(0,3).map(nombreBonito).join(', ');
-      var notAgrup = noticiaRedactar('gacha_agrupado', {item: pendiente.count, extra: jugStr});
-      notAgrup.id = 'agrup_'+tipo+'_'+ahora;
-      baseDatos.noticias.items[notAgrup.id] = notAgrup;
-      delete baseDatos.noticias.pendientes[claveGrupo];
-      guardarBD(); renderizarNoticiero(); return;
-    }
-    guardarBD(); return;
-  }
-
-  // Publicar noticia individual y registrar pendiente
-  var noticia = noticiaRedactar(tipo, datos);
-  baseDatos.noticias.items[noticia.id] = noticia;
-  baseDatos.noticias.pendientes[claveGrupo] = {tsMs: ahora, count:1, jugadores: datos.jugador?[datos.jugador]:[]};
-
-  // Mantener max 30 noticias
-  var ids = Object.keys(baseDatos.noticias.items).sort();
-  if(ids.length>30){
-    ids.slice(0, ids.length-30).forEach(function(id){delete baseDatos.noticias.items[id];});
-  }
-  guardarBD();
-  renderizarNoticiero();
-}
-
-/* ── Comentar en una noticia ── */
-window.noticiaEnviarComentario = function(noticiaId){
-  if(!userSesion){mostrarNotificacion('Inicia sesión para comentar.','error','💬');return;}
-  var inp = document.getElementById('nc-input-'+noticiaId);
-  if(!inp||!inp.value.trim()){mostrarNotificacion('Escribe algo antes de enviar.','error','💬');return;}
-  var texto = inp.value.trim().slice(0,280);
-  var ts = noticiaNow();
-  var noticia = baseDatos.noticias&&baseDatos.noticias.items&&baseDatos.noticias.items[noticiaId];
-  if(!noticia){mostrarNotificacion('Noticia no encontrada.','error','💬');return;}
-  if(!noticia.comentarios) noticia.comentarios={};
-  var comId = 'c_'+Date.now();
-  noticia.comentarios[comId]={autor:userSesion, texto:texto, ts:ts};
-  inp.value='';
-
-  // Publicar una noticia de declaración si el comentario es sustancial
-  if(texto.length>20){
-    setTimeout(function(){
-      noticiaPublicar('declaracion',{jugador:userSesion, item:texto});
-    },500);
-  }
-
-  guardarBD();
-  renderizarNoticiero();
-  mostrarNotificacion('¡Declaración enviada al noticiero!','exito','🎙️');
-};
-
-/* ── Abrir/cerrar comentarios ── */
-window.noticiaToggleComentarios = function(noticiaId){
-  var box = document.getElementById('nc-coms-'+noticiaId);
-  if(!box) return;
-  box.classList.toggle('abierto');
-  var btn = document.getElementById('nc-btn-com-'+noticiaId);
-  if(btn) btn.textContent = box.classList.contains('abierto') ? '▲ Ocultar declaraciones' : '💬 Declararse';
-};
-
-/* ── Renderizar el noticiero ── */
-window.renderizarNoticiero = function(){
-  var body = document.getElementById('noticiero-body');
-  var ticker = document.getElementById('noticiero-ticker');
-  if(!body) return;
-
-  var items = (baseDatos.noticias&&baseDatos.noticias.items)||{};
-  var noticias = Object.values(items).sort(function(a,b){return b.ts.localeCompare(a.ts);});
-
-  if(!noticias.length){
-    body.innerHTML='<div class="noticiero-vacío">📡 No hay noticias todavía. ¡Muévete, entrenador!</div>';
-    return;
-  }
-
-  // Actualizar ticker
-  if(ticker){
-    var tickerTxts = noticias.slice(0,8).map(function(n){return '⚡ '+n.titulo;});
-    var tickerHTML = tickerTxts.concat(tickerTxts).map(function(t){return '<span>'+escaparHTML(t)+'</span>';}).join('');
-    ticker.innerHTML = tickerHTML;
-  }
-
-  // Cambiar logo del medio de la noticia más reciente
-  var logoEl = document.getElementById('noticiero-logo-txt');
-  if(logoEl && noticias[0]){
-    var m = MEDIOS.find(function(x){return x.n===noticias[0].medio;})||MEDIOS[0];
-    logoEl.textContent = m.i+' '+m.n.toUpperCase();
-  }
-
-  body.innerHTML = noticias.slice(0,10).map(function(n, idx){
-    var cat = NOTICIA_CATEGORIAS[n.categoria]||NOTICIA_CATEGORIAS['sistema'];
-    var coms = n.comentarios ? Object.values(n.comentarios) : [];
-    var esDestacada = idx===0;
-
-    var comsHTML = coms.map(function(c){
-      return '<div class="noticia-com-item">'
-        +'<span class="noticia-com-autor">'+escaparHTML(nombreBonito(c.autor))+'</span>'
-        +'<span class="noticia-com-ts">'+escaparHTML(c.ts)+'</span>'
-        +'<div class="noticia-com-texto">"'+escaparHTML(c.texto)+'"</div>'
-        +'</div>';
-    }).join('');
-
-    var nuevoBadge = idx<3 ? '<span class="noticia-nuevo-badge">NUEVO</span>' : '';
-
-    return '<div class="noticia-card'+(esDestacada?' destacada':'')+'">'
-      +'<div class="noticia-meta">'
-      +'<span class="noticia-medio">'+escaparHTML(n.medioIcon)+' '+escaparHTML(n.medio)+'</span>'
-      +'<span class="noticia-ts">'+escaparHTML(n.ts)+'</span>'
-      +'<span class="noticia-categoria" style="color:'+cat.color+';background:'+cat.color+'22">'+cat.label+'</span>'
-      +'</div>'
-      +'<div class="noticia-titulo">'+escaparHTML(n.titulo)+nuevoBadge+'</div>'
-      +'<div class="noticia-subtitulo">'+escaparHTML(n.subtitulo)+'</div>'
-      +'<div class="noticia-cuerpo">'+escaparHTML(n.cuerpo)+'</div>'
-      +'<div class="noticia-footer">'
-      +'<button class="noticia-comentar-btn" id="nc-btn-com-'+n.id+'" onclick="noticiaToggleComentarios(\''+n.id+'\')">💬 Declararse</button>'
-      +(coms.length?'<span class="noticia-coms-count">'+coms.length+' declaración'+(coms.length>1?'es':'')+'</span>':'')
-      +'</div>'
-      +'<div class="noticia-comentarios" id="nc-coms-'+n.id+'">'
-      +(comsHTML||'<div style="font-size:11px;color:var(--txt-muted);margin-bottom:8px">Sé el primero en declarar.</div>')
-      +(userSesion?'<div class="noticia-com-input-wrap">'
-        +'<input class="noticia-com-input" id="nc-input-'+n.id+'" placeholder="Tu declaración para el noticiero..." maxlength="280" onkeydown="if(event.key===\'Enter\')noticiaEnviarComentario(\''+n.id+'\')">'
-        +'<button class="noticia-com-send" onclick="noticiaEnviarComentario(\''+n.id+'\')">ENVIAR</button>'
-        +'</div>':'<div style="font-size:10px;color:var(--txt-muted)">Inicia sesión para declarar.</div>')
-      +'</div>'
-      +'</div>';
-  }).join('');
-};
 
 /* ══════════════════════════════════════════════════════════════════════
    ⚖️  SISTEMA DE TRIBUNAL — Denuncias y Juicios
@@ -6647,7 +6148,7 @@ window.tribunalAvanzarFase = function(casoId){
   var msgExtra = nota?' Nota del juez: "'+nota+'"':'';
   tribunalNotificarBitacora(caso.denunciante, msgBase+msgExtra);
   tribunalNotificarBitacora(caso.denunciado,  msgBase+msgExtra);
-  noticiaPublicar('tribunal_fase',{jugador:caso.denunciante,jugador2:caso.denunciado,item:casoId.slice(-8).toUpperCase(),extra:faseInfo.label});tribunalFeed(faseInfo.feedEmoji+' Tribunal — Caso '+casoId.slice(-8).toUpperCase()+': '+faseInfo.label+'. ('+caso.denunciante.toUpperCase()+' vs '+caso.denunciado.toUpperCase()+')');
+  tribunalFeed(faseInfo.feedEmoji+' Tribunal — Caso '+casoId.slice(-8).toUpperCase()+': '+faseInfo.label+'. ('+caso.denunciante.toUpperCase()+' vs '+caso.denunciado.toUpperCase()+')');
 
   logAdmin('Tribunal avanzar fase', 'Caso '+casoId.slice(-8)+' → Fase '+caso.fase);
   guardarBD();
@@ -6690,7 +6191,7 @@ window.tribunalDictarSentencia = function(casoId){
   var msgBase = '⚖️ [TRIBUNAL] Caso '+casoId.slice(-8).toUpperCase()+' CERRADO. Veredicto: '+veredicto+'. Sentencia: '+sentencia+'. Resultado: '+resultado+'.';
   tribunalNotificarBitacora(caso.denunciante, msgBase);
   tribunalNotificarBitacora(caso.denunciado,  msgBase);
-  noticiaPublicar('tribunal_sentencia',{jugador:caso.denunciante,jugador2:caso.denunciado,item:casoId.slice(-8).toUpperCase(),extra:inocente?'INOCENTE':'CULPABLE'});tribunalFeed('🔨 SENTENCIA DICTADA — Caso '+casoId.slice(-8).toUpperCase()+': '+caso.denunciante.toUpperCase()+' vs '+caso.denunciado.toUpperCase()+' → '+resultado+'. '+sentencia);
+  tribunalFeed('🔨 SENTENCIA DICTADA — Caso '+casoId.slice(-8).toUpperCase()+': '+caso.denunciante.toUpperCase()+' vs '+caso.denunciado.toUpperCase()+' → '+resultado+'. '+sentencia);
 
   logAdmin('Tribunal sentencia', 'Caso '+casoId.slice(-8)+' → '+resultado);
   guardarBD();
@@ -6842,7 +6343,7 @@ window.renderizarAdminTribunal = function(){
   }).join('');
 };
 
-const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','tribunal','noticias'];
+const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','tribunal'];
 async function guardarBD(){
   _guardandoBD = true;
   const local = baseDatos;
@@ -7516,7 +7017,7 @@ function verificarMisionesCompletadasMision(){
     if(progreso>=m.meta && mj.reclamadas.indexOf(m.id)===-1 && mj.notificadas.indexOf(m.id)===-1){
       mj.notificadas.push(m.id);
       cambiado = true;
-      noticiaPublicar('mision',{jugador:userSesion,item:misionTituloRender(m,u)});mostrarNotificacion('¡'+misionTituloRender(m,u)+'! Ya puedes reclamar tu recompensa.','exito','🎯','📋 Misión completada',true);
+      mostrarNotificacion('¡'+misionTituloRender(m,u)+'! Ya puedes reclamar tu recompensa.','exito','🎯','📋 Misión completada',true);
       reproducirSonido('exito');
       var cardElNueva = document.querySelector('.mision-card[data-mision-id="'+m.id+'"]');
       if(cardElNueva){
@@ -8526,7 +8027,7 @@ window.comprarObjetoGamer=async function(id){
       setTimeout(()=>pfEl.remove(),900);
     }
   }
-  if(tienda!=='illegal')noticiaPublicar('compra',{jugador:userSesion,item:p.nombre,cantidad:pf+' P₠'});mostrarNotificacion(`Has adquirido ${p.nombre}.${cont}`,'exito',p.icon||'✅','Compra realizada',true);
+  mostrarNotificacion(`Has adquirido ${p.nombre}.${cont}`,'exito',p.icon||'✅','Compra realizada',true);
   refrescarPantallaGamer();
 };
 /* ═══ CANJE DE TICKETS DEL MERCADER ═══ */
@@ -8673,7 +8174,7 @@ window.consumirObjetoMochilaGamer=function(uid,nombre,icon){if(!userSesion||!bas
 /* ═══ MODAL BAJA ═══ */
 window.abrirModalBaja=function(){['baja-nombre','baja-mote','baja-lugar','baja-epitafio'].forEach(id=>document.getElementById(id).value='');document.getElementById('baja-motivo').value='Ruta';refrescarSelectsPersonalizados();reproducirSonido('abrir');document.getElementById('baja-modal-overlay').style.display='flex';};
 window.cerrarModalBaja=function(){reproducirSonido('cerrar');document.getElementById('baja-modal-overlay').style.display='none';};
-window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').value.trim(),m=document.getElementById('baja-mote').value.trim(),mot=document.getElementById('baja-motivo').value,l=document.getElementById('baja-lugar').value.trim(),e=document.getElementById('baja-epitafio').value.trim();if(!n){mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀");return;}if(!l){mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if((u.vidasExtra||0)>0){u.vidasExtra=u.vidasExtra-1;}else if(va>0){va--;u.vidasActuales=va;}if((u.vidasActuales!==undefined?u.vidasActuales:0)<=0&&!(u.vidasExtra>0))u.lockeStatus='perdido';let nc=m?`${n} "${m}"`:n,rc=`[${mot}] ${l}`;if(!u.cementerio)u.cementerio=[];u.cementerio.push({nombre:nc,ruta:rc,epitafio:e||"Sin últimas palabras.",fecha:new Date().toLocaleDateString()});noticiaPublicar('muerte',{jugador:userSesion,item:nc,extra:l});inyectarEntradaDiarioAutomatica(`💀 RIP: '${nc}' cayó ante ${rc}. Últimas palabras: "${e||'...'}"`);guardarBD();cerrarModalBaja();reproducirSonido('muerte');destellarPantalla('rojo');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();let _barraV=document.querySelector('.hp-barra-contenedor');if(_barraV){_barraV.classList.add('shake-vidas');setTimeout(()=>_barraV.classList.remove('shake-vidas'),350);}let vaFin=u.vidasActuales!==undefined?u.vidasActuales:0,vexFin=u.vidasExtra||0,vtFin=u.vidasTotales||20;let vidasStr=vexFin>0?`${vaFin}/${vtFin}+${vexFin}`:`${vaFin}/${vtFin}`;mostrarInfo({icono:'💀',titulo:nc,descripcion:`Ha caído ante ${rc}.
+window.confirmarBaja=function(){let n=document.getElementById('baja-nombre').value.trim(),m=document.getElementById('baja-mote').value.trim(),mot=document.getElementById('baja-motivo').value,l=document.getElementById('baja-lugar').value.trim(),e=document.getElementById('baja-epitafio').value.trim();if(!n){mostrarNotificacion("El nombre del Pokémon es requerido.","error","💀");return;}if(!l){mostrarNotificacion("Indica el lugar o rival de la caída.","error","🗺️");return;}let u=baseDatos.jugadores[userSesion],va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);if((u.vidasExtra||0)>0){u.vidasExtra=u.vidasExtra-1;}else if(va>0){va--;u.vidasActuales=va;}if((u.vidasActuales!==undefined?u.vidasActuales:0)<=0&&!(u.vidasExtra>0))u.lockeStatus='perdido';let nc=m?`${n} "${m}"`:n,rc=`[${mot}] ${l}`;if(!u.cementerio)u.cementerio=[];u.cementerio.push({nombre:nc,ruta:rc,epitafio:e||"Sin últimas palabras.",fecha:new Date().toLocaleDateString()});inyectarEntradaDiarioAutomatica(`💀 RIP: '${nc}' cayó ante ${rc}. Últimas palabras: "${e||'...'}"`);guardarBD();cerrarModalBaja();reproducirSonido('muerte');destellarPantalla('rojo');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();let _barraV=document.querySelector('.hp-barra-contenedor');if(_barraV){_barraV.classList.add('shake-vidas');setTimeout(()=>_barraV.classList.remove('shake-vidas'),350);}let vaFin=u.vidasActuales!==undefined?u.vidasActuales:0,vexFin=u.vidasExtra||0,vtFin=u.vidasTotales||20;let vidasStr=vexFin>0?`${vaFin}/${vtFin}+${vexFin}`:`${vaFin}/${vtFin}`;mostrarInfo({icono:'💀',titulo:nc,descripcion:`Ha caído ante ${rc}.
 ❤️ Vidas restantes: ${vidasStr}`,tipo:'peligro',textoConfirmar:'Descanse en paz'});};
 
 /* ═══ HP BAR ═══ */
@@ -8685,7 +8186,7 @@ function _renderBarra(act,ini,extra){let f=document.getElementById('perf-vida-ba
 window.abrirModalSacrificio=function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],vt=u.vidasTotales||20,va=(u.vidasActuales!==undefined)?u.vidasActuales:vt;document.getElementById('sac-nombre-poke').value='';document.getElementById('sac-mote-poke').value='';document.getElementById('sac-categoria').value='';document.getElementById('sac-preview-vidas-box').classList.add('hidden');document.getElementById('sac-aviso-limite').style.display='none';document.getElementById('btn-confirmar-sacrificio').disabled=true;if(va>=vt)document.getElementById('sac-aviso-limite').style.display='block';refrescarSelectsPersonalizados();renderizarHistorialSacrificios();reproducirSonido('abrir');document.getElementById('sacrificio-modal-overlay').style.display='flex';};
 window.cerrarModalSacrificio=function(){reproducirSonido('cerrar');document.getElementById('sacrificio-modal-overlay').style.display='none';};
 window.actualizarPreviewSacrificio=function(){let cat=document.getElementById('sac-categoria').value,n=document.getElementById('sac-nombre-poke').value.trim(),pb=document.getElementById('sac-preview-vidas-box'),bc=document.getElementById('btn-confirmar-sacrificio'),av=document.getElementById('sac-aviso-limite');if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],vt=u.vidasTotales||20,va=(u.vidasActuales!==undefined)?u.vidasActuales:vt;if(va>=vt){av.style.display='block';pb.classList.add('hidden');bc.disabled=true;return;}av.style.display='none';if(!cat||!n){pb.classList.add('hidden');bc.disabled=true;return;}let datos=SACRIFICIO_VALORES[cat];if(!datos)return;let vr=Math.min(datos.vidas,vt-va),ex=vr<datos.vidas?` (cap: máx. ${vt})`:'';document.getElementById('sac-preview-nombre-txt').textContent=`${escaparHTML(n)} · ${datos.etiqueta}${ex}`;document.getElementById('sac-preview-numero-txt').textContent=`+${vr} ❤️`;pb.classList.remove('hidden');bc.disabled=false;};
-window.confirmarSacrificio=async function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let n=document.getElementById('sac-nombre-poke').value.trim(),m=document.getElementById('sac-mote-poke').value.trim(),cat=document.getElementById('sac-categoria').value;if(!n){mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥");return;}if(!cat){mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥");return;}let u=baseDatos.jugadores[userSesion],vt=u.vidasTotales||20,va=(u.vidasActuales!==undefined)?u.vidasActuales:vt;if(va>=vt){mostrarNotificacion(`Ya tienes el máximo de ${vt} vidas.`,"error","⛔");return;}let datos=SACRIFICIO_VALORES[cat];if(!datos){mostrarNotificacion("Categoría inválida.","error","🔥");return;}let vg=Math.min(datos.vidas,vt-va),nv=va+vg,nc=m?`${n} "${m}"`:n;let cf=await mostrarConfirmacion({icono:'🔥',titulo:'Sacrificio Pokéinomano',descripcion:`Pokémon: ${nc}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vg} ❤️\nVidas tras el sacrificio: ${nv}/${vt}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,textoConfirmar:'Ejecutar Sacrificio',tipo:'sacrificio',sonidoConfirmar:'revivir'});if(!cf)return;u.vidasActuales=nv;if(u.lockeStatus==='perdido'&&nv>0)u.lockeStatus='jugando';if(!u.sacrificios)u.sacrificios=[];let dobj=new Date(),ts=`${String(dobj.getDate()).padStart(2,'0')}/${String(dobj.getMonth()+1).padStart(2,'0')}/${dobj.getFullYear()} ${String(dobj.getHours()).padStart(2,'0')}:${String(dobj.getMinutes()).padStart(2,'0')}`;u.sacrificios.push({nombre:nc,categoria:datos.etiqueta,vidasObtenidas:vg,vidasTras:nv,timestamp:ts});noticiaPublicar('sacrificio',{jugador:userSesion,item:nc,cantidad:vg});inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO: '${nc}' [${datos.etiqueta}] ofrecido al Mercader. +${vg} ❤️. Vidas: ${nv}/${vt}.`);guardarBD();cerrarModalSacrificio();destellarPantalla('naranja');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();mostrarInfo({icono:'🔥',titulo:'Sacrificio completado',descripcion:`${nc} descansa en paz.\n❤️ Vidas: +${vg} → ${nv}`,textoConfirmar:'Aceptar'});};
+window.confirmarSacrificio=async function(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let n=document.getElementById('sac-nombre-poke').value.trim(),m=document.getElementById('sac-mote-poke').value.trim(),cat=document.getElementById('sac-categoria').value;if(!n){mostrarNotificacion("Introduce el nombre del Pokémon.","error","🔥");return;}if(!cat){mostrarNotificacion("Selecciona la categoría de rareza.","error","🔥");return;}let u=baseDatos.jugadores[userSesion],vt=u.vidasTotales||20,va=(u.vidasActuales!==undefined)?u.vidasActuales:vt;if(va>=vt){mostrarNotificacion(`Ya tienes el máximo de ${vt} vidas.`,"error","⛔");return;}let datos=SACRIFICIO_VALORES[cat];if(!datos){mostrarNotificacion("Categoría inválida.","error","🔥");return;}let vg=Math.min(datos.vidas,vt-va),nv=va+vg,nc=m?`${n} "${m}"`:n;let cf=await mostrarConfirmacion({icono:'🔥',titulo:'Sacrificio Pokéinomano',descripcion:`Pokémon: ${nc}\nCategoría: ${datos.etiqueta}\nVidas obtenidas: +${vg} ❤️\nVidas tras el sacrificio: ${nv}/${vt}\n\n⚠️ Este Pokémon quedará eliminado permanentemente.`,textoConfirmar:'Ejecutar Sacrificio',tipo:'sacrificio',sonidoConfirmar:'revivir'});if(!cf)return;u.vidasActuales=nv;if(u.lockeStatus==='perdido'&&nv>0)u.lockeStatus='jugando';if(!u.sacrificios)u.sacrificios=[];let dobj=new Date(),ts=`${String(dobj.getDate()).padStart(2,'0')}/${String(dobj.getMonth()+1).padStart(2,'0')}/${dobj.getFullYear()} ${String(dobj.getHours()).padStart(2,'0')}:${String(dobj.getMinutes()).padStart(2,'0')}`;u.sacrificios.push({nombre:nc,categoria:datos.etiqueta,vidasObtenidas:vg,vidasTras:nv,timestamp:ts});inyectarEntradaDiarioAutomatica(`🔥 SACRIFICIO: '${nc}' [${datos.etiqueta}] ofrecido al Mercader. +${vg} ❤️. Vidas: ${nv}/${vt}.`);guardarBD();cerrarModalSacrificio();destellarPantalla('naranja');actualizarBarraVidasDesdeDB();renderizarTitulosYTemas();mostrarInfo({icono:'🔥',titulo:'Sacrificio completado',descripcion:`${nc} descansa en paz.\n❤️ Vidas: +${vg} → ${nv}`,textoConfirmar:'Aceptar'});};
 function renderizarHistorialSacrificios(){let box=document.getElementById('sac-historial-lista');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion];box.innerHTML='';if(!u.sacrificios||!u.sacrificios.length){box.innerHTML='<div style="color:var(--txt-muted);font-size:11px;font-family:var(--font-display);padding:10px 0;font-style:italic">Ningún compañero sacrificado aún.</div>';return;}[...u.sacrificios].reverse().slice(0,8).forEach(s=>{box.innerHTML+=`<div class="sac-entry"><div class="sac-entry-ts">🕐 ${escaparHTML(s.timestamp)}</div><div style="display:flex;justify-content:space-between;align-items:center"><div><span style="color:var(--neon-sacrificio);font-weight:700;font-family:var(--font-display);font-size:11px">🔥 ${escaparHTML(s.nombre)}</span> <span style="color:var(--txt-muted);font-size:10px">· ${escaparHTML(s.categoria)}</span></div><div style="font-family:var(--font-display);font-size:12px;font-weight:900;color:var(--neon-sacrificio)">+${s.vidasObtenidas}❤️</div></div><div style="font-size:10px;color:var(--txt-muted);margin-top:2px">Vidas tras el canje: ${s.vidasTras}</div></div>`;});}
 function actualizarEstadisticasSacrificioPanel(){let box=document.getElementById('sac-stats-mini-panel');if(!box||!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],t=u.sacrificios?u.sacrificios.length:0,v=u.sacrificios?u.sacrificios.reduce((a,s)=>a+(s.vidasObtenidas||0),0):0;box.innerHTML=`<div class="sac-chip">Sacrificios: <span>${t}</span></div><div class="sac-chip">Vidas recuperadas: <span>${v} ❤️</span></div>`;let btn=document.getElementById('btn-trigger-sacrificio');if(btn){let va=(u.vidasActuales!==undefined)?u.vidasActuales:(u.vidasTotales||20);let vt=u.vidasTotales||20;btn.disabled=(va>=vt);btn.title=va>=vt?`Ya tienes el máximo de ${vt} vidas`:'Sacrificar un Pokémon para recuperar vidas';}}
 
@@ -8693,7 +8194,7 @@ function actualizarEstadisticasSacrificioPanel(){let box=document.getElementById
 window.abrirOverlayDiarioNativo=function(){reproducirSonido('abrir');document.getElementById('diario-overlay-sistema').classList.add('show');redibujarHistorialDiario();};
 window.cerrarOverlayDiarioNativo=function(){reproducirSonido('cerrar');document.getElementById('diario-overlay-sistema').classList.remove('show');};
 function redibujarHistorialDiario(){if(!userSesion||!baseDatos.jugadores[userSesion])return;let u=baseDatos.jugadores[userSesion],logs=document.getElementById('diario-historial-logs');logs.innerHTML='';let fil=u.diarioLogs?u.diarioLogs.filter(l=>l.timestamp!=="Inicio"):[];document.getElementById('diario-contador').textContent=`Registros: ${fil.length} / 1500`;if(!fil.length){logs.innerHTML='<span style="color:var(--txt-muted);font-size:12px;text-align:center;padding:20px;font-family:var(--font-display)">Bitácora vacía.</span>';return;}let mostrar=fil.slice(-80);mostrar.forEach((log,idx)=>{let delay=Math.min(idx,20)*25;logs.innerHTML+=`<div class="diario-entry" style="animation-delay:${delay}ms"><div class="diario-entry-ts">📅 ${escaparHTML(log.timestamp)}</div><div class="diario-entry-txt">${escaparHTML(log.texto)}</div></div>`;});logs.scrollTop=logs.scrollHeight;}
-window.guardarNuevaEntradaDiario=function(){let inp=document.getElementById('diario-input-texto'),c=inp.value.trim();if(!c){mostrarNotificacion("Escribe algo antes de guardar.","error","📖");return;}if(c.length>15&&userSesion){setTimeout(function(){noticiaPublicar('bitacora',{jugador:userSesion,item:c.slice(0,120)+(c.length>120?'…':'')});},400);}inyectarEntradaDiarioAutomatica(c);guardarBD();inp.value='';redibujarHistorialDiario();reproducirSonido('exito');mostrarNotificacion("Hito estampado en la bitácora.","exito","📖");};
+window.guardarNuevaEntradaDiario=function(){let inp=document.getElementById('diario-input-texto'),c=inp.value.trim();if(!c){mostrarNotificacion("Escribe algo antes de guardar.","error","📖");return;}inyectarEntradaDiarioAutomatica(c);guardarBD();inp.value='';redibujarHistorialDiario();reproducirSonido('exito');mostrarNotificacion("Hito estampado en la bitácora.","exito","📖");};
 function registrarActividadGlobal(jugadorId,txt,ts){
     if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];
     baseDatos.actividadGlobal.push({jugador:jugadorId,texto:txt,timestamp:ts});
@@ -9232,7 +8733,7 @@ window.torneoCrearYGenerarBracket = function(){
   if(!baseDatos.torneos) baseDatos.torneos = {};
   baseDatos.torneos[id] = t;
   var ts = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
-  noticiaPublicar('torneo',{jugador:userSesion,item:nombre});registrarActividadGlobal(userSesion, `🏟️ Se ha creado el torneo "${nombre}" con ${ids.length} participantes`, ts);
+  registrarActividadGlobal(userSesion, `🏟️ Se ha creado el torneo "${nombre}" con ${ids.length} participantes`, ts);
   logAdmin('Crear torneo', `${nombre} (${ids.length} participantes)`);
   guardarBD();
   reproducirSonido('exito');
@@ -11457,7 +10958,7 @@ function _checkCompraTemaTienda(nombreProducto){
   }
 }
 
-function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';/* Usar el previo guardado en memoria, no el conteo del DOM (que al cargar siempre es 0) */var prevN=typeof window._insigPrevN==='number'?window._insigPrevN:-1;var esNuevaMedalla=n>prevN&&prevN>=0;window._insigPrevN=n;let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}"${i===n&&esNuevaMedalla?' data-nueva="1"':''}>${icon}</div>`;}box.innerHTML=html;let nueva=box.querySelector('[data-nueva="1"]');if(nueva){nueva.classList.add('recien-desbloqueado');/* Solo confeti si la sección de perfil/medallas está activa */var secMedallas=document.getElementById('section-medallas-torneos');var secPerfil=document.getElementById('section-perfil');var secActiva=(secMedallas&&secMedallas.classList.contains('active'))||(secPerfil&&secPerfil.classList.contains('active'));if(secActiva){dispararConfetti(nueva);}noticiaPublicar('medalla',{jugador:userSesion,cantidad:n});reproducirSonido('exito');}}
+function renderizarInsigniasPerfil(){let box=document.getElementById('medallas-insignias-grid');if(!box)return;let tipoEl=document.getElementById('perf-tipo-medallas'),numEl=document.getElementById('perf-num-medallas');let tipo=tipoEl?tipoEl.value:'medallas',n=numEl?(parseInt(numEl.value)||0):0,icon=tipo==='kahunas'?'🌺':'🏅';/* Usar el previo guardado en memoria, no el conteo del DOM (que al cargar siempre es 0) */var prevN=typeof window._insigPrevN==='number'?window._insigPrevN:-1;var esNuevaMedalla=n>prevN&&prevN>=0;window._insigPrevN=n;let html='';for(let i=1;i<=8;i++){html+=`<div class="medalla-insignia${i<=n?' ganada':''}"${i===n&&esNuevaMedalla?' data-nueva="1"':''}>${icon}</div>`;}box.innerHTML=html;let nueva=box.querySelector('[data-nueva="1"]');if(nueva){nueva.classList.add('recien-desbloqueado');/* Solo confeti si la sección de perfil/medallas está activa */var secMedallas=document.getElementById('section-medallas-torneos');var secPerfil=document.getElementById('section-perfil');var secActiva=(secMedallas&&secMedallas.classList.contains('active'))||(secPerfil&&secPerfil.classList.contains('active'));if(secActiva){dispararConfetti(nueva);}reproducirSonido('exito');}}
 window.guardarDatosPerfilGamer=function(){let u=baseDatos.jugadores[userSesion];u.lockeStatus=document.getElementById('perf-locke-status').value;u.tipoMedallas=document.getElementById('perf-tipo-medallas').value;u.numMedallas=parseInt(document.getElementById('perf-num-medallas').value)||0;guardarBD();};
 window.guardarVidasPerfilGamer=function(){let u=baseDatos.jugadores[userSesion],ini=parseInt(document.getElementById('perf-vidas-iniciales').value)||20;u.vidasTotales=ini;if(u.vidasActuales===undefined)u.vidasActuales=ini;if(u.vidasActuales<=0)u.lockeStatus='perdido';guardarBD();reproducirSonido('exito');actualizarBarraVidasDesdeDB();mostrarNotificacion("Contador de vidas sincronizado con la red.","exito","💾");};
 window.alterarTorneosPerfil=function(v){let u=baseDatos.jugadores[userSesion];u.torneos=Math.max(0,(u.torneos||0)+v);animarValorNumerico(document.getElementById('perf-txt-torneos'),u.torneos);if(v>0){/* dispararConfetti ya tiene guard de visibilidad */dispararConfetti(document.getElementById('perf-txt-torneos'));}guardarBD();};
@@ -11467,11 +10968,7 @@ function renderizarCementerioDOM(){if(!userSesion||!baseDatos.jugadores[userSesi
 function actualizarBannerAlertasVisuales(){let b=document.getElementById('alertas-sistema-marquee');if(!b)return;let ev=baseDatos.eventoSistema||"normal";if(ev==="normal"){b.classList.remove('active');b.innerHTML='';return;}b.classList.add('active');if(ev==="rebajas"){b.style.borderColor='rgba(30,158,115,.3)';b.style.color='var(--neon-legal)';b.innerHTML='📉 RED ESTABLE: −25% de descuento en Tienda Legal y Packs.';}if(ev==="inflacion"){b.style.borderColor='rgba(216,41,63,.3)';b.style.color='#e2646f';b.innerHTML='⚠️ RED INESTABLE: +50% de recargo en costes P₠.';}if(ev==="bonus_pf"){b.style.borderColor='rgba(201,154,46,.3)';b.style.color='var(--neon-packs)';b.innerHTML='🪙 REPUTACIÓN INTEGRAL: ¡Doble bono de PF por compras!';}}
 
 /* ═══ GACHA ═══ */
-window.reclamarHackeoDiario=function(){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado del Gacha. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);
-  /* Noticiero */
-  if(r<0.33) noticiaPublicar('gacha_dinero',{jugador:userSesion,cantidad:dg.toLocaleString()});
-  else if(r<0.66) noticiaPublicar('gacha_pf',{jugador:userSesion,cantidad:pfg});
-  else noticiaPublicar('gacha_item',{jugador:userSesion,item:item.nombre});regContadorMision(u,'gachaAbiertas',1);guardarBD();mostrarRevelacionGacha(reveal);actualizarAvisoGachaDisponible();refrescarPantallaGamer();setTimeout(function(){verificarMisionesCompletadasMision();actualizarWidgetMisionesInicio();},300);};
+window.reclamarHackeoDiario=function(){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado del Gacha. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let u=baseDatos.jugadores[userSesion],ahora=Date.now(),um=24*60*60*1000;if(ahora-(u.ultimoHackeo||0)<um){let r=um-(ahora-u.ultimoHackeo);mostrarNotificacion(`Sistemas protegidos. Reinicio en ${Math.ceil(r/(1000*60*60))} horas.`,"error","⏳");return;}u.ultimoHackeo=ahora;const IR=["Master Ball","Caramelo Raro","Vidaesfera","Maxipepita"],IG=[{nombre:"Poké Ball",icon:"🔴"},{nombre:"Super Ball",icon:"🔵"},{nombre:"Ultra Ball",icon:"🟡"},{nombre:"Master Ball",icon:"🟣"},{nombre:"Buceo Ball",icon:"🌐"},{nombre:"Nivel Ball",icon:"📈"},{nombre:"Lujo Ball",icon:"✨"},{nombre:"Veloz Ball",icon:"⚡"},{nombre:"Poción",icon:"🧪"},{nombre:"Revivir",icon:"🔺"},{nombre:"Caramelo Raro",icon:"🍬"},{nombre:"Proteína",icon:"🥛"},{nombre:"Piedra Fuego",icon:"🔥"},{nombre:"Piedra Agua",icon:"💧"},{nombre:"Vidaesfera",icon:"🔮"},{nombre:"Banda Focus",icon:"🧣"},{nombre:"Restos",icon:"🍏"},{nombre:"Pepita",icon:"🪙"},{nombre:"Maxipepita",icon:"💰"},{nombre:"Trozo Estrella",icon:"💫"}];let dg=Math.floor(Math.random()*9001)+1000,pfg=Math.floor(Math.random()*10)+1,item=IG[Math.floor(Math.random()*IG.length)];let r=Math.random(),msg="",reveal={};if(r<0.33){u.dinero=(u.dinero||0)+dg;msg=`Hackeo Exitoso: +${dg.toLocaleString()} P₠ inyectados.`;reveal={rareza:'dinero',icono:'💰',nombre:`+${dg.toLocaleString()} P₠`,detalle:'Efectivo inyectado en tu cuenta',especial:dg>=7000};}else if(r<0.66){u.pf=(u.pf||0)+pfg;msg=`Acceso Concedido: +${pfg} PF transferidos.`;reveal={rareza:'pf',icono:'🔮',nombre:`+${pfg} PF`,detalle:'Puntos de Favor transferidos',especial:pfg>=9};}else{if(!u.inventario)u.inventario=[];u.inventario.push({uid:"item_"+Date.now(),nombre:item.nombre,icon:item.icon,fecha:new Date().toLocaleDateString()});msg=`Robo de Suministros: Interceptado 1x [${item.icon} ${item.nombre}].`;reveal={rareza:'item',icono:item.icon,nombre:item.nombre,detalle:'Añadido a tu mochila',especial:IR.includes(item.nombre)};}inyectarEntradaDiarioAutomatica(`[RECOMPENSA DIARIA] ${msg}`);regContadorMision(u,'gachaAbiertas',1);guardarBD();mostrarRevelacionGacha(reveal);actualizarAvisoGachaDisponible();refrescarPantallaGamer();setTimeout(function(){verificarMisionesCompletadasMision();actualizarWidgetMisionesInicio();},300);};
 
 /* ═══ PF GACHA (solo entrega de 1 a 20 PF, cooldown propio de 24h) ═══ */
 window.reclamarGachaPF=function(){
@@ -11548,7 +11045,7 @@ function renderizarArenaPublica(){let box=document.getElementById('arena-lista-c
 /* ═══ CÁMARA DE COMERCIO ═══ */
 window.crearTruequeCamara=function(){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let jA=document.getElementById('adm-camara-jugador-a').value,oA=document.getElementById('adm-camara-objeto-a').value.trim(),jB=document.getElementById('adm-camara-jugador-b').value,oB=document.getElementById('adm-camara-objeto-b').value.trim(),cat=document.getElementById('adm-camara-categoria').value;if(!jA||!jB){mostrarNotificacion("Selecciona los dos jugadores.","error","🏛️");return;}if(jA===jB){mostrarNotificacion("Los dos jugadores deben ser diferentes.","error","🏛️");return;}if(!oA||!oB){mostrarNotificacion("Indica los objetos de ambos jugadores.","error","📦");return;}if(!cat){mostrarNotificacion("Selecciona la categoría del intercambio.","error","🏛️");return;}let cd=CAMARA_CATEGORIAS[cat];if(!cd){mostrarNotificacion("Categoría inválida.","error","🏛️");return;}let uA=baseDatos.jugadores[jA],uB=baseDatos.jugadores[jB];if(!uA||!uB){mostrarNotificacion("Uno o ambos jugadores no encontrados.","error","🏛️");return;}if((uA.pf||0)<cd.coste){mostrarNotificacion(`${jA.toUpperCase()} no tiene suficientes PF (necesita ${cd.coste}, tiene ${uA.pf||0}).`,"error","🔮");return;}if((uB.pf||0)<cd.coste){mostrarNotificacion(`${jB.toUpperCase()} no tiene suficientes PF (necesita ${cd.coste}, tiene ${uB.pf||0}).`,"error","🔮");return;}uA.pf=(uA.pf||0)-cd.coste;uB.pf=(uB.pf||0)-cd.coste;let tid="camara_"+Date.now();if(!baseDatos.camara)baseDatos.camara={};baseDatos.camara[tid]={id:tid,jugadorA:jA,objetoA:oA,jugadorB:jB,objetoB:oB,categoria:cat,costePorJugador:cd.coste,estado:"votacion",votos:{},fechaCreacion:new Date().toLocaleDateString()};inyectarEntradaDiarioAutomaticaPara(jA,`🏛️ CÁMARA: El Mercader propuso un trueque contigo. Entregas '${oA}' a ${jB.toUpperCase()} a cambio de '${oB}'. Coste: ${cd.coste} PF retenidos.`);inyectarEntradaDiarioAutomaticaPara(jB,`🏛️ CÁMARA: El Mercader propuso un trueque contigo. Entregas '${oB}' a ${jA.toUpperCase()} a cambio de '${oA}'. Coste: ${cd.coste} PF retenidos.`);logAdmin('Crear trueque Cámara',`${jA.toUpperCase()} (${oA}) ⇄ ${jB.toUpperCase()} (${oB}) [${cat}]`);document.getElementById('adm-camara-objeto-a').value='';document.getElementById('adm-camara-objeto-b').value='';reproducirSonido('trueque');mostrarNotificacion(`${jA.toUpperCase()} y ${jB.toUpperCase()} han retenido ${cd.coste} PF cada uno.`,'exito','🏛️','Trueque publicado');};
 window.votarTruequeCamara=function(tid,tipo){if(!userSesion)return;if(jugadorBaneado(userSesion)){mostrarNotificacion(`🚫 Estás baneado de Eventos. Motivo: ${baseDatos.jugadores[userSesion].baneado.motivo}`,'error','🚫');return;}let t=baseDatos.camara[tid];if(!t||t.estado!=="votacion"){mostrarNotificacion("Este trueque ya no está en votación.","error","🏛️");return;}if(t.jugadorA===userSesion||t.jugadorB===userSesion){mostrarNotificacion("No puedes votar en tu propio trueque.","error","🏛️");return;}if(t.votos&&t.votos[userSesion]){mostrarNotificacion("Ya emitiste tu voto.","error","🏛️");return;}if(!t.votos)t.votos={};t.votos[userSesion]=tipo;guardarBD();reproducirSonido('voto');mostrarNotificacion(tipo==='SI'?'Has aprobado el trueque.':'Has rechazado el trueque.','info',tipo==='SI'?'👍':'👎');};
-window.resolverTruequeCamara=function(tid,res){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=baseDatos.camara[tid];if(!t){mostrarNotificacion("Trueque no encontrado.","error","🏛️");return;}let uA=baseDatos.jugadores[t.jugadorA],uB=baseDatos.jugadores[t.jugadorB],c=t.costePorJugador||0;if(res==='ACEPTADO'){t.estado="completado";noticiaPublicar('intercambio',{jugador:t.jugadorA,jugador2:t.jugadorB});inyectarEntradaDiarioAutomaticaPara(t.jugadorA,`🏛️ CÁMARA ACEPTADA: Trueque '${t.objetoA}' → '${t.objetoB}' completado con ${t.jugadorB.toUpperCase()}. Coste definitivo: ${c} PF.`);inyectarEntradaDiarioAutomaticaPara(t.jugadorB,`🏛️ CÁMARA ACEPTADA: Trueque '${t.objetoB}' → '${t.objetoA}' completado con ${t.jugadorA.toUpperCase()}. Coste definitivo: ${c} PF.`);guardarBD();reproducirSonido('exito');mostrarNotificacion('Los PF no se devuelven.','exito','✅','Trueque aceptado');}else{if(uA)uA.pf=(uA.pf||0)+c;if(uB)uB.pf=(uB.pf||0)+c;t.estado="rechazado";inyectarEntradaDiarioAutomaticaPara(t.jugadorA,`🏛️ CÁMARA RECHAZADA: El trueque con ${t.jugadorB.toUpperCase()} fue cancelado. Te han devuelto ${c} PF.`);inyectarEntradaDiarioAutomaticaPara(t.jugadorB,`🏛️ CÁMARA RECHAZADA: El trueque con ${t.jugadorA.toUpperCase()} fue cancelado. Te han devuelto ${c} PF.`);guardarBD();reproducirSonido('cerrar');mostrarNotificacion(`Se han devuelto ${c} PF a cada jugador.`,'info','❌','Trueque rechazado');}};
+window.resolverTruequeCamara=function(tid,res){if(!userSesion||userSesion.toLowerCase()!=="srwiwa"){mostrarNotificacion("Acceso denegado.","error","🔒");return;}let t=baseDatos.camara[tid];if(!t){mostrarNotificacion("Trueque no encontrado.","error","🏛️");return;}let uA=baseDatos.jugadores[t.jugadorA],uB=baseDatos.jugadores[t.jugadorB],c=t.costePorJugador||0;if(res==='ACEPTADO'){t.estado="completado";inyectarEntradaDiarioAutomaticaPara(t.jugadorA,`🏛️ CÁMARA ACEPTADA: Trueque '${t.objetoA}' → '${t.objetoB}' completado con ${t.jugadorB.toUpperCase()}. Coste definitivo: ${c} PF.`);inyectarEntradaDiarioAutomaticaPara(t.jugadorB,`🏛️ CÁMARA ACEPTADA: Trueque '${t.objetoB}' → '${t.objetoA}' completado con ${t.jugadorA.toUpperCase()}. Coste definitivo: ${c} PF.`);guardarBD();reproducirSonido('exito');mostrarNotificacion('Los PF no se devuelven.','exito','✅','Trueque aceptado');}else{if(uA)uA.pf=(uA.pf||0)+c;if(uB)uB.pf=(uB.pf||0)+c;t.estado="rechazado";inyectarEntradaDiarioAutomaticaPara(t.jugadorA,`🏛️ CÁMARA RECHAZADA: El trueque con ${t.jugadorB.toUpperCase()} fue cancelado. Te han devuelto ${c} PF.`);inyectarEntradaDiarioAutomaticaPara(t.jugadorB,`🏛️ CÁMARA RECHAZADA: El trueque con ${t.jugadorA.toUpperCase()} fue cancelado. Te han devuelto ${c} PF.`);guardarBD();reproducirSonido('cerrar');mostrarNotificacion(`Se han devuelto ${c} PF a cada jugador.`,'info','❌','Trueque rechazado');}};
 function renderizarCamaraPublica(){let box=document.getElementById('contenedor-intercambios-camara');if(!box)return;box.innerHTML='';if(!baseDatos.camara||!Object.keys(baseDatos.camara).length){box.innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--txt-muted);border:1px dashed var(--gris-700);border-radius:var(--r-xl);background:var(--bg-elevated)"><div style="font-size:36px;margin-bottom:12px">🏛️</div><div style="font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:2px">Cámara Vacía</div><div style="font-size:11px;margin-top:6px">El Mercader aún no ha publicado ningún trueque.</div></div>`;return;}let todos=Object.values(baseDatos.camara);let activos=todos.filter(t=>t.estado==='votacion');let resueltos=todos.filter(t=>t.estado!=='votacion').sort((a,b)=>({completado:0,rechazado:1}[a.estado]||0)-({completado:0,rechazado:1}[b.estado]||0));function pintarTrueque(t){let cd=CAMARA_CATEGORIAS[t.categoria]||{label:'Desconocida',icon:'❓',badgeClass:'',coste:0},si=t.jugadorA===userSesion||t.jugadorB===userSesion,yv=t.votos&&t.votos[userSesion],vs=t.votos?Object.values(t.votos).filter(v=>v==='SI').length:0,vn=t.votos?Object.values(t.votos).filter(v=>v==='NO').length:0;let bE=t.estado==='votacion'?'<span class="arena-badge badge-abierto">🗳️ VOTACIÓN</span>':t.estado==='completado'?'<span class="arena-badge badge-resuelto">✅ COMPLETADO</span>':'<span class="arena-badge badge-cerrado">❌ RECHAZADO</span>';let rH='';if(t.estado==='completado'&&si)rH=`<div class="arena-resultado resultado-gane" style="margin-top:10px">✅ Trueque aceptado. Coste final: ${t.costePorJugador} PF.</div>`;else if(t.estado==='rechazado'&&si)rH=`<div class="arena-resultado resultado-perdi" style="margin-top:10px">❌ Trueque rechazado. Se te han devuelto ${t.costePorJugador} PF.</div>`;let vH='';if(t.estado==='votacion'&&!si){if(yv)vH=`<div class="arena-mi-apuesta" style="margin-top:10px">✅ Votaste: <strong>${yv==='SI'?'👍 A favor':'👎 En contra'}</strong></div>`;else vH=`<div style="display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--borde);flex-wrap:wrap"><span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);align-self:center">¿Apruebas este trueque?</span><button style="padding:7px 14px;background:rgba(30,158,115,.08);border:1px solid rgba(30,158,115,.25);color:var(--neon-legal);border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase" onclick="votarTruequeCamara('${t.id}','SI')">👍 Aprobar</button><button style="padding:7px 14px;background:rgba(216,41,63,.08);border:1px solid rgba(216,41,63,.25);color:#e2646f;border-radius:var(--r-sm);font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;text-transform:uppercase" onclick="votarTruequeCamara('${t.id}','NO')">👎 Rechazar</button></div>`;}else if(t.estado==='votacion'&&si){vH=`<div class="arena-mi-apuesta" style="color:var(--txt-muted);margin-top:8px">⚖️ Eres parte de este trueque</div>`;}return `<div class="intercambio-card" style="border-left-color:${t.estado==='votacion'?'var(--neon-intercambio)':t.estado==='completado'?'var(--neon-legal)':'#e2646f'}"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:6px"><div><div style="font-family:var(--font-display);font-size:11px;color:var(--neon-intercambio);font-weight:700;margin-bottom:4px">${escaparHTML(t.jugadorA.toUpperCase())} ⇄ ${escaparHTML(t.jugadorB.toUpperCase())} ${bE}</div><span class="cat-badge ${cd.badgeClass}">${cd.icon} ${escaparHTML(cd.label)}</span></div><div style="display:flex;gap:4px;align-items:center"><span class="votos-badge votos-si">👍 ${vs}</span><span class="votos-badge votos-no">👎 ${vn}</span></div></div><div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:rgba(0,0,0,.2);padding:12px;border-radius:var(--r-md)"><div style="text-align:center"><div style="font-size:9px;color:#6f9cc4;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">${escaparHTML(t.jugadorA.toUpperCase())} entrega</div><div style="font-size:14px;font-weight:700;color:var(--txt-primary)">📦 ${escaparHTML(t.objetoA)}</div></div><div style="font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--neon-intercambio);text-align:center">⇄</div><div style="text-align:center"><div style="font-size:9px;color:#e2646f;font-family:var(--font-display);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">${escaparHTML(t.jugadorB.toUpperCase())} entrega</div><div style="font-size:14px;font-weight:700;color:var(--txt-primary)">📦 ${escaparHTML(t.objetoB)}</div></div></div>${vH}${rH}</div>`;}
   let html=activos.map(pintarTrueque).join('');
   if(!activos.length)html=`<div style="text-align:center;padding:30px 20px;color:var(--txt-muted);font-family:var(--font-display);font-size:11px">Sin trueques en votación ahora mismo.</div>`;
@@ -11932,7 +11429,7 @@ window.pvpResolverDuelo = function(quien){
   eloP.derrotas  += 1;
   eloP.racha      = (eloP.racha < 0 ? eloP.racha : 0) - 1;
     reproducirSonido('exito');
-  noticiaPublicar('pvp',{jugador:ganadorId,jugador2:perdedorId});logAdmin('🥊','Resolver duelo PvP',ganadorId.toUpperCase()+' GANA a '+perdedorId.toUpperCase()+' | ELO: +'+PVP_ELO_GANADOR+' / -'+PVP_ELO_PERDEDOR);inyectarEntradaDiarioAutomatica('🏆 Duelo resuelto: '+ganadorId.toUpperCase()+' GANA a '+perdedorId.toUpperCase()+'. ELO: +'+PVP_ELO_GANADOR+' / -'+PVP_ELO_PERDEDOR);
+  logAdmin('🥊','Resolver duelo PvP',ganadorId.toUpperCase()+' GANA a '+perdedorId.toUpperCase()+' | ELO: +'+PVP_ELO_GANADOR+' / -'+PVP_ELO_PERDEDOR);inyectarEntradaDiarioAutomatica('🏆 Duelo resuelto: '+ganadorId.toUpperCase()+' GANA a '+perdedorId.toUpperCase()+'. ELO: +'+PVP_ELO_GANADOR+' / -'+PVP_ELO_PERDEDOR);
   mostrarNotificacion('🏆 '+ganadorId.toUpperCase()+' gana el duelo! +'+PVP_ELO_GANADOR+' ELO','exito','🏆');
   pvpActualizarAdminPanel();
   renderizarDuelosPvP();
@@ -12264,29 +11761,8 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 81;
+const APP_VERSION = '80.2';
 const VERSIONES = [
-  {
-    version: 81,
-    fecha: '2026-09-06',
-    titulo: 'Noticiero en Vivo — Silph Co News Network',
-    resumen: 'Nuevo sistema de noticiero en tiempo real en la pantalla de Inicio. Detecta automáticamente todos los movimientos de la web y los convierte en noticias con titular, subtítulo y cuerpo redactado con personalidad periodística. Los jugadores pueden comentar como "declaraciones" y esas declaraciones se convierten en nuevas noticias.',
-    nuevas: [
-      'Noticiero en Inicio: 6 medios inventados con personalidad propia — Pokéinomano Silph, PokeTV, El Wipeado, Llorones Por el Mundo, Silph TV3 y Wiwaneros',
-      'Ticker de última hora animado en la cabecera del noticiero',
-      'Redacción periodística automática con varias plantillas por tipo de evento — nunca genera dos noticias iguales',
-      'Agrupación de eventos repetidos en 30 minutos: si varios jugadores abren el gacha seguidos, se genera una noticia conjunta',
-      'Comentarios/declaraciones en cada noticia: cualquier jugador puede declarar y eso genera una nueva noticia automáticamente',
-      'Las noticias se almacenan en Firebase bajo el nodo "noticias" — separado de actividadGlobal — y persisten entre sesiones',
-      'Máximo 30 noticias activas en BD (las más antiguas se eliminan automáticamente)',
-    ],
-    mejoras: [
-      'Eventos detectados: gacha (dinero/PF/item), muerte de Pokémon, sacrificio, compra en tienda, misión completada, torneo creado, PvP resuelto, intercambio completado, avance de fase en Tribunal, sentencia dictada, apertura de tienda por admin, nueva medalla, escritura manual en bitácora, declaraciones de jugadores',
-      'Categorías con color propio: GACHA, MERCADO, NECROLÓGICA, RITUAL, MISIONES, ARENA, PVP, TRUEQUE, TRIBUNAL, TIENDAS, DECLARACIÓN, BITÁCORA, LOGROS, SISTEMA',
-    ],
-    rendimiento: [],
-    fixes: [],
-  },
   {
     version: '80.2',
     fecha: '2026-09-06',
