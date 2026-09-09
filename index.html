@@ -7571,15 +7571,30 @@ window.ingresarAlSistema=function(){
   /* Bloquear cuentas pendientes de activación */
   if(baseDatos.jugadores[id].pendienteActivacion===true){mostrarNotificacion('Esta cuenta aún no ha sido activada. Usa el código que te dio el admin.','error','🔒');loginMostrarRegistro();return;}
   userSesion=id;localStorage.setItem('silph_user_sesion',id);
-  var _rutasLocke=(baseDatos.lockeActivo&&baseDatos.lockeActivo.rutasDefinidas)||[];
-  {let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.misionesContadores)u.misionesContadores={};
-/* Sincronizar tracker con rutasDefinidas del locke:
-   — Si no tiene tracker, crearlo desde cero.
-   — Si tiene tracker pero el locke ahora tiene rutas que no están en el tracker
-     (caso: locke creado sin rutas y rutas añadidas después desde Modo Dios),
-     añadir las rutas nuevas como 'pendiente' conservando los estados existentes.
-   — No duplicar rutas que ya existen en el tracker.                              */
-,60000);
+  {let u=baseDatos.jugadores[id];if(!u.inventario)u.inventario=[{uid:"init",nombre:"Mochila Inicial"}];if(!u.diarioLogs)u.diarioLogs=[{timestamp:"Inicio",texto:"Sistema iniciado."}];if(!u.cementerio)u.cementerio=[];if(!u.sacrificios)u.sacrificios=[];if(!u.ultimoHackeo)u.ultimoHackeo=0;if(u.vidasTotales===undefined)u.vidasTotales=20;if(u.vidasActuales===undefined)u.vidasActuales=20;if(!u.misionesContadores)u.misionesContadores={};}
+  guardarBD();
+  /* Mostrar la app */
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-shell').style.display='block';
+  actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();
+  renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();
+  renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();
+  const bA=document.getElementById('nav-admin');
+  if(bA)bA.style.display=(id.toLowerCase()==='srwiwa')?'flex':'none';
+  if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();
+  mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();
+  if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();
+  renderizarDuelosPvP();pvpActualizarAdminPanel();
+  if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();
+  if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();
+  if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();
+  actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();
+  var _secActiva='inicio';
+  document.querySelectorAll('.page-section.active').forEach(function(el){var id2=el.id;if(id2&&id2.startsWith('section-'))_secActiva=id2.replace('section-','');});
+  if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);
+  if(window._actualizarSidebarFooter)_actualizarSidebarFooter();
+  setTimeout(function(){renderizarAsistente();if(window._asisSetSeccion)_asisSetSeccion(_secActiva);},400);
+};
 const ACTIVIDAD_PALETA=['#1e9e73','#c99a2e','#8e4fc7','#3e6fa6','#b8602e','#ec4899','#06b6d4','#84cc16','#d8293f','#5b52c7','#14b8a6','#eab308'];
 function colorParaJugador(id){
     let s=(id||'?').toUpperCase(),h=0;
