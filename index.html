@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v80.9 | Build: 2026-09-09 -->
+<!-- Silph Co v80.10 | Build: 2026-09-09 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -8515,10 +8515,9 @@ function generarConsejosAsistente(u){
   var vidasTot = u.vidasTotales || 20;
   var dinero = u.dinero || 0;
   var pf = u.pf || 0;
-  var tracker = u.tracker || [];
-  var pendientes = tracker.filter(function(e){ return e.estado==='pendiente'; }).length;
-  var perdidos = tracker.filter(function(e){ return e.estado==='perdido'; }).length;
-  var totalRutas = tracker.length;
+  var perdidos = (u.cementerio || []).length;
+  var totalRutas = 0;
+  var pendientes = 0;
   var numMed = u.numMedallas || 0;
   var tipoMed = u.tipoMedallas === 'kahunas' ? 'pruebas' : 'medallas';
   var inventario = (u.inventario||[]).filter(function(i){ return i.uid!=='init'; });
@@ -8549,21 +8548,11 @@ function generarConsejosAsistente(u){
   } else if(vidasExtra2>0){
     add('consejo','❤️','Vidas extra activas', 'Tienes '+vidasAct+'/'+vidasTot+'+'+vidasExtra2+' extra. Esas extra son tu colchón de seguridad.');
   }
-   else  else 
   if(perdidos>=5){
     add('consejo','⚰️','Muchas bajas', perdidos+' Pokémon perdidos. El cementerio crece. Cuídate.');
   }
 
-  // ── PROGRESO (tracker) ──
-  if(totalRutas>0){
-    if(pendientes===0){
-      add('consejo','✅','Tracker al día', `Has resuelto las ${totalRutas} rutas asignadas. Buen ritmo.`);
-    } else if(pendientes<=3){
-      add('importante','🗺️','Rutas por decidir', `Tienes ${pendientes} ruta${pendientes===1?'':'s'} pendiente${pendientes===1?'':'s'} de capturar o marcar como perdida.`);
-    } else {
-      add('consejo','🗺️','Quedan rutas por delante', `Aún tienes ${pendientes} rutas sin resolver en el tracker.`);
-    }
-  }
+
 
   // ── GIMNASIOS / KAHUNAS ──
   if(numMed<8){
@@ -10967,7 +10956,7 @@ window.renderizarDuelosPvP = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = '80.9';
+const APP_VERSION = '80.10';
 const VERSIONES = [
   {
     version: '80.9',
