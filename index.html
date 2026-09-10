@@ -2894,11 +2894,11 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div class="card" style="max-width:560px;border-color:rgba(96,165,250,.25)">
           <div class="card-title" style="color:#60a5fa">💾 Backups y Restauración</div>
           <div style="font-size:11px;color:var(--txt-muted);margin-bottom:18px;font-family:var(--font-display);line-height:1.6">
-            Las snapshots se generan automáticamente en este navegador cada vez que alguien guarda algo en Firebase, y también cada 10 minutos. Se conservan las últimas 5. Si los datos desaparecen, puedes restaurar desde aquí sin tocar la consola de Firebase.
+            Las snapshots se guardan en Firebase (nodo separado) cada vez que alguien guarda algo desde cualquier dispositivo, y también cada 10 minutos. Máximo 1 cada 2 min para no saturar. Se conservan las últimas 5. Visibles y restaurables desde cualquier dispositivo.
           </div>
 
           <!-- Snapshots automáticas -->
-          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Snapshots automáticas (este navegador)</div>
+          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Snapshots automáticas (Firebase · todos los dispositivos)</div>
           <div id="backup-lista" style="margin-bottom:20px">
             <div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 2px">Cargando...</div>
           </div>
@@ -5406,26 +5406,42 @@ async function guardarBD(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   SISTEMA DE BACKUP AUTOMÁTICO EN localStorage
-   — Se ejecuta tras cada guardarBD() exitoso
+   SISTEMA DE BACKUP AUTOMÁTICO EN FIREBASE (nodo silph_co_backups)
+   — Se ejecuta tras cada guardarBD() exitoso desde cualquier dispositivo
    — También cada 10 minutos si hay sesión activa
    — Guarda las últimas 5 snapshots con timestamp
-   — Solo accesible desde el panel Modo Dios (srwiwa)
+   — Accesible desde el panel Modo Dios en cualquier dispositivo
+   — NUNCA escribe en silph_co_market, usa un nodo propio
    ═══════════════════════════════════════════════════════════════ */
-const _BACKUP_KEY   = 'silph_co_backups';
-const _BACKUP_MAX   = 5;
+const _BACKUP_FB_PATH = 'silph_co_backups';
+const _BACKUP_MAX     = 5;
+/* Throttle: no guardar más de 1 backup cada 2 min para no saturar Firebase
+   con guardados rápidos consecutivos (ej: compras seguidas).             */
+let _backupUltimoTs   = 0;
+const _BACKUP_THROTTLE_MS = 2 * 60 * 1000;
 
-function _autoBackupLocal(datos){
+async function _autoBackupLocal(datos){
   if(!datos) return;
+  const ahora = Date.now();
+  if(ahora - _backupUltimoTs < _BACKUP_THROTTLE_MS) return; // throttle
+  _backupUltimoTs = ahora;
   try{
-    const ahora   = Date.now();
-    const entrada = { ts: ahora, label: new Date(ahora).toLocaleString('es-ES'), datos: JSON.parse(JSON.stringify(datos)) };
+    const entrada = {
+      ts:    ahora,
+      label: new Date(ahora).toLocaleString('es-ES'),
+      por:   (userSesion && userSesion.nombre) || 'desconocido',
+      datos: JSON.parse(JSON.stringify(datos))
+    };
+    const snapFB = await get(ref(db, _BACKUP_FB_PATH));
     let lista = [];
-    try{ lista = JSON.parse(localStorage.getItem(_BACKUP_KEY) || '[]'); }catch(e){ lista = []; }
+    if(snapFB.exists()){
+      const val = snapFB.val();
+      lista = Array.isArray(val) ? val : Object.values(val);
+    }
     lista.unshift(entrada);
     if(lista.length > _BACKUP_MAX) lista = lista.slice(0, _BACKUP_MAX);
-    localStorage.setItem(_BACKUP_KEY, JSON.stringify(lista));
-  }catch(e){ console.warn('[backup] No se pudo guardar backup local:', e); }
+    await set(ref(db, _BACKUP_FB_PATH), lista);
+  }catch(e){ console.warn('[backup] No se pudo guardar backup en Firebase:', e); }
 }
 
 // Backup periódico cada 10 minutos mientras haya sesión activa
@@ -5433,32 +5449,29 @@ setInterval(function(){
   if(userSesion && baseDatos && _bdCargadaAlgunaVez) _autoBackupLocal(baseDatos);
 }, 10 * 60 * 1000);
 
-window.obtenerBackupsLocales = function(){
-  try{ return JSON.parse(localStorage.getItem(_BACKUP_KEY) || '[]'); }catch(e){ return []; }
-};
-
 window.restaurarBackupLocal = async function(idx){
-  const lista = window.obtenerBackupsLocales();
-  if(!lista[idx]){ mostrarNotificacion('Backup no encontrado.','error','💾'); return; }
-  const snap = lista[idx];
-  const cf = await mostrarConfirmacion({
-    icono:'💾',
-    titulo:'Restaurar backup',
-    descripcion:`¿Restaurar la snapshot del ${snap.label}?\n\nEsto sobreescribirá TODOS los datos actuales de Firebase con los datos de ese momento.\n\n⚠️ Esta acción no se puede deshacer.`,
-    textoConfirmar:'Restaurar',
-    tipo:'sacrificio'
-  });
-  if(!cf) return;
   try{
+    const snapFB = await get(ref(db, _BACKUP_FB_PATH));
+    if(!snapFB.exists()){ mostrarNotificacion('No hay backups en Firebase.','error','💾'); return; }
+    const val   = snapFB.val();
+    const lista = Array.isArray(val) ? val : Object.values(val);
+    if(!lista[idx]){ mostrarNotificacion('Backup no encontrado.','error','💾'); return; }
+    const snap = lista[idx];
+    const cf = await mostrarConfirmacion({
+      icono:'💾',
+      titulo:'Restaurar backup',
+      descripcion:`¿Restaurar la snapshot del ${snap.label}?\n\nEsto sobreescribirá TODOS los datos actuales de Firebase con los datos de ese momento.\n\n⚠️ Esta acción no se puede deshacer.`,
+      textoConfirmar:'Restaurar',
+      tipo:'sacrificio'
+    });
+    if(!cf) return;
     await set(ref(db,'silph_co_market'), snap.datos);
     baseDatos = snap.datos;
     window._ultimaBDConocida = JSON.parse(JSON.stringify(snap.datos));
     logAdmin('💾 Backup restaurado', snap.label);
     mostrarNotificacion('Backup restaurado correctamente.','exito','💾');
     renderizarBackupsAdmin();
-  }catch(e){
-    mostrarNotificacion('Error al restaurar. Comprueba la conexión.','error','⚠️');
-  }
+  }catch(e){ mostrarNotificacion('Error al restaurar. Comprueba la conexión.','error','⚠️'); }
 };
 
 window.exportarBDComoJSON = function(){
@@ -5493,7 +5506,8 @@ window.importarBDDesdeJSON = function(file){
       await set(ref(db,'silph_co_market'), datos);
       baseDatos = datos;
       window._ultimaBDConocida = JSON.parse(JSON.stringify(datos));
-      _autoBackupLocal(datos);
+      _backupUltimoTs = 0; // forzar backup inmediato tras importar
+      await _autoBackupLocal(datos);
       logAdmin('📤 Importación JSON manual','');
       mostrarNotificacion('Importación completada.','exito','📤');
       renderizarBackupsAdmin();
@@ -5502,21 +5516,32 @@ window.importarBDDesdeJSON = function(file){
   reader.readAsText(file);
 };
 
-function renderizarBackupsAdmin(){
+async function renderizarBackupsAdmin(){
   const cont = document.getElementById('backup-lista');
   if(!cont) return;
-  const lista = window.obtenerBackupsLocales();
-  if(!lista.length){ cont.innerHTML='<div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 2px">No hay snapshots guardadas todavía. Se generan automáticamente cada vez que alguien guarda algo o cada 10 minutos.</div>'; return; }
-  cont.innerHTML = lista.map(function(b, i){
-    const jug = b.datos && b.datos.jugadores ? Object.keys(b.datos.jugadores).length : '?';
-    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);margin-bottom:4px">
-      <div>
-        <div style="font-size:11px;font-family:var(--font-display);font-weight:700;color:var(--txt-primary)">${b.label}</div>
-        <div style="font-size:10px;color:var(--txt-muted)">${jug} jugadores · snapshot #${i+1}</div>
-      </div>
-      <button class="btn-admin danger" style="padding:5px 12px;font-size:10px;margin:0;flex-shrink:0" onclick="restaurarBackupLocal(${i})">↩ Restaurar</button>
-    </div>`;
-  }).join('');
+  cont.innerHTML = '<div style="font-size:11px;color:var(--txt-muted);padding:8px 2px">Cargando snapshots...</div>';
+  try{
+    const snapFB = await get(ref(db, _BACKUP_FB_PATH));
+    if(!snapFB.exists()){
+      cont.innerHTML = '<div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 2px">No hay snapshots todavía. Se generan automáticamente cuando alguien guarda algo (máx. 1 cada 2 min) y cada 10 minutos.</div>';
+      return;
+    }
+    const val   = snapFB.val();
+    const lista = Array.isArray(val) ? val : Object.values(val);
+    cont.innerHTML = lista.map(function(b, i){
+      const jug = b.datos && b.datos.jugadores ? Object.keys(b.datos.jugadores).length : '?';
+      const por = b.por ? ` · guardado por ${b.por}` : '';
+      return `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);margin-bottom:4px">
+        <div>
+          <div style="font-size:11px;font-family:var(--font-display);font-weight:700;color:var(--txt-primary)">${b.label}</div>
+          <div style="font-size:10px;color:var(--txt-muted)">${jug} jugadores${por}</div>
+        </div>
+        <button class="btn-admin danger" style="padding:5px 12px;font-size:10px;margin:0;flex-shrink:0" onclick="restaurarBackupLocal(${i})">↩ Restaurar</button>
+      </div>`;
+    }).join('');
+  }catch(e){
+    cont.innerHTML = '<div style="font-size:11px;color:#e2646f;padding:8px 2px">Error al leer backups de Firebase.</div>';
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -10790,14 +10815,14 @@ const VERSIONES = [
     version: 77.1,
     fecha: '2026-09-10',
     titulo: 'Backups automáticos + protección contra borrados',
-    resumen: 'El plan B de guardarBD() ya no puede borrar datos si la BD local no estaba inicializada. Se añade sistema de backup automático en localStorage (snapshot tras cada guardado + cada 10 min, últimas 5) y panel "💾 Backups" en Modo Dios para restaurar o exportar/importar JSON.',
+    resumen: 'El plan B de guardarBD() ya no puede borrar datos si la BD local no estaba inicializada. Sistema de backup automático en Firebase (nodo silph_co_backups): snapshot tras cada guardado desde cualquier dispositivo (throttle 2 min) + cada 10 min, últimas 5. Panel "💾 Backups" en Modo Dios visible desde cualquier dispositivo.',
     nuevas: [
-      'Panel "💾 Backups" en Modo Dios: lista de snapshots automáticas con botón de restaurar',
+      'Panel "💾 Backups" en Modo Dios: snapshots en Firebase visibles y restaurables desde cualquier dispositivo',
       'Exportar estado actual de Firebase como fichero .json',
       'Importar un fichero .json para restaurar Firebase',
-      'Backup automático en localStorage tras cada guardarBD() exitoso',
-      'Backup periódico cada 10 minutos mientras haya sesión activa',
-      'Se conservan las últimas 5 snapshots automáticas',
+      'Backup automático en Firebase tras cada guardarBD() exitoso (throttle: máx. 1 cada 2 min)',
+      'Backup periódico cada 10 minutos mientras haya sesión activa en cualquier dispositivo',
+      'Se conservan las últimas 5 snapshots; cada entrada registra quién la generó',
     ],
     mejoras: [],
     rendimiento: [],
