@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v77 | Build: 2026-09-03 -->
+<!-- Silph Co v77.1 | Build: 2026-09-10 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -2403,6 +2403,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
         <button class="dios-tab" id="dtab-museo" onclick="cambiarAdminTab('museo')" style="color:#818cf8;border-color:rgba(129,140,248,.3)">📜 Museo</button>
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#e2646f;border-color:rgba(216,41,63,.3)">🔄 Nuevo Locke</button>
+        <button class="dios-tab" id="dtab-backup" onclick="cambiarAdminTab('backup')" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">💾 Backups</button>
         
       </div>
       <!-- RESETEOS -->
@@ -2884,6 +2885,36 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
             <button class="btn-admin danger" style="width:100%;font-size:13px;padding:12px;font-weight:900" onclick="confirmarNuevoLocke()">🔄 INICIAR NUEVO LOCKE</button>
             <button class="btn-admin" style="width:100%;margin-top:8px" onclick="nlPaso(1)">← Volver</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BACKUP Y RESTAURACIÓN -->
+      <div id="dv-backup" class="dios-view">
+        <div class="card" style="max-width:560px;border-color:rgba(96,165,250,.25)">
+          <div class="card-title" style="color:#60a5fa">💾 Backups y Restauración</div>
+          <div style="font-size:11px;color:var(--txt-muted);margin-bottom:18px;font-family:var(--font-display);line-height:1.6">
+            Las snapshots se generan automáticamente en este navegador cada vez que alguien guarda algo en Firebase, y también cada 10 minutos. Se conservan las últimas 5. Si los datos desaparecen, puedes restaurar desde aquí sin tocar la consola de Firebase.
+          </div>
+
+          <!-- Snapshots automáticas -->
+          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Snapshots automáticas (este navegador)</div>
+          <div id="backup-lista" style="margin-bottom:20px">
+            <div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 2px">Cargando...</div>
+          </div>
+
+          <!-- Exportar / Importar JSON -->
+          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">Exportar / Importar fichero JSON</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+            <button class="btn-admin packs" style="flex:1;min-width:160px" onclick="exportarBDComoJSON()">📥 Exportar JSON ahora</button>
+            <label class="btn-admin" style="flex:1;min-width:160px;text-align:center;cursor:pointer;margin:0">
+              📤 Importar JSON
+              <input type="file" accept=".json" style="display:none" onchange="importarBDDesdeJSON(this.files[0]);this.value=''">
+            </label>
+          </div>
+          <div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);line-height:1.5">
+            Exportar descarga el estado actual de Firebase como fichero .json.<br>
+            Importar sube un fichero .json y sobreescribe Firebase con su contenido.
           </div>
         </div>
       </div>
@@ -5359,10 +5390,133 @@ async function guardarBD(){
       await set(ref(db,'silph_co_market'), fresco);
       baseDatos = fresco;
       window._ultimaBDConocida = JSON.parse(JSON.stringify(fresco));
+      _autoBackupLocal(fresco); // ← backup en localStorage tras cada guardado exitoso
       return;
     }
   }catch(err){ /* si falla la relectura (sin red, etc.), seguimos con el plan B de abajo */ }
+  /* PLAN B — solo ejecutar si la BD ya se cargó alguna vez desde Firebase.
+     Si _bdCargadaAlgunaVez es false, la BD local puede estar vacía/incompleta
+     y hacer set() aquí borraría los datos del servidor. */
+  if(!_bdCargadaAlgunaVez){
+    console.warn('[guardarBD] Plan B abortado: BD local no inicializada todavía.');
+    return;
+  }
   await set(ref(db,'silph_co_market'), local);
+  _autoBackupLocal(local);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SISTEMA DE BACKUP AUTOMÁTICO EN localStorage
+   — Se ejecuta tras cada guardarBD() exitoso
+   — También cada 10 minutos si hay sesión activa
+   — Guarda las últimas 5 snapshots con timestamp
+   — Solo accesible desde el panel Modo Dios (srwiwa)
+   ═══════════════════════════════════════════════════════════════ */
+const _BACKUP_KEY   = 'silph_co_backups';
+const _BACKUP_MAX   = 5;
+
+function _autoBackupLocal(datos){
+  if(!datos) return;
+  try{
+    const ahora   = Date.now();
+    const entrada = { ts: ahora, label: new Date(ahora).toLocaleString('es-ES'), datos: JSON.parse(JSON.stringify(datos)) };
+    let lista = [];
+    try{ lista = JSON.parse(localStorage.getItem(_BACKUP_KEY) || '[]'); }catch(e){ lista = []; }
+    lista.unshift(entrada);
+    if(lista.length > _BACKUP_MAX) lista = lista.slice(0, _BACKUP_MAX);
+    localStorage.setItem(_BACKUP_KEY, JSON.stringify(lista));
+  }catch(e){ console.warn('[backup] No se pudo guardar backup local:', e); }
+}
+
+// Backup periódico cada 10 minutos mientras haya sesión activa
+setInterval(function(){
+  if(userSesion && baseDatos && _bdCargadaAlgunaVez) _autoBackupLocal(baseDatos);
+}, 10 * 60 * 1000);
+
+window.obtenerBackupsLocales = function(){
+  try{ return JSON.parse(localStorage.getItem(_BACKUP_KEY) || '[]'); }catch(e){ return []; }
+};
+
+window.restaurarBackupLocal = async function(idx){
+  const lista = window.obtenerBackupsLocales();
+  if(!lista[idx]){ mostrarNotificacion('Backup no encontrado.','error','💾'); return; }
+  const snap = lista[idx];
+  const cf = await mostrarConfirmacion({
+    icono:'💾',
+    titulo:'Restaurar backup',
+    descripcion:`¿Restaurar la snapshot del ${snap.label}?\n\nEsto sobreescribirá TODOS los datos actuales de Firebase con los datos de ese momento.\n\n⚠️ Esta acción no se puede deshacer.`,
+    textoConfirmar:'Restaurar',
+    tipo:'sacrificio'
+  });
+  if(!cf) return;
+  try{
+    await set(ref(db,'silph_co_market'), snap.datos);
+    baseDatos = snap.datos;
+    window._ultimaBDConocida = JSON.parse(JSON.stringify(snap.datos));
+    logAdmin('💾 Backup restaurado', snap.label);
+    mostrarNotificacion('Backup restaurado correctamente.','exito','💾');
+    renderizarBackupsAdmin();
+  }catch(e){
+    mostrarNotificacion('Error al restaurar. Comprueba la conexión.','error','⚠️');
+  }
+};
+
+window.exportarBDComoJSON = function(){
+  if(!baseDatos){ mostrarNotificacion('No hay datos para exportar.','error','💾'); return; }
+  try{
+    const json = JSON.stringify(baseDatos, null, 2);
+    const blob = new Blob([json], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    const ts   = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+    a.href = url; a.download = `silph_co_backup_${ts}.json`; a.click();
+    URL.revokeObjectURL(url);
+    mostrarNotificacion('JSON exportado correctamente.','exito','📥');
+  }catch(e){ mostrarNotificacion('Error al exportar.','error','⚠️'); }
+};
+
+window.importarBDDesdeJSON = function(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e){
+    try{
+      const datos = JSON.parse(e.target.result);
+      if(!datos || typeof datos !== 'object'){ mostrarNotificacion('JSON inválido.','error','⚠️'); return; }
+      const cf = await mostrarConfirmacion({
+        icono:'📤',
+        titulo:'Importar backup JSON',
+        descripcion:'¿Importar este fichero y sobreescribir todos los datos actuales de Firebase?\n\n⚠️ Esta acción no se puede deshacer.',
+        textoConfirmar:'Importar',
+        tipo:'sacrificio'
+      });
+      if(!cf) return;
+      await set(ref(db,'silph_co_market'), datos);
+      baseDatos = datos;
+      window._ultimaBDConocida = JSON.parse(JSON.stringify(datos));
+      _autoBackupLocal(datos);
+      logAdmin('📤 Importación JSON manual','');
+      mostrarNotificacion('Importación completada.','exito','📤');
+      renderizarBackupsAdmin();
+    }catch(err){ mostrarNotificacion('Error al leer el JSON.','error','⚠️'); }
+  };
+  reader.readAsText(file);
+};
+
+function renderizarBackupsAdmin(){
+  const cont = document.getElementById('backup-lista');
+  if(!cont) return;
+  const lista = window.obtenerBackupsLocales();
+  if(!lista.length){ cont.innerHTML='<div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 2px">No hay snapshots guardadas todavía. Se generan automáticamente cada vez que alguien guarda algo o cada 10 minutos.</div>'; return; }
+  cont.innerHTML = lista.map(function(b, i){
+    const jug = b.datos && b.datos.jugadores ? Object.keys(b.datos.jugadores).length : '?';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);margin-bottom:4px">
+      <div>
+        <div style="font-size:11px;font-family:var(--font-display);font-weight:700;color:var(--txt-primary)">${b.label}</div>
+        <div style="font-size:10px;color:var(--txt-muted)">${jug} jugadores · snapshot #${i+1}</div>
+      </div>
+      <button class="btn-admin danger" style="padding:5px 12px;font-size:10px;margin:0;flex-shrink:0" onclick="restaurarBackupLocal(${i})">↩ Restaurar</button>
+    </div>`;
+  }).join('');
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -6254,7 +6408,7 @@ window.navegarA=function(s){
      .active al nav-item, porque lee classList.contains('active') para saber
      qué item pintar. Si se llama antes, pinta el item anterior. */
   reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();_asisSetSeccion(s);if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }if(tab==='backup'){ renderizarBackupsAdmin(); }};
 
 
 /* ═══ MUSEO ADMIN — estado local ═══ */
@@ -10630,8 +10784,27 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 77;
+const APP_VERSION = 77.1;
 const VERSIONES = [
+  {
+    version: 77.1,
+    fecha: '2026-09-10',
+    titulo: 'Backups automáticos + protección contra borrados',
+    resumen: 'El plan B de guardarBD() ya no puede borrar datos si la BD local no estaba inicializada. Se añade sistema de backup automático en localStorage (snapshot tras cada guardado + cada 10 min, últimas 5) y panel "💾 Backups" en Modo Dios para restaurar o exportar/importar JSON.',
+    nuevas: [
+      'Panel "💾 Backups" en Modo Dios: lista de snapshots automáticas con botón de restaurar',
+      'Exportar estado actual de Firebase como fichero .json',
+      'Importar un fichero .json para restaurar Firebase',
+      'Backup automático en localStorage tras cada guardarBD() exitoso',
+      'Backup periódico cada 10 minutos mientras haya sesión activa',
+      'Se conservan las últimas 5 snapshots automáticas',
+    ],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [
+      'Plan B de guardarBD() abortado si _bdCargadaAlgunaVez es false — evita sobreescribir Firebase con una BD local vacía al arrancar',
+    ],
+  },
   {
     version: 77,
     fecha: '2026-09-03',
