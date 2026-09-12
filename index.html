@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v77.1 | Build: 2026-09-10 -->
+<!-- Silph Co v79 | Build: 2026-09-12 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -383,7 +383,66 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .inicio-ticker-fade{animation:tickerFade .3s ease}
 @keyframes tickerFade{0%{opacity:0;transform:translateY(3px)}100%{opacity:1;transform:translateY(0)}}.inicio-stat-card{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:18px 20px;display:flex;align-items:center;gap:14px;transition:transform .18s ease,border-color .18s ease;animation:misionCardEntrada .3s ease backwards}.inicio-stat-card:hover{transform:translateY(-1px);border-color:var(--borde-hover)}.inicio-stat-icon{width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.inicio-stat-label{font-size:11px;color:var(--txt-secondary);font-family:var(--font-display);letter-spacing:.3px;text-transform:uppercase;margin-bottom:3px;font-weight:600}.inicio-stat-value{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--txt-primary)}
 .tiendas-acceso-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tienda-acceso-card{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px 12px;cursor:pointer;transition:all .2s ease;text-align:center}.tienda-acceso-card:hover{border-color:var(--borde-hover);transform:translateY(-2px);box-shadow:var(--shadow-md)}.tienda-acceso-icon{font-size:22px;margin-bottom:7px}.tienda-acceso-name{font-family:var(--font-display);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}.tienda-acceso-estado{font-size:9px;font-family:var(--font-display);padding:2px 8px;border-radius:99px;display:inline-block}.estado-abierta{color:#166534;background:rgba(21,128,61,.08);border:1px solid rgba(21,128,61,.2)}.estado-cerrada{color:#b91c1c;background:rgba(185,28,28,.08);border:1px solid rgba(185,28,28,.2)}
-.tienda-tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}.tienda-tab{padding:8px 16px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-secondary);transition:all .2s cubic-bezier(.4,0,.2,1)}.tienda-tab:hover{color:var(--txt-primary);border-color:var(--borde-hover);background:var(--bg-overlay);transform:translateY(-1px)}.tienda-tab.active-legal{background:rgba(21,128,61,.1);color:#166534;border-color:rgba(21,128,61,.3);transform:translateY(-1px)}.tienda-tab.active-pack{background:rgba(180,83,9,.1);color:#92400e;border-color:rgba(180,83,9,.3);transform:translateY(-1px)}.tienda-tab.active-illegal{background:rgba(109,40,217,.1);color:#5b21b6;border-color:rgba(109,40,217,.3);transform:translateY(-1px)}.tienda-tab.active-ticket{background:rgba(201,126,0,.12);color:#92580a;border-color:rgba(201,126,0,.35);transform:translateY(-1px)}
+.tienda-tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}.tienda-tab{padding:8px 16px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-secondary);transition:all .2s cubic-bezier(.4,0,.2,1)}.tienda-tab:hover{color:var(--txt-primary);border-color:var(--borde-hover);background:var(--bg-overlay);transform:translateY(-1px)}.tienda-tab.active-legal{background:rgba(21,128,61,.1);color:#166534;border-color:rgba(21,128,61,.3);transform:translateY(-1px)}.tienda-tab.active-pack{background:rgba(180,83,9,.1);color:#92400e;border-color:rgba(180,83,9,.3);transform:translateY(-1px)}.tienda-tab.active-illegal{background:rgba(109,40,217,.1);color:#5b21b6;border-color:rgba(109,40,217,.3);transform:translateY(-1px)}.tienda-tab.active-subasta{background:rgba(251,191,36,.12);color:#92400e;border-color:rgba(251,191,36,.4);transform:translateY(-1px)}
+.tienda-tab.active-mercado{background:rgba(139,92,246,.12);color:#6d28d9;border-color:rgba(139,92,246,.35);transform:translateY(-1px)}
+/* ══ MERCADO JUGADORES ══════════════════════════════════════════════════ */
+.mj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:4px}
+.mj-listing{background:var(--bg-elevated);border:1px solid var(--borde);border-radius:var(--r-lg);padding:16px;transition:border-color .15s;position:relative}
+.mj-listing:hover{border-color:var(--borde-hover)}
+.mj-listing.propia{border-color:rgba(139,92,246,.35);background:linear-gradient(135deg,var(--bg-elevated),rgba(139,92,246,.04))}
+.mj-listing-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.mj-listing-icon{font-size:30px;flex-shrink:0;line-height:1}
+.mj-listing-info{flex:1;min-width:0}
+.mj-listing-nombre{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt-primary);line-height:1.2;margin-bottom:2px}
+.mj-listing-vendedor{font-size:10px;color:var(--txt-muted);font-family:var(--font-display)}
+.mj-listing-cat{font-size:9px;color:var(--txt-muted);letter-spacing:.5px;text-transform:uppercase;font-family:var(--font-display);margin-bottom:2px}
+.mj-precio-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-family:var(--font-display);font-size:11px;font-weight:700;margin-bottom:10px}
+.mj-precio-pill.dinero{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:#d97706}
+.mj-precio-pill.pf{background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);color:#7c3aed}
+.mj-pack-items{font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:8px;line-height:1.5;padding:6px 8px;background:var(--bg-overlay);border-radius:var(--r-sm)}
+.mj-ofertas-wrap{margin-top:8px;border-top:1px solid var(--borde);padding-top:8px}
+.mj-oferta-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 8px;background:var(--bg-overlay);border-radius:var(--r-sm);margin-bottom:4px;font-size:11px;font-family:var(--font-display)}
+.mj-oferta-row.propia-oferta{border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.05)}
+.mj-oferta-row.contraoferta{border:1px solid rgba(251,191,36,.3);background:rgba(251,191,36,.05)}
+.mj-btn-sm{padding:4px 10px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;border:1px solid;transition:all .12s;white-space:nowrap}
+.mj-btn-sm.verde{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.4);color:#059669}
+.mj-btn-sm.verde:hover{background:rgba(52,211,153,.2)}
+.mj-btn-sm.rojo{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.4);color:#dc2626}
+.mj-btn-sm.rojo:hover{background:rgba(248,113,113,.2)}
+.mj-btn-sm.naranja{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.4);color:#d97706}
+.mj-btn-sm.naranja:hover{background:rgba(251,191,36,.2)}
+.mj-input-oferta{background:var(--bg-card);color:var(--txt-primary);border:1px solid rgba(139,92,246,.3);padding:7px 10px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:12px;font-weight:700;width:100%;margin-top:6px}
+.mj-input-oferta:focus{outline:none;border-color:#8b5cf6}
+.mj-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.mj-tab{padding:7px 14px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;border:1px solid var(--borde);background:transparent;color:var(--txt-muted);transition:all .15s}
+.mj-tab.active{background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.4);color:#7c3aed}
+.mj-empty{text-align:center;padding:32px 16px;color:var(--txt-muted);font-family:var(--font-display);font-size:12px}
+.mj-badge-retirada{position:absolute;top:10px;right:10px;font-size:9px;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:#dc2626;border-radius:99px;padding:2px 8px;font-family:var(--font-display);font-weight:700}
+.mj-badge-vendida{position:absolute;top:10px;right:10px;font-size:9px;background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:#059669;border-radius:99px;padding:2px 8px;font-family:var(--font-display);font-weight:700}
+/* ══ SUBASTAS ══════════════════════════════════════════════════════════════ */
+.sub-objeto-card{background:linear-gradient(135deg,var(--bg-elevated),rgba(251,191,36,.07));border:1px solid rgba(251,191,36,.3);border-radius:var(--r-lg);padding:20px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.sub-objeto-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(251,191,36,.1) 0%,transparent 70%);pointer-events:none}
+.sub-obj-icon{font-size:52px;margin-bottom:6px;display:block;filter:drop-shadow(0 0 10px rgba(251,191,36,.5))}
+.sub-obj-nombre{font-family:var(--font-display);font-size:17px;font-weight:900;color:#fbbf24;letter-spacing:.5px;margin-bottom:3px}
+.sub-obj-tipo{font-size:10px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.sub-precio-base-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);border-radius:99px;padding:3px 11px;font-family:var(--font-display);font-size:11px;color:#fbbf24;font-weight:700}
+.sub-puja-actual{font-family:var(--font-display);font-size:26px;font-weight:900;color:#34d399;margin:12px 0 3px}
+.sub-stat-label{font-size:9px;color:var(--txt-muted);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-display);margin-bottom:3px}
+.sub-pujador-txt{font-size:11px;color:var(--txt-secondary);font-family:var(--font-display);margin-bottom:14px}
+.sub-countdown{font-family:var(--font-display);font-size:20px;font-weight:700;color:#f87171;letter-spacing:1px}
+.sub-countdown.urgente{animation:subParpadeo .7s infinite}
+@keyframes subParpadeo{0%,100%{opacity:1;color:#f87171}50%{opacity:.4;color:#ef4444}}
+.sub-historial-row{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);margin-bottom:4px;font-size:11px;font-family:var(--font-display)}
+.sub-historial-row.top{border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.05)}
+.sub-puja-wrap{display:flex;gap:8px;margin-top:10px}
+.sub-puja-wrap input{flex:1;background:var(--bg-card);color:var(--txt-primary);border:1px solid rgba(251,191,36,.3);padding:9px 12px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:13px;font-weight:700;text-align:center}
+.sub-puja-wrap input:focus{outline:none;border-color:#fbbf24}
+.sub-btn-pujar{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:9px 20px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:all .15s;flex-shrink:0}
+.sub-btn-pujar:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.sub-btn-pujar:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.sub-cooldown-bar{height:4px;background:var(--bg-overlay);border-radius:2px;overflow:hidden;margin-top:6px}
+.sub-cooldown-fill{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:2px;transition:width .5s linear}
+.sub-ganador-banner{background:linear-gradient(135deg,rgba(52,211,153,.1),rgba(251,191,36,.07));border:1px solid rgba(52,211,153,.35);border-radius:var(--r-lg);padding:18px;text-align:center;margin-bottom:16px}
 .ticket-canje-panel{padding:4px 0 8px}.ticket-canje-header{display:flex;align-items:center;gap:10px;margin-bottom:18px}.ticket-canje-icon{font-size:28px}.ticket-canje-titulo{font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--txt-primary)}.ticket-canje-sub{font-size:11px;color:var(--txt-muted);margin-top:1px}.ticket-canje-empty{text-align:center;padding:48px 20px;color:var(--txt-muted);border:1px dashed var(--borde);border-radius:var(--r-xl);background:var(--bg-elevated)}.ticket-canje-empty-icon{font-size:36px;margin-bottom:10px}.ticket-canje-empty-txt{font-family:var(--font-display);font-size:11px;text-transform:uppercase;letter-spacing:1.2px}.ticket-lista{display:flex;flex-direction:column;gap:10px}.ticket-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-elevated);border:1px solid var(--borde);border-left:3px solid rgba(201,126,0,.5);border-radius:var(--r-md);padding:12px 14px}.ticket-item-info{display:flex;align-items:center;gap:10px;min-width:0}.ticket-item-icon{font-size:22px;flex-shrink:0}.ticket-item-nombre{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--txt-primary)}.ticket-item-fecha{font-size:10px;color:var(--txt-muted);margin-top:2px}.ticket-item-btn{flex-shrink:0;background:rgba(201,126,0,.1);color:#7a4e08;border:1px solid rgba(201,126,0,.3);padding:7px 16px;border-radius:99px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.4px;cursor:pointer;transition:all .18s ease;white-space:nowrap}.ticket-item-btn:hover{background:rgba(201,126,0,.22);border-color:rgba(201,126,0,.5)}
 .tienda-view{display:none}.tienda-view.active{display:block}
 .tienda-cerrada-box{text-align:center;padding:80px 20px;background:var(--bg-elevated);border:1px dashed var(--gris-700);border-radius:var(--r-xl)}.tienda-cerrada-icon{font-size:40px;margin-bottom:14px;opacity:.4}.tienda-cerrada-txt{font-family:var(--font-display);font-size:13px;color:var(--txt-muted);text-transform:uppercase;letter-spacing:2px}
@@ -1926,6 +1985,8 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="tienda-tab" id="ttab-pack" onclick="cambiarTiendaTab('pack')">🟡 PF Pack</button>
         <button class="tienda-tab" id="ttab-illegal" onclick="cambiarTiendaTab('illegal')">🟣 Ilegalidades</button>
         <button class="tienda-tab" id="ttab-ticket" onclick="cambiarTiendaTab('ticket')">🎫 Canjear Ticket</button>
+        <button class="tienda-tab" id="ttab-subasta" onclick="cambiarTiendaTab('subasta')">🔨 Subasta</button>
+        <button class="tienda-tab" id="ttab-mercado" onclick="cambiarTiendaTab('mercado')">🛒 Mercado</button>
       </div>
       <div id="tv-legal" class="tienda-view active legal-zone">
         <select id="filtro-categoria-legal" class="filtro-categoria" onchange="aplicarFiltroCategoriaLegal()">
@@ -1953,8 +2014,151 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div id="tv-ticket" class="tienda-view">
         <div class="ticket-canje-panel" id="ticket-canje-contenido"></div>
       </div>
+      <!-- SUBASTA -->
+      <div id="tv-subasta" class="tienda-view">
+
+        <!-- Sin subasta activa -->
+        <div id="sub-estado-vacio" style="text-align:center;padding:40px 20px;display:none">
+          <div style="font-size:48px;margin-bottom:12px">🔨</div>
+          <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt-secondary);margin-bottom:6px">No hay ninguna subasta activa</div>
+          <div style="font-size:11px;color:var(--txt-muted);margin-bottom:18px">El Mercader lanzará la próxima en breve</div>
+          <div id="sub-cooldown-wrap" style="max-width:240px;margin:0 auto;display:none">
+            <div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:4px">Próxima disponible en</div>
+            <div id="sub-cooldown-txt" style="font-family:var(--font-display);font-size:15px;font-weight:700;color:#fbbf24;margin-bottom:5px">—</div>
+            <div class="sub-cooldown-bar"><div class="sub-cooldown-fill" id="sub-cooldown-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <!-- Subasta activa -->
+        <div id="sub-estado-activo" style="display:none">
+          <div class="sub-objeto-card">
+            <span class="sub-obj-icon" id="sub-icon">🔷</span>
+            <div class="sub-obj-nombre" id="sub-nombre">—</div>
+            <div class="sub-obj-tipo" id="sub-tipo">—</div>
+            <div class="sub-precio-base-pill">🔮 Precio base: <span id="sub-pfbase">—</span> PF</div>
+            <div style="margin:14px 0 4px">
+              <div class="sub-stat-label">Puja más alta</div>
+              <div class="sub-puja-actual" id="sub-puja-actual">—</div>
+              <div class="sub-pujador-txt" id="sub-pujador">Nadie ha pujado aún</div>
+            </div>
+            <div>
+              <div class="sub-stat-label">Tiempo restante</div>
+              <div class="sub-countdown" id="sub-countdown">—</div>
+            </div>
+          </div>
+
+          <!-- Banner mi puja -->
+          <div id="sub-mi-puja-wrap" class="card" style="border-color:rgba(251,191,36,.3);margin-bottom:14px;display:none">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+              <div>
+                <div style="font-family:var(--font-display);font-size:11px;font-weight:700;color:#fbbf24">Tu puja activa 🏆</div>
+                <div style="font-size:12px;color:#34d399;font-family:var(--font-display);font-weight:700;margin-top:2px" id="sub-mi-puja-valor">— PF</div>
+              </div>
+              <div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);max-width:180px;text-align:right;line-height:1.4">PF reservados. Se devuelven si te superan.</div>
+            </div>
+          </div>
+
+          <!-- Formulario puja -->
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-title" style="font-size:12px;margin-bottom:8px">💰 Hacer una puja</div>
+            <div style="font-size:11px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:8px;line-height:1.5">
+              PF extra a añadir sobre el precio base. Tus PF se descuentan al pujar y se devuelven si te superan.
+            </div>
+            <div style="font-size:11px;font-family:var(--font-display);color:var(--txt-secondary);margin-bottom:8px">
+              Tus PF: <strong id="sub-mis-pf" style="color:#34d399">—</strong>
+            </div>
+            <div class="sub-puja-wrap">
+              <input type="number" id="sub-input-puja" min="0" placeholder="PF extra" autocomplete="off">
+              <button class="sub-btn-pujar" id="sub-btn-pujar" onclick="subastaHacerPuja()">🔨 Pujar</button>
+            </div>
+            <div id="sub-puja-total-info" style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-top:5px;text-align:center">—</div>
+          </div>
+
+          <!-- Historial -->
+          <div class="card">
+            <div class="card-title" style="font-size:12px;margin-bottom:8px">📋 Historial de pujas</div>
+            <div id="sub-historial"></div>
+          </div>
+        </div>
+
+        <!-- Subasta terminada -->
+        <div id="sub-estado-terminado" style="display:none">
+          <div class="sub-ganador-banner">
+            <div style="font-size:36px;margin-bottom:8px">🎉</div>
+            <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:#34d399;margin-bottom:4px">¡Subasta finalizada!</div>
+            <div id="sub-terminado-txt" style="font-size:11px;color:var(--txt-secondary);font-family:var(--font-display);line-height:1.5"></div>
+          </div>
+          <div style="max-width:240px;margin:0 auto">
+            <div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:4px;text-align:center">Próxima subasta en</div>
+            <div id="sub-cool2-txt" style="font-family:var(--font-display);font-size:15px;font-weight:700;color:#fbbf24;text-align:center;margin-bottom:5px">—</div>
+            <div class="sub-cooldown-bar"><div class="sub-cooldown-fill" id="sub-cool2-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MERCADO JUGADORES -->
+      <div id="tv-mercado" class="tienda-view">
+        <div class="mj-tabs">
+          <button class="mj-tab active" id="mjtab-explorar" onclick="mjCambiarTab('explorar')">🔍 Explorar</button>
+          <button class="mj-tab" id="mjtab-mis-ventas" onclick="mjCambiarTab('mis-ventas')">📦 Mis ventas</button>
+          <button class="mj-tab" id="mjtab-publicar" onclick="mjCambiarTab('publicar')">➕ Publicar</button>
+        </div>
+        <div id="mjv-explorar">
+          <div id="mj-listado-publico"><div class="mj-empty">Cargando publicaciones...</div></div>
+        </div>
+        <div id="mjv-mis-ventas" style="display:none">
+          <div id="mj-listado-propio"><div class="mj-empty">No tienes ninguna publicación activa.</div></div>
+        </div>
+        <div id="mjv-publicar" style="display:none">
+          <div class="card" style="max-width:520px;border-color:rgba(139,92,246,.25)">
+            <div class="card-title" style="color:#8b5cf6">➕ Nueva publicación</div>
+            <div style="margin-bottom:14px">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Tipo</div>
+              <div style="display:flex;gap:8px">
+                <button class="mj-btn-sm naranja" id="mjpub-tipo-unico" onclick="mjPubSetTipo('unico')" style="flex:1;text-align:center">🎁 Objeto único</button>
+                <button class="mj-btn-sm" id="mjpub-tipo-pack" onclick="mjPubSetTipo('pack')" style="flex:1;text-align:center;border-color:var(--borde);color:var(--txt-muted)">📦 Pack</button>
+              </div>
+            </div>
+            <div style="margin-bottom:14px">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Selecciona objeto(s) de tu mochila</div>
+              <div id="mj-mochila-selector" style="display:flex;flex-wrap:wrap;gap:6px;max-height:160px;overflow-y:auto;padding:4px 2px">
+                <div class="mj-empty" style="padding:12px">No hay objetos vendibles en tu mochila.</div>
+              </div>
+              <div id="mj-pack-resumen" style="display:none;margin-top:8px;font-size:10px;color:#8b5cf6;font-family:var(--font-display);padding:6px 8px;background:rgba(139,92,246,.07);border-radius:var(--r-sm);border:1px solid rgba(139,92,246,.2)">
+                Pack: <span id="mj-pack-items-txt">ningún objeto</span>
+              </div>
+            </div>
+            <div style="margin-bottom:14px">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Moneda</div>
+              <div style="display:flex;gap:8px">
+                <button class="mj-btn-sm naranja" id="mjpub-mon-dinero" onclick="mjPubSetMoneda('dinero')" style="flex:1;text-align:center">💰 Pokédólares</button>
+                <button class="mj-btn-sm" id="mjpub-mon-pf" onclick="mjPubSetMoneda('pf')" style="flex:1;text-align:center;border-color:var(--borde);color:var(--txt-muted)">🔮 PF</button>
+              </div>
+              <div id="mj-aviso-moneda" style="display:none;font-size:10px;color:#f87171;font-family:var(--font-display);margin-top:6px">Solo Megapiedras y Fósiles pueden venderse por PF.</div>
+            </div>
+            <!-- Objeto manual (para objetos no registrados en la web) -->
+            <div style="margin-bottom:14px">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">O escribe el objeto manualmente</div>
+              <input type="text" id="mjpub-manual-nombre" placeholder="Nombre del objeto (ej: TM26 Terremoto)" class="mj-input-oferta" style="margin-top:0;font-weight:400;margin-bottom:4px">
+              <input type="text" id="mjpub-manual-icon" placeholder="Emoji (ej: 💿)" class="mj-input-oferta" style="margin-top:0;font-weight:400">
+              <div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-top:4px">Si escribes aquí, tiene prioridad sobre lo seleccionado en la mochila.</div>
+            </div>
+            <div style="margin-bottom:14px">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Precio mínimo</div>
+              <input type="number" id="mjpub-precio" min="1" placeholder="Mínimo 1.000 PD / 5 PF" class="mj-input-oferta" style="margin-top:0">
+              <div id="mjpub-precio-hint" style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-top:4px">Mínimo 1.000 Pokédólares.</div>
+            </div>
+            <div style="margin-bottom:16px">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Descripción (opcional)</div>
+              <input type="text" id="mjpub-desc" placeholder="Ej: Lo conseguí en una subasta..." class="mj-input-oferta" style="margin-top:0;font-weight:400">
+            </div>
+            <button class="btn-admin packs" style="width:100%;justify-content:center" onclick="mjPublicar()">🛒 Publicar en el mercado</button>
+          </div>
+        </div>
+      </div>
+
     </section>
-    <!-- RED DE ENTRENADORES -->
     <section id="section-red-entrenadores" class="page-section">
       <div class="section-header"><div class="section-title">Red de Entrenadores</div><div class="section-subtitle">Toca un entrenador para ver su ficha</div></div>
       <div class="red-select-wrap">
@@ -2403,6 +2607,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-campeones" onclick="cambiarAdminTab('campeones')">🏆 Campeones</button>
         <button class="dios-tab" id="dtab-museo" onclick="cambiarAdminTab('museo')" style="color:#818cf8;border-color:rgba(129,140,248,.3)">📜 Museo</button>
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#e2646f;border-color:rgba(216,41,63,.3)">🔄 Nuevo Locke</button>
+        <button class="dios-tab" id="dtab-subasta" onclick="cambiarAdminTab('subasta')" style="color:#fbbf24;border-color:rgba(251,191,36,.3)">🔨 Subasta</button>
         <button class="dios-tab" id="dtab-backup" onclick="cambiarAdminTab('backup')" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">💾 Backups</button>
         
       </div>
@@ -2885,6 +3090,51 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 
             <button class="btn-admin danger" style="width:100%;font-size:13px;padding:12px;font-weight:900" onclick="confirmarNuevoLocke()">🔄 INICIAR NUEVO LOCKE</button>
             <button class="btn-admin" style="width:100%;margin-top:8px" onclick="nlPaso(1)">← Volver</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBASTA ADMIN -->
+      <div id="dv-subasta" class="dios-view">
+        <div class="card" style="max-width:500px;border-color:rgba(251,191,36,.25)">
+          <div class="card-title" style="color:#fbbf24">🔨 Control de Subasta</div>
+
+          <!-- Sin activa -->
+          <div id="adm-sub-vacio">
+            <div style="font-size:11px;color:var(--txt-muted);font-family:var(--font-display);line-height:1.6;margin-bottom:14px">
+              Genera una subasta aleatoria del pool exclusivo. Dura 3 horas; el objeto se entrega en la mochila del ganador 1 min antes de acabar el contador.
+            </div>
+            <div id="adm-sub-cool-aviso" style="display:none;font-size:11px;color:#f87171;font-family:var(--font-display);margin-bottom:12px;padding:8px 10px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:var(--r-sm)">
+              ⏳ Espera <strong id="adm-sub-cool-txt">—</strong> antes de lanzar otra.
+            </div>
+            <button class="btn-admin packs" style="width:100%;justify-content:center" id="adm-sub-btn-gen" onclick="subastaAdminGenerar()">🎲 Generar subasta aleatoria</button>
+          </div>
+
+          <!-- Con activa -->
+          <div id="adm-sub-activo" style="display:none">
+            <div style="text-align:center;padding:10px 0 14px">
+              <div style="font-size:34px;margin-bottom:4px" id="adm-sub-icon">—</div>
+              <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:#fbbf24" id="adm-sub-nombre">—</div>
+              <div style="font-size:10px;color:var(--txt-muted);margin:3px 0 10px;font-family:var(--font-display)" id="adm-sub-tipo">—</div>
+              <div style="display:flex;justify-content:center;gap:20px;margin-bottom:12px">
+                <div style="text-align:center">
+                  <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px">Puja líder</div>
+                  <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:#34d399" id="adm-sub-puja">—</div>
+                </div>
+                <div style="text-align:center">
+                  <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px">Tiempo</div>
+                  <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:#f87171" id="adm-sub-tiempo">—</div>
+                </div>
+                <div style="text-align:center">
+                  <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:.5px">Líder</div>
+                  <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt-primary)" id="adm-sub-lider">—</div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn-admin arena" style="flex:1;justify-content:center" onclick="subastaAdminEntregarYa()">🎁 Entregar ya y cerrar</button>
+              <button class="btn-admin danger" style="flex:1;justify-content:center" onclick="subastaAdminCancelar()">🗑️ Cancelar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -5327,7 +5577,7 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.subasta)baseDatos.subasta={estado:'sin-activa'};if(!baseDatos.mercado)baseDatos.mercado={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -5352,7 +5602,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
         return;
     }
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(window.renderizarSubasta&&document.getElementById('tv-subasta')&&document.getElementById('tv-subasta').classList.contains('active'))window.renderizarSubasta();if(window.subastaActualizarAdminPanel&&document.getElementById('dv-subasta')&&document.getElementById('dv-subasta').classList.contains('active'))window.subastaActualizarAdminPanel();if(window.mjRenderizarTodo&&document.getElementById('tv-mercado')&&document.getElementById('tv-mercado').classList.contains('active'))window.mjRenderizarTodo();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
@@ -5360,7 +5610,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
    sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
-const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado'];
+const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','subasta','mercado'];
 async function guardarBD(){
   const local = baseDatos;
   try{
@@ -5514,6 +5764,917 @@ window.importarBDDesdeJSON = function(file){
     }catch(err){ mostrarNotificacion('Error al leer el JSON.','error','⚠️'); }
   };
   reader.readAsText(file);
+};
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SISTEMA DE SUBASTAS
+   — Pestaña dentro de la sección Tiendas
+   — Pool: Master Ball, Megapiedra (aleatoria), Cápsula Habilidad, Fósil (aleatorio real)
+   — Duración: 3h | Cooldown entre subastas: 3h
+   — PF descontados al pujar, devueltos si te superan
+   — Objeto entregado en mochila 1 min antes de acabar
+   — Estado en baseDatos.subasta (dentro de silph_co_market)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const _SUB_DURACION_MS  = 3 * 60 * 60 * 1000;
+const _SUB_COOLDOWN_MS  = 3 * 60 * 60 * 1000;
+const _SUB_ENTREGA_ANTE = 1 * 60 * 1000;
+
+const _SUB_MEGA_STONES = [
+  'Venusaurite','Charizardite X','Charizardite Y','Blastoisinite','Beedrillite',
+  'Pidgeotite','Alakazite','Slowbronite','Gengarite','Kangaskhanite',
+  'Pinsirite','Gyaradosite','Aerodactylite','Mewtwonite X','Mewtwonite Y',
+  'Ampharosite','Scizorite','Heracronite','Houndoominite','Tyranitarite',
+  'Blazikenite','Gardevoirite','Mawilite','Aggronite','Medichamite',
+  'Manectite','Sharpedonite','Cameruptite','Altarianite','Banettite',
+  'Absolite','Salamencite','Metagrossite','Latiasite','Latiosite',
+  'Lopunnite','Garchompite','Lucarionite','Abomasite','Galladite','Diancite',
+];
+
+// Fósiles reales de los juegos Pokémon (Gen 1–8)
+const _SUB_FOSILES = [
+  {nombre:'Fósil Helix',    icon:'🌀', desc:'Revive a Omanyte'},
+  {nombre:'Fósil Domo',     icon:'🪨', desc:'Revive a Kabuto'},
+  {nombre:'Fósil Ámbar',    icon:'🟡', desc:'Revive a Aerodactyl'},
+  {nombre:'Fósil Garra',    icon:'🦖', desc:'Revive a Anorith'},
+  {nombre:'Fósil Raíz',     icon:'🌿', desc:'Revive a Lileep'},
+  {nombre:'Fósil Cráneo',   icon:'💀', desc:'Revive a Cranidos'},
+  {nombre:'Fósil Escudo',   icon:'🛡️', desc:'Revive a Shieldon'},
+  {nombre:'Fósil Cobertura',icon:'🐚', desc:'Revive a Tirtouga'},
+  {nombre:'Fósil Pluma',    icon:'🪶', desc:'Revive a Archen'},
+  {nombre:'Fósil Mandíbula',icon:'🦷', desc:'Revive a Tyrunt'},
+  {nombre:'Fósil Aleta',    icon:'🐟', desc:'Revive a Amaura'},
+  {nombre:'Fósil Pájaro',   icon:'🦤', desc:'Revive a Archeops'},
+];
+
+const _SUB_POOL = [
+  {nombre:'Master Ball',       icon:'🔵', tipo:'Poké Ball Legendaria', pfBase:10},
+  {nombre:'Megapiedra',        icon:'🔷', tipo:'Mega Stone',            pfBase:20},
+  {nombre:'Cápsula Habilidad', icon:'💊', tipo:'Objeto Competitivo',    pfBase:30},
+  {nombre:'Fósil',             icon:'🦴', tipo:'Fósil Pokémon',         pfBase:40},
+];
+
+let _subTicker = null;
+
+function _subTs(ts){
+  const d = new Date(ts);
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function _subFmt(ms){
+  if(ms<=0)return '00:00:00';
+  const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000),s=Math.floor((ms%60000)/1000);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function _subSet(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+
+function _subastaGenerarObjeto(){
+  const p = _SUB_POOL[Math.floor(Math.random()*_SUB_POOL.length)];
+  const obj = Object.assign({},p);
+  if(obj.nombre==='Megapiedra'){
+    obj.nombre = _SUB_MEGA_STONES[Math.floor(Math.random()*_SUB_MEGA_STONES.length)];
+  } else if(obj.nombre==='Fósil'){
+    const f = _SUB_FOSILES[Math.floor(Math.random()*_SUB_FOSILES.length)];
+    obj.nombre = f.nombre;
+    obj.icon   = f.icon;
+    obj.desc   = f.desc;
+  }
+  return obj;
+}
+
+function _subastaEntregarPremio(sub){
+  if(!sub||!sub.ganadorId||sub.entregado) return;
+  const u = baseDatos.jugadores && baseDatos.jugadores[sub.ganadorId];
+  if(!u) return;
+  if(!u.inventario) u.inventario=[];
+  u.inventario.push({
+    uid:    'sub_'+Date.now()+Math.floor(Math.random()*1000),
+    nombre: sub.objeto.nombre,
+    icon:   sub.objeto.icon,
+    desc:   (sub.objeto.desc||'')+' — Ganado en subasta del '+_subTs(sub.inicioTs),
+    tienda: 'subasta',
+    fecha:  new Date().toLocaleDateString('es-ES'),
+  });
+  sub.entregado = true;
+  const ts = _subTs(Date.now());
+  registrarActividadGlobal(sub.ganadorId,`🔨 ${sub.ganadorId.toUpperCase()} ganó la subasta y recibió ${sub.objeto.icon} ${sub.objeto.nombre} por ${sub.pujaActual} PF.`,ts);
+  inyectarEntradaDiarioAutomaticaPara(sub.ganadorId,`🏆 Ganaste la subasta de ${sub.objeto.icon} ${sub.objeto.nombre} por ${sub.pujaActual} PF.`);
+  logAdmin('🔨 Subasta — premio entregado',`${sub.objeto.nombre} → ${sub.ganadorId} (${sub.pujaActual} PF)`);
+}
+
+/* Devuelve los PF apostados a TODOS los jugadores excepto al ganador.
+   Se llama al cancelar o al terminar sin ganador.                    */
+function _subastaDevolver(sub, exceptoUid){
+  if(!sub||!sub.pujas) return;
+  Object.keys(sub.pujas).forEach(function(uid){
+    if(uid===exceptoUid) return;
+    const cantidad=sub.pujas[uid];
+    if(!cantidad) return;
+    const u=baseDatos.jugadores&&baseDatos.jugadores[uid];
+    if(u) u.pf=(u.pf||0)+cantidad;
+    sub.pujas[uid]=0;
+  });
+}
+
+function _subastaTick(){
+  const sub=baseDatos&&baseDatos.subasta;
+  if(!sub||sub.estado!=='activa') return;
+  const ahora=Date.now(), fin=sub.inicioTs+_SUB_DURACION_MS, rest=fin-ahora;
+  if(rest<=_SUB_ENTREGA_ANTE && sub.ganadorId && !sub.entregado){
+    _subastaEntregarPremio(sub);
+    guardarBD();
+  }
+  if(rest<=0){
+    sub.estado='terminada'; sub.finTs=ahora;
+    if(!sub.entregado && sub.ganadorId){ _subastaEntregarPremio(sub); }
+    if(!sub.ganadorId){
+      logAdmin('🔨 Subasta sin pujadores',sub.objeto.nombre);
+      registrarActividadGlobal('Sistema',`🔨 La subasta de ${sub.objeto.icon} ${sub.objeto.nombre} terminó sin pujadores.`,_subTs(ahora));
+    }
+    guardarBD();
+    renderizarSubasta(); subastaActualizarAdminPanel(); return;
+  }
+  const cdEl=document.getElementById('sub-countdown');
+  if(cdEl){cdEl.textContent=_subFmt(rest);cdEl.classList.toggle('urgente',rest<5*60*1000);}
+  const aEl=document.getElementById('adm-sub-tiempo');
+  if(aEl) aEl.textContent=_subFmt(rest);
+}
+
+window.renderizarSubasta = function(){
+  if(!_bdCargadaAlgunaVez) return;
+  const sub=baseDatos&&baseDatos.subasta;
+  const eVacio =document.getElementById('sub-estado-vacio');
+  const eActivo=document.getElementById('sub-estado-activo');
+  const eTerm  =document.getElementById('sub-estado-terminado');
+  if(!eVacio) return;
+  if(_subTicker){clearInterval(_subTicker);_subTicker=null;}
+  const ahora=Date.now();
+
+  // Sin subasta activa
+  if(!sub || sub.estado==='sin-activa' || !sub.estado){
+    eVacio.style.display=''; eActivo.style.display='none'; eTerm.style.display='none';
+    const wrap=document.getElementById('sub-cooldown-wrap');
+    const txt =document.getElementById('sub-cooldown-txt');
+    const fill=document.getElementById('sub-cooldown-fill');
+    const finPrev=sub&&sub.finTs;
+    if(finPrev){
+      const r=(finPrev+_SUB_COOLDOWN_MS)-ahora;
+      if(r>0){
+        if(wrap)wrap.style.display='';
+        const tick=function(){
+          const rr=(finPrev+_SUB_COOLDOWN_MS)-Date.now();
+          if(txt)txt.textContent=rr>0?_subFmt(rr):'¡Lista!';
+          if(fill)fill.style.width=rr>0?((1-rr/_SUB_COOLDOWN_MS)*100)+'%':'100%';
+          if(rr<=0){clearInterval(_subTicker);_subTicker=null;}
+        }; tick(); _subTicker=setInterval(tick,1000);
+      } else { if(wrap)wrap.style.display='none'; }
+    } else { if(wrap)wrap.style.display='none'; }
+    return;
+  }
+
+  // Subasta activa
+  if(sub.estado==='activa'){
+    eVacio.style.display='none'; eActivo.style.display=''; eTerm.style.display='none';
+    const obj=sub.objeto||{};
+    _subSet('sub-icon',   obj.icon  ||'🔷');
+    _subSet('sub-nombre', obj.nombre||'—');
+    _subSet('sub-tipo',   obj.tipo  ||'—');
+    _subSet('sub-pfbase', obj.pfBase||'—');
+    _subSet('sub-puja-actual',(sub.pujaActual||obj.pfBase||'—')+' PF');
+    _subSet('sub-pujador', sub.ganadorId ? sub.ganadorId.toUpperCase()+' lidera' : 'Nadie ha pujado aún');
+    // Banner mi puja
+    const miWrap=document.getElementById('sub-mi-puja-wrap');
+    const miVal =document.getElementById('sub-mi-puja-valor');
+    if(userSesion && sub.ganadorId===userSesion && sub.pujas && sub.pujas[userSesion]){
+      if(miWrap)miWrap.style.display=''; if(miVal)miVal.textContent=sub.pujas[userSesion]+' PF';
+    } else { if(miWrap)miWrap.style.display='none'; }
+    // Mis PF
+    if(userSesion && baseDatos.jugadores && baseDatos.jugadores[userSesion])
+      _subSet('sub-mis-pf',(baseDatos.jugadores[userSesion].pf||0)+' PF');
+    // Historial
+    const hist=document.getElementById('sub-historial');
+    if(hist){
+      const pujas=sub.historialPujas||[];
+      hist.innerHTML=!pujas.length
+        ?'<div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:6px 2px">Nadie ha pujado todavía.</div>'
+        :[...pujas].reverse().map(function(p,i){
+            return `<div class="sub-historial-row${i===0?' top':''}">
+              <span style="font-weight:700;color:${i===0?'#34d399':'var(--txt-primary)'}">${(p.uid||'?').toUpperCase()}</span>
+              <span style="color:${i===0?'#fbbf24':'var(--txt-secondary)'}">🔮 ${p.total} PF</span>
+              <span style="font-size:9px;color:var(--txt-muted)">${p.ts||''}</span>
+            </div>`;
+          }).join('');
+    }
+    // Actualizar info total al escribir
+    const inp=document.getElementById('sub-input-puja');
+    const infoEl=document.getElementById('sub-puja-total-info');
+    if(inp && infoEl){
+      inp.oninput=function(){
+        const extra=parseInt(inp.value,10)||0;
+        const nuevaPuja=(sub.pujaActual||sub.objeto.pfBase)+extra;
+        const yaApostado=(sub.pujas&&sub.pujas[userSesion])||0;
+        const aPagar=nuevaPuja-yaApostado;
+        infoEl.textContent=extra>0
+          ? `Tu puja quedaría en ${nuevaPuja} PF · Pagas ahora: ${aPagar} PF`
+          : `Puja actual: ${sub.pujaActual||sub.objeto.pfBase} PF — introduce PF extra para superarla`;
+      };
+      inp.oninput(); // refrescar al abrir
+    }
+    _subastaTick(); _subTicker=setInterval(_subastaTick,1000);
+    return;
+  }
+
+  // Subasta terminada
+  if(sub.estado==='terminada'){
+    eVacio.style.display='none'; eActivo.style.display='none'; eTerm.style.display='';
+    const finTs=sub.finTs||(sub.inicioTs+_SUB_DURACION_MS);
+    _subSet('sub-terminado-txt', sub.ganadorId
+      ? `${sub.objeto.icon} ${sub.objeto.nombre} fue para ${sub.ganadorId.toUpperCase()} por ${sub.pujaActual} PF.`
+      : `La subasta de ${sub.objeto.icon} ${sub.objeto.nombre} terminó sin pujadores.`);
+    const t2=document.getElementById('sub-cool2-txt');
+    const f2=document.getElementById('sub-cool2-fill');
+    const tick2=function(){
+      const r=(finTs+_SUB_COOLDOWN_MS)-Date.now();
+      if(t2)t2.textContent=r>0?_subFmt(r):'¡Lista!';
+      if(f2)f2.style.width=r>0?((1-r/_SUB_COOLDOWN_MS)*100)+'%':'100%';
+      if(r<=0){clearInterval(_subTicker);_subTicker=null;}
+    }; tick2(); _subTicker=setInterval(tick2,1000);
+  }
+};
+
+window.subastaHacerPuja = function(){
+  if(!userSesion||!baseDatos.jugadores||!baseDatos.jugadores[userSesion]){
+    mostrarNotificacion('Debes iniciar sesión.','error','🔒'); return;
+  }
+  const sub=baseDatos.subasta;
+  if(!sub||sub.estado!=='activa'){mostrarNotificacion('No hay ninguna subasta activa.','error','🔨'); return;}
+  const ahora=Date.now(), fin=sub.inicioTs+_SUB_DURACION_MS;
+  if(ahora>=fin){mostrarNotificacion('La subasta ya ha terminado.','error','⏱️'); return;}
+
+  const inp=document.getElementById('sub-input-puja');
+  const extra=parseInt(inp?inp.value:'0',10);
+  if(isNaN(extra)||extra<0){mostrarNotificacion('Introduce una cantidad válida.','error','⚠️'); return;}
+
+  /* La puja total que este jugador quiere tener apostada.
+     pfBase solo se suma una vez (está incluido en pujaActual desde el inicio).
+     Si el jugador ya ha pujado antes, sub.pujas[userSesion] es lo que ya pagó. */
+  const pujaActual = sub.pujaActual || sub.objeto.pfBase;
+  /* Nueva puja = puja actual del líder + extra que quiere añadir */
+  const nuevaPuja = pujaActual + extra;
+
+  if(extra <= 0){
+    mostrarNotificacion('Introduce al menos 1 PF extra para superar la puja actual.','error','🔮'); return;
+  }
+
+  const u = baseDatos.jugadores[userSesion];
+  /* Lo que este jugador ya tiene apostado (0 si es su primera puja) */
+  const yaApostado = (sub.pujas && sub.pujas[userSesion]) || 0;
+  /* Solo necesita pagar la diferencia */
+  const aPagar = nuevaPuja - yaApostado;
+
+  if((u.pf||0) < aPagar){
+    mostrarNotificacion(`Necesitas ${aPagar} PF más (tienes ${u.pf||0}).`,'error','🔮'); return;
+  }
+
+  /* Devolver la puja completa al líder anterior si es otro jugador */
+  if(sub.ganadorId && sub.ganadorId !== userSesion){
+    const anterior = baseDatos.jugadores[sub.ganadorId];
+    const devolver = (sub.pujas && sub.pujas[sub.ganadorId]) || 0;
+    if(anterior && devolver > 0){
+      anterior.pf = (anterior.pf||0) + devolver;
+      sub.pujas[sub.ganadorId] = 0;
+    }
+  }
+
+  /* Descontar solo la diferencia al pujador actual */
+  u.pf = (u.pf||0) - aPagar;
+  if(!sub.pujas) sub.pujas = {};
+  sub.pujas[userSesion] = nuevaPuja;
+  sub.pujaActual  = nuevaPuja;
+  sub.ganadorId   = userSesion;
+
+  if(!sub.historialPujas) sub.historialPujas = [];
+  sub.historialPujas.push({uid:userSesion, total:nuevaPuja, extra:extra, ts:_subTs(ahora)});
+  if(sub.historialPujas.length > 50) sub.historialPujas = sub.historialPujas.slice(-50);
+
+  registrarActividadGlobal(userSesion,`🔨 ${userSesion.toUpperCase()} pujó ${nuevaPuja} PF por ${sub.objeto.icon} ${sub.objeto.nombre}.`,_subTs(ahora));
+  if(inp) inp.value = '';
+  guardarBD();
+  reproducirSonido('compra');
+  mostrarNotificacion(`Puja de ${nuevaPuja} PF registrada. ¡Suerte!`,'exito','🔨');
+  window.renderizarSubasta(); subastaActualizarAdminPanel();
+};
+
+window.subastaAdminGenerar = function(){
+  if(!userSesion||userSesion.toLowerCase()!=='srwiwa') return;
+  const sub=baseDatos.subasta, ahora=Date.now();
+  if(sub&&sub.estado==='activa'){mostrarNotificacion('Ya hay una subasta activa. Cancélala o entrégala primero.','error','🔨'); return;}
+  const objeto=_subastaGenerarObjeto();
+  baseDatos.subasta={
+    estado:'activa', inicioTs:ahora, objeto:objeto,
+    pujaActual:objeto.pfBase, ganadorId:null,
+    pujas:{}, historialPujas:[], entregado:false, finTs:null,
+  };
+  logAdmin('🔨 Subasta generada',objeto.nombre+' · Base: '+objeto.pfBase+' PF');
+  registrarActividadGlobal('Sistema',`🔨 ¡Nueva subasta! ${objeto.icon} ${objeto.nombre} — precio base ${objeto.pfBase} PF. ¡Dura 3 horas!`,_subTs(ahora));
+  guardarBD();
+  reproducirSonido('exito');
+  mostrarNotificacion(`Subasta de ${objeto.icon} ${objeto.nombre} lanzada.`,'exito','🔨');
+  window.renderizarSubasta(); subastaActualizarAdminPanel();
+};
+
+window.subastaAdminEntregarYa = async function(){
+  if(!userSesion||userSesion.toLowerCase()!=='srwiwa') return;
+  const sub=baseDatos.subasta;
+  if(!sub||sub.estado!=='activa'){mostrarNotificacion('No hay subasta activa.','error','🔨'); return;}
+  if(!sub.ganadorId){mostrarNotificacion('Nadie ha pujado. Cancela la subasta.','error','⚠️'); return;}
+  const cf=await mostrarConfirmacion({icono:'🎁',titulo:'Entregar ahora',descripcion:`¿Entregar ${sub.objeto.icon} ${sub.objeto.nombre} a ${sub.ganadorId.toUpperCase()} y cerrar la subasta?`,textoConfirmar:'Entregar',tipo:'exito'});
+  if(!cf) return;
+  sub.finTs=Date.now(); sub.estado='terminada';
+  _subastaEntregarPremio(sub); guardarBD();
+  mostrarNotificacion('Objeto entregado y subasta cerrada.','exito','🎁');
+  window.renderizarSubasta(); subastaActualizarAdminPanel();
+};
+
+window.subastaAdminCancelar = async function(){
+  if(!userSesion||userSesion.toLowerCase()!=='srwiwa') return;
+  const sub=baseDatos.subasta;
+  if(!sub||sub.estado!=='activa'){mostrarNotificacion('No hay subasta activa.','error','🔨'); return;}
+  const cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Cancelar subasta',descripcion:`¿Cancelar la subasta de ${sub.objeto.icon} ${sub.objeto.nombre}? Se devolverán los PF al pujador.`,textoConfirmar:'Cancelar',tipo:'sacrificio'});
+  if(!cf) return;
+  /* Devolver PF a todos los pujadores */
+  _subastaDevolver(sub, null);
+  sub.estado='sin-activa'; sub.finTs=Date.now();
+  logAdmin('🗑️ Subasta cancelada',sub.objeto.nombre);
+  registrarActividadGlobal('Sistema',`🗑️ La subasta de ${sub.objeto.icon} ${sub.objeto.nombre} fue cancelada. PF devueltos.`,_subTs(Date.now()));
+  guardarBD();
+  mostrarNotificacion('Subasta cancelada. PF devueltos.','exito','🗑️');
+  window.renderizarSubasta(); subastaActualizarAdminPanel();
+};
+
+window.subastaActualizarAdminPanel = function(){
+  const sub=baseDatos&&baseDatos.subasta, ahora=Date.now();
+  const eVac=document.getElementById('adm-sub-vacio');
+  const eAct=document.getElementById('adm-sub-activo');
+  if(!eVac||!eAct) return;
+  if(sub&&sub.estado==='activa'){
+    eVac.style.display='none'; eAct.style.display='';
+    _subSet('adm-sub-icon',  sub.objeto.icon||'🔷');
+    _subSet('adm-sub-nombre',sub.objeto.nombre||'—');
+    _subSet('adm-sub-tipo',  sub.objeto.tipo||'—');
+    _subSet('adm-sub-puja',  (sub.pujaActual||sub.objeto.pfBase)+' PF');
+    _subSet('adm-sub-lider', sub.ganadorId?sub.ganadorId.toUpperCase():'Nadie');
+    _subSet('adm-sub-tiempo',_subFmt((sub.inicioTs+_SUB_DURACION_MS)-ahora));
+  } else {
+    eVac.style.display=''; eAct.style.display='none';
+    const aviso=document.getElementById('adm-sub-cool-aviso');
+    const btn=document.getElementById('adm-sub-btn-gen');
+    if(aviso) aviso.style.display='none';
+    if(btn)   btn.disabled=false;
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MERCADO DE JUGADORES
+   — Pestaña "🛒 Mercado" dentro de Tiendas
+   — Publicaciones únicas o en pack, por Pokédólares o PF
+   — Solo Megapiedras y Fósiles admiten PF; resto solo Pokédólares
+   — Precio mínimo: 1.000 PD siempre
+   — Sistema de ofertas + contraofertas; vendedor acepta/rechaza
+   — Objetos reservados en mochila al publicar; devueltos si se retira
+   — No vendibles: tienda==='illegal', tienda.startsWith('ruleta')
+   — Estado en baseDatos.mercado = { [id]: publicacion }
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const MJ_MIN_PRECIO = 1000;
+const MJ_TIENDAS_EXCLUIDAS = ['illegal','ruleta','ruleta_vida','ruleta_pf'];
+const MJ_SOLO_PF_NOMBRES = [
+  // Mega Stones
+  'Venusaurite','Charizardite X','Charizardite Y','Blastoisinite','Beedrillite',
+  'Pidgeotite','Alakazite','Slowbronite','Gengarite','Kangaskhanite',
+  'Pinsirite','Gyaradosite','Aerodactylite','Mewtwonite X','Mewtwonite Y',
+  'Ampharosite','Scizorite','Heracronite','Houndoominite','Tyranitarite',
+  'Blazikenite','Gardevoirite','Mawilite','Aggronite','Medichamite',
+  'Manectite','Sharpedonite','Cameruptite','Altarianite','Banettite',
+  'Absolite','Salamencite','Metagrossite','Latiasite','Latiosite',
+  'Lopunnite','Garchompite','Lucarionite','Abomasite','Galladite','Diancite',
+  // Fósiles
+  'Fósil Helix','Fósil Domo','Fósil Ámbar','Fósil Garra','Fósil Raíz',
+  'Fósil Cráneo','Fósil Escudo','Fósil Cobertura','Fósil Pluma',
+  'Fósil Mandíbula','Fósil Aleta','Fósil Pájaro',
+];
+
+function _mjTs(){
+  const d=new Date();
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function _mjEsVendible(item){
+  if(!item||!item.uid) return false;
+  const t=item.tienda||'';
+  if(MJ_TIENDAS_EXCLUIDAS.indexOf(t)!==-1) return false;
+  if(t.startsWith('ruleta')) return false;
+  return true;
+}
+function _mjAdmitePF(item){
+  return MJ_SOLO_PF_NOMBRES.indexOf(item.nombre)!==-1;
+}
+function _mjPrecioFmt(cantidad, moneda){
+  return moneda==='pf' ? cantidad+' PF' : cantidad.toLocaleString('es-ES')+' PD';
+}
+function _mjGetMercado(){
+  if(!baseDatos.mercado) baseDatos.mercado={};
+  return baseDatos.mercado;
+}
+function _mjListadoActivo(){
+  const m=_mjGetMercado();
+  return Object.values(m).filter(function(p){ return p.estado==='activa'; });
+}
+
+/* ── Estado local del formulario de publicar ── */
+let _mjPubTipo     = 'unico';   // 'unico' | 'pack'
+let _mjPubMoneda   = 'dinero';  // 'dinero' | 'pf'
+let _mjSelItems    = [];        // uids seleccionados de la mochila
+let _mjTabActual   = 'explorar';
+
+window.mjCambiarTab = function(tab){
+  _mjTabActual = tab;
+  ['explorar','mis-ventas','publicar'].forEach(function(t){
+    const btn=document.getElementById('mjtab-'+t);
+    const div=document.getElementById('mjv-'+t);
+    if(btn) btn.classList.toggle('active', t===tab);
+    if(div) div.style.display = t===tab ? '' : 'none';
+  });
+  if(tab==='explorar')    mjRenderizarExplorar();
+  if(tab==='mis-ventas')  mjRenderizarMisVentas();
+  if(tab==='publicar')    mjRenderizarPublicar();
+};
+
+window.mjPubSetTipo = function(tipo){
+  _mjPubTipo = tipo;
+  _mjSelItems = [];
+  document.getElementById('mjpub-tipo-unico').className = 'mj-btn-sm '+(tipo==='unico'?'naranja':'');
+  if(tipo!=='unico') document.getElementById('mjpub-tipo-unico').style.cssText='flex:1;text-align:center;border-color:var(--borde);color:var(--txt-muted)';
+  else document.getElementById('mjpub-tipo-unico').style.cssText='flex:1;text-align:center';
+  document.getElementById('mjpub-tipo-pack').className = 'mj-btn-sm '+(tipo==='pack'?'naranja':'');
+  if(tipo!=='pack') document.getElementById('mjpub-tipo-pack').style.cssText='flex:1;text-align:center;border-color:var(--borde);color:var(--txt-muted)';
+  else document.getElementById('mjpub-tipo-pack').style.cssText='flex:1;text-align:center';
+  const resumen=document.getElementById('mj-pack-resumen');
+  if(resumen) resumen.style.display = tipo==='pack' ? '' : 'none';
+  mjRenderizarSelectorMochila();
+};
+
+window.mjPubSetMoneda = function(moneda){
+  _mjPubMoneda = moneda;
+  document.getElementById('mjpub-mon-dinero').className='mj-btn-sm '+(moneda==='dinero'?'naranja':'');
+  if(moneda!=='dinero') document.getElementById('mjpub-mon-dinero').style.cssText='flex:1;text-align:center;border-color:var(--borde);color:var(--txt-muted)';
+  else document.getElementById('mjpub-mon-dinero').style.cssText='flex:1;text-align:center';
+  document.getElementById('mjpub-mon-pf').className='mj-btn-sm '+(moneda==='pf'?'naranja':'');
+  if(moneda!=='pf') document.getElementById('mjpub-mon-pf').style.cssText='flex:1;text-align:center;border-color:var(--borde);color:var(--txt-muted)';
+  else document.getElementById('mjpub-mon-pf').style.cssText='flex:1;text-align:center';
+  const aviso=document.getElementById('mj-aviso-moneda');
+  if(aviso) aviso.style.display = moneda==='pf' ? '' : 'none';
+  // Actualizar hint y min del precio
+  const hint=document.getElementById('mjpub-precio-hint');
+  const inp=document.getElementById('mjpub-precio');
+  if(moneda==='pf'){
+    if(hint) hint.textContent='Mínimo 5 PF.';
+    if(inp){ inp.min='5'; inp.placeholder='Mínimo 5 PF'; }
+  } else {
+    if(hint) hint.textContent='Mínimo 1.000 Pokédólares.';
+    if(inp){ inp.min='1000'; inp.placeholder='Mínimo 1.000 Pokédólares'; }
+  }
+  mjRenderizarSelectorMochila();
+};
+
+function mjRenderizarSelectorMochila(){
+  const cont=document.getElementById('mj-mochila-selector');
+  if(!cont) return;
+  if(!userSesion||!baseDatos.jugadores||!baseDatos.jugadores[userSesion]){
+    cont.innerHTML='<div class="mj-empty" style="padding:12px">Inicia sesión para ver tu mochila.</div>'; return;
+  }
+  const inv=(baseDatos.jugadores[userSesion].inventario||[]).filter(function(it){
+    if(!_mjEsVendible(it)) return false;
+    // Si está ya en otra publicación activa del usuario, no mostrar
+    const m=_mjGetMercado();
+    const enVenta=Object.values(m).some(function(p){
+      return p.vendedorId===userSesion && p.estado==='activa' &&
+        p.items.some(function(pi){ return pi.uid===it.uid; });
+    });
+    if(enVenta) return false;
+    // Si moneda es PF, solo mostrar los que admiten PF
+    if(_mjPubMoneda==='pf' && !_mjAdmitePF(it)) return false;
+    return true;
+  });
+  if(!inv.length){
+    cont.innerHTML='<div class="mj-empty" style="padding:12px">No hay objetos disponibles'+(
+      _mjPubMoneda==='pf'?' vendibles por PF':'')+' en tu mochila.</div>';
+    return;
+  }
+  cont.innerHTML = inv.map(function(it){
+    const sel = _mjSelItems.indexOf(it.uid)!==-1;
+    return `<button onclick="mjToggleItem('${it.uid}')" style="
+      padding:5px 10px;border-radius:var(--r-sm);font-family:var(--font-display);font-size:11px;
+      cursor:pointer;border:1px solid ${sel?'#8b5cf6':'var(--borde)'};
+      background:${sel?'rgba(139,92,246,.12)':'var(--bg-overlay)'};
+      color:${sel?'#8b5cf6':'var(--txt-secondary)'};transition:all .12s;
+      display:flex;align-items:center;gap:5px">
+      ${it.icon||'📦'} ${it.nombre}${sel?' ✓':''}
+    </button>`;
+  }).join('');
+}
+
+window.mjToggleItem = function(uid){
+  const idx=_mjSelItems.indexOf(uid);
+  if(_mjPubTipo==='unico'){
+    _mjSelItems = idx===-1 ? [uid] : [];
+  } else {
+    if(idx===-1) _mjSelItems.push(uid);
+    else _mjSelItems.splice(idx,1);
+  }
+  // Actualizar resumen pack
+  const resEl=document.getElementById('mj-pack-items-txt');
+  if(resEl && _mjPubTipo==='pack'){
+    const inv=baseDatos.jugadores[userSesion].inventario||[];
+    const nombres=_mjSelItems.map(function(uid){ const it=inv.find(function(x){return x.uid===uid;}); return it?it.nombre:'?'; });
+    resEl.textContent=nombres.length?nombres.join(', '):'ningún objeto';
+  }
+  mjRenderizarSelectorMochila();
+};
+
+function mjRenderizarPublicar(){
+  _mjSelItems=[];
+  mjRenderizarSelectorMochila();
+}
+
+/* ── Publicar ── */
+window.mjPublicar = function(){
+  if(!userSesion||!baseDatos.jugadores||!baseDatos.jugadores[userSesion]){
+    mostrarNotificacion('Debes iniciar sesión.','error','🔒'); return;
+  }
+  const manualNombre=(document.getElementById('mjpub-manual-nombre').value||'').trim();
+  const manualIcon =(document.getElementById('mjpub-manual-icon').value||'').trim()||'📦';
+  const usaManual  = manualNombre.length > 0;
+
+  if(!usaManual && !_mjSelItems.length){
+    mostrarNotificacion('Selecciona un objeto de la mochila o escríbelo manualmente.','error','⚠️'); return;
+  }
+
+  const minPrecio = _mjPubMoneda==='pf' ? 5 : MJ_MIN_PRECIO;
+  const precio=parseInt(document.getElementById('mjpub-precio').value,10);
+  if(isNaN(precio)||precio<minPrecio){
+    mostrarNotificacion(_mjPubMoneda==='pf'
+      ? 'El precio mínimo en PF es 5.'
+      : 'El precio mínimo es 1.000 Pokédólares.','error','💰'); return;
+  }
+
+  const u=baseDatos.jugadores[userSesion];
+  let itemsObj=[];
+
+  if(usaManual){
+    // Objeto escrito a mano — no se saca de la mochila
+    itemsObj=[{
+      uid:'manual_'+Date.now(),
+      nombre:manualNombre,
+      icon:manualIcon,
+      desc:'Objeto publicado manualmente',
+      tienda:'manual',
+      fecha:new Date().toLocaleDateString('es-ES'),
+    }];
+  } else {
+    const inv=u.inventario||[];
+    itemsObj=_mjSelItems.map(function(uid){ return inv.find(function(x){ return x.uid===uid; }); }).filter(Boolean);
+    if(itemsObj.length!==_mjSelItems.length){
+      mostrarNotificacion('Algún objeto ya no está en tu mochila.','error','⚠️'); return;
+    }
+    // Validar PF para objetos de mochila
+    if(_mjPubMoneda==='pf'){
+      const invalidos=itemsObj.filter(function(it){ return !_mjAdmitePF(it); });
+      if(invalidos.length){
+        mostrarNotificacion('Solo Megapiedras y Fósiles pueden venderse por PF.','error','🔮'); return;
+      }
+    }
+    // Reservar objetos (sacar de mochila)
+    u.inventario=inv.filter(function(it){ return _mjSelItems.indexOf(it.uid)===-1; });
+  }
+
+  const desc=(document.getElementById('mjpub-desc').value||'').trim();
+  const id='mj_'+Date.now()+'_'+userSesion;
+  if(!baseDatos.mercado) baseDatos.mercado={};
+  baseDatos.mercado[id]={
+    id:id,
+    vendedorId:userSesion,
+    tipo:_mjPubTipo,
+    esManual:usaManual,
+    items:itemsObj,
+    moneda:_mjPubMoneda,
+    precio:precio,
+    desc:desc,
+    estado:'activa',
+    ofertas:{},
+    fechaTs:Date.now(),
+    fecha:_mjTs(),
+  };
+  const nombresStr=itemsObj.map(function(i){ return i.nombre; }).join(', ');
+  registrarActividadGlobal(userSesion,`🛒 ${userSesion.toUpperCase()} pone en venta: ${nombresStr} por ${_mjPrecioFmt(precio,_mjPubMoneda)}.`,_mjTs());
+  inyectarEntradaDiarioAutomaticaPara(userSesion,`🛒 Has publicado en el mercado: ${nombresStr} por ${_mjPrecioFmt(precio,_mjPubMoneda)}.`);
+  guardarBD();
+  reproducirSonido('exito');
+  mostrarNotificacion('¡Publicado en el mercado!','exito','🛒');
+  _mjSelItems=[];
+  document.getElementById('mjpub-precio').value='';
+  document.getElementById('mjpub-desc').value='';
+  document.getElementById('mjpub-manual-nombre').value='';
+  document.getElementById('mjpub-manual-icon').value='';
+  mjCambiarTab('mis-ventas');
+};
+
+/* ── Renderizar explorar ── */
+function mjRenderizarExplorar(){
+  const cont=document.getElementById('mj-listado-publico');
+  if(!cont) return;
+  const lista=_mjListadoActivo().filter(function(p){ return p.vendedorId!==userSesion; });
+  if(!lista.length){ cont.innerHTML='<div class="mj-empty">No hay publicaciones activas en este momento.</div>'; return; }
+  lista.sort(function(a,b){ return b.fechaTs-a.fechaTs; });
+  cont.innerHTML='<div class="mj-grid">'+lista.map(function(p){ return mjCardHTML(p,false); }).join('')+'</div>';
+}
+
+/* ── Renderizar mis ventas ── */
+function mjRenderizarMisVentas(){
+  const cont=document.getElementById('mj-listado-propio');
+  if(!cont) return;
+  if(!userSesion){ cont.innerHTML='<div class="mj-empty">Inicia sesión.</div>'; return; }
+  const m=_mjGetMercado();
+  const lista=Object.values(m).filter(function(p){ return p.vendedorId===userSesion; });
+  if(!lista.length){ cont.innerHTML='<div class="mj-empty">No tienes ninguna publicación.</div>'; return; }
+  lista.sort(function(a,b){ return b.fechaTs-a.fechaTs; });
+  cont.innerHTML='<div class="mj-grid">'+lista.map(function(p){ return mjCardHTML(p,true); }).join('')+'</div>';
+}
+
+/* ── Card HTML de una publicación ── */
+function mjCardHTML(p, esVendedor){
+  const iconPrincipal = p.items[0].icon||'📦';
+  const nombrePrincipal = p.tipo==='pack'
+    ? `Pack (${p.items.length} objetos)`
+    : p.items[0].nombre;
+  const monedaLabel = p.moneda==='pf'?'🔮 PF':'💰 PD';
+  const monedaClass = p.moneda==='pf'?'pf':'dinero';
+
+  // Ofertas
+  const ofertas=p.ofertas||{};
+  const ofertasArr=Object.values(ofertas).sort(function(a,b){ return b.cantidad-a.cantidad; });
+  const miOferta=userSesion&&ofertas[userSesion];
+
+  let ofertasHTML='';
+  if(ofertasArr.length){
+    ofertasHTML='<div class="mj-ofertas-wrap"><div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Ofertas</div>';
+    ofertasHTML+=ofertasArr.map(function(o){
+      const esMia=o.compradorId===userSesion;
+      const esContra=o.tipo==='contraoferta';
+      let botonesVendedor='', botonesComprador='';
+      if(esVendedor && o.estado==='pendiente'){
+        botonesVendedor=`
+          <div style="display:flex;gap:4px">
+            <button class="mj-btn-sm verde" onclick="mjAceptarOferta('${p.id}','${o.compradorId}')">✓</button>
+            <button class="mj-btn-sm naranja" onclick="mjContraOfertarVendedor('${p.id}','${o.compradorId}')">↔</button>
+            <button class="mj-btn-sm rojo" onclick="mjRechazarOferta('${p.id}','${o.compradorId}')">✕</button>
+          </div>`;
+      }
+      if(esMia && esContra && o.estado==='pendiente'){
+        botonesComprador=`
+          <div style="display:flex;gap:4px">
+            <button class="mj-btn-sm verde" onclick="mjAceptarContraoferta('${p.id}')">✓ Acepto</button>
+            <button class="mj-btn-sm naranja" onclick="mjContraOfertarComprador('${p.id}')">↔ Contraofertar</button>
+            <button class="mj-btn-sm rojo" onclick="mjRechazarContraoferta('${p.id}')">✕ Rechazar</button>
+          </div>`;
+      }
+      const estadoLabel = o.estado==='aceptada'?'✅ Aceptada':o.estado==='rechazada'?'❌ Rechazada':esContra?'↔ Contraoferta':'🕐 Pendiente';
+      return `<div class="mj-oferta-row${esMia?' propia-oferta':''}${esContra?' contraoferta':''}">
+        <div>
+          <div style="font-weight:700;color:var(--txt-primary)">${(o.compradorId||'?').toUpperCase()}</div>
+          <div style="font-size:10px;color:var(--txt-muted)">${_mjPrecioFmt(o.cantidad,p.moneda)} · ${estadoLabel}</div>
+        </div>
+        ${botonesVendedor||botonesComprador}
+      </div>`;
+    }).join('');
+    ofertasHTML+='</div>';
+  }
+
+  // Formulario oferta/contraoferta comprador
+  let formOferta='';
+  if(!esVendedor && p.estado==='activa'){
+    const yaRechazada=miOferta&&miOferta.estado==='rechazada';
+    const pendiente=miOferta&&miOferta.estado==='pendiente'&&miOferta.tipo!=='contraoferta';
+    if(!pendiente){
+      formOferta=`<div style="margin-top:10px">
+        <input type="number" id="mj-oferta-inp-${p.id}" min="${p.moneda==='pf'?5:MJ_MIN_PRECIO}" placeholder="Tu oferta (mín. ${p.moneda==='pf'?'5 PF':'1.000 PD'})" class="mj-input-oferta">
+        <button class="mj-btn-sm verde" style="margin-top:6px;width:100%;text-align:center;padding:7px" onclick="mjHacerOferta('${p.id}')">💬 Hacer oferta</button>
+      </div>`;
+    }
+  }
+
+  // Botón retirar (vendedor)
+  let btnRetirar='';
+  if(esVendedor && p.estado==='activa'){
+    btnRetirar=`<button class="mj-btn-sm rojo" style="margin-top:10px;width:100%;text-align:center" onclick="mjRetirar('${p.id}')">🗑️ Retirar publicación</button>`;
+  }
+
+  const estadoBadge = p.estado==='vendida'?'<div class="mj-badge-vendida">✅ Vendida</div>':
+                      p.estado==='retirada'?'<div class="mj-badge-retirada">🗑️ Retirada</div>':'';
+
+  const packItems = p.tipo==='pack'
+    ? `<div class="mj-pack-items">${p.items.map(function(i){ return (i.icon||'📦')+' '+i.nombre; }).join(' · ')}</div>`
+    : '';
+
+  return `<div class="mj-listing${esVendedor?' propia':''}">
+    ${estadoBadge}
+    <div class="mj-listing-header">
+      <div class="mj-listing-icon">${iconPrincipal}</div>
+      <div class="mj-listing-info">
+        <div class="mj-listing-cat">${p.tipo==='pack'?'Pack':'Objeto'} · ${p.fecha||''}</div>
+        <div class="mj-listing-nombre">${nombrePrincipal}</div>
+        <div class="mj-listing-vendedor">Vendedor: ${(p.vendedorId||'?').toUpperCase()}</div>
+      </div>
+    </div>
+    ${packItems}
+    ${p.desc?`<div style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display);margin-bottom:8px;font-style:italic">"${p.desc}"</div>`:''}
+    <div class="mj-precio-pill ${monedaClass}">${monedaLabel} ${_mjPrecioFmt(p.precio,p.moneda)}</div>
+    ${ofertasHTML}
+    ${formOferta}
+    ${btnRetirar}
+  </div>`;
+}
+
+/* ── Hacer oferta (comprador) ── */
+window.mjHacerOferta = function(pubId){
+  if(!userSesion||!baseDatos.jugadores||!baseDatos.jugadores[userSesion]){
+    mostrarNotificacion('Debes iniciar sesión.','error','🔒'); return;
+  }
+  const p=(_mjGetMercado())[pubId];
+  if(!p||p.estado!=='activa'){mostrarNotificacion('Esta publicación ya no está disponible.','error','🛒'); return;}
+  if(p.vendedorId===userSesion){mostrarNotificacion('No puedes comprar tu propia publicación.','error','⚠️'); return;}
+  const inp=document.getElementById('mj-oferta-inp-'+pubId);
+  const cantidad=parseInt(inp?inp.value:'0',10);
+  const minOferta = p.moneda==='pf' ? 5 : MJ_MIN_PRECIO;
+  if(isNaN(cantidad)||cantidad<minOferta){
+    mostrarNotificacion(p.moneda==='pf'?'La oferta mínima es 5 PF.':'La oferta mínima es 1.000 Pokédólares.','error','💰'); return;
+  }
+  // Verificar fondos
+  const u=baseDatos.jugadores[userSesion];
+  if(p.moneda==='dinero' && (u.dinero||0)<cantidad){
+    mostrarNotificacion(`No tienes suficiente dinero (tienes ${(u.dinero||0).toLocaleString('es-ES')} PD).`,'error','💰'); return;
+  }
+  if(p.moneda==='pf' && (u.pf||0)<cantidad){
+    mostrarNotificacion(`No tienes suficientes PF (tienes ${u.pf||0}).`,'error','🔮'); return;
+  }
+  if(!p.ofertas) p.ofertas={};
+  p.ofertas[userSesion]={compradorId:userSesion,cantidad:cantidad,tipo:'oferta',estado:'pendiente',ts:_mjTs()};
+  const nombreObj=p.items[0].nombre+(p.tipo==='pack'?` (+${p.items.length-1} más)`:'');
+  registrarActividadGlobal(userSesion,`💬 ${userSesion.toUpperCase()} oferta ${_mjPrecioFmt(cantidad,p.moneda)} por "${nombreObj}" de ${p.vendedorId.toUpperCase()}.`,_mjTs());
+  inyectarEntradaDiarioAutomaticaPara(p.vendedorId,`💬 ${userSesion.toUpperCase()} te ha hecho una oferta de ${_mjPrecioFmt(cantidad,p.moneda)} por tu publicación "${nombreObj}".`);
+  guardarBD();
+  mostrarNotificacion('Oferta enviada al vendedor.','exito','💬');
+  mjRenderizarTodo();
+};
+
+/* ── Aceptar oferta (vendedor) ── */
+window.mjAceptarOferta = async function(pubId, compradorId){
+  const p=(_mjGetMercado())[pubId];
+  if(!p||p.estado!=='activa'){mostrarNotificacion('Publicación no disponible.','error'); return;}
+  const o=p.ofertas&&p.ofertas[compradorId];
+  if(!o){mostrarNotificacion('Oferta no encontrada.','error'); return;}
+  const cf=await mostrarConfirmacion({icono:'🤝',titulo:'Aceptar oferta',descripcion:`¿Vender "${p.items.map(function(i){return i.nombre;}).join(', ')}" a ${compradorId.toUpperCase()} por ${_mjPrecioFmt(o.cantidad,p.moneda)}?`,textoConfirmar:'Vender',tipo:'exito'});
+  if(!cf) return;
+  // Transferir dinero
+  const vendedor=baseDatos.jugadores[p.vendedorId];
+  const comprador=baseDatos.jugadores[compradorId];
+  if(!vendedor||!comprador){mostrarNotificacion('Error: jugador no encontrado.','error'); return;}
+  if(p.moneda==='dinero'){
+    if((comprador.dinero||0)<o.cantidad){mostrarNotificacion('El comprador no tiene suficiente dinero.','error','💰'); return;}
+    comprador.dinero=(comprador.dinero||0)-o.cantidad;
+    vendedor.dinero=(vendedor.dinero||0)+o.cantidad;
+  } else {
+    if((comprador.pf||0)<o.cantidad){mostrarNotificacion('El comprador no tiene suficientes PF.','error','🔮'); return;}
+    comprador.pf=(comprador.pf||0)-o.cantidad;
+    vendedor.pf=(vendedor.pf||0)+o.cantidad;
+  }
+  // Transferir objetos al comprador
+  if(!comprador.inventario) comprador.inventario=[];
+  p.items.forEach(function(it){
+    comprador.inventario.push(Object.assign({},it,{
+      uid:'mj_compra_'+Date.now()+Math.floor(Math.random()*1000),
+      desc:(it.desc||'')+' — Comprado a '+p.vendedorId.toUpperCase()+' el '+_mjTs(),
+    }));
+  });
+  o.estado='aceptada';
+  p.estado='vendida';
+  const nombreObj=p.items.map(function(i){return i.nombre;}).join(', ');
+  registrarActividadGlobal(p.vendedorId,`🤝 ${p.vendedorId.toUpperCase()} vendió "${nombreObj}" a ${compradorId.toUpperCase()} por ${_mjPrecioFmt(o.cantidad,p.moneda)}.`,_mjTs());
+  inyectarEntradaDiarioAutomaticaPara(compradorId,`🎉 Compraste "${nombreObj}" a ${p.vendedorId.toUpperCase()} por ${_mjPrecioFmt(o.cantidad,p.moneda)}.`);
+  inyectarEntradaDiarioAutomaticaPara(p.vendedorId,`💸 Vendiste "${nombreObj}" a ${compradorId.toUpperCase()} por ${_mjPrecioFmt(o.cantidad,p.moneda)}.`);
+  guardarBD();
+  mostrarNotificacion('¡Venta completada!','exito','🤝');
+  mjRenderizarTodo();
+};
+
+/* ── Rechazar oferta (vendedor) ── */
+window.mjRechazarOferta = function(pubId, compradorId){
+  const p=(_mjGetMercado())[pubId];
+  if(!p) return;
+  if(p.ofertas&&p.ofertas[compradorId]) p.ofertas[compradorId].estado='rechazada';
+  const nombreObj=p.items[0].nombre;
+  inyectarEntradaDiarioAutomaticaPara(compradorId,`❌ ${p.vendedorId.toUpperCase()} rechazó tu oferta por "${nombreObj}".`);
+  guardarBD();
+  mostrarNotificacion('Oferta rechazada.','exito','❌');
+  mjRenderizarTodo();
+};
+
+/* ── Contraoferta del vendedor ── */
+window.mjContraOfertarVendedor = async function(pubId, compradorId){
+  const p=(_mjGetMercado())[pubId];
+  if(!p) return;
+  const cantidadStr=await new Promise(function(resolve){
+    mostrarConfirmacion({
+      icono:'↔',titulo:'Contraoferta',
+      descripcion:'Introduce el precio que propones:',
+      textoConfirmar:'Enviar',tipo:'exito',
+      inputPlaceholder:'Cantidad mínima 1.000',
+    }).then(function(v){ resolve(v); });
+  });
+  // Como mostrarConfirmacion no tiene input, usamos prompt nativo aquí — mínimo necesario
+  const raw=prompt('↔ Introduce tu contraoferta (mínimo '+(p.moneda==='pf'?'5 PF':'1.000 PD')+'):');
+  const cantidad=parseInt(raw,10);
+  const minCo=p.moneda==='pf'?5:MJ_MIN_PRECIO;
+  if(isNaN(cantidad)||cantidad<minCo){mostrarNotificacion('Mínimo '+(p.moneda==='pf'?'5 PF.':'1.000 PD.'),'error'); return;}
+  if(!p.ofertas) p.ofertas={};
+  p.ofertas[compradorId]=Object.assign(p.ofertas[compradorId]||{},{
+    compradorId:compradorId,cantidad:cantidad,tipo:'contraoferta',estado:'pendiente',ts:_mjTs(),
+  });
+  inyectarEntradaDiarioAutomaticaPara(compradorId,`↔ ${p.vendedorId.toUpperCase()} te hace una contraoferta de ${_mjPrecioFmt(cantidad,p.moneda)} por "${p.items[0].nombre}".`);
+  guardarBD();
+  mostrarNotificacion('Contraoferta enviada.','exito','↔');
+  mjRenderizarTodo();
+};
+
+/* ── Aceptar contraoferta (comprador) ── */
+window.mjAceptarContraoferta = function(pubId){
+  const p=(_mjGetMercado())[pubId];
+  if(!p||!p.ofertas||!p.ofertas[userSesion]) return;
+  const o=p.ofertas[userSesion];
+  // Simular aceptación usando mjAceptarOferta
+  mjAceptarOferta(pubId, userSesion);
+};
+
+/* ── Contraoferta del comprador ── */
+window.mjContraOfertarComprador = function(pubId){
+  const p=(_mjGetMercado())[pubId];
+  if(!p) return;
+  const raw=prompt('↔ Tu contraoferta (mínimo '+(p.moneda==='pf'?'5 PF':'1.000 PD')+'):');
+  const cantidad=parseInt(raw,10);
+  const minCo2=p.moneda==='pf'?5:MJ_MIN_PRECIO;
+  if(isNaN(cantidad)||cantidad<minCo2){mostrarNotificacion('Mínimo '+(p.moneda==='pf'?'5 PF.':'1.000 PD.'),'error'); return;}
+  if(!p.ofertas) p.ofertas={};
+  p.ofertas[userSesion]=Object.assign(p.ofertas[userSesion]||{},{
+    compradorId:userSesion,cantidad:cantidad,tipo:'oferta',estado:'pendiente',ts:_mjTs(),
+  });
+  inyectarEntradaDiarioAutomaticaPara(p.vendedorId,`↔ ${userSesion.toUpperCase()} contraoferta ${_mjPrecioFmt(cantidad,p.moneda)} por "${p.items[0].nombre}".`);
+  guardarBD();
+  mostrarNotificacion('Contraoferta enviada.','exito','↔');
+  mjRenderizarTodo();
+};
+
+/* ── Rechazar contraoferta (comprador) ── */
+window.mjRechazarContraoferta = function(pubId){
+  const p=(_mjGetMercado())[pubId];
+  if(!p||!p.ofertas||!p.ofertas[userSesion]) return;
+  p.ofertas[userSesion].estado='rechazada';
+  inyectarEntradaDiarioAutomaticaPara(p.vendedorId,`❌ ${userSesion.toUpperCase()} rechazó tu contraoferta por "${p.items[0].nombre}".`);
+  guardarBD();
+  mostrarNotificacion('Contraoferta rechazada.','exito','❌');
+  mjRenderizarTodo();
+};
+
+/* ── Retirar publicación ── */
+window.mjRetirar = async function(pubId){
+  const p=(_mjGetMercado())[pubId];
+  if(!p||p.vendedorId!==userSesion){mostrarNotificacion('No puedes retirar esta publicación.','error'); return;}
+  const cf=await mostrarConfirmacion({icono:'🗑️',titulo:'Retirar publicación',descripcion:'¿Retirar esta publicación? Los objetos volverán a tu mochila.',textoConfirmar:'Retirar',tipo:'sacrificio'});
+  if(!cf) return;
+  // Devolver objetos a la mochila
+  const u=baseDatos.jugadores[userSesion];
+  if(!u.inventario) u.inventario=[];
+  p.items.forEach(function(it){ u.inventario.push(it); });
+  p.estado='retirada';
+  registrarActividadGlobal(userSesion,`🗑️ ${userSesion.toUpperCase()} retiró su publicación: "${p.items.map(function(i){return i.nombre;}).join(', ')}".`,_mjTs());
+  guardarBD();
+  mostrarNotificacion('Publicación retirada. Objetos devueltos a tu mochila.','exito','🗑️');
+  mjRenderizarTodo();
+};
+
+/* ── Render global ── */
+window.mjRenderizarTodo = function(){
+  if(!_bdCargadaAlgunaVez) return;
+  if(_mjTabActual==='explorar')   mjRenderizarExplorar();
+  if(_mjTabActual==='mis-ventas') mjRenderizarMisVentas();
+  if(_mjTabActual==='publicar')   mjRenderizarPublicar();
 };
 
 async function renderizarBackupsAdmin(){
@@ -6433,7 +7594,7 @@ window.navegarA=function(s){
      .active al nav-item, porque lee classList.contains('active') para saber
      qué item pintar. Si se llama antes, pinta el item anterior. */
   reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();_asisSetSeccion(s);if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }if(tab==='backup'){ renderizarBackupsAdmin(); }};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }if(tab==='backup'){ renderizarBackupsAdmin(); }if(tab==='subasta'){ subastaActualizarAdminPanel(); }};
 
 
 /* ═══ MUSEO ADMIN — estado local ═══ */
@@ -6777,7 +7938,7 @@ window.museoRenderAdmin = function(){
 
 
 window.navegarAConTab=function(s,t){navegarA(s);if(s==='tiendas')cambiarTiendaTab(t);};
-window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal','active-ticket'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');if(tab!=='ticket')sec.classList.add(`zona-${tab}`);}if(tab==='ticket')renderizarPanelCanjearTicket();};
+window.cambiarTiendaTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.tienda-tab').forEach(t=>t.classList.remove('active-legal','active-pack','active-illegal','active-ticket','active-subasta','active-mercado'));document.querySelectorAll('.tienda-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`ttab-${tab}`),ve=document.getElementById(`tv-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);let sec=document.getElementById('section-tiendas');if(sec){sec.classList.remove('zona-legal','zona-pack','zona-illegal');if(tab!=='ticket'&&tab!=='subasta'&&tab!=='mercado')sec.classList.add(`zona-${tab}`);}if(tab==='ticket')renderizarPanelCanjearTicket();if(tab==='subasta')window.renderizarSubasta();if(tab==='mercado')mjRenderizarTodo();};
 window.cambiarEventoTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.evento-tab').forEach(t=>t.classList.remove('active-arena','active-camara'));document.querySelectorAll('.evento-view').forEach(v=>v.classList.remove('active'));let te=document.getElementById(`etab-${tab}`),ve=document.getElementById(`ev-${tab}`);te.classList.add(`active-${tab}`);te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);ve.classList.add('active');reanimarElemento(ve);if(tab==='camara')renderizarCamaraPublica();};
 window.cambiarPerfilTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.perfil-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.perfil-view').forEach(v=>v.classList.remove('active'));const b=document.getElementById(`ptab-${tab}`),v=document.getElementById(`pv-${tab}`);if(b){b.classList.add('active');b.classList.add('tab-pop');setTimeout(()=>b.classList.remove('tab-pop'),300);}if(v){v.classList.add('active');reanimarElemento(v);}if(tab==='ficha')renderizarTitulosYTemas();if(tab==='carnet')renderizarPanelCarnet();};
 
@@ -10809,8 +11970,48 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 77.1;
+const APP_VERSION = 79;
 const VERSIONES = [
+  {
+    version: 79,
+    fecha: '2026-09-12',
+    titulo: 'Mercado de Jugadores',
+    resumen: 'Nueva pestaña "🛒 Mercado" en la tienda. Los jugadores pueden publicar objetos de su mochila (individuales o en pack) por Pokédólares o PF (solo Megapiedras y Fósiles admiten PF, mínimo 1.000 PD siempre). Los compradores hacen ofertas; el vendedor acepta, rechaza o contraoferta. Ambos pueden negociar en múltiples rondas. Al vender, el dinero se transfiere automáticamente y el objeto pasa a la mochila del comprador.',
+    nuevas: [
+      'Pestaña "🛒 Mercado" en la tienda con tres vistas: Explorar, Mis ventas, Publicar',
+      'Publicación de objetos individuales o packs con precio mínimo de 1.000 PD',
+      'Moneda seleccionable: Pokédólares (todos los objetos) o PF (solo Megapiedras y Fósiles)',
+      'Sistema de ofertas: compradores proponen cantidad; vendedor ve todas las ofertas',
+      'Contraofertas bidireccionales: tanto vendedor como comprador pueden contraofertar',
+      'Al aceptar: dinero transferido automáticamente, objeto pasa a mochila del comprador',
+      'Objetos reservados en la mochila al publicar; devueltos si se retira la publicación',
+      'No vendibles: ilegalidades y premios de ruleta',
+      'Todo registrado en actividad global y bitácoras del vendedor y comprador',
+      'Refresco en tiempo real cuando otro jugador hace una oferta o se cierra una venta',
+    ],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [],
+  },
+  {
+    version: 78,
+    fecha: '2026-09-12',
+    titulo: 'Sistema de Subastas',
+    resumen: 'Nueva pestaña "🔨 Subasta" dentro de la tienda. El admin genera subastas aleatorias del pool exclusivo (Master Ball, Megapiedra real, Cápsula Habilidad, Fósil real). Los jugadores pujan PF libremente; se descuentan al pujar y se devuelven si alguien los supera. El ganador recibe el objeto en la mochila 1 min antes de acabar las 3h. Cooldown de 3h entre subastas.',
+    nuevas: [
+      'Pestaña "🔨 Subasta" en la tienda, visible para todos los jugadores',
+      'Pool exclusivo: Master Ball (10 PF), Megapiedra aleatoria real (20 PF), Cápsula Habilidad (30 PF), Fósil Pokémon real con nombre correcto (40 PF)',
+      'PF descontados al pujar; devueltos automáticamente si te superan',
+      'Objeto entregado directamente en la mochila del ganador 1 min antes del fin',
+      'Cooldown de 3h entre subastas con barra de progreso visible',
+      'Historial de pujas en tiempo real con el pujador líder destacado',
+      'Tab "🔨 Subasta" en Modo Dios: generar aleatoria, entregar ya, cancelar con devolución de PF',
+      'Registrado en actividad global, log admin y bitácora del ganador',
+    ],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: 77.1,
     fecha: '2026-09-10',
