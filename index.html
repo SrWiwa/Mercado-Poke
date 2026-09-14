@@ -2608,6 +2608,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-museo" onclick="cambiarAdminTab('museo')" style="color:#818cf8;border-color:rgba(129,140,248,.3)">📜 Museo</button>
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#e2646f;border-color:rgba(216,41,63,.3)">🔄 Nuevo Locke</button>
         <button class="dios-tab" id="dtab-subasta" onclick="cambiarAdminTab('subasta')" style="color:#fbbf24;border-color:rgba(251,191,36,.3)">🔨 Subasta</button>
+        <button class="dios-tab" id="dtab-almacen" onclick="cambiarAdminTab('almacen')" style="color:#34d399;border-color:rgba(52,211,153,.3)">📦 Almacén</button>
         <button class="dios-tab" id="dtab-backup" onclick="cambiarAdminTab('backup')" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">💾 Backups</button>
         
       </div>
@@ -3136,6 +3137,56 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
               <button class="btn-admin danger" style="flex:1;justify-content:center" onclick="subastaAdminCancelar()">🗑️ Cancelar</button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- ALMACÉN ADMIN -->
+      <div id="dv-almacen" class="dios-view">
+        <div class="card" style="max-width:540px;border-color:rgba(52,211,153,.25)">
+          <div class="card-title" style="color:#34d399">📦 Almacén — Dar objetos a jugadores</div>
+          <div style="font-size:11px;color:var(--txt-muted);font-family:var(--font-display);line-height:1.6;margin-bottom:18px">
+            Añade cualquier objeto directamente a la mochila de un jugador (o a la tuya). El objeto se registra en su bitácora y en el feed de actividad.
+          </div>
+
+          <!-- Selector de jugador -->
+          <div style="margin-bottom:14px">
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Jugador destinatario</div>
+            <select id="alm-jugador" class="admin-input" style="font-family:var(--font-display);font-size:12px">
+              <option value="">— Selecciona un jugador —</option>
+            </select>
+          </div>
+
+          <!-- Nombre del objeto -->
+          <div style="margin-bottom:10px">
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Nombre del objeto</div>
+            <input type="text" id="alm-nombre" placeholder="Ej: TM26 Terremoto, Megapiedra..." class="admin-input" style="font-family:var(--font-display)">
+          </div>
+
+          <!-- Icono + Descripción en fila -->
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <div style="flex:0 0 90px">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Emoji</div>
+              <input type="text" id="alm-icon" placeholder="📦" class="admin-input" style="font-family:var(--font-display);text-align:center;font-size:18px" maxlength="4">
+            </div>
+            <div style="flex:1">
+              <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Descripción (opcional)</div>
+              <input type="text" id="alm-desc" placeholder="Ej: Premio especial del Mercader" class="admin-input" style="font-family:var(--font-display)">
+            </div>
+          </div>
+
+          <!-- Cantidad -->
+          <div style="margin-bottom:16px">
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Cantidad</div>
+            <input type="number" id="alm-cantidad" value="1" min="1" max="99" class="admin-input" style="font-family:var(--font-display);width:80px">
+          </div>
+
+          <button class="btn-admin packs" style="width:100%;justify-content:center" onclick="almacenDarObjeto()">📦 Añadir a la mochila</button>
+        </div>
+
+        <!-- Historial de entregas -->
+        <div class="card" style="max-width:540px;margin-top:14px;border-color:rgba(52,211,153,.15)">
+          <div class="card-title" style="font-size:12px;margin-bottom:10px">📋 Últimas entregas</div>
+          <div id="alm-historial"><div style="font-size:11px;color:var(--txt-muted);font-style:italic;font-family:var(--font-display)">Sin entregas registradas.</div></div>
         </div>
       </div>
 
@@ -5610,7 +5661,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
    sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
-const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','subasta','mercado'];
+const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','subasta','mercado','almacenHistorial'];
 async function guardarBD(){
   const local = baseDatos;
   try{
@@ -6677,6 +6728,100 @@ window.mjRenderizarTodo = function(){
   if(_mjTabActual==='publicar')   mjRenderizarPublicar();
 };
 
+/* ═══════════════════════════════════════════════════════
+   ALMACÉN ADMIN — Dar objetos a la mochila de jugadores
+   ═══════════════════════════════════════════════════════ */
+function almacenCargarJugadores(){
+  const sel=document.getElementById('alm-jugador');
+  if(!sel) return;
+  const actual=sel.value;
+  sel.innerHTML='<option value="">— Selecciona un jugador —</option>';
+  Object.keys(baseDatos.jugadores||{}).forEach(function(id){
+    const opt=document.createElement('option');
+    opt.value=id; opt.textContent=id.toUpperCase();
+    if(id===actual) opt.selected=true;
+    sel.appendChild(opt);
+  });
+}
+
+function almacenRenderizarHistorial(){
+  const cont=document.getElementById('alm-historial');
+  if(!cont) return;
+  const hist=(baseDatos.almacenHistorial||[]);
+  if(!hist.length){
+    cont.innerHTML='<div style="font-size:11px;color:var(--txt-muted);font-style:italic;font-family:var(--font-display)">Sin entregas registradas.</div>';
+    return;
+  }
+  cont.innerHTML=[...hist].reverse().slice(0,20).map(function(h){
+    return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);margin-bottom:4px;font-size:11px;font-family:var(--font-display)">
+      <div>
+        <span style="font-weight:700;color:var(--txt-primary)">${h.icon||'📦'} ${h.nombre}</span>
+        <span style="color:var(--txt-muted)"> → ${(h.destinatario||'?').toUpperCase()}</span>
+        ${h.cantidad>1?`<span style="color:#34d399;font-size:10px"> x${h.cantidad}</span>`:''}
+      </div>
+      <span style="font-size:9px;color:var(--txt-muted);flex-shrink:0">${h.fecha||''}</span>
+    </div>`;
+  }).join('');
+}
+
+window.almacenDarObjeto = function(){
+  const jugadorId=(document.getElementById('alm-jugador').value||'').trim();
+  const nombre   =(document.getElementById('alm-nombre').value||'').trim();
+  const icon     =(document.getElementById('alm-icon').value||'').trim()||'📦';
+  const desc     =(document.getElementById('alm-desc').value||'').trim();
+  const cantidad =parseInt(document.getElementById('alm-cantidad').value,10)||1;
+
+  if(!jugadorId){ mostrarNotificacion('Selecciona un jugador destinatario.','error','⚠️'); return; }
+  if(!nombre){    mostrarNotificacion('Escribe el nombre del objeto.','error','⚠️'); return; }
+  if(cantidad<1||cantidad>99){ mostrarNotificacion('Cantidad entre 1 y 99.','error','⚠️'); return; }
+
+  const u=baseDatos.jugadores&&baseDatos.jugadores[jugadorId];
+  if(!u){ mostrarNotificacion('Jugador no encontrado.','error','⚠️'); return; }
+  if(!u.inventario) u.inventario=[];
+
+  const ts=new Date().toLocaleDateString('es-ES');
+  const tsLargo=new Date().toLocaleString('es-ES');
+
+  var i=0;
+  while(i<cantidad){
+    u.inventario.push({
+      uid:   'alm_'+Date.now()+'_'+i+'_'+Math.floor(Math.random()*1000),
+      nombre: nombre,
+      icon:   icon,
+      desc:   desc||(nombre+' — Entregado por el Mercader'),
+      tienda: 'admin',
+      fecha:  ts,
+    });
+    i++;
+  }
+
+  // Historial en baseDatos
+  if(!baseDatos.almacenHistorial) baseDatos.almacenHistorial=[];
+  baseDatos.almacenHistorial.unshift({nombre:nombre,icon:icon,desc:desc,cantidad:cantidad,destinatario:jugadorId,fecha:tsLargo});
+  if(baseDatos.almacenHistorial.length>100) baseDatos.almacenHistorial=baseDatos.almacenHistorial.slice(0,100);
+
+  const cantTxt=cantidad>1?` x${cantidad}`:'';
+  logAdmin('📦 Almacén — objeto entregado',`${icon} ${nombre}${cantTxt} → ${jugadorId.toUpperCase()}`);
+  registrarActividadGlobal('Sistema',`📦 El Mercader entregó ${icon} ${nombre}${cantTxt} a ${jugadorId.toUpperCase()}.`,tsLargo);
+  inyectarEntradaDiarioAutomaticaPara(jugadorId,`📦 El Mercader te ha entregado: ${icon} ${nombre}${cantTxt}.`);
+
+  guardarBD();
+  mostrarNotificacion(`${icon} ${nombre}${cantTxt} añadido a la mochila de ${jugadorId.toUpperCase()}.`,'exito','📦');
+
+  // Limpiar campos (excepto jugador para entregas múltiples)
+  document.getElementById('alm-nombre').value='';
+  document.getElementById('alm-icon').value='';
+  document.getElementById('alm-desc').value='';
+  document.getElementById('alm-cantidad').value='1';
+
+  almacenRenderizarHistorial();
+};
+
+window.almacenInicializar = function(){
+  almacenCargarJugadores();
+  almacenRenderizarHistorial();
+};
+
 async function renderizarBackupsAdmin(){
   const cont = document.getElementById('backup-lista');
   if(!cont) return;
@@ -6817,18 +6962,15 @@ function misionMulberry32(seed){
    ────────────────────────────────────────────────────────── */
 const MISION_POOL_FACIL = [
   {tipo:'comprados',     metaOpts:[1,2],         titulo:'Ir de Compras',         desc:function(m){return 'Compra '+m+' objeto'+(m>1?'s':'')+' en la tienda.';},                               icon:'🛍️'},
-  {tipo:'dinero',        metaOpts:[1000,2000,3000], titulo:'Primer Ahorro',      desc:function(m){return 'Acumula '+m.toLocaleString()+' P₠.';},                                              icon:'💰'},
   {tipo:'gachaAbiertas', metaOpts:[1],           titulo:'Prueba tu Suerte',      desc:function(){return 'Abre 1 Gacha.';},                                                                      icon:'🎰'},
   {tipo:'objetosUsados', metaOpts:[1],           titulo:'Usa tu Mochila',        desc:function(){return 'Usa 1 objeto de tu mochila.';},                                                        icon:'🎒'},
   {tipo:'manual',        metaOpts:[1],           titulo:'Recaptura de Guardia',  desc:function(){return 'Usa una recaptura. Márcala tú mismo cuando lo hagas.';},                              icon:'🔁', manual:true},
   {tipo:'comprados',     metaOpts:[2,3],         titulo:'De Compras otra vez',   desc:function(m){return 'Compra '+m+' objetos en cualquier tienda.';},                                       icon:'🏪'},
-  {tipo:'dinero',        metaOpts:[500,1500],    titulo:'Acumulando Fondos',     desc:function(m){return 'Ten '+m.toLocaleString()+' P₠ en tu cuenta.';},                                    icon:'💵'},
   {tipo:'gachaAbiertas', metaOpts:[1],           titulo:'El Destino Llama',      desc:function(){return 'Gira el Gacha diario y acepta lo que venga.';},                                       icon:'🎲'},
   {tipo:'objetosUsados', metaOpts:[1,2],         titulo:'Mochila en Uso',        desc:function(m){return 'Usa '+m+' objeto'+(m>1?'s':'')+' de tu inventario.';},                             icon:'🎒'},
   {tipo:'comprados',     metaOpts:[1],           titulo:'Primera Compra del Día',desc:function(){return 'Compra al menos 1 objeto en la tienda hoy.';},                                        icon:'🛒'},
 ];
 const MISION_POOL_NORMAL = [
-  {tipo:'dinero',        metaOpts:[4000,6000],   titulo:'Ahorro Pokéinómano',    desc:function(m){return 'Acumula '+m.toLocaleString()+' P₠.';},                                              icon:'💰'},
   {tipo:'gachaAbiertas', metaOpts:[2,3],         titulo:'Apostador Casual',      desc:function(m){return 'Abre '+m+' Gachas.';},                                                               icon:'🎰'},
   {tipo:'pfGastado',     metaOpts:[3,5],         titulo:'Invierte tus PF',       desc:function(m){return 'Gasta '+m+' PF en la tienda PF.';},                                                 icon:'🔮', excluirRecompensas:['pf']},
   {tipo:'objetosUsados', metaOpts:[2,3],         titulo:'Inventario Activo',     desc:function(m){return 'Usa '+m+' objetos de tu mochila.';},                                                icon:'🎒'},
@@ -6873,7 +7015,7 @@ const MISION_RECOMPENSA_POOLS = {
     {tipo:'pf',       min:1,    max:4},
     {tipo:'gacha',    min:1,    max:1},
     {tipo:'recaptura',min:1,    max:1},
-    {tipo:'dinero',   min:300,  max:800},   // peso extra a dinero para variedad de cantidades
+    {tipo:'dinero',   min:300,  max:800},
     {tipo:'pf',       min:2,    max:5},
   ],
   normal:     [
@@ -6927,10 +7069,10 @@ function misionGenerarRecompensa(dificultad, rnd, excluir){
   var valor = opt.min===opt.max ? opt.min : (opt.min + Math.floor(rnd()*(opt.max-opt.min+1)));
   return {tipo:opt.tipo, valor:valor};
 }
-function misionConstruir(def, dificultad, rnd){
+function misionConstruir(def, dificultad, rnd, idx){
   var meta = def.metaOpts[Math.floor(rnd()*def.metaOpts.length)];
   return {
-    id: dificultad+'_'+def.tipo+'_'+meta,
+    id: dificultad+'_'+def.tipo+'_'+meta+'_'+(idx||0),
     tipo: def.tipo,
     meta: meta,
     dificultad: dificultad,
@@ -7049,15 +7191,15 @@ function obtenerRotacionMisiones(){
   var rnd = misionMulberry32(rotationId*7919+13);
   var usadosFacil = [], usadosNormal = [], usadosDificil = [], usadosMuydificil = [], usadosEpica = [];
   var misiones = [
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_DIFICIL,    usadosDificil,    rnd), 'dificil',    rnd),
-    misionConstruir(misionElegirDePool(MISION_POOL_MUYDIFICIL, usadosMuydificil, rnd), 'muydificil', rnd),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd, 0),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd, 1),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd, 2),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd, 3),
+    misionConstruir(misionElegirDePool(MISION_POOL_FACIL,      usadosFacil,      rnd), 'facil',      rnd, 4),
+    misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd, 5),
+    misionConstruir(misionElegirDePool(MISION_POOL_NORMAL,     usadosNormal,     rnd), 'normal',     rnd, 6),
+    misionConstruir(misionElegirDePool(MISION_POOL_DIFICIL,    usadosDificil,    rnd), 'dificil',    rnd, 7),
+    misionConstruir(misionElegirDePool(MISION_POOL_MUYDIFICIL, usadosMuydificil, rnd), 'muydificil', rnd, 8),
   ];
   // Épica: rota cada 48h independientemente
   var rotIdEpica = Math.floor(Date.now()/MISION_MS_ROTACION_LARGA);
@@ -7594,7 +7736,7 @@ window.navegarA=function(s){
      .active al nav-item, porque lee classList.contains('active') para saber
      qué item pintar. Si se llama antes, pinta el item anterior. */
   reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();_asisSetSeccion(s);if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }if(tab==='backup'){ renderizarBackupsAdmin(); }if(tab==='subasta'){ subastaActualizarAdminPanel(); }};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }if(tab==='backup'){ renderizarBackupsAdmin(); }if(tab==='subasta'){ subastaActualizarAdminPanel(); }if(tab==='almacen'){ window.almacenInicializar(); }}};
 
 
 /* ═══ MUSEO ADMIN — estado local ═══ */
