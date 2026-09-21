@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v79 | Build: 2026-09-12 -->
+<!-- Silph Co v81 | Build: 2026-09-17 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -419,7 +419,86 @@ body{font-family:var(--font-body);background-color:var(--bg-base);color:var(--tx
 .mj-empty{text-align:center;padding:32px 16px;color:var(--txt-muted);font-family:var(--font-display);font-size:12px}
 .mj-badge-retirada{position:absolute;top:10px;right:10px;font-size:9px;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:#dc2626;border-radius:99px;padding:2px 8px;font-family:var(--font-display);font-weight:700}
 .mj-badge-vendida{position:absolute;top:10px;right:10px;font-size:9px;background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:#059669;border-radius:99px;padding:2px 8px;font-family:var(--font-display);font-weight:700}
-/* ══ SUBASTAS ══════════════════════════════════════════════════════════════ */
+/* ═══ LIGA POKÉINOMANA ═══ */
+.liga-proximamente{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;text-align:center}
+.liga-proximamente-icon{font-size:52px;margin-bottom:16px;opacity:.7}
+.liga-proximamente-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--txt-primary);margin-bottom:8px}
+.liga-proximamente-sub{font-size:13px;color:var(--txt-muted);max-width:340px;line-height:1.6;margin-bottom:16px}
+.liga-proximamente-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(74,66,176,.08);border:1px solid rgba(74,66,176,.2);border-radius:99px;padding:6px 14px;font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--neon-arena);letter-spacing:.5px}
+.liga-jornada-card{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-lg);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-sm)}
+.liga-jornada-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .12s}
+.liga-jornada-header:hover{background:var(--bg-overlay)}
+.liga-jornada-title{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--txt-primary)}
+.liga-jornada-meta{font-size:10px;color:var(--txt-muted);margin-top:2px}
+.liga-estado-pill{font-size:9px;font-weight:700;border-radius:99px;padding:3px 10px;letter-spacing:.5px;text-transform:uppercase;font-family:var(--font-display)}
+.liga-estado-pendiente{background:rgba(217,164,4,.1);border:1px solid rgba(217,164,4,.25);color:var(--amarillo)}
+.liga-estado-en-curso{background:rgba(74,66,176,.1);border:1px solid rgba(74,66,176,.25);color:var(--neon-arena)}
+.liga-estado-completada{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:#059669}
+.liga-jornada-body{padding:0 14px 12px}
+.liga-jornada-body.oculto{display:none}
+.liga-match-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);margin-bottom:5px;transition:border-color .12s}
+.liga-match-row.completado{border-color:rgba(16,185,129,.2)}
+.liga-match-row.pendiente{border-color:rgba(217,164,4,.15)}
+.liga-match-player{flex:1;font-family:var(--font-display);font-size:12px;font-weight:700;text-align:center;color:var(--txt-primary)}
+.liga-match-player.ganador{color:#059669}
+.liga-match-player.perdedor{color:var(--txt-muted)}
+.liga-match-vs{font-size:10px;font-weight:700;color:var(--txt-muted);letter-spacing:1px;font-family:var(--font-display)}
+.liga-match-btn{background:var(--neon-arena);color:#fff;border:none;border-radius:var(--r-sm);padding:5px 12px;font-family:var(--font-display);font-size:10px;font-weight:700;cursor:pointer;transition:filter .12s;white-space:nowrap}
+.liga-match-btn:hover{filter:brightness(1.12)}
+.liga-match-btn.anular{background:var(--bg-overlay);color:var(--txt-muted);border:1px solid var(--borde)}
+.liga-match-btn.anular:hover{background:rgba(224,49,63,.08);color:var(--rojo);border-color:rgba(224,49,63,.3)}
+.liga-tabla{width:100%;border-collapse:collapse}
+.liga-tabla th{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--txt-muted);padding:7px 10px;text-align:center;border-bottom:1px solid var(--borde)}
+.liga-tabla th:nth-child(2){text-align:left}
+.liga-tabla td{padding:9px 10px;text-align:center;font-size:12px;border-bottom:1px solid rgba(16,24,40,.04);transition:background .1s}
+.liga-tabla td:nth-child(2){text-align:left}
+.liga-tabla tr:hover td{background:var(--bg-overlay)}
+.liga-tabla tr.finalista-row td:first-child{border-left:3px solid var(--neon-arena)}
+.liga-pos-badge{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:10px;font-weight:800}
+.liga-pos-1{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000}
+.liga-pos-2{background:linear-gradient(135deg,#94a3b8,#64748b);color:#fff}
+.liga-pos-3{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff}
+.liga-pos-n{background:var(--bg-overlay);color:var(--txt-muted);border:1px solid var(--borde)}
+.liga-pts-pill{background:rgba(74,66,176,.1);border:1px solid rgba(74,66,176,.2);color:var(--neon-arena);border-radius:99px;padding:2px 10px;font-family:var(--font-display);font-size:11px;font-weight:800}
+.liga-player-cell{display:flex;align-items:center;gap:7px}
+.liga-avatar{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:11px;font-weight:700;flex-shrink:0}
+.liga-fin-tag{font-size:9px;background:rgba(74,66,176,.08);border:1px solid rgba(74,66,176,.2);color:var(--neon-arena);border-radius:99px;padding:1px 6px;margin-left:4px;font-family:var(--font-display);font-weight:700}
+.liga-progress-bar{height:5px;background:var(--bg-overlay);border-radius:3px;overflow:hidden;margin-top:6px;border:1px solid var(--borde)}
+.liga-progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-arena),#8b5cf6);border-radius:3px;transition:width .5s ease}
+.liga-modal-overlay{display:none;position:fixed;inset:0;background:rgba(17,24,39,.5);backdrop-filter:blur(4px);z-index:9000;align-items:center;justify-content:center}
+.liga-modal-overlay.abierto{display:flex}
+.liga-modal{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-xl);padding:24px;max-width:400px;width:90%;box-shadow:var(--shadow-xl)}
+.liga-modal-title{font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--txt-primary);margin-bottom:4px}
+.liga-modal-sub{font-size:11px;color:var(--txt-muted);margin-bottom:16px}
+.liga-modal-players{display:flex;align-items:center;justify-content:space-around;gap:10px;margin-bottom:14px}
+.liga-modal-player-btn{flex:1;padding:14px 8px;border-radius:var(--r-md);border:2px solid var(--borde);background:var(--bg-overlay);color:var(--txt-primary);font-family:var(--font-display);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center}
+.liga-modal-player-btn:hover{border-color:var(--neon-arena)}
+.liga-modal-player-btn.sel-win{border-color:#059669;background:rgba(16,185,129,.08);color:#059669}
+.liga-modal-player-btn.sel-lose{border-color:var(--borde);opacity:.6}
+.liga-modal-vs{font-size:11px;font-weight:700;color:var(--txt-muted);padding:0 8px;font-family:var(--font-display)}
+.liga-modal-actions{display:flex;gap:8px;margin-top:14px}
+.liga-modal-btn{padding:10px 18px;border-radius:var(--r-md);font-family:var(--font-display);font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .15s}
+.liga-modal-btn.primary{background:var(--neon-arena);color:#fff}
+.liga-modal-btn.primary:disabled{opacity:.4;cursor:not-allowed}
+.liga-modal-btn.ghost{background:var(--bg-overlay);color:var(--txt-secondary);border:1px solid var(--borde)}
+.liga-bracket-match{background:var(--bg-card);border:1px solid var(--borde);border-radius:var(--r-md);overflow:hidden;min-width:200px;box-shadow:var(--shadow-sm)}
+.liga-bracket-title{background:var(--bg-overlay);padding:7px 12px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--txt-muted);border-bottom:1px solid var(--borde);text-align:center}
+.liga-bracket-player{padding:10px 14px;font-family:var(--font-display);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(16,24,40,.05)}
+.liga-bracket-player:last-child{border-bottom:none}
+.liga-bracket-player.winner{color:#059669;background:rgba(16,185,129,.05)}
+.liga-bracket-player.loser{color:var(--txt-muted)}
+.liga-champion-card{background:linear-gradient(135deg,rgba(217,164,4,.08),rgba(74,66,176,.06));border:1px solid rgba(217,164,4,.3);border-radius:var(--r-lg);padding:24px;text-align:center}
+.liga-champion-name{font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--amarillo)}
+.liga-podio{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin:20px 0}
+.liga-podio-item{text-align:center}
+.liga-pedestal{border-radius:var(--r-sm) var(--r-sm) 0 0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:18px;font-weight:900}
+.liga-pedestal-1{width:78px;height:88px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000}
+.liga-pedestal-2{width:68px;height:68px;background:linear-gradient(135deg,#94a3b8,#64748b);color:#fff}
+.liga-pedestal-3{width:68px;height:54px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff}
+.liga-podio-name{font-family:var(--font-display);font-size:11px;font-weight:700;margin-top:5px;color:var(--txt-secondary)}
+.liga-gym-pips{display:flex;gap:3px}
+.liga-gym-pip{width:9px;height:9px;border-radius:50%;background:var(--bg-overlay);border:1px solid var(--borde);transition:all .2s}
+.liga-gym-pip.done{background:var(--amarillo);border-color:var(--amarillo)}
 .sub-objeto-card{background:linear-gradient(135deg,var(--bg-elevated),rgba(251,191,36,.07));border:1px solid rgba(251,191,36,.3);border-radius:var(--r-lg);padding:20px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
 .sub-objeto-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(251,191,36,.1) 0%,transparent 70%);pointer-events:none}
 .sub-obj-icon{font-size:52px;margin-bottom:6px;display:block;filter:drop-shadow(0 0 10px rgba(251,191,36,.5))}
@@ -1774,7 +1853,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <div class="more-sheet-item" onclick="navegarA('red-entrenadores');cerrarMasSheet()"><span class="ms-icon">📡</span> Red de Entrenadores</div>
     <div class="more-sheet-item" onclick="navegarA('duelos');cerrarMasSheet()"><span class="ms-icon">🥊</span> Duelos PvP</div>
     <div class="more-sheet-item" onclick="navegarA('torneos');cerrarMasSheet()"><span class="ms-icon">🏟️</span> Torneos</div>
-
+    <div class="more-sheet-item" onclick="navegarA('liga');cerrarMasSheet()"><span class="ms-icon">⚔️</span> Liga</div>
     <div class="more-sheet-item" onclick="navegarA('vidas-sacrificios');cerrarMasSheet()"><span class="ms-icon">❤️</span> Vidas y Sacrificios</div>
     <div class="more-sheet-item" onclick="navegarA('medallas-torneos');cerrarMasSheet()"><span class="ms-icon">🏆</span> Medallas y Torneos</div>
     <div class="more-sheet-item" onclick="cerrarMasSheet();abrirOverlayDiarioNativo()"><span class="ms-icon">📖</span> Bitácora</div>
@@ -1838,6 +1917,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-eventos" onclick="navegarA('eventos')"><span class="nav-icon">⚔️</span><span class="nav-label">Eventos</span></div>
       <div class="nav-item" id="nav-duelos" onclick="navegarA('duelos')"><span class="nav-icon">🥊</span><span class="nav-label">Duelos PvP</span></div>
       <div class="nav-item" id="nav-torneos" onclick="navegarA('torneos')"><span class="nav-icon">🏟️</span><span class="nav-label">Torneos</span></div>
+      <div class="nav-item" id="nav-liga" onclick="navegarA('liga')"><span class="nav-icon">⚔️</span><span class="nav-label">Liga</span></div>
 
 
       <div class="nav-section-label">Personal</div>
@@ -2408,7 +2488,76 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       </div>
     </section>
 
-    <!-- ASISTENTE -->
+    <!-- LIGA POKÉINOMANA -->
+    <section id="section-liga" class="page-section">
+      <div class="hero-strip">
+        <div class="section-title">⚔️ Liga Pokéinomana</div>
+        <div class="section-subtitle">Todos contra todos — los mejores pasan a la Finalísima</div>
+      </div>
+
+      <!-- Sin liga creada -->
+      <div id="liga-sin-crear">
+        <div class="card">
+          <div class="liga-proximamente">
+            <div class="liga-proximamente-icon">⚔️</div>
+            <div class="liga-proximamente-title">Liga Pokéinomana</div>
+            <div class="liga-proximamente-sub" id="liga-sin-crear-sub">El Mercader todavía no ha creado la Liga.</div>
+            <div class="liga-proximamente-badge" id="liga-sin-crear-badge">⏳ Próximamente</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liga activa -->
+      <div id="liga-activa" style="display:none">
+
+        <!-- Sub-tabs -->
+        <div style="display:flex;gap:4px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px">
+          <button class="dios-tab active" id="ltab-clasificacion" onclick="ligaTab('clasificacion')" style="color:var(--neon-arena);border-color:rgba(74,66,176,.3)">🏆 Clasificación</button>
+          <button class="dios-tab" id="ltab-calendario"   onclick="ligaTab('calendario')">📅 Calendario</button>
+          <button class="dios-tab" id="ltab-combates"     onclick="ligaTab('combates')">⚔️ Combates</button>
+          <button class="dios-tab" id="ltab-finalisima"   onclick="ligaTab('finalisima')">🎖️ Finalísima</button>
+        </div>
+
+        <!-- CLASIFICACIÓN -->
+        <div id="ldv-clasificacion" class="liga-dios-view">
+          <div class="card" style="margin-bottom:12px">
+            <div class="card-title">Clasificación General</div>
+            <div style="font-size:11px;color:var(--txt-muted);margin-bottom:12px">Top 4 pasan a la Finalísima · Victoria +3 pts · Derrota +1 pt</div>
+            <table class="liga-tabla" id="liga-tabla-clas"></table>
+          </div>
+          <div class="card">
+            <div class="card-title">Progreso individual</div>
+            <div id="liga-fichas"></div>
+          </div>
+        </div>
+
+        <!-- CALENDARIO (solo visual) -->
+        <div id="ldv-calendario" class="liga-dios-view" style="display:none">
+          <div class="card" style="margin-bottom:12px">
+            <div class="card-title">Calendario de Jornadas</div>
+            <div style="font-size:11px;color:var(--txt-muted)" id="liga-cal-info"></div>
+          </div>
+          <div id="liga-cal-cont"></div>
+        </div>
+
+        <!-- COMBATES -->
+        <div id="ldv-combates" class="liga-dios-view" style="display:none">
+          <div class="card" style="margin-bottom:12px">
+            <div class="card-title">Registro de Combates</div>
+            <div style="font-size:11px;color:var(--txt-muted)">Registra el resultado de cada combate. Todos los jugadores pueden hacerlo.</div>
+          </div>
+          <div id="liga-combates-cont"></div>
+        </div>
+
+        <!-- FINALÍSIMA -->
+        <div id="ldv-finalisima" class="liga-dios-view" style="display:none">
+          <div id="liga-fin-cont"></div>
+        </div>
+
+      </div><!-- /liga-activa -->
+    </section>
+
+    <!-- ASISTENTE -->    <!-- ASISTENTE -->
     <section id="section-asistente" class="page-section">
       <div class="hero-strip">
         <div class="section-title">🤖 Mercader</div>
@@ -2609,6 +2758,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <button class="dios-tab" id="dtab-nuevolocke" onclick="cambiarAdminTab('nuevolocke')" style="color:#e2646f;border-color:rgba(216,41,63,.3)">🔄 Nuevo Locke</button>
         <button class="dios-tab" id="dtab-subasta" onclick="cambiarAdminTab('subasta')" style="color:#fbbf24;border-color:rgba(251,191,36,.3)">🔨 Subasta</button>
         <button class="dios-tab" id="dtab-almacen" onclick="cambiarAdminTab('almacen')" style="color:#34d399;border-color:rgba(52,211,153,.3)">📦 Almacén</button>
+        <button class="dios-tab" id="dtab-liga" onclick="cambiarAdminTab('liga')" style="color:var(--neon-arena);border-color:rgba(74,66,176,.3)">⚔️ Liga</button>
         <button class="dios-tab" id="dtab-backup" onclick="cambiarAdminTab('backup')" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">💾 Backups</button>
         
       </div>
@@ -3190,6 +3340,39 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         </div>
       </div>
 
+      <!-- LIGA ADMIN -->
+      <div id="dv-liga" class="dios-view">
+        <div class="card" style="max-width:540px;border-color:rgba(74,66,176,.25)" id="dv-liga-crear">
+          <div class="card-title" style="color:var(--neon-arena)">⚔️ Crear Liga</div>
+          <div style="font-size:12px;color:var(--txt-muted);margin-bottom:16px;line-height:1.6">Elige los jugadores participantes y el formato. Se generará el calendario automáticamente.</div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Nombre</div>
+            <input type="text" id="liga-crear-nombre" class="admin-input" style="margin:0;width:100%" placeholder="Liga Pokéinomana" value="Liga Pokéinomana">
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Participantes</div>
+            <div id="liga-crear-chips" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+          </div>
+          <div style="margin-bottom:16px">
+            <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Formato</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn-admin active" id="liga-fmt-simple" onclick="ligaFmt('simple')" style="flex:1;justify-content:center">🔁 Vuelta simple</button>
+              <button class="btn-admin" id="liga-fmt-doble" onclick="ligaFmt('doble')" style="flex:1;justify-content:center">🔁🔁 Doble vuelta</button>
+            </div>
+            <div id="liga-crear-preview" style="margin-top:8px;padding:8px 10px;background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-sm);font-size:11px;color:var(--txt-muted);font-family:var(--font-display)">Selecciona jugadores para ver el resumen.</div>
+          </div>
+          <button class="btn-admin arena" style="width:100%;justify-content:center" onclick="ligaCrear()">⚔️ Crear Liga</button>
+        </div>
+        <div class="card" style="max-width:540px;border-color:rgba(74,66,176,.25);margin-top:12px;display:none" id="dv-liga-activa">
+          <div class="card-title" style="color:var(--neon-arena)">⚔️ Liga activa</div>
+          <div id="dv-liga-info" style="font-size:12px;color:var(--txt-muted);margin-bottom:16px"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-admin danger" onclick="ligaFinalizar()">🏁 Finalizar Liga</button>
+            <button class="btn-admin danger" onclick="ligaEliminar()">🗑️ Eliminar Liga</button>
+          </div>
+        </div>
+      </div>
+
       <!-- BACKUP Y RESTAURACIÓN -->
       <div id="dv-backup" class="dios-view">
         <div class="card" style="max-width:560px;border-color:rgba(96,165,250,.25)">
@@ -3343,6 +3526,35 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <button class="btn-modal-prim" style="background:rgba(30,158,115,.08);color:var(--neon-legal);border:1px solid rgba(30,158,115,.25)" onclick="descargarCarnetPNG()">🖼️ Descargar PNG</button>
       <button class="btn-modal-prim" style="background:rgba(62,111,166,.08);color:var(--neon-intercambio);border:1px solid rgba(62,111,166,.25)" onclick="descargarCarnetSVG()">📥 Descargar SVG</button>
       <button class="btn-modal-cancel" onclick="cerrarCarnetEntrenador()">Cerrar</button>
+    </div>
+  </div>
+</div>
+<!-- MODAL LIGA: REGISTRAR RESULTADO -->
+<div class="liga-modal-overlay" id="liga-modal-resultado">
+  <div class="liga-modal">
+    <div class="liga-modal-title">⚔️ Registrar Resultado</div>
+    <div class="liga-modal-sub" id="liga-modal-info">Jornada 1</div>
+    <div style="font-size:11px;color:var(--txt-muted);margin-bottom:10px">Pulsa al ganador del combate</div>
+    <div class="liga-modal-players">
+      <button class="liga-modal-player-btn" id="liga-modal-p1" onclick="ligaSelGanador(0)"></button>
+      <div class="liga-modal-vs">VS</div>
+      <button class="liga-modal-player-btn" id="liga-modal-p2" onclick="ligaSelGanador(1)"></button>
+    </div>
+    <div id="liga-modal-preview" style="text-align:center;font-size:11px;color:var(--txt-muted);min-height:16px;margin-bottom:6px"></div>
+    <div class="liga-modal-actions">
+      <button class="liga-modal-btn primary" id="liga-modal-confirmar" onclick="ligaConfirmarResultado()" disabled>✓ Confirmar</button>
+      <button class="liga-modal-btn ghost" onclick="ligaCerrarModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+<div class="liga-modal-overlay" id="liga-modal-anular">
+  <div class="liga-modal">
+    <div class="liga-modal-title">❌ Anular Resultado</div>
+    <div class="liga-modal-sub" id="liga-modal-anular-info"></div>
+    <div style="font-size:12px;color:var(--txt-muted);margin-bottom:14px">¿Anular este resultado? Se eliminarán los puntos asignados.</div>
+    <div class="liga-modal-actions">
+      <button class="liga-modal-btn" style="background:rgba(224,49,63,.1);color:var(--rojo);border:1px solid rgba(224,49,63,.25)" onclick="ligaConfirmarAnular()">Anular resultado</button>
+      <button class="liga-modal-btn ghost" onclick="document.getElementById('liga-modal-anular').classList.remove('abierto')">Cancelar</button>
     </div>
   </div>
 </div>
@@ -5628,7 +5840,7 @@ function reanimarElemento(el){transicionarVista(el);}
 let _bdCargadaAlgunaVez=false;
 onValue(ref(db,'silph_co_market'),snapshot=>{
     const data=snapshot.val();
-    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.subasta)baseDatos.subasta={estado:'sin-activa'};if(!baseDatos.mercado)baseDatos.mercado={};window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
+    if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.subasta)baseDatos.subasta={estado:'sin-activa'};if(!baseDatos.mercado)baseDatos.mercado={};if(!baseDatos.liga)baseDatos.liga=null;window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
         /* Ya habíamos cargado datos reales antes: una lectura vacía ahora es un fallo transitorio de red/Firebase, NO una base de datos vacía de verdad. Se ignora por completo para no arriesgarse a machacar los datos reales. */
         return;
@@ -5653,7 +5865,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
         return;
     }
     sincronizarRadio();
-    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(window.renderizarSubasta&&document.getElementById('tv-subasta')&&document.getElementById('tv-subasta').classList.contains('active'))window.renderizarSubasta();if(window.subastaActualizarAdminPanel&&document.getElementById('dv-subasta')&&document.getElementById('dv-subasta').classList.contains('active'))window.subastaActualizarAdminPanel();if(window.mjRenderizarTodo&&document.getElementById('tv-mercado')&&document.getElementById('tv-mercado').classList.contains('active'))window.mjRenderizarTodo();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
+    if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(window.renderizarSubasta&&document.getElementById('tv-subasta')&&document.getElementById('tv-subasta').classList.contains('active'))window.renderizarSubasta();if(window.subastaActualizarAdminPanel&&document.getElementById('dv-subasta')&&document.getElementById('dv-subasta').classList.contains('active'))window.subastaActualizarAdminPanel();if(window.mjRenderizarTodo&&document.getElementById('tv-mercado')&&document.getElementById('tv-mercado').classList.contains('active'))window.mjRenderizarTodo();if(window.renderizarLiga&&document.getElementById('section-liga')&&document.getElementById('section-liga').classList.contains('active'))window.renderizarLiga();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
 });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
@@ -5661,7 +5873,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
    (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
    sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
    accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
-const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','subasta','mercado','almacenHistorial'];
+const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','subasta','mercado','almacenHistorial','liga'];
 async function guardarBD(){
   const local = baseDatos;
   try{
@@ -6822,6 +7034,469 @@ window.almacenInicializar = function(){
   almacenRenderizarHistorial();
 };
 
+/* ═══════════════════════════════════════════════════════════════════════
+   LIGA POKÉINOMANA v2
+   — Admin crea liga eligiendo participantes + formato (simple/doble)
+   — Round Robin: todos vs todos, 1 o 2 veces según formato
+   — Jornadas distribuidas dinámicamente entre los 8 gimnasios
+   — Victoria +3 pts, Derrota +1 pt. Top 4 → Finalísima
+   — Solo admin (srwiwa) hasta activación global
+   ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════════════════════════════════════════════
+   LIGA POKÉINOMANA
+   ═══════════════════════════════════════════════════════ */
+
+const _LPV = 3; // pts victoria
+const _LPD = 1; // pts derrota
+const _LC  = ['#4a42b0','#8b5cf6','#059669','#d97706','#e0313f','#0891b2','#7c3aed','#0f766e'];
+
+function _lig(){ return (baseDatos && baseDatos.liga && Array.isArray(baseDatos.liga.jornadas)) ? baseDatos.liga : null; }
+function _lSave(){ guardarBD(); }
+function _lAdmin(){ return !!(userSesion && userSesion.toLowerCase()==='srwiwa'); }
+
+/* ── Round Robin ── */
+function _lRR(jugs){
+  var lista=jugs.slice(); if(lista.length%2!==0) lista.push('BYE');
+  var m=lista.length, rondas=[];
+  for(var r=0;r<m-1;r++){
+    var pares=[];
+    for(var i=0;i<m/2;i++){ var a=lista[i],b=lista[m-1-i]; if(a!=='BYE'&&b!=='BYE') pares.push([a,b]); }
+    rondas.push(pares); lista.splice(1,0,lista.pop());
+  }
+  return rondas;
+}
+function _lGenerarJornadas(jugs, fmt){
+  var v1=_lRR(jugs);
+  var rondas = fmt==='doble' ? v1.concat(v1.map(function(r){return r.map(function(p){return [p[1],p[0]];});})) : v1;
+  var n=rondas.length;
+  return rondas.map(function(ronda,r){
+    var gD=Math.max(1,Math.round(r*8/n)+1);
+    var gH=r===n-1?8:Math.max(gD,Math.round((r+1)*8/n));
+    return { num:r+1, gymDesde:gD, gymHasta:gH,
+      partidos:ronda.map(function(par,i){ return {id:r+'_'+i,j1:par[0],j2:par[1],ganador:null}; }) };
+  });
+}
+function _lGymLabel(j){ return j.gymDesde===j.gymHasta?'Gimnasio '+j.gymDesde:'Gimnasios '+j.gymDesde+'\u2013'+j.gymHasta; }
+
+/* ── Clasificación ── */
+function _lClas(){
+  var lig=_lig(); if(!lig) return [];
+  var m={};
+  lig.jugadores.forEach(function(n,i){ m[n]={nombre:n,pj:0,v:0,d:0,pts:0,color:_LC[i%_LC.length]}; });
+  lig.jornadas.forEach(function(j){ j.partidos.forEach(function(p){
+    if(!p.ganador) return;
+    var per=p.ganador===p.j1?p.j2:p.j1;
+    m[p.ganador].pj++;m[p.ganador].v++;m[p.ganador].pts+=_LPV;
+    m[per].pj++;m[per].d++;m[per].pts+=_LPD;
+  });});
+  return Object.values(m).sort(function(a,b){
+    if(b.pts!==a.pts) return b.pts-a.pts;
+    var enf=_lDirecto(a.nombre,b.nombre);
+    return enf===a.nombre?-1:enf===b.nombre?1:0;
+  });
+}
+function _lDirecto(j1,j2){
+  var lig=_lig(); if(!lig) return null;
+  for(var i=0;i<lig.jornadas.length;i++) for(var k=0;k<lig.jornadas[i].partidos.length;k++){
+    var p=lig.jornadas[i].partidos[k];
+    if((p.j1===j1&&p.j2===j2)||(p.j1===j2&&p.j2===j1)) return p.ganador;
+  }
+  return null;
+}
+function _lTotal(){
+  var lig=_lig(); if(!lig) return {t:0,c:0};
+  var t=0,c=0;
+  lig.jornadas.forEach(function(j){ t+=j.partidos.length; c+=j.partidos.filter(function(p){return p.ganador;}).length; });
+  return {t:t,c:c};
+}
+
+/* ── Render público ── */
+window.renderizarLiga=function(){
+  if(!_bdCargadaAlgunaVez) return;
+  var lig=_lig();
+  var sinCrear=document.getElementById('liga-sin-crear');
+  var activa=document.getElementById('liga-activa');
+  if(!sinCrear||!activa) return;
+
+  if(!lig){
+    sinCrear.style.display=''; activa.style.display='none';
+    // Si hay datos incompatibles en Firebase
+    var sub=document.getElementById('liga-sin-crear-sub');
+    var bad=document.getElementById('liga-sin-crear-badge');
+    if(baseDatos.liga&&typeof baseDatos.liga==='object'){
+      if(sub) sub.textContent='Hay una liga anterior incompatible. El Mercader debe eliminarla desde Modo Dios.';
+      if(bad) bad.textContent='\u26a0\ufe0f Formato antiguo';
+    } else {
+      if(sub) sub.textContent='El Mercader todav\xeda no ha creado la Liga.';
+      if(bad) bad.textContent='\u23f3 Pr\xf3ximamente';
+    }
+    return;
+  }
+
+  sinCrear.style.display='none'; activa.style.display='';
+  _lRenderTab(_lTabActual||'clasificacion');
+};
+
+var _lTabActual='clasificacion';
+window.ligaTab=function(tab){
+  _lTabActual=tab;
+  ['clasificacion','calendario','combates','finalisima'].forEach(function(t){
+    var btn=document.getElementById('ltab-'+t); if(btn) btn.classList.toggle('active',t===tab);
+    var view=document.getElementById('ldv-'+t); if(view) view.style.display=t===tab?'':'none';
+  });
+  _lRenderTab(tab);
+};
+function _lRenderTab(tab){
+  if(tab==='clasificacion') _lRenderClas();
+  if(tab==='calendario')    _lRenderCal();
+  if(tab==='combates')      _lRenderCombates();
+  if(tab==='finalisima')    _lRenderFin();
+}
+
+/* ── Clasificación ── */
+function _lRenderClas(){
+  var clas=_lClas(); var lig=_lig(); if(!lig) return;
+  var tc=document.getElementById('liga-tabla-clas'); if(tc) tc.innerHTML=_lTabla(clas);
+  var tp=_lTotal(); var pct=tp.t?Math.round(tp.c/tp.t*100):0;
+  var fic=document.getElementById('liga-fichas'); if(!fic) return;
+  fic.innerHTML=clas.map(function(j,i){
+    var enf=[];
+    lig.jornadas.forEach(function(jn){ jn.partidos.forEach(function(p){
+      if(p.j1!==j.nombre&&p.j2!==j.nombre) return;
+      var rival=p.j1===j.nombre?p.j2:p.j1,res='\u23f3 Pendiente',clr='color:var(--txt-muted)';
+      if(p.ganador===j.nombre){res='Victoria +'+_LPV;clr='color:#059669;font-weight:700';}
+      else if(p.ganador){res='Derrota +'+_LPD;}
+      enf.push({rival:rival,res:res,clr:clr,jn:jn.num});
+    });});
+    return '<div style="background:var(--bg-overlay);border:1px solid var(--borde);border-radius:var(--r-md);padding:12px;margin-bottom:8px">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
+      +'<div class="liga-avatar" style="width:30px;height:30px;font-size:12px;background:'+j.color+'18;color:'+j.color+';border:1px solid '+j.color+'33">'+j.nombre.charAt(0).toUpperCase()+'</div>'
+      +'<div><div style="font-family:var(--font-display);font-size:12px;font-weight:800">#'+(i+1)+' '+j.nombre.toUpperCase()+'</div>'
+      +'<div style="font-size:10px;color:var(--txt-muted)">'+j.pj+' partidos \xb7 '+j.v+'V '+j.d+'D \xb7 '+j.pts+' pts</div></div>'
+      +'<span class="liga-pts-pill" style="margin-left:auto">'+j.pts+' pts</span></div>'
+      +'<div>'+enf.map(function(e){
+        return '<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--bg-card);border-radius:var(--r-sm);margin-bottom:3px;font-size:11px">'
+          +'<span style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);min-width:18px">J'+e.jn+'</span>'
+          +'<span style="flex:1;font-family:var(--font-display);font-weight:600">vs '+e.rival.toUpperCase()+'</span>'
+          +'<span style="'+e.clr+';font-family:var(--font-display)">'+e.res+'</span></div>';
+      }).join('')+'</div></div>';
+  }).join('');
+}
+
+function _lTabla(clas,max){
+  var n=max||clas.length;
+  var h='<thead><tr><th>POS</th><th style="text-align:left">JUGADOR</th><th>PJ</th><th>V</th><th>D</th><th>PTS</th></tr></thead><tbody>';
+  clas.slice(0,n).forEach(function(j,i){
+    var pos=i+1,pc=pos<=3?'liga-pos-'+pos:'liga-pos-n',fin=pos<=4;
+    h+='<tr class="'+(fin?'finalista-row':'')+'">'
+      +'<td><span class="liga-pos-badge '+pc+'">'+pos+'</span></td>'
+      +'<td><div class="liga-player-cell">'
+      +'<div class="liga-avatar" style="background:'+j.color+'18;color:'+j.color+';border:1px solid '+j.color+'33">'+j.nombre.charAt(0).toUpperCase()+'</div>'
+      +j.nombre.toUpperCase()+(fin?'<span class="liga-fin-tag">F</span>':'')+'</div></td>'
+      +'<td>'+j.pj+'</td><td style="color:#059669;font-weight:700">'+j.v+'</td><td style="color:var(--txt-muted)">'+j.d+'</td>'
+      +'<td><span class="liga-pts-pill">'+j.pts+'</span></td></tr>';
+  });
+  return h+'</tbody>';
+}
+
+/* ── Calendario (solo visual) ── */
+function _lRenderCal(){
+  var lig=_lig(); if(!lig) return;
+  var inf=document.getElementById('liga-cal-info');
+  if(inf) inf.textContent=(lig.formato==='doble'?'Doble vuelta':'Vuelta simple')+' \xb7 '+lig.jornadas.length+' jornadas \xb7 '+_lTotal().c+'/'+_lTotal().t+' combates completados';
+  var cont=document.getElementById('liga-cal-cont'); if(!cont) return;
+  cont.innerHTML=lig.jornadas.map(function(j){
+    var comp=j.partidos.filter(function(p){return p.ganador;}).length;
+    var est=comp===j.partidos.length?'completada':lig.gym>=j.gymDesde?'en-curso':'pendiente';
+    var estLbl={pendiente:'Pendiente','en-curso':'En curso',completada:'Completada'}[est];
+    var vl=lig.formato==='doble'?(j.num<=lig.jornadas.length/2?' \xb7 Ida':' \xb7 Vuelta'):'';
+    var oculto=est==='pendiente';
+    return '<div class="liga-jornada-card">'
+      +'<div class="liga-jornada-header" onclick="ligaTogJornada('+j.num+')">'
+      +'<div><div class="liga-jornada-title">\u2694\ufe0f Jornada '+j.num+vl+'</div>'
+      +'<div class="liga-jornada-meta">\ud83d\udccd '+_lGymLabel(j)+' \xb7 '+comp+'/'+j.partidos.length+'</div></div>'
+      +'<div style="display:flex;align-items:center;gap:8px"><span class="liga-estado-pill liga-estado-'+est+'">'+estLbl+'</span>'
+      +'<span id="ljchev-'+j.num+'" style="color:var(--txt-muted);font-size:13px">'+(oculto?'\u25bc':'\u25b2')+'</span></div></div>'
+      +'<div class="liga-jornada-body'+(oculto?' oculto':'')+'" id="ljbody-'+j.num+'">'
+      +j.partidos.map(function(p){
+        var ganTxt=p.ganador?('\ud83c\udfc6 '+p.ganador.toUpperCase()+' vs '+(p.ganador===p.j1?p.j2:p.j1).toUpperCase()):(p.j1.toUpperCase()+' vs '+p.j2.toUpperCase());
+        return '<div class="liga-match-row '+(p.ganador?'completado':'pendiente')+'">'
+          +'<span style="flex:1;font-family:var(--font-display);font-size:12px;font-weight:600">'+ganTxt+'</span>'
+          +(p.ganador?'<span class="liga-match-vs">+'+_LPV+'</span><span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">&nbsp;vs&nbsp;+'+_LPD+'</span>':'<span style="font-size:10px;color:var(--txt-muted);font-family:var(--font-display)">Pendiente</span>')
+          +'</div>';
+      }).join('')
+      +'</div></div>';
+  }).join('');
+}
+window.ligaTogJornada=function(num){
+  var b=document.getElementById('ljbody-'+num),c=document.getElementById('ljchev-'+num);
+  if(b){b.classList.toggle('oculto');if(c)c.textContent=b.classList.contains('oculto')?'\u25bc':'\u25b2';}
+};
+
+/* ── Combates (todos pueden registrar) ── */
+function _lRenderCombates(){
+  var lig=_lig(); if(!lig) return;
+  var cont=document.getElementById('liga-combates-cont'); if(!cont) return;
+  cont.innerHTML=lig.jornadas.map(function(j){
+    var comp=j.partidos.filter(function(p){return p.ganador;}).length;
+    var est=comp===j.partidos.length?'completada':lig.gym>=j.gymDesde?'en-curso':'pendiente';
+    var estLbl={pendiente:'Pendiente','en-curso':'En curso',completada:'Completada'}[est];
+    var vl=lig.formato==='doble'?(j.num<=lig.jornadas.length/2?' \xb7 Ida':' \xb7 Vuelta'):'';
+    var oculto=est==='pendiente';
+    return '<div class="liga-jornada-card">'
+      +'<div class="liga-jornada-header" onclick="ligaTogCombate('+j.num+')">'
+      +'<div><div class="liga-jornada-title">\u2694\ufe0f Jornada '+j.num+vl+'</div>'
+      +'<div class="liga-jornada-meta">'+comp+'/'+j.partidos.length+' completados \xb7 '+_lGymLabel(j)+'</div></div>'
+      +'<div style="display:flex;align-items:center;gap:8px"><span class="liga-estado-pill liga-estado-'+est+'">'+estLbl+'</span>'
+      +'<span id="lchev-'+j.num+'" style="color:var(--txt-muted);font-size:13px">'+(oculto?'\u25bc':'\u25b2')+'</span></div></div>'
+      +'<div class="liga-jornada-body'+(oculto?' oculto':'')+'" id="lcbody-'+j.num+'">'
+      +j.partidos.map(function(p){
+        if(p.ganador){
+          var per=p.ganador===p.j1?p.j2:p.j1;
+          return '<div class="liga-match-row completado">'
+            +'<span class="liga-match-player ganador">\ud83c\udfc6 '+p.ganador.toUpperCase()+'</span>'
+            +'<span class="liga-match-vs">+'+_LPV+'</span><span class="liga-match-vs">VS</span>'
+            +'<span class="liga-match-player perdedor">'+per.toUpperCase()+'</span>'
+            +'<span class="liga-match-vs">+'+_LPD+'</span>'
+            +'<button class="liga-match-btn anular" onclick="lAnular(\''+p.j1+'\',\''+p.j2+'\','+j.num+')">\u2715</button>'
+            +'</div>';
+        }
+        return '<div class="liga-match-row pendiente">'
+          +'<span class="liga-match-player">'+p.j1.toUpperCase()+'</span>'
+          +'<span class="liga-match-vs">VS</span>'
+          +'<span class="liga-match-player">'+p.j2.toUpperCase()+'</span>'
+          +'<div style="flex:1"></div>'
+          +'<button class="liga-match-btn" onclick="lAbrirModal(\''+p.j1+'\',\''+p.j2+'\','+j.num+')">Registrar</button>'
+          +'</div>';
+      }).join('')
+      +'</div></div>';
+  }).join('');
+}
+window.ligaTogCombate=function(num){
+  var b=document.getElementById('lcbody-'+num),c=document.getElementById('lchev-'+num);
+  if(b){b.classList.toggle('oculto');if(c)c.textContent=b.classList.contains('oculto')?'\u25bc':'\u25b2';}
+};
+
+/* ── Modal resultado ── */
+var _lMD=null,_lMG=null;
+window.lAbrirModal=function(j1,j2,jn){
+  _lMD={j1:j1,j2:j2,jn:jn};_lMG=null;
+  var mi=document.getElementById('liga-modal-info');if(mi)mi.textContent='Jornada '+jn+' \xb7 '+j1.toUpperCase()+' vs '+j2.toUpperCase();
+  var p1=document.getElementById('liga-modal-p1');if(p1){p1.textContent=j1.toUpperCase();p1.className='liga-modal-player-btn';}
+  var p2=document.getElementById('liga-modal-p2');if(p2){p2.textContent=j2.toUpperCase();p2.className='liga-modal-player-btn';}
+  var pv=document.getElementById('liga-modal-preview');if(pv)pv.textContent='';
+  var mc=document.getElementById('liga-modal-confirmar');if(mc)mc.disabled=true;
+  var mo=document.getElementById('liga-modal-resultado');if(mo)mo.classList.add('abierto');
+};
+window.ligaSelGanador=function(idx){
+  _lMG=idx;
+  var gan=idx===0?_lMD.j1:_lMD.j2,per=idx===0?_lMD.j2:_lMD.j1;
+  var p1=document.getElementById('liga-modal-p1');if(p1)p1.className='liga-modal-player-btn'+(idx===0?' sel-win':' sel-lose');
+  var p2=document.getElementById('liga-modal-p2');if(p2)p2.className='liga-modal-player-btn'+(idx===1?' sel-win':' sel-lose');
+  var pv=document.getElementById('liga-modal-preview');if(pv)pv.innerHTML='<strong style="color:#059669">'+gan.toUpperCase()+' +'+_LPV+' pts</strong> \xb7 <span style="color:var(--txt-muted)">'+per.toUpperCase()+' +'+_LPD+' pt</span>';
+  var mc=document.getElementById('liga-modal-confirmar');if(mc)mc.disabled=false;
+};
+window.ligaConfirmarResultado=function(){
+  if(_lMG===null||!_lMD)return;
+  var lig=_lig();if(!lig)return;
+  var gan=_lMG===0?_lMD.j1:_lMD.j2;
+  for(var i=0;i<lig.jornadas.length;i++){
+    if(lig.jornadas[i].num!==_lMD.jn)continue;
+    for(var k=0;k<lig.jornadas[i].partidos.length;k++){
+      var p=lig.jornadas[i].partidos[k];
+      if((p.j1===_lMD.j1&&p.j2===_lMD.j2)||(p.j1===_lMD.j2&&p.j2===_lMD.j1)){p.ganador=gan;break;}
+    }
+    break;
+  }
+  logAdmin('\u2694\ufe0f Liga','J'+_lMD.jn+': '+gan+' venci\xf3 a '+(gan===_lMD.j1?_lMD.j2:_lMD.j1));
+  _lSave();window.ligaCerrarModal();window.renderizarLiga();
+  mostrarNotificacion('Resultado registrado.','exito','\u2694\ufe0f');
+};
+window.ligaCerrarModal=function(){
+  var mo=document.getElementById('liga-modal-resultado');if(mo)mo.classList.remove('abierto');
+  _lMD=null;_lMG=null;
+};
+var _lAD=null;
+window.lAnular=function(j1,j2,jn){
+  _lAD={j1:j1,j2:j2,jn:jn};
+  var lig=_lig();if(!lig)return;
+  var info='';
+  for(var i=0;i<lig.jornadas.length;i++){if(lig.jornadas[i].num!==jn)continue;
+    for(var k=0;k<lig.jornadas[i].partidos.length;k++){var p=lig.jornadas[i].partidos[k];
+      if((p.j1===j1&&p.j2===j2)||(p.j1===j2&&p.j2===j1)){info='J'+jn+' \xb7 '+(p.ganador||'?').toUpperCase()+' vs '+(p.ganador===j1?j2:j1).toUpperCase();break;}
+    }break;
+  }
+  var mai=document.getElementById('liga-modal-anular-info');if(mai)mai.textContent=info;
+  var ma=document.getElementById('liga-modal-anular');if(ma)ma.classList.add('abierto');
+};
+window.ligaConfirmarAnular=function(){
+  if(!_lAD)return;
+  var lig=_lig();if(!lig)return;
+  for(var i=0;i<lig.jornadas.length;i++){if(lig.jornadas[i].num!==_lAD.jn)continue;
+    for(var k=0;k<lig.jornadas[i].partidos.length;k++){var p=lig.jornadas[i].partidos[k];
+      if((p.j1===_lAD.j1&&p.j2===_lAD.j2)||(p.j1===_lAD.j2&&p.j2===_lAD.j1)){p.ganador=null;break;}
+    }break;
+  }
+  _lSave();
+  var ma=document.getElementById('liga-modal-anular');if(ma)ma.classList.remove('abierto');
+  _lAD=null;window.renderizarLiga();
+};
+
+/* ── Finalísima ── */
+function _lRenderFin(){
+  var lig=_lig();if(!lig)return;
+  var cont=document.getElementById('liga-fin-cont');if(!cont)return;
+  var fin=lig.finalisima,clas=_lClas();
+  if(!fin||!fin.abierta){
+    var tp=_lTotal();
+    var ok=tp.c===tp.t;
+    cont.innerHTML='<div class="card" style="text-align:center;padding:28px 16px">'
+      +'<div style="font-size:40px;margin-bottom:8px">'+(ok?'\ud83c\udf96\ufe0f':'\ud83d\udd12')+'</div>'
+      +'<div style="font-family:var(--font-display);font-size:14px;font-weight:700;margin-bottom:6px">Final\xedsima</div>'
+      +'<div style="font-size:12px;color:var(--txt-muted)">'+(ok?'La Liga ha terminado. El Mercader puede abrir la Final\xedsima desde Modo Dios.':'Faltan '+( tp.t-tp.c)+' combates por jugar.')+'</div>'
+      +(ok?'':'<div style="margin-top:10px"><div style="font-size:11px;color:var(--txt-muted)">Clasificaci\xf3n actual:</div></div>')
+      +'</div>'
+      +(ok?'<div class="card" style="margin-top:12px"><div class="card-title">Clasificaci\xf3n final</div><table class="liga-tabla">'+_lTabla(clas)+'</table></div>':'');
+    return;
+  }
+  if(clas.length<4){cont.innerHTML='<div class="card"><p>Se necesitan al menos 4 jugadores.</p></div>';return;}
+  var s1p1=clas[0].nombre,s1p2=clas[3].nombre,s2p1=clas[1].nombre,s2p2=clas[2].nombre;
+  var s1=fin.semi1,s2=fin.semi2,f=fin.final;
+  var ea=_lAdmin();
+  function bp(nombre,gan){
+    var cls=gan===nombre?' winner':(gan&&gan!==nombre?' loser':'');
+    return '<div class="liga-bracket-player'+cls+'">'+nombre.toUpperCase()+(gan===nombre?' \ud83c\udfc6':'')+'</div>';
+  }
+  cont.innerHTML='<div class="card" style="margin-bottom:12px;text-align:center;background:linear-gradient(135deg,rgba(217,164,4,.06),rgba(74,66,176,.04));border-color:rgba(217,164,4,.2)">'
+    +'<div style="font-size:34px;margin-bottom:4px">\ud83c\udf96\ufe0f</div>'
+    +'<div style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--amarillo)">FINAL\xcdSIMA</div></div>'
+    +'<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">'
+    +'<div><div class="liga-bracket-match"><div class="liga-bracket-title">\ud83d\udd25 Semifinal 1 (1\xba vs 4\xba)</div>'+bp(s1p1,s1)+bp(s1p2,s1)+'</div>'
+    +(ea&&!s1?'<div style="display:flex;gap:6px;margin-top:8px;justify-content:center">'
+      +'<button class="btn-admin arena" onclick="lSemi(1,\''+s1p1+'\')">'+s1p1.toUpperCase()+'</button>'
+      +'<button class="btn-admin arena" onclick="lSemi(1,\''+s1p2+'\')">'+s1p2.toUpperCase()+'</button></div>':'')
+    +'</div>'
+    +'<div><div class="liga-bracket-match"><div class="liga-bracket-title">\ud83d\udd25 Semifinal 2 (2\xba vs 3\xba)</div>'+bp(s2p1,s2)+bp(s2p2,s2)+'</div>'
+    +(ea&&!s2?'<div style="display:flex;gap:6px;margin-top:8px;justify-content:center">'
+      +'<button class="btn-admin arena" onclick="lSemi(2,\''+s2p1+'\')">'+s2p1.toUpperCase()+'</button>'
+      +'<button class="btn-admin arena" onclick="lSemi(2,\''+s2p2+'\')">'+s2p2.toUpperCase()+'</button></div>':'')
+    +'</div></div>'
+    +'<div style="text-align:center;color:var(--txt-muted);font-size:18px;margin:4px 0">\u2193</div>'
+    +'<div style="max-width:260px;margin:0 auto 12px">'
+    +(s1&&s2?'<div class="liga-bracket-match"><div class="liga-bracket-title">\ud83c\udfc6 GRAN FINAL</div>'+bp(s1,f)+bp(s2,f)+'</div>'
+      +(ea&&!f?'<div style="display:flex;gap:6px;margin-top:8px;justify-content:center">'
+        +'<button class="btn-admin packs" onclick="lFinal(\''+s1+'\')">'+s1.toUpperCase()+'</button>'
+        +'<button class="btn-admin packs" onclick="lFinal(\''+s2+'\')">'+s2.toUpperCase()+'</button></div>':'')
+    :'<div class="liga-bracket-match" style="opacity:.35"><div class="liga-bracket-title">\ud83c\udfc6 GRAN FINAL</div>'
+      +'<div class="liga-bracket-player">Por determinar</div><div class="liga-bracket-player">Por determinar</div></div>')
+    +'</div><div style="text-align:center;color:var(--txt-muted);font-size:18px;margin:4px 0">\u2193</div>'
+    +(f?'<div class="liga-champion-card"><div style="font-size:44px;margin-bottom:6px">\ud83c\udfc6</div>'
+      +'<div style="font-size:11px;color:var(--txt-muted);font-family:var(--font-display);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Campe\xf3n del Locke</div>'
+      +'<div class="liga-champion-name">'+f.toUpperCase()+'</div></div>'
+    :'<div class="liga-champion-card" style="opacity:.3"><div style="font-size:44px;margin-bottom:6px">\ud83c\udfc6</div><div class="liga-champion-name">???</div></div>');
+}
+
+window.lSemi=function(num,gan){
+  if(!_lAdmin()){mostrarNotificacion('Solo el Mercader.','error','\ud83d\udd12');return;}
+  var lig=_lig();if(!lig)return;
+  if(num===1)lig.finalisima.semi1=gan;else lig.finalisima.semi2=gan;
+  _lSave();_lRenderFin();
+};
+window.lFinal=function(gan){
+  if(!_lAdmin()){mostrarNotificacion('Solo el Mercader.','error','\ud83d\udd12');return;}
+  var lig=_lig();if(!lig)return;
+  lig.finalisima.final=gan;
+  logAdmin('\ud83c\udfc6 Liga \u2014 Campe\xf3n',gan.toUpperCase());
+  registrarActividadGlobal('Sistema','\ud83c\udfc6 \xa1'+gan.toUpperCase()+' es el Campe\xf3n del Locke!',new Date().toLocaleString('es-ES'));
+  _lSave();_lRenderFin();
+};
+
+/* ── Admin: crear / finalizar / eliminar ── */
+var _lFmt='simple', _lSel={};
+window.ligaAdminRender=function(){
+  var lig=_lig();
+  var crear=document.getElementById('dv-liga-crear');
+  var act=document.getElementById('dv-liga-activa');
+  if(!crear||!act)return;
+  if(lig){
+    crear.style.display='none';act.style.display='';
+    var inf=document.getElementById('dv-liga-info');
+    if(inf){var tp=_lTotal();inf.textContent=lig.nombre+' \xb7 '+lig.jugadores.length+' participantes \xb7 '+tp.c+'/'+tp.t+' combates';}
+  } else {
+    crear.style.display='';act.style.display='none';
+    var chips=document.getElementById('liga-crear-chips');
+    if(chips){
+      var jugs=Object.keys(baseDatos.jugadores||{});
+      if(!Object.keys(_lSel).length) jugs.forEach(function(id){_lSel[id]=true;});
+      chips.innerHTML=jugs.map(function(id){
+        var sel=!!_lSel[id];
+        return '<button onclick="lChip(\''+id+'\')" id="lchip-'+id+'" style="padding:5px 12px;border-radius:99px;font-family:var(--font-display);font-size:11px;font-weight:700;cursor:pointer;border:1px solid '+(sel?'var(--neon-arena)':'var(--borde)')+';background:'+(sel?'rgba(74,66,176,.12)':'var(--bg-overlay)')+';color:'+(sel?'var(--neon-arena)':'var(--txt-muted)')+'">'+id.toUpperCase()+'</button>';
+      }).join('');
+      _lPreview();
+    }
+  }
+};
+window.lChip=function(id){
+  _lSel[id]=!_lSel[id];
+  var c=document.getElementById('lchip-'+id);
+  if(c){var s=!!_lSel[id];c.style.borderColor=s?'var(--neon-arena)':'var(--borde)';c.style.background=s?'rgba(74,66,176,.12)':'var(--bg-overlay)';c.style.color=s?'var(--neon-arena)':'var(--txt-muted)';}
+  _lPreview();
+};
+window.ligaFmt=function(fmt){
+  _lFmt=fmt;
+  var btnS=document.getElementById('liga-fmt-simple'),btnD=document.getElementById('liga-fmt-doble');
+  if(btnS){btnS.classList.toggle('active',fmt==='simple');btnS.style.borderColor=fmt==='simple'?'':'var(--borde)';btnS.style.color=fmt==='simple'?'':'var(--txt-muted)';}
+  if(btnD){btnD.classList.toggle('active',fmt==='doble');btnD.style.borderColor=fmt==='doble'?'':'var(--borde)';btnD.style.color=fmt==='doble'?'':'var(--txt-muted)';}
+  _lPreview();
+};
+function _lPreview(){
+  var prev=document.getElementById('liga-crear-preview');if(!prev)return;
+  var n=Object.values(_lSel).filter(Boolean).length;
+  if(n<3){prev.textContent='Selecciona al menos 3 jugadores.';return;}
+  var porsimple=n*(n-1)/2,numRondas=n%2===0?n-1:n;
+  var rondas=_lFmt==='doble'?numRondas*2:numRondas,combates=_lFmt==='doble'?porsimple*2:porsimple;
+  prev.textContent=n+' jugadores \xb7 '+combates+' combates \xb7 '+rondas+' jornadas en 8 gimnasios';
+}
+window.ligaCrear=function(){
+  if(!_lAdmin()){mostrarNotificacion('Solo el Mercader.','error','\ud83d\udd12');return;}
+  var jugs=Object.keys(_lSel).filter(function(id){return _lSel[id];});
+  if(jugs.length<3){mostrarNotificacion('M\xednimo 3 jugadores.','error','\u26a0\ufe0f');return;}
+  var ninp=document.getElementById('liga-crear-nombre');
+  var nombre=(ninp?ninp.value:'').trim()||'Liga Pok\xe9inomana';
+  baseDatos.liga={nombre:nombre,jugadores:jugs,formato:_lFmt,gym:0,jornadas:_lGenerarJornadas(jugs,_lFmt),finalisima:{abierta:false,semi1:null,semi2:null,final:null}};
+  _lSel={};_lSave();
+  logAdmin('\u2694\ufe0f Liga creada',nombre+' \xb7 '+jugs.length+' jugadores');
+  mostrarNotificacion('\xa1Liga creada!','exito','\u2694\ufe0f');
+  window.renderizarLiga();ligaAdminRender();
+};
+window.ligaFinalizar=async function(){
+  if(!_lAdmin()){mostrarNotificacion('Solo el Mercader.','error','\ud83d\udd12');return;}
+  var lig=_lig();if(!lig)return;
+  var cf=await mostrarConfirmacion({icono:'\ud83c\udf96\ufe0f',titulo:'Finalizar Liga',descripcion:'\xbfFinalizar la Liga y abrir la Final\xedsima? Se registrar\xe1 como terminada.',textoConfirmar:'Finalizar',tipo:'exito'});
+  if(!cf)return;
+  lig.finalisima={abierta:true,semi1:null,semi2:null,final:null};
+  logAdmin('\u2694\ufe0f Liga finalizada',lig.nombre);
+  _lSave();window.renderizarLiga();ligaAdminRender();
+  mostrarNotificacion('Liga finalizada. La Final\xedsima est\xe1 abierta.','exito','\ud83c\udf96\ufe0f');
+};
+window.ligaEliminar=async function(){
+  if(!_lAdmin()){mostrarNotificacion('Solo el Mercader.','error','\ud83d\udd12');return;}
+  var cf=await mostrarConfirmacion({icono:'\ud83d\uddd1\ufe0f',titulo:'Eliminar Liga',descripcion:'\xbfEliminar la Liga y todos sus datos? Esta acci\xf3n no se puede deshacer.',textoConfirmar:'Eliminar',tipo:'sacrificio'});
+  if(!cf)return;
+  baseDatos.liga=null;_lSave();
+  mostrarNotificacion('Liga eliminada.','exito','\u2694\ufe0f');
+  window.renderizarLiga();ligaAdminRender();
+};
+window.ligaLimpiarFormato=async function(){
+  if(!_lAdmin())return;
+  var cf=await mostrarConfirmacion({icono:'\ud83d\uddd1\ufe0f',titulo:'Eliminar Liga antigua',descripcion:'\xbfEliminar los datos incompatibles?',textoConfirmar:'Eliminar',tipo:'sacrificio'});
+  if(!cf)return;
+  baseDatos.liga=null;_lSave();window.renderizarLiga();ligaAdminRender();
+  mostrarNotificacion('Eliminado. Puedes crear una nueva Liga.','exito','\u2694\ufe0f');
+};
+
 async function renderizarBackupsAdmin(){
   const cont = document.getElementById('backup-lista');
   if(!cont) return;
@@ -7735,8 +8410,8 @@ window.navegarA=function(s){
   /* IMPORTANTE: _aplicarTemaSidebarNav DEBE llamarse DESPUÉS de añadir
      .active al nav-item, porque lee classList.contains('active') para saber
      qué item pintar. Si se llama antes, pinta el item anterior. */
-  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();_asisSetSeccion(s);if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
-window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }if(tab==='backup'){ renderizarBackupsAdmin(); }if(tab==='subasta'){ subastaActualizarAdminPanel(); }if(tab==='almacen'){ window.almacenInicializar(); }};
+  reproducirSonido('tab');document.querySelectorAll('.page-section').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>{n.classList.remove('active');n.classList.remove('nav-item-flash');});document.querySelectorAll('.bn-item').forEach(n=>{n.classList.remove('active');n.style.color='';});const sec=document.getElementById(`section-${s}`),nav=document.getElementById(`nav-${s}`),bn=document.getElementById(`bn-${s}`);if(sec){sec.classList.add('active');reanimarElemento(sec);}if(nav){nav.classList.add('active');nav.classList.add('nav-item-flash');setTimeout(()=>nav.classList.remove('nav-item-flash'),350);}if(bn)bn.classList.add('active');const _bnMasSecs=['liga','torneos','duelos','red-entrenadores','vidas-sacrificios','medallas-torneos','hall-of-fame','museo','ruletas','asistente','tracker','admin'];if(_bnMasSecs.indexOf(s)!==-1){var bnMas=document.getElementById('bn-mas');if(bnMas)bnMas.classList.add('active');};_aplicarTemaSidebarNav(s);if(s==='red-entrenadores')renderizarVisorRivalPublico();if(s==='eventos'){renderizarArenaPublica();renderizarCamaraPublica();}if(s==='vidas-sacrificios'){actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();}if(s==='medallas-torneos'){cargarDatosPerfilEnDOM();renderizarInsigniasPerfil();}if(s==='perfil'){cargarDatosPerfilEnDOM();}if(s==='admin'&&userSesion&&userSesion.toLowerCase()==='srwiwa')redibujarConsolaAdminMaster();if(s==='hall-of-fame'){renderizarHallOfFame();renderizarBannerLocke();}if(s==='museo'){renderizarHistorialLockes();}if(s==='perfil'){cargarMejorPokemonEnPerfil();renderizarTitulosYTemas();}if(s==='tiendas'){actualizarBadgeGimnasio();}if(s==='duelos')renderizarDuelosPvP();if(s==='torneos')renderizarTorneos();if(s==='asistente')renderizarAsistente();_asisSetSeccion(s);if(s==='tracker')renderizarTracker();if(s==='ruletas')renderizarRuletas();if(s==='liga')window.renderizarLiga();if(s==='misiones'){renderizarMisiones();actualizarCountdownMisiones();}if(s==='inicio'){renderizarMapaInicio();renderizarDuelosPvP();actualizarWidgetMisionesInicio();}var sb=document.getElementById('sidebar');var bd=document.getElementById('drawer-backdrop');if(sb){sb.classList.remove('open');}if(bd){bd.classList.remove('active');}var ms=document.getElementById('more-sheet');if(ms&&ms.classList.contains('open')){cerrarMasSheet();}document.body.style.overflow='';};
+window.cambiarAdminTab=function(tab){reproducirSonido('tab');document.querySelectorAll('.dios-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.dios-view').forEach(v=>v.classList.remove('active'));const te=document.getElementById(`dtab-${tab}`),ve=document.getElementById(`dv-${tab}`);if(te){te.classList.add('active');te.classList.add('tab-pop');setTimeout(()=>te.classList.remove('tab-pop'),300);}if(ve){ve.classList.add('active');reanimarElemento(ve);}if(tab==='radio')renderizarListaRadioAdmin();if(tab==='nuevolocke'&&window.nlPaso)nlPaso(1);if(tab==='tienda'){var ga=baseDatos&&baseDatos.gimnasioActivo;var gs=document.getElementById('gen-gimnasio');if(ga&&gs)gs.value=ga.tier||0;var gg=document.getElementById('gen-generacion');if(ga&&gg)gg.value=ga.gen||3;}if(tab==='pvp')pvpActualizarAdminPanel();if(tab==='log')renderizarLogAdmin(1);if(tab==='museo'){ if(window.museoIniciarPanel) museoIniciarPanel(); else museoRenderAdmin(); }if(tab==='rutas'){ erCargar(); }if(tab==='backup'){ renderizarBackupsAdmin(); }if(tab==='subasta'){ subastaActualizarAdminPanel(); }if(tab==='almacen'){ window.almacenInicializar(); }if(tab==='liga'){ ligaAdminRender(); }};
 
 
 /* ═══ MUSEO ADMIN — estado local ═══ */
@@ -12112,8 +12787,48 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 79;
+const APP_VERSION = 81;
 const VERSIONES = [
+  {
+    version: 81,
+    fecha: '2026-09-17',
+    titulo: 'Liga Pokéinomana v2 — Creación libre',
+    resumen: 'El admin crea la Liga eligiendo qué jugadores participan y el formato (vuelta simple o doble como en fútbol). El calendario Round Robin se genera automáticamente y las jornadas se distribuyen de forma proporcional entre los 8 gimnasios según el número de rondas resultante.',
+    nuevas: [
+      'Pantalla de creación de Liga: selección de participantes + formato (simple/doble)',
+      'Vista previa en tiempo real: número de combates y jornadas antes de crear',
+      'Doble vuelta: mismo calendario pero con locales invertidos en la segunda vuelta',
+      'Distribución dinámica de jornadas: se reparten proporcionalmente entre los 8 gimnasios independientemente del número de rondas',
+      'Etiqueta Ida/Vuelta en jornadas cuando el formato es de doble vuelta',
+      'Botón "Eliminar Liga" en ajustes para poder crear una nueva desde cero',
+    ],
+    mejoras: [
+      'Clasificación y fichas individuales usan nombres en mayúsculas para consistencia visual',
+    ],
+    rendimiento: [],
+    fixes: [],
+  },
+  {
+    version: 80,
+    fecha: '2026-09-15',
+    titulo: 'Liga Pokéinomana',
+    resumen: 'Nueva sección "⚔️ Liga" en el nav. Sistema de competición Round Robin: todos contra todos, 5 jornadas distribuidas entre los 8 gimnasios, clasificación automática, top 4 a la Finalísima. Hasta ser activada para todos, solo visible y usable por el admin (srwiwa); el resto ve pantalla "Pendiente de votación".',
+    nuevas: [
+      'Sección Liga con sub-navegación: Inicio, Calendario, Clasificación, Finalísima, Config Demo',
+      'Round Robin automático: 15 enfrentamientos sin duplicados, 5 jornadas',
+      'Victoria +3 pts, Derrota +1 pt, nadie queda a 0',
+      'Calendario con estado por jornada (Pendiente/En curso/Completada) según gimnasio actual',
+      'Clasificación ordenada con desempate por enfrentamiento directo, top 4 marcados',
+      'Fichas individuales con el progreso de cada jugador',
+      'Finalísima: cuadro de semifinales y final simulable, campeón del Locke',
+      'Panel Demo: cambiar gimnasio, completar jornada/liga, simular, reiniciar, editar jugadores',
+      'Estado persistido en Firebase (baseDatos.liga) y sincronizado en tiempo real',
+      'No-admin ve pantalla "Pendiente de votación" — se activa para todos cuando se decida',
+    ],
+    mejoras: [],
+    rendimiento: [],
+    fixes: [],
+  },
   {
     version: 79,
     fecha: '2026-09-12',
