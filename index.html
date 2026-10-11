@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v81 | Build: 2026-09-17 -->
+<!-- Silph Co v81.2 | Build: 2026-10-11 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -5838,7 +5838,7 @@ function reanimarElemento(el){transicionarVista(el);}
 
 /* ═══ FIREBASE ═══ */
 let _bdCargadaAlgunaVez=false;
-onValue(ref(db,'silph_co_market'),snapshot=>{
+function _alRecibirSnapshotMercado(snapshot){
     const data=snapshot.val();
     if(data){baseDatos=data;_bdCargadaAlgunaVez=true;if(!baseDatos.productos)baseDatos.productos=[];if(!baseDatos.jugadores)baseDatos.jugadores={};if(!baseDatos.intercambios)baseDatos.intercambios={};if(!baseDatos.arena)baseDatos.arena={};if(!baseDatos.camara)baseDatos.camara={};if(!baseDatos.eventoSistema)baseDatos.eventoSistema="normal";if(!baseDatos.radio)baseDatos.radio={canciones:{},semillaOrden:0,inicioEpoch:0,activada:false};if(!baseDatos.radio.canciones)baseDatos.radio.canciones={};if(baseDatos.radio.activada===undefined)baseDatos.radio.activada=false;if(!baseDatos.actividadGlobal)baseDatos.actividadGlobal=[];if(!baseDatos.adminLog)baseDatos.adminLog=[];if(!baseDatos.ruletas)baseDatos.ruletas={};if(!baseDatos.torneos)baseDatos.torneos={};if(!baseDatos.subasta)baseDatos.subasta={estado:'sin-activa'};if(!baseDatos.mercado)baseDatos.mercado={};if(!baseDatos.liga)baseDatos.liga=null;window._ultimaBDConocida=JSON.parse(JSON.stringify(baseDatos));setTimeout(_aplicarEventoAutomatico,0);}
     else if(_bdCargadaAlgunaVez){
@@ -5867,61 +5867,104 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
     sincronizarRadio();
     if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(window.renderizarSubasta&&document.getElementById('tv-subasta')&&document.getElementById('tv-subasta').classList.contains('active'))window.renderizarSubasta();if(window.subastaActualizarAdminPanel&&document.getElementById('dv-subasta')&&document.getElementById('dv-subasta').classList.contains('active'))window.subastaActualizarAdminPanel();if(window.mjRenderizarTodo&&document.getElementById('tv-mercado')&&document.getElementById('tv-mercado').classList.contains('active'))window.mjRenderizarTodo();if(window.renderizarLiga&&document.getElementById('section-liga')&&document.getElementById('section-liga').classList.contains('active'))window.renderizarLiga();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
-}, error => { console.error('[Firebase] Error en el listener de silph_co_market:', error); });
-/* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
-   vuelve a leer lo último del servidor justo antes de guardar, y solo aplica encima los trozos
-   (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
-   sincronización, dejando intacto todo lo demás. Esto evita que la acción de un jugador borre por
-   accidente cambios recientes de otro (compras, PF, tracker, etc.) cuando dos guardados casi coinciden. */
-const _CAMPOS_GLOBALES_BD = ['productos','arena','camara','eventoSistema','radio','ruletas','lockeActivo','campeones','legalOpen','packOpen','illegalOpen','intercambios','actividadGlobal','adminLog','torneos','historialLockes','pvp','_eventoManualFijado','subasta','mercado','almacenHistorial','liga'];
-async function guardarBD(){
-  const local = baseDatos;
-  try{
-    const snap = await get(ref(db,'silph_co_market'));
-    const fresco = snap.val();
-    if(fresco){
-      const anterior = window._ultimaBDConocida || {};
-      const jugAnterior = anterior.jugadores || {};
-      const jugLocal = local.jugadores || {};
-      const jugFresco = Object.assign({}, fresco.jugadores || {});
-      Object.keys(jugLocal).forEach(function(id){
-        if(JSON.stringify(jugAnterior[id]||null) !== JSON.stringify(jugLocal[id]||null)){
-          jugFresco[id] = jugLocal[id];
-        }
-      });
-      fresco.jugadores = jugFresco;
-      _CAMPOS_GLOBALES_BD.forEach(function(campo){
-        const antesStr = JSON.stringify(anterior[campo]!==undefined?anterior[campo]:null);
-        const localStr = JSON.stringify(local[campo]!==undefined?local[campo]:null);
-        if(antesStr !== localStr){
-          fresco[campo] = local[campo];
-        }
-      });
-      /* await set() para que Firebase confirme ANTES de que onValue se dispare.
-         Sin este await, onValue puede llegar con el snapshot pre-guardado y
-         machacar baseDatos (incluido lockeActivo.rutasDefinidas) con datos viejos. */
-      await set(ref(db,'silph_co_market'), fresco);
-      baseDatos = fresco;
-      window._ultimaBDConocida = JSON.parse(JSON.stringify(fresco));
-      _autoBackupLocal(fresco); // ← backup en localStorage tras cada guardado exitoso
-      return;
-    }
-  }catch(err){ console.error('[guardarBD] Falló la lectura previa de Firebase; se intentará el plan B:', err); }
-  /* PLAN B — solo ejecutar si la BD ya se cargó alguna vez desde Firebase.
-     Si _bdCargadaAlgunaVez es false, la BD local puede estar vacía/incompleta
-     y hacer set() aquí borraría los datos del servidor. */
-  if(!_bdCargadaAlgunaVez){
-    console.warn('[guardarBD] Plan B abortado: BD local no inicializada todavía.');
-    return;
-  }
-  try{
-    await set(ref(db,'silph_co_market'), local);
-    _autoBackupLocal(local);
-  }catch(err){
-    console.error('[guardarBD] ERROR: Firebase rechazó o no pudo completar el guardado en silph_co_market:', err);
-    throw err;
-  }
 }
+/* Mientras hay un guardado en curso NO se aplica el snapshot entrante: sustituiría baseDatos por un objeto nuevo
+   y se perderían los cambios locales aún sin enviar. Se guarda el último snapshot y se aplica al terminar. */
+onValue(ref(db,'silph_co_market'),snapshot=>{
+    if(_guardarPromesa){ _snapshotDiferido=snapshot; return; }
+    _alRecibirSnapshotMercado(snapshot);
+}, error => { console.error('[Firebase] Error en el listener de silph_co_market:', error); _avisarErrorFirebase('recibir datos',error); });
+/* ═══ GUARDADO EN FIREBASE (v81.1) ═══════════════════════════════════════════════════════
+   Problemas que arregla respecto a la versión anterior:
+   · Guardados simultáneos: ahora van en cola (uno a la vez); si llegan varios mientras se guarda, se agrupan en uno.
+   · Carrera con el listener: la foto "anterior" y la foto local se toman ANTES del await, así un snapshot que llegue
+     a mitad de guardado ya no hace que datos viejos pisen los nuevos del servidor.
+   · Plan B peligroso eliminado: si fallaba la lectura previa se hacía set() de TODA la copia local (pisaba lo que
+     habían hecho otros dispositivos). Ahora se reintenta; nunca se sobrescribe a ciegas.
+   · Valores undefined/NaN/Infinity (Firebase rechaza el set entero) se limpian antes de enviar.
+   · El merge ya no usa una lista de campos: cualquier campo global modificado en local se guarda (gimnasioActivo
+     nunca se guardaba por no estar en la lista).
+   · Los errores se muestran en pantalla en vez de perderse en silencio. */
+let _guardarPromesa=null,_guardarPendiente=false,_snapshotDiferido=null,_ultimoAvisoFirebase=0;
+function _esErrorPermisosFirebase(err){const t=((err&&err.code)||'')+' '+((err&&err.message)||'');return /permission[_ -]?denied/i.test(t);}
+function _avisarErrorFirebase(accion,err){
+  console.error('[Firebase] Error al '+accion+':',err);
+  const ahora=Date.now();
+  if(ahora-_ultimoAvisoFirebase<8000)return;
+  _ultimoAvisoFirebase=ahora;
+  let msg;
+  if(_esErrorPermisosFirebase(err))msg='Firebase rechaza el acceso (reglas de la base de datos). Los cambios NO se están guardando.';
+  else if(err&&err.code==='timeout')msg='Firebase no responde. Comprueba tu conexión; no se pudo '+accion+'.';
+  else msg='No se pudo '+accion+': '+((err&&(err.code||err.message))||'error desconocido');
+  try{ if(window.mostrarNotificacion)window.mostrarNotificacion(msg,'error','⚠️','Sincronización',true); }catch(e){}
+}
+function _conTimeout(promesa,ms,etiqueta){
+  return new Promise(function(resolve,reject){
+    const t=setTimeout(function(){const e=new Error('Tiempo de espera agotado ('+etiqueta+')');e.code='timeout';reject(e);},ms);
+    promesa.then(function(v){clearTimeout(t);resolve(v);},function(e){clearTimeout(t);reject(e);});
+  });
+}
+function _limpiarParaFirebase(obj){ return JSON.parse(JSON.stringify(obj)); } // quita undefined y convierte NaN/Infinity en null
+function _fusionarBD(fresco,local,base){
+  const jugBase=base.jugadores||{},jugLocal=local.jugadores||{};
+  const jug=Object.assign({},fresco.jugadores||{});
+  Object.keys(jugLocal).forEach(function(id){
+    if(JSON.stringify(jugBase[id]===undefined?null:jugBase[id])!==JSON.stringify(jugLocal[id]===undefined?null:jugLocal[id]))jug[id]=jugLocal[id];
+  });
+  fresco.jugadores=jug;
+  const claves={};
+  Object.keys(local).forEach(function(k){claves[k]=1;});
+  Object.keys(base).forEach(function(k){claves[k]=1;});
+  Object.keys(claves).forEach(function(k){
+    if(k==='jugadores')return;
+    const antes=JSON.stringify(base[k]===undefined?null:base[k]),ahora=JSON.stringify(local[k]===undefined?null:local[k]);
+    if(antes!==ahora){ if(local[k]===undefined)delete fresco[k]; else fresco[k]=local[k]; }
+  });
+  return fresco;
+}
+async function _guardarBDUnaVez(){
+  if(!_bdCargadaAlgunaVez){ console.warn('[guardarBD] Ignorado: la BD aún no se ha cargado desde Firebase.'); return; }
+  const local=baseDatos,base=window._ultimaBDConocida||{};
+  const localLimpio=_limpiarParaFirebase(local);
+  const snap=await _conTimeout(get(ref(db,'silph_co_market')),15000,'lectura previa');
+  const fresco=snap.val();
+  let aEscribir;
+  if(fresco){ aEscribir=_fusionarBD(fresco,localLimpio,base); }
+  else{ aEscribir=localLimpio; } // el servidor está vacío pero esta sesión tiene la copia completa: se restaura
+  await _conTimeout(set(ref(db,'silph_co_market'),aEscribir),20000,'escritura');
+  window._ultimaBDConocida=localLimpio;
+  _autoBackupLocal(aEscribir);
+}
+function guardarBD(){
+  if(_guardarPromesa){ _guardarPendiente=true; return _guardarPromesa; }
+  _guardarPromesa=(async function(){
+    let errorFinal=null;
+    try{
+      let vueltas=0;
+      do{
+        _guardarPendiente=false;
+        let intento=0;
+        for(;;){
+          try{ await _guardarBDUnaVez(); break; }
+          catch(err){
+            intento++;
+            if(_esErrorPermisosFirebase(err)||intento>=4)throw err;
+            await new Promise(function(r){setTimeout(r,3000*intento);});
+          }
+        }
+        vueltas++;
+      }while(_guardarPendiente&&vueltas<20);
+    }catch(err){ errorFinal=err; _avisarErrorFirebase('guardar los cambios',err); }
+    finally{
+      _guardarPromesa=null;
+      const s=_snapshotDiferido; _snapshotDiferido=null;
+      if(s){ try{ _alRecibirSnapshotMercado(s); }catch(e){ console.error(e); } }
+    }
+    if(errorFinal)throw errorFinal;
+  })();
+  return _guardarPromesa;
+}
+
 
 /* ═══════════════════════════════════════════════════════════════
    SISTEMA DE BACKUP AUTOMÁTICO EN FIREBASE (nodo silph_co_backups)
@@ -12793,8 +12836,76 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 81;
+const APP_VERSION = 81.2;
+
+/* ═══ AUTO-ACTUALIZACIÓN (v81.2) ═══════════════════════════════════════════════════════
+   Cada 2 min (y al volver a la pestaña) se descarga el index.html del servidor sin caché y se compara su
+   APP_VERSION con la que está en ejecución. Si hay una más nueva, se avisa y se recarga con una URL nueva
+   (?v=N) para saltarse la caché del navegador. Espera a que termine cualquier guardado en curso. */
+let _actualizandoWeb=false;
+async function _comprobarNuevaVersionWeb(){
+  if(_actualizandoWeb||location.protocol==='file:')return;
+  try{
+    const base=location.origin+location.pathname;
+    const r=await fetch(base+'?_chk='+Date.now(),{cache:'no-store'});
+    if(!r.ok)return;
+    const m=/const APP_VERSION\s*=\s*([0-9]+(?:\.[0-9]+)?)\s*;/.exec(await r.text());
+    if(!m)return;
+    const nueva=parseFloat(m[1]);
+    if(!(nueva>APP_VERSION))return;
+    try{ if(sessionStorage.getItem('silph_auto_upd')===String(nueva))return; }catch(e){} // anti-bucle
+    _actualizandoWeb=true;
+    try{ if(window.mostrarNotificacion)window.mostrarNotificacion('Hay una versión nueva (v'+nueva+'). La web se recargará en unos segundos.','info','🔄','Actualización',true); }catch(e){}
+    let seg=0;
+    const t=setInterval(function(){
+      seg++;
+      if((seg>=10&&!_guardarPromesa)||seg>=60){
+        clearInterval(t);
+        try{ sessionStorage.setItem('silph_auto_upd',String(nueva)); }catch(e){}
+        location.replace(base+'?v='+nueva);
+      }
+    },1000);
+  }catch(e){}
+}
+setTimeout(_comprobarNuevaVersionWeb,3000);
+setInterval(_comprobarNuevaVersionWeb,2*60*1000);
+document.addEventListener('visibilitychange',function(){ if(!document.hidden)_comprobarNuevaVersionWeb(); });
 const VERSIONES = [
+  {
+    version: 81.2,
+    fecha: '2026-10-11',
+    titulo: 'Auto-actualización de la web',
+    resumen: 'Quien tenga la web abierta cuando se publique una versión nueva la recibe sola: se avisa y se recarga en unos segundos. Así nadie sigue ejecutando código antiguo (que podía pisar datos en Firebase).',
+    nuevas: [
+      'La web comprueba cada 2 minutos (y al volver a la pestaña) si hay una versión nueva publicada y se recarga sola',
+    ],
+    mejoras: [
+      'La recarga espera a que termine cualquier guardado en curso y se salta la caché del navegador',
+    ],
+    rendimiento: [],
+    fixes: [],
+  },
+  {
+    version: 81.1,
+    fecha: '2026-10-11',
+    titulo: 'Reparación de sincronización con Firebase',
+    resumen: 'Se corrige la causa de que los cambios no se sincronizaran entre dispositivos y de que, cada cierto rato, los datos recién guardados desaparecieran o volvieran a un estado antiguo. Además, si Firebase falla, ahora se avisa en pantalla en vez de fallar en silencio.',
+    nuevas: [],
+    mejoras: [
+      'Si Firebase rechaza o no puede completar un guardado, aparece un aviso con el motivo (reglas, conexión...)',
+      'Los guardados fallidos por problemas de red se reintentan solos hasta 4 veces antes de avisar',
+    ],
+    rendimiento: [],
+    fixes: [
+      'guardarBD: los guardados simultáneos ya no se pisan entre sí (ahora van en cola y se agrupan)',
+      'guardarBD: un snapshot de Firebase que llegaba a mitad de un guardado hacía que datos viejos sobrescribieran los nuevos; ahora se aplaza hasta terminar',
+      'guardarBD: eliminado el "Plan B" que, si fallaba la lectura previa, sobrescribía TODA la base de datos con la copia local (borraba lo hecho desde otros dispositivos)',
+      'guardarBD: se limpian valores undefined/NaN/Infinity que hacían que Firebase rechazara el guardado completo sin avisar',
+      'guardarBD: el merge ya no depende de una lista fija de campos; gimnasioActivo no se guardaba nunca por no estar en la lista',
+      'guardarBD: no hace nada si la BD aún no se ha cargado desde Firebase (evita escribir valores vacíos por defecto)',
+      'Novedades: la comprobación de versión usa parseFloat para que las versiones decimales no reabran el popup en cada carga',
+    ],
+  },
   {
     version: 81,
     fecha: '2026-09-17',
@@ -13806,7 +13917,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   /* Auto-mostrar si hay versión nueva */
   try{
-    var vista = parseInt(localStorage.getItem('mercadopoke_ultima_version_vista')||'0', 10);
+    var vista = parseFloat(localStorage.getItem('mercadopoke_ultima_version_vista')||'0');
     if(vista < APP_VERSION){ setTimeout(window.abrirNovedades, 900); }
   }catch(e){}
 });
