@@ -5867,7 +5867,7 @@ onValue(ref(db,'silph_co_market'),snapshot=>{
     sincronizarRadio();
     if(userSesion){document.getElementById('login-screen').style.display='none';document.getElementById('app-shell').style.display='block';actualizarComprasPorTiempo();refrescarPantallaGamer();actualizarBannerAlertasVisuales();renderizarArenaPublica();renderizarCamaraPublica();actualizarBarraVidasDesdeDB();renderizarCementerioDOM();actualizarEstadisticasSacrificioPanel();renderizarActividadGlobalInicio();const bA=document.getElementById('nav-admin');if(bA)bA.style.display=(userSesion.toLowerCase()==="srwiwa")?"flex":"none";if(document.getElementById('section-admin').classList.contains('active'))redibujarConsolaAdminMaster();mejorarTodosLosSelects(document);refrescarSelectsPersonalizados();if(window.refrescarCarnetEntrenador)refrescarCarnetEntrenador();renderizarDuelosPvP();pvpActualizarAdminPanel();if(window.renderizarSubasta&&document.getElementById('tv-subasta')&&document.getElementById('tv-subasta').classList.contains('active'))window.renderizarSubasta();if(window.subastaActualizarAdminPanel&&document.getElementById('dv-subasta')&&document.getElementById('dv-subasta').classList.contains('active'))window.subastaActualizarAdminPanel();if(window.mjRenderizarTodo&&document.getElementById('tv-mercado')&&document.getElementById('tv-mercado').classList.contains('active'))window.mjRenderizarTodo();if(window.renderizarLiga&&document.getElementById('section-liga')&&document.getElementById('section-liga').classList.contains('active'))window.renderizarLiga();if(document.getElementById('section-tracker')&&document.getElementById('section-tracker').classList.contains('active'))renderizarTracker();if(document.getElementById('section-torneos')&&document.getElementById('section-torneos').classList.contains('active'))renderizarTorneos();if(document.getElementById('section-asistente')&&document.getElementById('section-asistente').classList.contains('active'))renderizarAsistente();renderizarMapaInicio();if(document.getElementById('section-misiones')&&document.getElementById('section-misiones').classList.contains('active'))renderizarMisiones();actualizarWidgetMisionesInicio();verificarMisionesCompletadasMision();/* ── Aplicar tema visual de la sección activa al restaurar sesión ── */var _secActiva='inicio';document.querySelectorAll('.page-section.active').forEach(function(el){var id=el.id;if(id&&id.startsWith('section-'))_secActiva=id.replace('section-','');});if(window._aplicarTemaSidebarNav)_aplicarTemaSidebarNav(_secActiva);if(window._actualizarSidebarFooter)_actualizarSidebarFooter();setTimeout(function(){renderizarAsistente();_asisSetSeccion(_secActiva);},400);}
     else{document.getElementById('login-screen').style.display='flex';document.getElementById('app-shell').style.display='none';const bA=document.getElementById('nav-admin');if(bA)bA.style.display="none";}
-});
+}, error => { console.error('[Firebase] Error en el listener de silph_co_market:', error); });
 /* guardarBD ahora hace un "merge" inteligente en vez de sobrescribir toda la base de datos a ciegas:
    vuelve a leer lo último del servidor justo antes de guardar, y solo aplica encima los trozos
    (jugadores concretos, estructuras globales) que realmente hemos cambiado en local desde la última
@@ -5906,7 +5906,7 @@ async function guardarBD(){
       _autoBackupLocal(fresco); // ← backup en localStorage tras cada guardado exitoso
       return;
     }
-  }catch(err){ /* si falla la relectura (sin red, etc.), seguimos con el plan B de abajo */ }
+  }catch(err){ console.error('[guardarBD] Falló la lectura previa de Firebase; se intentará el plan B:', err); }
   /* PLAN B — solo ejecutar si la BD ya se cargó alguna vez desde Firebase.
      Si _bdCargadaAlgunaVez es false, la BD local puede estar vacía/incompleta
      y hacer set() aquí borraría los datos del servidor. */
@@ -5914,8 +5914,13 @@ async function guardarBD(){
     console.warn('[guardarBD] Plan B abortado: BD local no inicializada todavía.');
     return;
   }
-  await set(ref(db,'silph_co_market'), local);
-  _autoBackupLocal(local);
+  try{
+    await set(ref(db,'silph_co_market'), local);
+    _autoBackupLocal(local);
+  }catch(err){
+    console.error('[guardarBD] ERROR: Firebase rechazó o no pudo completar el guardado en silph_co_market:', err);
+    throw err;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -10646,6 +10651,7 @@ window.asisEnviarMensaje = function(){
    Tiene memoria de lo que pasa en el locke y reacciona de verdad. */
 var _asisEstado = 'normal'; // normal | animado | preocupado | afectado | critico | dormido
 var _asisDormidoTimer = null;
+var _asisNubeTimer = null; // Hotfix v81: temporizador de mensajes de la nube del asistente
 
 function _asisCalcularEstado(){
   if(!userSesion||!baseDatos.jugadores[userSesion]) return 'normal';
