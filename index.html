@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Silph Co v81.2 | Build: 2026-10-11 -->
+<!-- Silph Co v81.3 | Build: 2026-10-11 -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1861,6 +1861,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
     <div class="more-sheet-item" onclick="navegarA('museo');cerrarMasSheet()"><span class="ms-icon">🏛️</span> Museo de Lockes</div>
     <div class="more-sheet-item" onclick="navegarA('ruletas');cerrarMasSheet()"><span class="ms-icon">🎡</span> Ruletas</div>
     <div class="more-sheet-item" id="more-sheet-admin" style="display:none" onclick="navegarA('admin');cerrarMasSheet()"><span class="ms-icon">🧿</span> Modo Dios</div>
+    <div class="more-sheet-item" onclick="cerrarMasSheet();guardarBackupManual()"><span class="ms-icon">💾</span> Guardar backup</div>
     <div class="more-sheet-item danger" onclick="cerrarMasSheet();cerrarSesionOperador()"><span class="ms-icon">🔓</span> Cerrar Sesión</div>
   </div>
 </div>
@@ -1933,6 +1934,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
       <div class="nav-item" id="nav-museo" onclick="navegarA('museo')"><span class="nav-icon">🏛️</span><span class="nav-label">Museo de Lockes</span></div>
 
       <hr class="nav-actions-divider">
+        <div class="nav-item" onclick="window.cerrarDrawer&&window.cerrarDrawer();guardarBackupManual()"><span class="nav-icon">💾</span><span class="nav-label">Guardar backup</span></div>
         <div class="nav-item nav-item-danger" onclick="cerrarSesionOperador()"><span class="nav-icon">🔓</span><span class="nav-label">Cerrar Sesión</span></div>
         <div class="nav-item nav-item-dios" id="nav-admin" onclick="navegarA('admin')" style="display:none"><span class="nav-icon">🧿</span><span class="nav-label">Modo Dios</span></div>
     </nav>
@@ -3378,11 +3380,11 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
         <div class="card" style="max-width:560px;border-color:rgba(96,165,250,.25)">
           <div class="card-title" style="color:#60a5fa">💾 Backups y Restauración</div>
           <div style="font-size:11px;color:var(--txt-muted);margin-bottom:18px;font-family:var(--font-display);line-height:1.6">
-            Las snapshots se guardan en Firebase (nodo separado) cada vez que alguien guarda algo desde cualquier dispositivo, y también cada 10 minutos. Máximo 1 cada 2 min para no saturar. Se conservan las últimas 5. Visibles y restaurables desde cualquier dispositivo.
+            Los backups NO se hacen solos: se crean cuando un jugador pulsa «💾 Guardar backup» (menú lateral) o el botón de aquí. Se guardan en Firebase (nodo separado) y se conservan los últimos 10. Si el estado es idéntico al último backup, no se duplica. Visibles y restaurables desde cualquier dispositivo.
           </div>
 
-          <!-- Snapshots automáticas -->
-          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Snapshots automáticas (Firebase · todos los dispositivos)</div>
+          <button class="btn-admin packs" style="width:100%;margin-bottom:16px" onclick="guardarBackupManual()">💾 Crear backup ahora</button>
+          <div style="font-size:9px;color:var(--txt-muted);font-family:var(--font-display);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Backups guardados (Firebase · todos los dispositivos)</div>
           <div id="backup-lista" style="margin-bottom:20px">
             <div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 2px">Cargando...</div>
           </div>
@@ -3560,7 +3562,7 @@ body                  .hero-strip{--hero-color:var(--neon-packs);--hero-glow:rgb
 </div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, set, onValue, get, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -5933,7 +5935,6 @@ async function _guardarBDUnaVez(){
   else{ aEscribir=localLimpio; } // el servidor está vacío pero esta sesión tiene la copia completa: se restaura
   await _conTimeout(set(ref(db,'silph_co_market'),aEscribir),20000,'escritura');
   window._ultimaBDConocida=localLimpio;
-  _autoBackupLocal(aEscribir);
 }
 function guardarBD(){
   if(_guardarPromesa){ _guardarPendiente=true; return _guardarPromesa; }
@@ -5967,48 +5968,53 @@ function guardarBD(){
 
 
 /* ═══════════════════════════════════════════════════════════════
-   SISTEMA DE BACKUP AUTOMÁTICO EN FIREBASE (nodo silph_co_backups)
-   — Se ejecuta tras cada guardarBD() exitoso desde cualquier dispositivo
-   — También cada 10 minutos si hay sesión activa
-   — Guarda las últimas 5 snapshots con timestamp
-   — Accesible desde el panel Modo Dios en cualquier dispositivo
+   SISTEMA DE BACKUPS MANUALES EN FIREBASE (nodo silph_co_backups) — v81.3
+   — NO hay autoguardado: un backup solo se crea cuando un jugador pulsa "💾 Guardar backup"
+   — Se conservan los últimos 10 (el más nuevo primero)
+   — Se guarda el estado actual del servidor (no la copia local) y se omite si es idéntico al último backup
+   — Visibles y restaurables desde el panel Modo Dios en cualquier dispositivo
    — NUNCA escribe en silph_co_market, usa un nodo propio
    ═══════════════════════════════════════════════════════════════ */
 const _BACKUP_FB_PATH = 'silph_co_backups';
-const _BACKUP_MAX     = 5;
-/* Throttle: no guardar más de 1 backup cada 2 min para no saturar Firebase
-   con guardados rápidos consecutivos (ej: compras seguidas).             */
-let _backupUltimoTs   = 0;
-const _BACKUP_THROTTLE_MS = 2 * 60 * 1000;
+const _BACKUP_MAX     = 10;
+let _backupEnCurso    = false;
 
-async function _autoBackupLocal(datos){
-  if(!datos) return;
-  const ahora = Date.now();
-  if(ahora - _backupUltimoTs < _BACKUP_THROTTLE_MS) return; // throttle
-  _backupUltimoTs = ahora;
+window.guardarBackupManual = async function(){
+  if(!userSesion) return;
+  if(!_bdCargadaAlgunaVez){ mostrarNotificacion('Los datos aún se están cargando. Inténtalo en unos segundos.','info','💾'); return; }
+  if(_backupEnCurso) return;
+  _backupEnCurso = true;
   try{
-    const entrada = {
-      ts:    ahora,
-      label: new Date(ahora).toLocaleString('es-ES'),
-      por:   (userSesion && userSesion.nombre) || 'desconocido',
-      datos: JSON.parse(JSON.stringify(datos))
-    };
-    const snapFB = await get(ref(db, _BACKUP_FB_PATH));
-    let lista = [];
-    if(snapFB.exists()){
-      const val = snapFB.val();
-      lista = Array.isArray(val) ? val : Object.values(val);
+    if(_guardarPromesa){ try{ await _guardarPromesa; }catch(e){} } // que el backup incluya lo último guardado
+    const snap  = await _conTimeout(get(ref(db,'silph_co_market')),15000,'lectura');
+    const datos = snap.val();
+    if(!datos){ mostrarNotificacion('No hay datos en Firebase que guardar.','error','💾'); return; }
+    const ahora    = Date.now();
+    const datosStr = JSON.stringify(datos);
+    const entrada  = { ts: ahora, label: new Date(ahora).toLocaleString('es-ES'), por: String(userSesion), datos: datos };
+    let duplicado  = false;
+    /* Transacción: si dos jugadores guardan a la vez, ninguno pisa al otro. */
+    const res = await _conTimeout(runTransaction(ref(db,_BACKUP_FB_PATH), function(actual){
+      duplicado = false;
+      const lista = actual ? (Array.isArray(actual) ? actual.slice() : Object.values(actual)) : [];
+      if(lista[0] && JSON.stringify(lista[0].datos) === datosStr){ duplicado = true; return; } // abortar: ya existe uno igual
+      lista.unshift(entrada);
+      return lista.slice(0,_BACKUP_MAX);
+    }),30000,'guardado del backup');
+    if(res.committed){
+      mostrarNotificacion('Backup guardado ('+entrada.label+').','exito','💾');
+      try{ const dv=document.getElementById('dv-backup'); if(dv&&dv.classList.contains('active')) renderizarBackupsAdmin(); }catch(e){}
+    }else if(duplicado){
+      mostrarNotificacion('Ya existe un backup idéntico al estado actual. No hace falta guardar otro.','info','💾');
+    }else{
+      mostrarNotificacion('No se pudo guardar el backup. Inténtalo de nuevo.','error','⚠️');
     }
-    lista.unshift(entrada);
-    if(lista.length > _BACKUP_MAX) lista = lista.slice(0, _BACKUP_MAX);
-    await set(ref(db, _BACKUP_FB_PATH), lista);
-  }catch(e){ console.warn('[backup] No se pudo guardar backup en Firebase:', e); }
-}
-
-// Backup periódico cada 10 minutos mientras haya sesión activa
-setInterval(function(){
-  if(userSesion && baseDatos && _bdCargadaAlgunaVez) _autoBackupLocal(baseDatos);
-}, 10 * 60 * 1000);
+  }catch(e){
+    _avisarErrorFirebase('guardar el backup',e);
+  }finally{
+    _backupEnCurso = false;
+  }
+};
 
 window.restaurarBackupLocal = async function(idx){
   try{
@@ -6067,8 +6073,6 @@ window.importarBDDesdeJSON = function(file){
       await set(ref(db,'silph_co_market'), datos);
       baseDatos = datos;
       window._ultimaBDConocida = JSON.parse(JSON.stringify(datos));
-      _backupUltimoTs = 0; // forzar backup inmediato tras importar
-      await _autoBackupLocal(datos);
       logAdmin('📤 Importación JSON manual','');
       mostrarNotificacion('Importación completada.','exito','📤');
       renderizarBackupsAdmin();
@@ -7552,7 +7556,7 @@ async function renderizarBackupsAdmin(){
   try{
     const snapFB = await get(ref(db, _BACKUP_FB_PATH));
     if(!snapFB.exists()){
-      cont.innerHTML = '<div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 2px">No hay snapshots todavía. Se generan automáticamente cuando alguien guarda algo (máx. 1 cada 2 min) y cada 10 minutos.</div>';
+      cont.innerHTML = '<div style="font-size:11px;color:var(--txt-muted);font-style:italic;padding:8px 2px">No hay backups todavía. Se crean cuando un jugador pulsa «Guardar backup».</div>';
       return;
     }
     const val   = snapFB.val();
@@ -12836,7 +12840,7 @@ window.erDescartar = function(){
    4. Actualiza la fecha al día actual (YYYY-MM-DD).
    5. Actualiza también el comentario de la cabecera del HTML (línea 2).
    Todo lo demás (sidebar, badge, overlay) se actualiza solo. ============ */
-const APP_VERSION = 81.2;
+const APP_VERSION = 81.3;
 
 /* ═══ AUTO-ACTUALIZACIÓN (v81.2) ═══════════════════════════════════════════════════════
    Cada 2 min (y al volver a la pestaña) se descarga el index.html del servidor sin caché y se compara su
@@ -12871,6 +12875,27 @@ setTimeout(_comprobarNuevaVersionWeb,3000);
 setInterval(_comprobarNuevaVersionWeb,2*60*1000);
 document.addEventListener('visibilitychange',function(){ if(!document.hidden)_comprobarNuevaVersionWeb(); });
 const VERSIONES = [
+  {
+    version: 81.3,
+    fecha: '2026-10-11',
+    titulo: 'Backups manuales (10 copias)',
+    resumen: 'Los backups ya no se hacen solos: se crean únicamente cuando un jugador pulsa «💾 Guardar backup». Se conservan los últimos 10 y se ven y restauran desde Modo Dios, como hasta ahora.',
+    nuevas: [
+      'Botón «💾 Guardar backup» en el menú lateral y en el menú «Más» del móvil, disponible para todos los jugadores',
+      'Botón «Crear backup ahora» en Modo Dios → Backups',
+    ],
+    mejoras: [
+      'Se conservan 10 backups en vez de 5',
+      'No se crea un backup si el estado es idéntico al último (evita gastar los 10 huecos con copias repetidas)',
+      'El backup guarda el estado real del servidor y se hace en una transacción, así que dos jugadores guardando a la vez no se pisan',
+    ],
+    rendimiento: [
+      'Eliminado el backup automático tras cada guardado y el de cada 10 minutos: menos tráfico con Firebase',
+    ],
+    fixes: [
+      'El backup mostraba siempre «guardado por desconocido»; ahora indica el jugador que lo creó',
+    ],
+  },
   {
     version: 81.2,
     fecha: '2026-10-11',
